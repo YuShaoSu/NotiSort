@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_help"
+        android:icon="@drawable/icon_help"
+        android:title="@string/help" />
+    <item
+        android:id="@+id/action_rank"
+        android:icon="@drawable/icon_rank"
+        android:title="@string/rank"/>
+    <item
+        android:id="@+id/action_profile"
+        android:icon="@drawable/icon_profile"
+        android:title="@string/profile"/>
+</menu>
