@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">NotiPreference</string>
+
+    <string name="help">help</string>
+    <string name="rank">rank</string>
+    <string name="profile">profile</string>
+
+    <string name="back">back</string>
+    <string name="go">go</string>
+    <string name="next">next</string>
+    <string name="finish">finish</string>
+
 </resources>
