@@ -75,5 +75,7 @@ public class ItemMoveCallback extends ItemTouchHelper.Callback {
         void onRowSelected(NotiItemAdapter.ViewHolder myViewHolder);
         void onRowClear(NotiItemAdapter.ViewHolder myViewHolder);
     }
-
+    public interface StartDragListener {
+        void requestDrag(RecyclerView.ViewHolder viewHolder);
+    }
 }

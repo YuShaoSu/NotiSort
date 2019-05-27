@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -46,6 +47,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         private TextView tv_title;
         private TextView tv_content;
         private TextView tv_rank;
+        private ImageView iv_drag;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -53,6 +55,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
             tv_appname = (TextView)itemView.findViewById(R.id.appname);
             tv_title = (TextView)itemView.findViewById(R.id.title);
             tv_content = (TextView)itemView.findViewById(R.id.content);
+            iv_drag = (ImageView)itemView.findViewById(R.id.drag);
         }
     }
 
