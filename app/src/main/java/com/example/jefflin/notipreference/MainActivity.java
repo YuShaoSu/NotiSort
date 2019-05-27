@@ -17,6 +17,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/*
+    Main activity, also the landing page
+    has 1 bottom navigation bar and 1 top bar
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     private NotiBroadcastReceiver notiBroadcastReceiver;
@@ -42,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setBotNavView(){
-        final Intent intent = new Intent(this, RankActivity.class);
+        final Intent intent = new Intent(this, SortActivity.class);
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bot_navigation_home);
         bottomNavigationView.setItemIconTintList(null);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.action_help:
                         break;
-                    case R.id.action_rank:
+                    case R.id.action_sort:
                         //intent.putExtra("data", data);
                         startActivity(intent);
                         break;

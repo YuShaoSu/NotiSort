@@ -8,7 +8,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 import java.util.ArrayList;
 
-public class RankActivity extends AppCompatActivity {
+public class SortActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private NotiItemAdapter adapter;
 
@@ -16,7 +16,7 @@ public class RankActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rank);
+        setContentView(R.layout.activity_sort);
         setRecyclerView();
         setItemTouchHelper();
     }

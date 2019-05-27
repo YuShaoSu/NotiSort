@@ -28,7 +28,7 @@
         </activity>
 
 
-        <activity android:name=".RankActivity">
+        <activity android:name=".SortActivity">
         </activity>
 
     </application>

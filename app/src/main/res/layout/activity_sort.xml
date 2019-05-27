@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:padding="5dp"
+        android:padding="8dp"
         android:layout_alignBottom="@id/frame_layout"
         android:text="@string/next"
         android:textSize="18sp"

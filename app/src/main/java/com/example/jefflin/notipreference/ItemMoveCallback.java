@@ -71,11 +71,9 @@ public class ItemMoveCallback extends ItemTouchHelper.Callback {
     }
 
     public interface ItemTouchHelperContract {
-
         void onRowMoved(int fromPosition, int toPosition);
         void onRowSelected(NotiItemAdapter.ViewHolder myViewHolder);
         void onRowClear(NotiItemAdapter.ViewHolder myViewHolder);
-
     }
 
 }

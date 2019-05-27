@@ -5,9 +5,9 @@
         android:icon="@drawable/icon_help_selector"
         android:title="@string/help" />
     <item
-        android:id="@+id/action_rank"
-        android:icon="@drawable/icon_rank"
-        android:title="@string/rank"/>
+        android:id="@+id/action_sort"
+        android:icon="@drawable/icon_sort"
+        android:title="@string/sort"/>
     <item
         android:id="@+id/action_profile"
         android:icon="@drawable/icon_profile_selector"

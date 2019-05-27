@@ -1,7 +1,9 @@
 package com.example.jefflin.notipreference;
 
 import android.graphics.drawable.Drawable;
-
+/*
+    A class that store notification object's attributes
+ */
 public class NotiItem {
     public Drawable icon;
     public String appname;

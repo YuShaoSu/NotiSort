@@ -12,6 +12,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/*
+    The adaptor of the sorting page recycler view.
+ */
 public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHolder> implements
         ItemMoveCallback.ItemTouchHelperContract {
     private Context mContext;
