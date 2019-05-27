@@ -11,12 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="This is rank activity"
-            android:textSize="40dp"
-            android:textColor="@color/black"/>
     </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -25,5 +19,19 @@
         android:layout_height="wrap_content"
         android:paddingBottom="50dp"
         android:clipToPadding="false"/>
+
+    <TextView
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:layout_alignBottom="@id/frame_layout"
+        android:text="@string/next"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:background="@color/colorPrimary"
+        />
 
 </RelativeLayout>

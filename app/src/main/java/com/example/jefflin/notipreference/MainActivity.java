@@ -30,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setBotNavView();
 
+        Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+        //startActivity(intent);
+
         data = new ArrayList<>();
 
         notiBroadcastReceiver = new NotiBroadcastReceiver();

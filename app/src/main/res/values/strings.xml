@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">NotiPreference</string>
+    <string name="app_name">NotiSort</string>
 
     <string name="help">help</string>
     <string name="rank">rank</string>
     <string name="profile">profile</string>
 
-    <string name="back">back</string>
+    <string name="back">返回</string>
     <string name="go">go</string>
-    <string name="next">next</string>
-    <string name="finish">finish</string>
+    <string name="next">繼續</string>
+    <string name="finish">完成</string>
 
 </resources>
