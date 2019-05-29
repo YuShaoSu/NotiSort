@@ -8,9 +8,11 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 import java.util.ArrayList;
 
-public class SortActivity extends AppCompatActivity {
+public class SortActivity extends AppCompatActivity implements ItemMoveCallback.OnStartDragListener{
     private RecyclerView recyclerView;
     private NotiItemAdapter adapter;
+    private ItemTouchHelper mItemTouchHelper;
+    private ItemMoveCallback.OnStartDragListener onStartDragListener = this;
 
 
     @Override
@@ -24,15 +26,20 @@ public class SortActivity extends AppCompatActivity {
     private void setRecyclerView() {
         ArrayList<NotiItem> data;
         data = MainActivity.getData();
-        adapter = new NotiItemAdapter(this, data);
+        adapter = new NotiItemAdapter(this, data, onStartDragListener);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_rank);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
 
     private void setItemTouchHelper() {
-        ItemTouchHelper.Callback callback = new ItemMoveCallback(adapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerView);
+        mItemTouchHelper = new ItemTouchHelper(new ItemMoveCallback(adapter));
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
     }
 }

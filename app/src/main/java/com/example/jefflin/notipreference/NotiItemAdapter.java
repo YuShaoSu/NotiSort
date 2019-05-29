@@ -3,12 +3,14 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,19 +22,33 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         ItemMoveCallback.ItemTouchHelperContract {
     private Context mContext;
     private ArrayList<NotiItem> mData;
+    private ItemMoveCallback.OnStartDragListener mDragListener;
 
-    public NotiItemAdapter(Context context, ArrayList<NotiItem> data) {
+    public NotiItemAdapter(Context context, ArrayList<NotiItem> data, ItemMoveCallback.OnStartDragListener dragListener) {
         this.mContext = context;
         this.mData = data;
+        this.mDragListener = dragListener;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         NotiItem notiitem = mData.get(position);
         holder.iv_icon.setImageDrawable(notiitem.icon);
         holder.tv_appname.setText(notiitem.appname);
         holder.tv_title.setText(notiitem.title);
         holder.tv_content.setText(notiitem.content);
+
+        holder.iv_drag.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction()
+                        == MotionEvent.ACTION_DOWN) {
+                    // Notify ItemTouchHelper to start dragging
+                    mDragListener.onStartDrag(holder);
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -89,6 +105,12 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
     @Override
     public void onRowClear(ViewHolder myViewHolder) {
 
+    }
+
+    @Override
+    public void onRowDelete(int pos) {
+        mData.remove(pos);
+        notifyItemRemoved(pos);
     }
 
 }

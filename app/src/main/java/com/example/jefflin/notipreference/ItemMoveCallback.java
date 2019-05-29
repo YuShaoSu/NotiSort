@@ -14,25 +14,26 @@ public class ItemMoveCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean isLongPressDragEnabled() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isItemViewSwipeEnabled() {
-        return false;
+        return true;
     }
 
 
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
+        mAdapter.onRowDelete(viewHolder.getAdapterPosition());
     }
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-        return makeMovementFlags(dragFlags, 0);
+        int swipeFlags = ItemTouchHelper.LEFT;
+        return makeMovementFlags(dragFlags, swipeFlags);
     }
 
     @Override
@@ -74,8 +75,10 @@ public class ItemMoveCallback extends ItemTouchHelper.Callback {
         void onRowMoved(int fromPosition, int toPosition);
         void onRowSelected(NotiItemAdapter.ViewHolder myViewHolder);
         void onRowClear(NotiItemAdapter.ViewHolder myViewHolder);
+        void onRowDelete(int pos);
     }
-    public interface StartDragListener {
-        void requestDrag(RecyclerView.ViewHolder viewHolder);
+
+    public interface OnStartDragListener {
+        void onStartDrag(RecyclerView.ViewHolder viewHolder);
     }
 }
