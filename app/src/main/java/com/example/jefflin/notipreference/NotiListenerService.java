@@ -23,7 +23,11 @@ public class NotiListenerService extends NotificationListenerService {
         Intent intent = new  Intent("NotiListenerService.Arrival");
         intent.putExtra("appname", sbn.getPackageName());
         intent.putExtra("title", notification.extras.get("android.title").toString());
-        intent.putExtra("content", notification.extras.get("android.text").toString());
+        try{
+            intent.putExtra("content", notification.extras.get("android.text").toString());
+        } catch (Exception e) {
+
+        }
 
         sendBroadcast(intent);
     }

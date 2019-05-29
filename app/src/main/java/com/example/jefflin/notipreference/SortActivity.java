@@ -5,20 +5,44 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class SortActivity extends AppCompatActivity implements ItemMoveCallback.OnStartDragListener{
+public class SortActivity extends AppCompatActivity implements NotiItemMoveCallback.OnStartDragListener{
     private RecyclerView recyclerView;
     private NotiItemAdapter adapter;
     private ItemTouchHelper mItemTouchHelper;
-    private ItemMoveCallback.OnStartDragListener onStartDragListener = this;
+    private NotiItemMoveCallback.OnStartDragListener onStartDragListener = this;
+
+    private ImageView iv_back;
+    private TextView tv_next;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort);
+
+        iv_back = (ImageView) findViewById(R.id.back);
+        tv_next = (TextView) findViewById(R.id.next);
+
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SortActivity.super.onBackPressed();
+            }
+        });
+
+        tv_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SortActivity.super.onBackPressed();
+            }
+        });
+
         setRecyclerView();
         setItemTouchHelper();
     }
@@ -33,7 +57,7 @@ public class SortActivity extends AppCompatActivity implements ItemMoveCallback.
     }
 
     private void setItemTouchHelper() {
-        mItemTouchHelper = new ItemTouchHelper(new ItemMoveCallback(adapter));
+        mItemTouchHelper = new ItemTouchHelper(new NotiItemMoveCallback(adapter));
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 

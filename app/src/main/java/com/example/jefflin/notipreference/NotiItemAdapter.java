@@ -1,16 +1,12 @@
 package com.example.jefflin.notipreference;
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,12 +15,12 @@ import java.util.Collections;
     The adaptor of the sorting page recycler view.
  */
 public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHolder> implements
-        ItemMoveCallback.ItemTouchHelperContract {
+        NotiItemMoveCallback.ItemTouchHelperContract {
     private Context mContext;
     private ArrayList<NotiItem> mData;
-    private ItemMoveCallback.OnStartDragListener mDragListener;
+    private NotiItemMoveCallback.OnStartDragListener mDragListener;
 
-    public NotiItemAdapter(Context context, ArrayList<NotiItem> data, ItemMoveCallback.OnStartDragListener dragListener) {
+    public NotiItemAdapter(Context context, ArrayList<NotiItem> data, NotiItemMoveCallback.OnStartDragListener dragListener) {
         this.mContext = context;
         this.mData = data;
         this.mDragListener = dragListener;

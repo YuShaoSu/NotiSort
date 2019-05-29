@@ -4,11 +4,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-public class ItemMoveCallback extends ItemTouchHelper.Callback {
+public class NotiItemMoveCallback extends ItemTouchHelper.Callback {
 
     private final ItemTouchHelperContract mAdapter;
 
-    public ItemMoveCallback(ItemTouchHelperContract adapter) {
+    public NotiItemMoveCallback(ItemTouchHelperContract adapter) {
         mAdapter = adapter;
     }
 
