@@ -19,11 +19,9 @@ Methods
 
 To do list
 ---
-short-term:
 1. finish functions of scaling, esm page
 2. bring notification listener service to background and ensure it always run
 3. create db to store notification data
-long-term:
 4. notification filter (filter out system app, alarm clock ...)
 5. notification type
 6. post the notification of this app
