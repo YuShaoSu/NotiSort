@@ -31,6 +31,12 @@
         <activity android:name=".SortActivity">
         </activity>
 
+        <activity android:name=".ScaleActivity">
+        </activity>
+
+        <activity android:name=".EsmActivity">
+        </activity>
+
     </application>
 
 </manifest>

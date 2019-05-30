@@ -18,6 +18,11 @@
     <string name="senderAttractivenessOrder">請依<b>傳送者吸引人</b>程度排名</string>
     <string name="contentAttractivenessOrder">請依<b>內容吸引人</b>程度排名</string>
 
+    <string name="importance">重要程度</string>
+    <string name="urgency">緊急程度</string>
+    <string name="senderAttractiveness">傳送者吸引人程度</string>
+    <string name="contentAttractiveness">內容吸引人程度</string>
+
     <string name="scale">請勾選以下問題</string>
     <string name="ESM">請回答以下問題</string>
 </resources>

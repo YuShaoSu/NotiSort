@@ -1,5 +1,6 @@
 package com.example.jefflin.notipreference;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +13,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class SortActivity extends AppCompatActivity implements NotiItemMoveCallback.OnStartDragListener{
-    private RecyclerView recyclerView;
-    private NotiItemAdapter adapter;
+    private RecyclerView mRecyclerView;
+    private NotiItemAdapter mAdapter;
     private ItemTouchHelper mItemTouchHelper;
     private NotiItemMoveCallback.OnStartDragListener onStartDragListener = this;
 
@@ -39,7 +40,8 @@ public class SortActivity extends AppCompatActivity implements NotiItemMoveCallb
         tv_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SortActivity.super.onBackPressed();
+                Intent intent = new Intent(getApplicationContext(), ScaleActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -50,15 +52,15 @@ public class SortActivity extends AppCompatActivity implements NotiItemMoveCallb
     private void setRecyclerView() {
         ArrayList<NotiItem> data;
         data = MainActivity.getData();
-        adapter = new NotiItemAdapter(this, data, onStartDragListener);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_rank);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+        mAdapter = new NotiItemAdapter(this, data, onStartDragListener);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_rank);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void setItemTouchHelper() {
-        mItemTouchHelper = new ItemTouchHelper(new NotiItemMoveCallback(adapter));
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
+        mItemTouchHelper = new ItemTouchHelper(new NotiItemMoveCallback(mAdapter));
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
 

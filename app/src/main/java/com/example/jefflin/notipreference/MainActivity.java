@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         return data;
     }
 
-    // Fix: Change this to another class
+    // Fix: Change this to another class (run in background)
     public class NotiBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

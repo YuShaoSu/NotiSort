@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_light"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/grey_light">
 
 
     <android.support.v7.widget.Toolbar
@@ -28,14 +27,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/displayOrder"
+                android:text="@string/ESM"
                 android:textSize="15sp"
                 android:textColor="@color/grey_dark"
-                android:background="@color/white"/>
+                android:background="@color/white"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1 of 3"
+                android:text="3 of 3"
                 android:textSize="14sp"
                 android:layout_centerInParent="true"
                 android:layout_alignParentEnd="true"
@@ -45,7 +45,7 @@
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_rank"
+        android:id="@+id/recycler_view_ESM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/top_bar"
@@ -61,7 +61,7 @@
         android:layout_margin="10dp"
         android:padding="8dp"
         android:layout_alignParentBottom="true"
-        android:text="@string/next"
+        android:text="@string/finish"
         android:textSize="16sp"
         android:textColor="@color/white"
         android:textAlignment="center"
