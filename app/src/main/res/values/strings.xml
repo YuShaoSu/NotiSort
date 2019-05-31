@@ -25,4 +25,8 @@
 
     <string name="scale">請勾選以下問題</string>
     <string name="ESM">請回答以下問題</string>
+
+    <string name="xcontinue">Continue</string>
+    <string name="start">Start</string>
+    <string name="close">Close</string>
 </resources>

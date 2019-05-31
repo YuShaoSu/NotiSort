@@ -1,14 +1,13 @@
 package com.example.jefflin.notipreference;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.androidadvance.androidsurvey.SurveyActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +16,8 @@ public class ScaleActivity extends AppCompatActivity {
 
     private ImageView iv_back;
     private TextView tv_next;
+
+    final private int SURVEY_REQUEST = 1337;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,6 @@ public class ScaleActivity extends AppCompatActivity {
         });
         */
 
-        final int SURVEY_REQUEST = 1337;
         tv_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +52,21 @@ public class ScaleActivity extends AppCompatActivity {
                 startActivityForResult(i_survey, SURVEY_REQUEST);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SURVEY_REQUEST) {
+            if (resultCode == RESULT_OK) {
+
+                String answers_json = data.getExtras().getString("answers");
+                Log.d("****", "****************** WE HAVE ANSWERS ******************");
+                Log.v("ANSWERS JSON", answers_json);
+                Log.d("****", "*****************************************************");
+
+                Log.d("****", answers_json);
+            }
+        }
     }
 
     private String loadSurveyJson(String filename) {
