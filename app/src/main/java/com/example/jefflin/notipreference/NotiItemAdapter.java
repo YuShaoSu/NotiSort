@@ -1,5 +1,6 @@
 package com.example.jefflin.notipreference;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -27,7 +28,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         NotiItem notiitem = mData.get(position);
         holder.iv_icon.setImageDrawable(notiitem.icon);
         holder.tv_appname.setText(notiitem.appname);
