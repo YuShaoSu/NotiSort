@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/grey_light">
 
-
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="45dp"
@@ -58,14 +57,13 @@
         android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:padding="8dp"
         android:layout_alignParentBottom="true"
         android:text="@string/finish"
         android:textSize="16sp"
         android:textColor="@color/white"
         android:textAlignment="center"
-        android:background="@color/colorPrimary"
-        />
+        android:background="@color/colorPrimary" />
 
 </RelativeLayout>

@@ -57,7 +57,7 @@
         android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:padding="8dp"
         android:layout_alignParentBottom="true"
         android:text="@string/next"

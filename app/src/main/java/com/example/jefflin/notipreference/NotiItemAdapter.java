@@ -29,11 +29,11 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        NotiItem notiitem = mData.get(position);
-        holder.iv_icon.setImageDrawable(notiitem.icon);
-        holder.tv_appname.setText(notiitem.appname);
-        holder.tv_title.setText(notiitem.title);
-        holder.tv_content.setText(notiitem.content);
+        NotiItem notiItem = mData.get(position);
+        holder.iv_icon.setImageDrawable(notiItem.icon);
+        holder.tv_appname.setText(notiItem.appName);
+        holder.tv_title.setText(notiItem.title);
+        holder.tv_content.setText(notiItem.content);
 
         holder.iv_drag.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -73,7 +73,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent,
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                          int viewType) {
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.list_noti_item, parent, false);

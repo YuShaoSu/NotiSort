@@ -18,6 +18,8 @@ public class SortActivity extends AppCompatActivity implements NotiItemMoveCallb
     private ItemTouchHelper mItemTouchHelper;
     private NotiItemMoveCallback.OnStartDragListener onStartDragListener = this;
 
+    ArrayList<NotiItem> mData;
+
     private ImageView iv_back;
     private TextView tv_next;
 
@@ -50,9 +52,8 @@ public class SortActivity extends AppCompatActivity implements NotiItemMoveCallb
     }
 
     private void setRecyclerView() {
-        ArrayList<NotiItem> data;
-        data = MainActivity.getData();
-        mAdapter = new NotiItemAdapter(this, data, onStartDragListener);
+        mData = NotiListenerService.getData();
+        mAdapter = new NotiItemAdapter(this, mData, onStartDragListener);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_rank);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
