@@ -22,6 +22,7 @@ import com.example.jefflin.notipreference.models.SurveyPojo;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class SurveyActivity extends AppCompatActivity {
 
@@ -29,12 +30,16 @@ public class SurveyActivity extends AppCompatActivity {
     private ViewPager mPager;
     private String style_string = null;
 
+    ArrayList<NotiItem> mData;
+    ArrayList<NotiItem> mData_6 = new ArrayList<NotiItem>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_survey);
 
-
+        mData = NotiListenerService.getData();
+        mData_6 = getRandom6Element(mData);
 
         if (getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
@@ -58,17 +63,19 @@ public class SurveyActivity extends AppCompatActivity {
             frag_start.setArguments(sBundle);
             arraylist_fragments.add(frag_start);
         }
+        FragmentSort fragsort = new FragmentSort();
 
         //- FILL -
         for (Question mQuestion : mSurveyPojo.getQuestions()) {
 
             if (mQuestion.getQuestionType().equals("Sort")) {
-                FragmentSort frag = new FragmentSort();
+                fragsort = new FragmentSort();
                 Bundle xBundle = new Bundle();
                 xBundle.putSerializable("data", mQuestion);
                 xBundle.putString("style", style_string);
-                frag.setArguments(xBundle);
-                arraylist_fragments.add(frag);
+                xBundle.putSerializable("arrayList", mData_6);
+                fragsort.setArguments(xBundle);
+                arraylist_fragments.add(fragsort);
             }
 
             if (mQuestion.getQuestionType().equals("String")) {
@@ -143,5 +150,23 @@ public class SurveyActivity extends AppCompatActivity {
         returnIntent.putExtra("answers", instance.get_json_object());
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
+    }
+
+    public ArrayList<NotiItem> getRandom6Element(ArrayList<NotiItem> list) {
+        // randomly select 6 notifications
+        Random rand = new Random();
+        ArrayList<NotiItem> newList = new ArrayList<>();
+        ArrayList<NotiItem> list2 = list;
+
+        for (int i = 0; i < 6; i++) {
+            try {
+                int randomIndex = rand.nextInt(list2.size());
+                newList.add(list2.get(randomIndex));
+                list2.remove(randomIndex);
+            } catch (Exception e) {
+                Log.d("d","not enough notifications here");
+            }
+        }
+        return newList;
     }
 }

@@ -13,34 +13,36 @@
       "required": false
     },
     {
-      "question_type": "Sort",
-      "question_title": "Sort!!!!!",
+      "question_type": "Checkboxes",
+      "question_title": "What were you hoping the XYZ mobile app would do?",
+      "description": "(Select all that apply)",
+      "required": false,
+      "random_choices": false,
+      "choices": [
+        "thing #1",
+        "thing #2",
+        "thing #3",
+        "thing #4"
+      ]
+    },
+    {
+      "question_type": "String",
+      "question_title": "Why did you not subscribe at the end of your free trial ?",
       "description": "",
       "required": false
     },
     {
-      "question_type": "Sort",
-      "question_title": "Sort!!!!!",
+      "question_title": "If this app was paid, how much you would give to have it ?",
       "description": "",
-      "required": false
+      "required": false,
+      "question_type": "Number"
     },
     {
-      "question_type": "Sort",
-      "question_title": "Sort!!!!!",
+      "question_type": "StringMultiline",
+      "question_title": "We love feedback and if there is anything else you’d like us to improve please let us know.",
       "description": "",
-      "required": false
-    },
-    {
-      "question_type": "Sort",
-      "question_title": "Sort!!!!!",
-      "description": "",
-      "required": false
-    },
-    {
-      "question_type": "Sort",
-      "question_title": "Sort!!!!!",
-      "description": "",
-      "required": false
+      "required": false,
+      "number_of_lines": 4
     }
   ]
 }
