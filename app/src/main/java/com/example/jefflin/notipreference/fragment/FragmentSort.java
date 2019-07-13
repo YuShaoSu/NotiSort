@@ -37,14 +37,13 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
     private FragmentActivity mContext;
     private Button button_continue;
     private TextView textview_q_title;
-    private EditText editText_answer;
+    private TextView textview_q_discription;
 
     private RecyclerView mRecyclerView;
     private NotiItemAdapter mAdapter;
     private ItemTouchHelper mItemTouchHelper;
     private NotiItemMoveCallback.OnStartDragListener onStartDragListener = this;
     private ImageView iv_back;
-    private TextView tv_next;
 
 
     ArrayList<NotiItem> mData;
@@ -56,10 +55,16 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_sort, container, false);
 
         button_continue = (Button) rootView.findViewById(R.id.button_continue);
-        textview_q_title = (TextView) rootView.findViewById(R.id.textview_q_title);
-        editText_answer = (EditText) rootView.findViewById(R.id.editText_answer);
+        textview_q_title = (TextView) rootView.findViewById(R.id.title);
+        textview_q_discription = (TextView) rootView.findViewById(R.id.discription);
 
         iv_back = (ImageView) rootView.findViewById(R.id.back);
+
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
 
         button_continue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,27 +86,11 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
 
         mContext = getActivity();
         Question q_data = (Question) getArguments().getSerializable("data");
+        textview_q_title.setText(q_data.getQuestionTitle());
+        textview_q_discription.setText(q_data.getDescription());
 
         if (q_data.getRequired()) {
             button_continue.setVisibility(View.GONE);
-            editText_answer.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if (s.length() > 3) {
-                        button_continue.setVisibility(View.VISIBLE);
-                    } else {
-                        button_continue.setVisibility(View.GONE);
-                    }
-                }
-            });
         }
 
         //textview_q_title.setText(Html.fromHtml(q_data.getQuestionTitle()));
