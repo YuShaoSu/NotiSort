@@ -1,4 +1,4 @@
-package com.androidadvance.androidsurvey.widgets;
+package com.example.jefflin.notipreference.widgets;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

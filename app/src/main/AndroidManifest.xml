@@ -37,9 +37,8 @@
         <activity android:name=".EsmActivity">
         </activity>
 
-        <activity android:name=".SurveyActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".SurveyActivity">
+        </activity>
 
     </application>
 

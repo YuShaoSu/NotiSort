@@ -34,22 +34,11 @@ public class ScaleActivity extends AppCompatActivity {
             }
         });
 
-        /*
         tv_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), EsmActivity.class);
                 startActivity(intent);
-            }
-        });
-        */
-
-        tv_next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i_survey = new Intent(ScaleActivity.this, SurveyActivity.class);
-                i_survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
-                startActivityForResult(i_survey, SURVEY_REQUEST);
             }
         });
     }
