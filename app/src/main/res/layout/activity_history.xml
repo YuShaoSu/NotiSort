@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@+id/activity_main"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_light">
+    android:background="@color/grey_light"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/white"
-        android:elevation="2dp">
+        android:elevation="2dp"
+        android:id="@+id/top_bar">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_back"
+                android:clickable="true"
+                android:focusable="true"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/app_name"
+                android:text="@string/displayOrder"
                 android:textSize="15sp"
                 android:textColor="@color/grey_dark"
-                android:background="@color/white"
-                />
+                android:background="@color/white"/>
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bot_navigation_home"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_rank"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        app:menu="@menu/bot_nav_home"
-        app:itemIconSize="30dp"
-        />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_bar"
+        android:paddingBottom="50dp"
+        android:clipToPadding="false"/>
+
 
 </RelativeLayout>

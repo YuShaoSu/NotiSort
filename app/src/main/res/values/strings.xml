@@ -2,8 +2,8 @@
     <string name="app_name">NotiSort</string>
 
     <string name="help">help</string>
-    <string name="sort">sort</string>
-    <string name="profile">profile</string>
+    <string name="sort">sort (6)</string>
+    <string name="profile">history (all)</string>
 
     <string name="back">返回</string>
     <string name="go">go</string>

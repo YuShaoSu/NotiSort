@@ -40,6 +40,9 @@
         <activity android:name=".SurveyActivity">
         </activity>
 
+        <activity android:name=".HistoryActivity">
+        </activity>
+
     </application>
 
 </manifest>

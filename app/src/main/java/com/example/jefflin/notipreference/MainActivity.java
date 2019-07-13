@@ -22,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
         setBotNavView();
 
         Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-        //startActivity(intent);
+        // this line open the setting of the phone
+        // startActivity(intent);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NotiListenerService.Arrival");
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setBotNavView(){
         final Intent intent = new Intent(this, SortActivity.class);
+        final Intent intent_history = new Intent(this, HistoryActivity.class);
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bot_navigation_home);
         bottomNavigationView.setItemIconTintList(null);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.action_profile:
+                        startActivity(intent_history);
                         break;
                 }
                 return true;
