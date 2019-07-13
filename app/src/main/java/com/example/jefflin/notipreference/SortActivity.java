@@ -21,12 +21,11 @@ public class SortActivity extends AppCompatActivity implements NotiItemMoveCallb
     private NotiItemAdapter mAdapter;
     private ItemTouchHelper mItemTouchHelper;
     private NotiItemMoveCallback.OnStartDragListener onStartDragListener = this;
+    private ImageView iv_back;
+    private TextView tv_next;
 
     ArrayList<NotiItem> mData;
     ArrayList<NotiItem> mData_6 = new ArrayList<NotiItem>();
-
-    private ImageView iv_back;
-    private TextView tv_next;
 
 
     @Override
@@ -77,6 +76,7 @@ public class SortActivity extends AppCompatActivity implements NotiItemMoveCallb
     }
 
     public ArrayList<NotiItem> getRandom6Element(ArrayList<NotiItem> list) {
+        // randomly select 6 notifications
         Random rand = new Random();
         ArrayList<NotiItem> newList = new ArrayList<>();
         ArrayList<NotiItem> list2 = list;
@@ -87,7 +87,7 @@ public class SortActivity extends AppCompatActivity implements NotiItemMoveCallb
                 newList.add(list2.get(randomIndex));
                 list2.remove(randomIndex);
             } catch (Exception e) {
-                Log.d("d","d");
+                Log.d("d","not enough notifications here");
             }
         }
         return newList;

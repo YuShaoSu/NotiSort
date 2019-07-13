@@ -61,6 +61,15 @@ public class SurveyActivity extends AppCompatActivity {
         //- FILL -
         for (Question mQuestion : mSurveyPojo.getQuestions()) {
 
+            if (mQuestion.getQuestionType().equals("Sort")) {
+                FragmentTextSimple frag = new FragmentTextSimple();
+                Bundle xBundle = new Bundle();
+                xBundle.putSerializable("data", mQuestion);
+                xBundle.putString("style", style_string);
+                frag.setArguments(xBundle);
+                arraylist_fragments.add(frag);
+            }
+
             if (mQuestion.getQuestionType().equals("String")) {
                 FragmentTextSimple frag = new FragmentTextSimple();
                 Bundle xBundle = new Bundle();
