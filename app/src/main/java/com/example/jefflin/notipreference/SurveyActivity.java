@@ -14,6 +14,7 @@ import com.example.jefflin.notipreference.fragment.FragmentEnd;
 import com.example.jefflin.notipreference.fragment.FragmentMultiline;
 import com.example.jefflin.notipreference.fragment.FragmentNumber;
 import com.example.jefflin.notipreference.fragment.FragmentRadioboxes;
+import com.example.jefflin.notipreference.fragment.FragmentSort;
 import com.example.jefflin.notipreference.fragment.FragmentStart;
 import com.example.jefflin.notipreference.fragment.FragmentTextSimple;
 import com.example.jefflin.notipreference.models.Question;
@@ -62,7 +63,7 @@ public class SurveyActivity extends AppCompatActivity {
         for (Question mQuestion : mSurveyPojo.getQuestions()) {
 
             if (mQuestion.getQuestionType().equals("Sort")) {
-                FragmentTextSimple frag = new FragmentTextSimple();
+                FragmentSort frag = new FragmentSort();
                 Bundle xBundle = new Bundle();
                 xBundle.putSerializable("data", mQuestion);
                 xBundle.putString("style", style_string);
@@ -97,15 +98,6 @@ public class SurveyActivity extends AppCompatActivity {
                 arraylist_fragments.add(frag);
             }
 
-            if (mQuestion.getQuestionType().equals("Number")) {
-                FragmentNumber frag = new FragmentNumber();
-                Bundle xBundle = new Bundle();
-                xBundle.putSerializable("data", mQuestion);
-                xBundle.putString("style", style_string);
-                frag.setArguments(xBundle);
-                arraylist_fragments.add(frag);
-            }
-
             if (mQuestion.getQuestionType().equals("StringMultiline")) {
                 FragmentMultiline frag = new FragmentMultiline();
                 Bundle xBundle = new Bundle();
@@ -114,7 +106,6 @@ public class SurveyActivity extends AppCompatActivity {
                 frag.setArguments(xBundle);
                 arraylist_fragments.add(frag);
             }
-
         }
 
         //- END -
