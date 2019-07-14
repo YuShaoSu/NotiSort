@@ -25,7 +25,6 @@ public class FragmentEnd extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_end, container, false);
 
-
         Button button_finish = (Button) rootView.findViewById(R.id.button_finish);
         textView_end = (TextView) rootView.findViewById(R.id.textView_end);
 
@@ -51,6 +50,5 @@ public class FragmentEnd extends Fragment {
 
         assert survery_properties != null;
         textView_end.setText(Html.fromHtml(survery_properties.getEndMessage()));
-
     }
 }

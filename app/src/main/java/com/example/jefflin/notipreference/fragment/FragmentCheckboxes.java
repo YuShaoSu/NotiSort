@@ -113,8 +113,5 @@ public class FragmentCheckboxes extends Fragment {
                 }
             });
         }
-
     }
-
-
 }

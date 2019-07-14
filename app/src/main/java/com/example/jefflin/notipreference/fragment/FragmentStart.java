@@ -46,9 +46,5 @@ public class FragmentStart extends Fragment {
 
         assert survery_properties != null;
         textView_start.setText(Html.fromHtml(survery_properties.getIntroMessage()));
-
-
-
-
     }
 }

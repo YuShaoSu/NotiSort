@@ -54,7 +54,6 @@ public class FragmentRadioboxes extends Fragment {
     }
 
     private void collect_data() {
-
         //----- collection & validation for is_required
         String the_choice = "";
         at_leaset_one_checked = false;
@@ -77,7 +76,6 @@ public class FragmentRadioboxes extends Fragment {
                 button_continue.setVisibility(View.GONE);
             }
         }
-
     }
 
 
@@ -85,12 +83,10 @@ public class FragmentRadioboxes extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         mContext = getActivity();
         q_data = (ESMQuestion) getArguments().getSerializable("data");
 
         textview_q_title.setText(q_data.getQuestionTitle());
-
 
         List<String> qq_data = q_data.getChoices();
         if (q_data.getRandomChoices()) {
@@ -120,9 +116,5 @@ public class FragmentRadioboxes extends Fragment {
                 button_continue.setVisibility(View.GONE);
             }
         }
-
-
     }
-
-
 }

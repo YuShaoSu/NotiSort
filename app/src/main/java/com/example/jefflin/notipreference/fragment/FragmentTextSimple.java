@@ -47,7 +47,6 @@ public class FragmentTextSimple extends Fragment {
         return rootView;
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -81,7 +80,5 @@ public class FragmentTextSimple extends Fragment {
         editText_answer.requestFocus();
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Service.INPUT_METHOD_SERVICE);
         imm.showSoftInput(editText_answer, 0);
-
-
     }
 }

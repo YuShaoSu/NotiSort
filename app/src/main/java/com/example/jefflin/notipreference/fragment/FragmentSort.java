@@ -110,22 +110,4 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
         mItemTouchHelper = new ItemTouchHelper(new NotiItemMoveCallback(mAdapter));
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
-
-    public ArrayList<NotiItem> getRandom6Element(ArrayList<NotiItem> list) {
-        // randomly select 6 notifications
-        Random rand = new Random();
-        ArrayList<NotiItem> newList = new ArrayList<>();
-        ArrayList<NotiItem> list2 = list;
-
-        for (int i = 0; i < 6; i++) {
-            try {
-                int randomIndex = rand.nextInt(list2.size());
-                newList.add(list2.get(randomIndex));
-                list2.remove(randomIndex);
-            } catch (Exception e) {
-                Log.d("d","not enough notifications here");
-            }
-        }
-        return newList;
-    }
 }
