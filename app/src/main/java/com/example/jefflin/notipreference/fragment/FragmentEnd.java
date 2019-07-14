@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.jefflin.notipreference.ESMAnswers;
+import com.example.jefflin.notipreference.ESMAnswer;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.ActivityESM;
-import com.example.jefflin.notipreference.models.ESMProperties;
+import com.example.jefflin.notipreference.model.ESMProperties;
 
 public class FragmentEnd extends Fragment {
 
@@ -34,7 +34,7 @@ public class FragmentEnd extends Fragment {
             @Override
             public void onClick(View v) {
 
-                ((ActivityESM) mContext).event_survey_completed(ESMAnswers.getInstance());
+                ((ActivityESM) mContext).event_survey_completed(ESMAnswer.getInstance());
 
             }
         });

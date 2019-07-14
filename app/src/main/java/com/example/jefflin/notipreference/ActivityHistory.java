@@ -8,6 +8,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.jefflin.notipreference.services.NotiListenerService;
+import com.example.jefflin.notipreference.adapter.NotiItemAdapter;
+import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
+
 import java.util.ArrayList;
 
 public class ActivityHistory extends AppCompatActivity implements NotiItemMoveCallback.OnStartDragListener{

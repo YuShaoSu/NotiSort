@@ -1,4 +1,4 @@
-package com.example.jefflin.notipreference;
+package com.example.jefflin.notipreference.services;
 
 import android.app.Notification;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.jefflin.notipreference.NotiItem;
 
 import java.util.ArrayList;
 

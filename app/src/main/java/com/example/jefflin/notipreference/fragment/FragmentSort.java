@@ -15,12 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jefflin.notipreference.NotiItem;
-import com.example.jefflin.notipreference.NotiItemAdapter;
-import com.example.jefflin.notipreference.NotiItemMoveCallback;
-import com.example.jefflin.notipreference.NotiListenerService;
+import com.example.jefflin.notipreference.adapter.NotiItemAdapter;
+import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
+import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.ActivityESM;
-import com.example.jefflin.notipreference.models.ESMQuestion;
+import com.example.jefflin.notipreference.model.ESMQuestion;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -62,7 +62,7 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
         button_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ESMAnswers.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
+                //ESMAnswer.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
                 ((ActivityESM) mContext).go_to_next();
             }
         });

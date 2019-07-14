@@ -1,4 +1,4 @@
-package com.example.jefflin.notipreference.models;
+package com.example.jefflin.notipreference.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

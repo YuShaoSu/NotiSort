@@ -8,7 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.example.jefflin.notipreference.adapters.AdapterFragmentQ;
+import com.example.jefflin.notipreference.services.NotiListenerService;
+import com.example.jefflin.notipreference.adapter.FragmentAdapter;
 import com.example.jefflin.notipreference.fragment.FragmentCheckboxes;
 import com.example.jefflin.notipreference.fragment.FragmentEnd;
 import com.example.jefflin.notipreference.fragment.FragmentMultiline;
@@ -16,8 +17,8 @@ import com.example.jefflin.notipreference.fragment.FragmentRadioboxes;
 import com.example.jefflin.notipreference.fragment.FragmentSort;
 import com.example.jefflin.notipreference.fragment.FragmentStart;
 import com.example.jefflin.notipreference.fragment.FragmentTextSimple;
-import com.example.jefflin.notipreference.models.ESMQuestion;
-import com.example.jefflin.notipreference.models.ESMPojo;
+import com.example.jefflin.notipreference.model.ESMQuestion;
+import com.example.jefflin.notipreference.model.ESMPojo;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -123,7 +124,7 @@ public class ActivityESM extends AppCompatActivity {
         arraylist_fragments.add(frag_end);
 
         mPager = (ViewPager) findViewById(R.id.pager);
-        AdapterFragmentQ mPagerAdapter = new AdapterFragmentQ(getSupportFragmentManager(), arraylist_fragments);
+        FragmentAdapter mPagerAdapter = new FragmentAdapter(getSupportFragmentManager(), arraylist_fragments);
         mPager.setAdapter(mPagerAdapter);
     }
 
@@ -148,7 +149,7 @@ public class ActivityESM extends AppCompatActivity {
         }
     }
 
-    public void event_survey_completed(ESMAnswers instance) {
+    public void event_survey_completed(ESMAnswer instance) {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("answers", instance.get_json_object());
         setResult(Activity.RESULT_OK, returnIntent);

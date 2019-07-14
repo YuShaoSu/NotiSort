@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.ActivityESM;
-import com.example.jefflin.notipreference.models.ESMProperties;
+import com.example.jefflin.notipreference.model.ESMProperties;
 
 
 public class FragmentStart extends Fragment {

@@ -1,8 +1,10 @@
-package com.example.jefflin.notipreference;
+package com.example.jefflin.notipreference.helper;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+
+import com.example.jefflin.notipreference.adapter.NotiItemAdapter;
 
 public class NotiItemMoveCallback extends ItemTouchHelper.Callback {
 

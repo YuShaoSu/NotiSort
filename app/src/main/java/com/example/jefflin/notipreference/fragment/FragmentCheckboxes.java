@@ -14,10 +14,10 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.jefflin.notipreference.ESMAnswers;
+import com.example.jefflin.notipreference.ESMAnswer;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.ActivityESM;
-import com.example.jefflin.notipreference.models.ESMQuestion;
+import com.example.jefflin.notipreference.model.ESMQuestion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,7 +64,7 @@ public class FragmentCheckboxes extends Fragment {
 
         if (the_choices.length() > 2) {
             the_choices = the_choices.substring(0, the_choices.length() - 2);
-            ESMAnswers.getInstance().put_answer(textview_q_title.getText().toString(), the_choices);
+            ESMAnswer.getInstance().put_answer(textview_q_title.getText().toString(), the_choices);
         }
 
 

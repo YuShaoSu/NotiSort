@@ -5,14 +5,14 @@ import com.google.gson.Gson;
 
 import java.util.LinkedHashMap;
 
-//Singleton ESMAnswers ........
+//Singleton ESMAnswer ........
 
-public class ESMAnswers {
-    private volatile static ESMAnswers uniqueInstance;
+public class ESMAnswer {
+    private volatile static ESMAnswer uniqueInstance;
     private final LinkedHashMap<String, String> answered_hashmap = new LinkedHashMap<>();
 
 
-    private ESMAnswers() {
+    private ESMAnswer() {
     }
 
     public void put_answer(String key, String value) {
@@ -29,11 +29,11 @@ public class ESMAnswers {
         return String.valueOf(answered_hashmap);
     }
 
-    public static ESMAnswers getInstance() {
+    public static ESMAnswer getInstance() {
         if (uniqueInstance == null) {
-            synchronized (ESMAnswers.class) {
+            synchronized (ESMAnswer.class) {
                 if (uniqueInstance == null) {
-                    uniqueInstance = new ESMAnswers();
+                    uniqueInstance = new ESMAnswer();
                 }
             }
         }

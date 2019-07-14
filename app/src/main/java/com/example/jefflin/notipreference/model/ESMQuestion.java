@@ -1,4 +1,4 @@
-package com.example.jefflin.notipreference.models;
+package com.example.jefflin.notipreference.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
