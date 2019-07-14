@@ -15,10 +15,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.example.jefflin.notipreference.Answers;
+import com.example.jefflin.notipreference.ESMAnswers;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.ActivityESM;
-import com.example.jefflin.notipreference.models.Question;
+import com.example.jefflin.notipreference.models.ESMQuestion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +26,7 @@ import java.util.List;
 
 public class FragmentRadioboxes extends Fragment {
 
-    private Question q_data;
+    private ESMQuestion q_data;
     private FragmentActivity mContext;
     private Button button_continue;
     private TextView textview_q_title;
@@ -66,7 +66,7 @@ public class FragmentRadioboxes extends Fragment {
         }
 
         if (the_choice.length() > 0) {
-            Answers.getInstance().put_answer(textview_q_title.getText().toString(), the_choice);
+            ESMAnswers.getInstance().put_answer(textview_q_title.getText().toString(), the_choice);
         }
 
 
@@ -87,7 +87,7 @@ public class FragmentRadioboxes extends Fragment {
 
 
         mContext = getActivity();
-        q_data = (Question) getArguments().getSerializable("data");
+        q_data = (ESMQuestion) getArguments().getSerializable("data");
 
         textview_q_title.setText(q_data.getQuestionTitle());
 

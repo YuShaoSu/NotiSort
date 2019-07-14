@@ -8,7 +8,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Question implements Serializable {
+public class ESMQuestion implements Serializable {
 
     @SerializedName("question_type")
     @Expose

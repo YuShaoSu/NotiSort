@@ -14,10 +14,10 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.jefflin.notipreference.Answers;
+import com.example.jefflin.notipreference.ESMAnswers;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.ActivityESM;
-import com.example.jefflin.notipreference.models.Question;
+import com.example.jefflin.notipreference.models.ESMQuestion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +25,7 @@ import java.util.List;
 
 public class FragmentCheckboxes extends Fragment {
 
-    private Question q_data;
+    private ESMQuestion q_data;
     private FragmentActivity mContext;
     private Button button_continue;
     private TextView textview_q_title;
@@ -64,7 +64,7 @@ public class FragmentCheckboxes extends Fragment {
 
         if (the_choices.length() > 2) {
             the_choices = the_choices.substring(0, the_choices.length() - 2);
-            Answers.getInstance().put_answer(textview_q_title.getText().toString(), the_choices);
+            ESMAnswers.getInstance().put_answer(textview_q_title.getText().toString(), the_choices);
         }
 
 
@@ -84,7 +84,7 @@ public class FragmentCheckboxes extends Fragment {
 
 
         mContext = getActivity();
-        q_data = (Question) getArguments().getSerializable("data");
+        q_data = (ESMQuestion) getArguments().getSerializable("data");
 
         textview_q_title.setText(q_data != null ? q_data.getQuestionTitle() : "");
 

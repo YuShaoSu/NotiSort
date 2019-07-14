@@ -15,10 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.jefflin.notipreference.Answers;
+import com.example.jefflin.notipreference.ESMAnswers;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.ActivityESM;
-import com.example.jefflin.notipreference.models.Question;
+import com.example.jefflin.notipreference.models.ESMQuestion;
 
 public class FragmentMultiline extends Fragment {
 
@@ -37,7 +37,7 @@ public class FragmentMultiline extends Fragment {
         editText_answer = (EditText) rootView.findViewById(R.id.editText_answer);
         button_continue.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                 Answers.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
+                 ESMAnswers.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
                 ((ActivityESM) mContext).go_to_next();
             }
         });
@@ -49,7 +49,7 @@ public class FragmentMultiline extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mContext = getActivity();
-        Question q_data = (Question) getArguments().getSerializable("data");
+        ESMQuestion q_data = (ESMQuestion) getArguments().getSerializable("data");
 
         if (q_data.getRequired()) {
             button_continue.setVisibility(View.GONE);

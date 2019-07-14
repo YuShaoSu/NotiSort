@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.ActivityESM;
-import com.example.jefflin.notipreference.models.SurveyProperties;
+import com.example.jefflin.notipreference.models.ESMProperties;
 
 
 public class FragmentStart extends Fragment {
@@ -42,7 +42,7 @@ public class FragmentStart extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mContext = getActivity();
-        SurveyProperties survery_properties = (SurveyProperties) getArguments().getSerializable("survery_properties");
+        ESMProperties survery_properties = (ESMProperties) getArguments().getSerializable("survery_properties");
 
         assert survery_properties != null;
         textView_start.setText(Html.fromHtml(survery_properties.getIntroMessage()));

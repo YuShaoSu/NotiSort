@@ -20,7 +20,7 @@ import com.example.jefflin.notipreference.NotiItemMoveCallback;
 import com.example.jefflin.notipreference.NotiListenerService;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.ActivityESM;
-import com.example.jefflin.notipreference.models.Question;
+import com.example.jefflin.notipreference.models.ESMQuestion;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -62,7 +62,7 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
         button_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Answers.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
+                //ESMAnswers.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
                 ((ActivityESM) mContext).go_to_next();
             }
         });
@@ -78,7 +78,7 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
         super.onActivityCreated(savedInstanceState);
 
         mContext = getActivity();
-        Question q_data = (Question) getArguments().getSerializable("data");
+        ESMQuestion q_data = (ESMQuestion) getArguments().getSerializable("data");
         textview_q_title.setText(q_data.getQuestionTitle());
         textview_q_discription.setText(q_data.getDescription());
 

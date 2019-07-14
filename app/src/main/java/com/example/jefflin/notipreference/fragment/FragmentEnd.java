@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.jefflin.notipreference.Answers;
+import com.example.jefflin.notipreference.ESMAnswers;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.ActivityESM;
-import com.example.jefflin.notipreference.models.SurveyProperties;
+import com.example.jefflin.notipreference.models.ESMProperties;
 
 public class FragmentEnd extends Fragment {
 
@@ -34,7 +34,7 @@ public class FragmentEnd extends Fragment {
             @Override
             public void onClick(View v) {
 
-                ((ActivityESM) mContext).event_survey_completed(Answers.getInstance());
+                ((ActivityESM) mContext).event_survey_completed(ESMAnswers.getInstance());
 
             }
         });
@@ -47,7 +47,7 @@ public class FragmentEnd extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mContext = getActivity();
-        SurveyProperties survery_properties = (SurveyProperties) getArguments().getSerializable("survery_properties");
+        ESMProperties survery_properties = (ESMProperties) getArguments().getSerializable("survery_properties");
 
         assert survery_properties != null;
         textView_end.setText(Html.fromHtml(survery_properties.getEndMessage()));

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class SurveyProperties implements Serializable {
+public class ESMProperties implements Serializable {
 
     @SerializedName("title")
     @Expose

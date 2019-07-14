@@ -12,13 +12,12 @@ import com.example.jefflin.notipreference.adapters.AdapterFragmentQ;
 import com.example.jefflin.notipreference.fragment.FragmentCheckboxes;
 import com.example.jefflin.notipreference.fragment.FragmentEnd;
 import com.example.jefflin.notipreference.fragment.FragmentMultiline;
-import com.example.jefflin.notipreference.fragment.FragmentNumber;
 import com.example.jefflin.notipreference.fragment.FragmentRadioboxes;
 import com.example.jefflin.notipreference.fragment.FragmentSort;
 import com.example.jefflin.notipreference.fragment.FragmentStart;
 import com.example.jefflin.notipreference.fragment.FragmentTextSimple;
-import com.example.jefflin.notipreference.models.Question;
-import com.example.jefflin.notipreference.models.SurveyPojo;
+import com.example.jefflin.notipreference.models.ESMQuestion;
+import com.example.jefflin.notipreference.models.ESMPojo;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ import java.util.Random;
 
 public class ActivityESM extends AppCompatActivity {
 
-    private SurveyPojo mSurveyPojo;
+    private ESMPojo mESMPojo;
     private ViewPager mPager;
     private String style_string = null;
 
@@ -43,22 +42,22 @@ public class ActivityESM extends AppCompatActivity {
 
         if (getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
-            mSurveyPojo = new Gson().fromJson(bundle.getString("json_survey"), SurveyPojo.class);
+            mESMPojo = new Gson().fromJson(bundle.getString("json_survey"), ESMPojo.class);
             if (bundle.containsKey("style")) {
                 style_string = bundle.getString("style");
             }
         }
 
 
-        Log.i("json Object = ", String.valueOf(mSurveyPojo.getQuestions()));
+        Log.i("json Object = ", String.valueOf(mESMPojo.getESMQuestions()));
 
         final ArrayList<Fragment> arraylist_fragments = new ArrayList<>();
 
         //- START -
-        if (!mSurveyPojo.getSurveyProperties().getSkipIntro()) {
+        if (!mESMPojo.getESMProperties().getSkipIntro()) {
             FragmentStart frag_start = new FragmentStart();
             Bundle sBundle = new Bundle();
-            sBundle.putSerializable("survery_properties", mSurveyPojo.getSurveyProperties());
+            sBundle.putSerializable("survery_properties", mESMPojo.getESMProperties());
             sBundle.putString("style", style_string);
             frag_start.setArguments(sBundle);
             arraylist_fragments.add(frag_start);
@@ -66,49 +65,49 @@ public class ActivityESM extends AppCompatActivity {
         FragmentSort fragsort = new FragmentSort();
 
         //- FILL -
-        for (Question mQuestion : mSurveyPojo.getQuestions()) {
+        for (ESMQuestion mESMQuestion : mESMPojo.getESMQuestions()) {
 
-            if (mQuestion.getQuestionType().equals("Sort")) {
+            if (mESMQuestion.getQuestionType().equals("Sort")) {
                 fragsort = new FragmentSort();
                 Bundle xBundle = new Bundle();
-                xBundle.putSerializable("data", mQuestion);
+                xBundle.putSerializable("data", mESMQuestion);
                 xBundle.putString("style", style_string);
                 xBundle.putSerializable("arrayList", mData_6);
                 fragsort.setArguments(xBundle);
                 arraylist_fragments.add(fragsort);
             }
 
-            if (mQuestion.getQuestionType().equals("String")) {
+            if (mESMQuestion.getQuestionType().equals("String")) {
                 FragmentTextSimple frag = new FragmentTextSimple();
                 Bundle xBundle = new Bundle();
-                xBundle.putSerializable("data", mQuestion);
+                xBundle.putSerializable("data", mESMQuestion);
                 xBundle.putString("style", style_string);
                 frag.setArguments(xBundle);
                 arraylist_fragments.add(frag);
             }
 
-            if (mQuestion.getQuestionType().equals("Checkboxes")) {
+            if (mESMQuestion.getQuestionType().equals("Checkboxes")) {
                 FragmentCheckboxes frag = new FragmentCheckboxes();
                 Bundle xBundle = new Bundle();
-                xBundle.putSerializable("data", mQuestion);
+                xBundle.putSerializable("data", mESMQuestion);
                 xBundle.putString("style", style_string);
                 frag.setArguments(xBundle);
                 arraylist_fragments.add(frag);
             }
 
-            if (mQuestion.getQuestionType().equals("Radioboxes")) {
+            if (mESMQuestion.getQuestionType().equals("Radioboxes")) {
                 FragmentRadioboxes frag = new FragmentRadioboxes();
                 Bundle xBundle = new Bundle();
-                xBundle.putSerializable("data", mQuestion);
+                xBundle.putSerializable("data", mESMQuestion);
                 xBundle.putString("style", style_string);
                 frag.setArguments(xBundle);
                 arraylist_fragments.add(frag);
             }
 
-            if (mQuestion.getQuestionType().equals("StringMultiline")) {
+            if (mESMQuestion.getQuestionType().equals("StringMultiline")) {
                 FragmentMultiline frag = new FragmentMultiline();
                 Bundle xBundle = new Bundle();
-                xBundle.putSerializable("data", mQuestion);
+                xBundle.putSerializable("data", mESMQuestion);
                 xBundle.putString("style", style_string);
                 frag.setArguments(xBundle);
                 arraylist_fragments.add(frag);
@@ -118,7 +117,7 @@ public class ActivityESM extends AppCompatActivity {
         //- END -
         FragmentEnd frag_end = new FragmentEnd();
         Bundle eBundle = new Bundle();
-        eBundle.putSerializable("survery_properties", mSurveyPojo.getSurveyProperties());
+        eBundle.putSerializable("survery_properties", mESMPojo.getESMProperties());
         eBundle.putString("style", style_string);
         frag_end.setArguments(eBundle);
         arraylist_fragments.add(frag_end);
@@ -149,7 +148,7 @@ public class ActivityESM extends AppCompatActivity {
         }
     }
 
-    public void event_survey_completed(Answers instance) {
+    public void event_survey_completed(ESMAnswers instance) {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("answers", instance.get_json_object());
         setResult(Activity.RESULT_OK, returnIntent);
