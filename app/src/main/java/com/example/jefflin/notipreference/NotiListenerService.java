@@ -76,4 +76,8 @@ public class NotiListenerService extends NotificationListenerService {
     public static ArrayList<NotiItem> getData() {
         return mData;
     }
+
+    public static void putData( ArrayList<NotiItem> mData6) {
+        mData.addAll(mData6);
+    }
 }

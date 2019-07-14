@@ -123,12 +123,16 @@ public class SurveyActivity extends AppCompatActivity {
         frag_end.setArguments(eBundle);
         arraylist_fragments.add(frag_end);
 
-
         mPager = (ViewPager) findViewById(R.id.pager);
         AdapterFragmentQ mPagerAdapter = new AdapterFragmentQ(getSupportFragmentManager(), arraylist_fragments);
         mPager.setAdapter(mPagerAdapter);
+    }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // put back 6 notis
+        NotiListenerService.putData(mData_6);
     }
 
     public void go_to_next() {
