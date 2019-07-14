@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.jefflin.notipreference.Answers;
 import com.example.jefflin.notipreference.R;
-import com.example.jefflin.notipreference.SurveyActivity;
+import com.example.jefflin.notipreference.ActivityESM;
 import com.example.jefflin.notipreference.models.Question;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class FragmentRadioboxes extends Fragment {
         button_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((SurveyActivity) mContext).go_to_next();
+                ((ActivityESM) mContext).go_to_next();
             }
         });
 

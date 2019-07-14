@@ -1,6 +1,5 @@
 package com.example.jefflin.notipreference;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,11 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class HistoryActivity extends AppCompatActivity implements NotiItemMoveCallback.OnStartDragListener{
+public class ActivityHistory extends AppCompatActivity implements NotiItemMoveCallback.OnStartDragListener{
     private RecyclerView mRecyclerView;
     private NotiItemAdapter mAdapter;
     private ItemTouchHelper mItemTouchHelper;
@@ -33,7 +31,7 @@ public class HistoryActivity extends AppCompatActivity implements NotiItemMoveCa
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HistoryActivity.super.onBackPressed();
+                ActivityHistory.super.onBackPressed();
             }
         });
 

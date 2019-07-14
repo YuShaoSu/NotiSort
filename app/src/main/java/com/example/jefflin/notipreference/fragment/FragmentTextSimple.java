@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.jefflin.notipreference.Answers;
 import com.example.jefflin.notipreference.R;
-import com.example.jefflin.notipreference.SurveyActivity;
+import com.example.jefflin.notipreference.ActivityESM;
 import com.example.jefflin.notipreference.models.Question;
 
 public class FragmentTextSimple extends Fragment {
@@ -39,7 +39,7 @@ public class FragmentTextSimple extends Fragment {
             @Override
             public void onClick(View v) {
                 Answers.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
-                ((SurveyActivity) mContext).go_to_next();
+                ((ActivityESM) mContext).go_to_next();
             }
         });
 

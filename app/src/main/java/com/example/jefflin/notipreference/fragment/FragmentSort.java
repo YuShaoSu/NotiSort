@@ -1,32 +1,25 @@
 package com.example.jefflin.notipreference.fragment;
 
-import android.app.Service;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.Editable;
-import android.text.Html;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.jefflin.notipreference.Answers;
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.NotiItemAdapter;
 import com.example.jefflin.notipreference.NotiItemMoveCallback;
 import com.example.jefflin.notipreference.NotiListenerService;
 import com.example.jefflin.notipreference.R;
-import com.example.jefflin.notipreference.SurveyActivity;
+import com.example.jefflin.notipreference.ActivityESM;
 import com.example.jefflin.notipreference.models.Question;
 
 import java.util.ArrayList;
@@ -70,7 +63,7 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
             @Override
             public void onClick(View v) {
                 //Answers.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
-                ((SurveyActivity) mContext).go_to_next();
+                ((ActivityESM) mContext).go_to_next();
             }
         });
         setRecyclerView(rootView);

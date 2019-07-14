@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SurveyActivity extends AppCompatActivity {
+public class ActivityESM extends AppCompatActivity {
 
     private SurveyPojo mSurveyPojo;
     private ViewPager mPager;

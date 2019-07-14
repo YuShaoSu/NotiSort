@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.jefflin.notipreference.Answers;
 import com.example.jefflin.notipreference.R;
-import com.example.jefflin.notipreference.SurveyActivity;
+import com.example.jefflin.notipreference.ActivityESM;
 import com.example.jefflin.notipreference.models.SurveyProperties;
 
 public class FragmentEnd extends Fragment {
@@ -34,7 +34,7 @@ public class FragmentEnd extends Fragment {
             @Override
             public void onClick(View v) {
 
-                ((SurveyActivity) mContext).event_survey_completed(Answers.getInstance());
+                ((ActivityESM) mContext).event_survey_completed(Answers.getInstance());
 
             }
         });

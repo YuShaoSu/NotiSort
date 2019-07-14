@@ -20,7 +20,7 @@
         </service>
 
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -28,10 +28,10 @@
         </activity>
 
 
-        <activity android:name=".SurveyActivity">
+        <activity android:name=".ActivityESM">
         </activity>
 
-        <activity android:name=".HistoryActivity">
+        <activity android:name=".ActivityHistory">
         </activity>
 
     </application>

@@ -17,7 +17,7 @@ import java.io.InputStream;
     has 1 bottom navigation bar and 1 top bar
  */
 
-public class MainActivity extends AppCompatActivity {
+public class ActivityMain extends AppCompatActivity {
     final private int SURVEY_REQUEST = 1337;
 
     @Override
@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setBotNavView(){
         final Intent setting = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-        final Intent survey = new Intent(MainActivity.this, SurveyActivity.class);
+        final Intent survey = new Intent(ActivityMain.this, ActivityESM.class);
         survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
-        final Intent intent_history = new Intent(this, HistoryActivity.class);
+        final Intent intent_history = new Intent(this, ActivityHistory.class);
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bot_navigation_home);
         bottomNavigationView.setItemIconTintList(null);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
