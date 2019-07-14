@@ -26,15 +26,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setBotNavView();
 
-        Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-        // this line open the setting of the phone
-        // startActivity(intent);
-
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NotiListenerService.Arrival");
     }
 
     private void setBotNavView(){
+        final Intent setting = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
         final Intent survey = new Intent(MainActivity.this, SurveyActivity.class);
         survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
         final Intent intent_history = new Intent(this, HistoryActivity.class);
@@ -45,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_help:
+                        startActivity(setting);
                         break;
                     case R.id.action_sort:
                         startActivityForResult(survey, SURVEY_REQUEST);

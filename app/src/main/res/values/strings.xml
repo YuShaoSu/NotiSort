@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">NotiSort</string>
 
-    <string name="help">help</string>
-    <string name="sort">sort (6)</string>
-    <string name="profile">history (all)</string>
+    <string name="help">存取權設定</string>
+    <string name="sort">隨機6個通知</string>
+    <string name="profile">全部通知</string>
+    <string name="history">全部通知</string>
+
 
     <string name="back">返回</string>
     <string name="go">go</string>
