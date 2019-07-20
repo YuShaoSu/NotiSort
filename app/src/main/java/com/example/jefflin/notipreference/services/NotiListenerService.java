@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.jefflin.notipreference.NotiItem;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class NotiListenerService extends NotificationListenerService {
     private static ArrayList<NotiItem> mData = new ArrayList<NotiItem>();
@@ -32,6 +34,7 @@ public class NotiListenerService extends NotificationListenerService {
         String title = "";
         String content = "";
         String appName = "";
+        Date postTime = Calendar.getInstance().getTime();
         Drawable icon = null;
         Notification notification = sbn.getNotification();
 
@@ -65,7 +68,7 @@ public class NotiListenerService extends NotificationListenerService {
             Log.d("Rank","app name failed");
         }
 
-        mData.add(new NotiItem(icon, appName, title, content));
+        mData.add(new NotiItem(icon, appName, title, content, postTime));
 
         Toast.makeText(this.getBaseContext(),"Notification Received",Toast.LENGTH_LONG).show();
     }
