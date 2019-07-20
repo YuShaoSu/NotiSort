@@ -4,8 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <com.androidadvance.androidsurvey.widgets.NoSwipeViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.example.jefflin.notipreference.widgets.NoSwipeViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
