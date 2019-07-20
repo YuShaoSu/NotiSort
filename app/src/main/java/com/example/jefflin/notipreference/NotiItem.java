@@ -12,12 +12,14 @@ public class NotiItem {
     public String title;
     public String content;
     public Date postTime;
+    public String category;
 
-    public NotiItem(Drawable icon, String appName, String title, String content, Date postTime) {
+    public NotiItem(Drawable icon, String appName, String title, String content, Date postTime, String category) {
         this.icon = icon;
         this.appName = appName;
         this.title = title;
         this.content = content;
         this.postTime = postTime;
+        this.category = category;
     }
 }

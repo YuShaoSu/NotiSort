@@ -34,6 +34,7 @@ public class NotiListenerService extends NotificationListenerService {
         String title = "";
         String content = "";
         String appName = "";
+        String category = "";
         Date postTime = Calendar.getInstance().getTime();
         Drawable icon = null;
         Notification notification = sbn.getNotification();
@@ -43,32 +44,37 @@ public class NotiListenerService extends NotificationListenerService {
         try{
             packageName = sbn.getPackageName();
         } catch (Exception e) {
-            Log.d("NotiListenerService", "no packageName");
+            Log.d("d", "no packageName");
         }
         try{
             title = notification.extras.get("android.title").toString();
         } catch (Exception e) {
-            Log.d("NotiListenerService", "no title");
+            Log.d("d", "no title");
         }
         try{
             content = notification.extras.get("android.text").toString();
         } catch (Exception e) {
-            Log.d("NotiListenerService", "no content");
+            Log.d("d", "no content");
         }
         try {
             icon = packageManager.getApplicationIcon(packageName);
         } catch (Exception e) {
-            Log.d("Rank","icon failed");
+            Log.d("d","icon failed");
         }
         try {
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo( packageName, 0);
             appName = (String) (applicationInfo != null ?
                     packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
         } catch (Exception e) {
-            Log.d("Rank","app name failed");
+            Log.d("d","app name failed");
+        }
+        try {
+            category = notification.category;
+        } catch (Exception e){
+            Log.d("NotiListenerService",category);
         }
 
-        mData.add(new NotiItem(icon, appName, title, content, postTime));
+        mData.add(new NotiItem(icon, appName, title, content, postTime, category));
 
         Toast.makeText(this.getBaseContext(),"Notification Received",Toast.LENGTH_LONG).show();
     }
