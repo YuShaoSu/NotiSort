@@ -135,8 +135,8 @@ public class ActivityESM extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // put back 6 notis
-        NotiListenerService.putData(mData_6);
+        // put back 6 notifications
+        // NotiListenerService.putData(mData_6);
     }
 
     public void go_to_next() {
@@ -164,9 +164,10 @@ public class ActivityESM extends AppCompatActivity {
         // randomly select 6 notifications
         Random rand = new Random();
         ArrayList<NotiItem> newList = new ArrayList<>();
-        ArrayList<NotiItem> list2 = list;
+        ArrayList<NotiItem> list2 = new ArrayList<>(list);
 
         for (int i = 0; i < 6; i++) {
+            Log.d("d",Integer.toString(list2.size()));
             try {
                 int randomIndex = rand.nextInt(list2.size());
                 newList.add(list2.get(randomIndex));
@@ -182,16 +183,17 @@ public class ActivityESM extends AppCompatActivity {
         // select all notifications between 8 hours
         Random rand = new Random();
         ArrayList<NotiItem> listInTimeRange = new ArrayList<>();
+        ArrayList<NotiItem> list2 = new ArrayList<>(list);
 
         try {
-            int randomIndex = rand.nextInt(list.size());
-            NotiItem randomItem = list.get(randomIndex);
+            int randomIndex = rand.nextInt(list2.size());
+            NotiItem randomItem = list2.get(randomIndex);
             Date randomTime = randomItem.postTime;
-            list.remove(randomIndex);
+            list2.remove(randomIndex);
 
-            for (int i = 0; i < list.size(); i++) {
-                if (hourDifference(randomTime, list.get(i).postTime) <= 4) {
-                    listInTimeRange.add(list.get(i));
+            for (int i = 0; i < list2.size(); i++) {
+                if (hourDifference(randomTime, list2.get(i).postTime) <= 4) {
+                    listInTimeRange.add(list2.get(i));
                 }
             }
             listInTimeRange.add(randomItem);
