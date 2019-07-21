@@ -22,6 +22,8 @@ import com.example.jefflin.notipreference.model.ESMPojo;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 public class ActivityESM extends AppCompatActivity {
@@ -31,6 +33,7 @@ public class ActivityESM extends AppCompatActivity {
     private String style_string = null;
 
     ArrayList<NotiItem> mData;
+    ArrayList<NotiItem> mData_8hours;
     ArrayList<NotiItem> mData_6 = new ArrayList<NotiItem>();
 
     @Override
@@ -39,7 +42,8 @@ public class ActivityESM extends AppCompatActivity {
         setContentView(R.layout.activity_main_survey);
 
         mData = NotiListenerService.getData();
-        mData_6 = getRandom6Element(mData);
+        mData_8hours = getElementsIn8Hours(mData);
+        mData_6 = getRandom6Element(mData_8hours);
 
         if (getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
@@ -172,5 +176,34 @@ public class ActivityESM extends AppCompatActivity {
             }
         }
         return newList;
+    }
+
+    public ArrayList<NotiItem> getElementsIn8Hours(ArrayList<NotiItem> list) {
+        // select all notifications between 8 hours
+        Random rand = new Random();
+        ArrayList<NotiItem> listInTimeRange = new ArrayList<>();
+
+        try {
+            int randomIndex = rand.nextInt(list.size());
+            NotiItem randomItem = list.get(randomIndex);
+            Date randomTime = randomItem.postTime;
+            list.remove(randomIndex);
+
+            for (int i = 0; i < list.size(); i++) {
+                if (hourDifference(randomTime, list.get(i).postTime) <= 4) {
+                    listInTimeRange.add(list.get(i));
+                }
+            }
+            listInTimeRange.add(randomItem);
+        } catch (Exception e) {
+            Log.d("d", "d");
+        }
+
+        return listInTimeRange;
+    }
+
+    private int hourDifference (Date d1, Date d2) {
+        long diff = Math.abs(d1.getTime() - d2.getTime());
+        return (int) (diff / (60 * 60 * 1000));
     }
 }
