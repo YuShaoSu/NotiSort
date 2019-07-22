@@ -171,7 +171,7 @@ public class ActivityESM extends AppCompatActivity {
             loopCount ++;
             try {
                 int randomIndex = rand.nextInt(list2.size());
-                if (isOngoingCategoryRepeat(newList, list.get(randomIndex)) && i>0) {
+                if (isOngoingCategoryRepeat(newList, list.get(randomIndex)) && newList.size()>0) {
                     i--;
                 } else {
                     newList.add(list2.get(randomIndex));
@@ -180,7 +180,7 @@ public class ActivityESM extends AppCompatActivity {
             } catch (Exception e) {
                 Log.d("d","not enough notifications here");
             }
-            if (loopCount > 20) break;
+            if (loopCount > 50) break;
         }
         return newList;
     }
