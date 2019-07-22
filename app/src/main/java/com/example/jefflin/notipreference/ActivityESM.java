@@ -165,18 +165,45 @@ public class ActivityESM extends AppCompatActivity {
         Random rand = new Random();
         ArrayList<NotiItem> newList = new ArrayList<>();
         ArrayList<NotiItem> list2 = new ArrayList<>(list);
+        int loopCount = 0;
 
-        for (int i = 0; i < 6; i++) {
-            Log.d("d",Integer.toString(list2.size()));
+        for (int i=0; i<6; i++) {
+            loopCount ++;
             try {
                 int randomIndex = rand.nextInt(list2.size());
-                newList.add(list2.get(randomIndex));
-                list2.remove(randomIndex);
+                if (isOngoingCategoryRepeat(newList, list.get(randomIndex)) && i>0) {
+                    i--;
+                } else {
+                    newList.add(list2.get(randomIndex));
+                    list2.remove(randomIndex);
+                }
             } catch (Exception e) {
                 Log.d("d","not enough notifications here");
             }
+            if (loopCount > 20) break;
         }
         return newList;
+    }
+
+    private boolean isOngoingCategoryRepeat(ArrayList<NotiItem> list, NotiItem item) {
+        int j;
+        boolean repeat = false;
+        for (j=0; j<list.size(); j++) {
+            if (item.category.equals(list.get(j).category)
+                // list ongoing notification categories
+                && (item.category.equals("alarm")
+                || item.category.equals("call")
+                || item.category.equals("navigation")
+                || item.category.equals("progress")
+                || item.category.equals("service")
+                || item.category.equals("status")
+                || item.category.equals("transport"))
+            ) {
+                Log.d("d",item.category);
+                repeat = true;
+            }
+        }
+        return repeat;
     }
 
     public ArrayList<NotiItem> getElementsIn8Hours(ArrayList<NotiItem> list) {
