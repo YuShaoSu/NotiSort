@@ -171,12 +171,12 @@ public class ActivityESM extends AppCompatActivity {
             loopCount ++;
             try {
                 int randomIndex = rand.nextInt(list2.size());
-                if (isOngoingCategoryRepeat(newList, list.get(randomIndex)) && newList.size()>0) {
-                    i--;
-                } else {
+                //if (isOngoingCategoryRepeat(newList, list.get(randomIndex)) && newList.size()>0) {
+                //    i--;
+                //} else {
                     newList.add(list2.get(randomIndex));
                     list2.remove(randomIndex);
-                }
+                //}
             } catch (Exception e) {
                 Log.d("d","not enough notifications here");
             }
