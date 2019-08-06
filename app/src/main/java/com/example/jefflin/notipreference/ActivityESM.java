@@ -3,9 +3,9 @@ package com.example.jefflin.notipreference;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.jefflin.notipreference.services.NotiListenerService;
@@ -22,7 +22,6 @@ import com.example.jefflin.notipreference.model.ESMPojo;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 

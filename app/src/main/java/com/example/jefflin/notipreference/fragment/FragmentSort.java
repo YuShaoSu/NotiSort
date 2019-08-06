@@ -1,12 +1,12 @@
 package com.example.jefflin.notipreference.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +23,6 @@ import com.example.jefflin.notipreference.ActivityESM;
 import com.example.jefflin.notipreference.model.ESMQuestion;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnStartDragListener{
 
