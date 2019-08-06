@@ -77,6 +77,7 @@ public class NotiListenerService extends NotificationListenerService {
         mData.add(new NotiItem(icon, appName, title, content, postTime, category));
 
         Toast.makeText(this.getBaseContext(),"Notification Received",Toast.LENGTH_LONG).show();
+        Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
     }
 
     @Override
