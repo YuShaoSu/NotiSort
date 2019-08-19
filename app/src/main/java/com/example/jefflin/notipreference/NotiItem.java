@@ -3,20 +3,23 @@ package com.example.jefflin.notipreference;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.room.ColumnInfo;
 import androidx.room.Dao;
 import androidx.room.Entity;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.PrimaryKey;
+import androidx.room.Query;
 
 import java.util.Date;
+import java.util.List;
 
 /*
     A class that store notification object's attributes
  */
-@Entity
+@Entity(tableName = "noti_table")
 public class NotiItem {
-    public Drawable icon;
-
     @NonNull
     public String appName;
     @NonNull
@@ -24,15 +27,14 @@ public class NotiItem {
     @NonNull
     public String content;
     @NonNull
-    public Date postTime;
+    public Long postTime;
     @NonNull
     public String category;
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    public int id;
 
-    public NotiItem(Drawable icon, String appName, String title, String content, Date postTime, String category) {
-        this.icon = icon;
+    public NotiItem(String appName, String title, String content, Long postTime, String category) {
         this.appName = appName;
         this.title = title;
         this.content = content;
@@ -43,10 +45,15 @@ public class NotiItem {
     @Dao
     public interface NotiItemDao {
 
-        @Insert
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
         void insert(NotiItem notiItem);
 
+        @Query("DELETE FROM noti_table")
+        void deleteAll();
 
+
+        @Query("SELECT * FROM noti_table")
+        LiveData<List<NotiItem>> getAllNoti();
 
     }
 

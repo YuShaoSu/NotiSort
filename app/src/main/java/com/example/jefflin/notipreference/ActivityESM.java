@@ -214,7 +214,7 @@ public class ActivityESM extends AppCompatActivity {
         try {
             int randomIndex = rand.nextInt(list2.size());
             NotiItem randomItem = list2.get(randomIndex);
-            Date randomTime = randomItem.postTime;
+            Long randomTime = randomItem.postTime;
             list2.remove(randomIndex);
 
             for (int i = 0; i < list2.size(); i++) {
@@ -230,8 +230,8 @@ public class ActivityESM extends AppCompatActivity {
         return listInTimeRange;
     }
 
-    private int hourDifference (Date d1, Date d2) {
-        long diff = Math.abs(d1.getTime() - d2.getTime());
+    private int hourDifference (Long d1, Long d2) {
+        long diff = Math.abs(d1 - d2);
         return (int) (diff / (60 * 60 * 1000));
     }
 }

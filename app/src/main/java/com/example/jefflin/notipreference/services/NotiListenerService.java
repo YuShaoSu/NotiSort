@@ -35,8 +35,7 @@ public class NotiListenerService extends NotificationListenerService {
         String content = "";
         String appName = "";
         String category = "";
-        Date postTime = Calendar.getInstance().getTime();
-        Drawable icon = null;
+        Long postTime = sbn.getPostTime();
         Notification notification = sbn.getNotification();
 
         Log.d("NotiListenerService","posted");
@@ -57,11 +56,6 @@ public class NotiListenerService extends NotificationListenerService {
             Log.d("d", "no content");
         }
         try {
-            icon = packageManager.getApplicationIcon(packageName);
-        } catch (Exception e) {
-            Log.d("d","icon failed");
-        }
-        try {
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo( packageName, 0);
             appName = (String) (applicationInfo != null ?
                     packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
@@ -74,7 +68,7 @@ public class NotiListenerService extends NotificationListenerService {
             Log.d("NotiListenerService",category);
         }
 
-        mData.add(new NotiItem(icon, appName, title, content, postTime, category));
+        mData.add(new NotiItem(appName, title, content, postTime, category));
 
         Toast.makeText(this.getBaseContext(),"Notification Received",Toast.LENGTH_LONG).show();
         Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
