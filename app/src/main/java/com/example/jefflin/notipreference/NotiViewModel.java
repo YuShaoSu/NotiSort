@@ -20,5 +20,4 @@ public class NotiViewModel extends AndroidViewModel {
     LiveData<List<NotiItem>> getAllNotis() { return mAllNotis; }
     public void insert(NotiItem notiItem) { mRepository.insert(notiItem); }
 
-
 }

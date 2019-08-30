@@ -3,8 +3,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +17,7 @@ import com.example.jefflin.notipreference.R;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /*
     The adaptor of the sorting page recycler view.
@@ -26,13 +25,18 @@ import java.util.Collections;
 public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHolder> implements
         NotiItemMoveCallback.ItemTouchHelperContract {
     private Context mContext;
-    private ArrayList<NotiItem> mData;
+    private List<NotiItem> mData;
     private NotiItemMoveCallback.OnStartDragListener mDragListener;
 
     public NotiItemAdapter(Context context, ArrayList<NotiItem> data, NotiItemMoveCallback.OnStartDragListener dragListener) {
         this.mContext = context;
         this.mData = data;
         this.mDragListener = dragListener;
+    }
+
+    public void setNoti(List<NotiItem> notiItems){
+        mData = notiItems;
+        notifyDataSetChanged();
     }
 
     @Override

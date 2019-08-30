@@ -1,10 +1,14 @@
 package com.example.jefflin.notipreference;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {NotiItem.class}, version = 1)
 public abstract class NotiRoomDatabase extends RoomDatabase {
@@ -18,10 +22,40 @@ public abstract class NotiRoomDatabase extends RoomDatabase {
             synchronized (NotiRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            NotiRoomDatabase.class, "noti_database").build();
+                            NotiRoomDatabase.class, "noti_database")
+                            .addCallback(sRoomDatabaseCallback)
+                            .build();
                 }
             }
         }
         return INSTANCE;
+    }
+
+    private static RoomDatabase.Callback sRoomDatabaseCallback =
+        new RoomDatabase.Callback(){
+
+            @Override
+            public void onOpen (@NonNull SupportSQLiteDatabase db){
+                super.onOpen(db);
+                new PopulateDbAsync(INSTANCE).execute();
+            }
+        };
+
+    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+
+        private final NotiItem.NotiItemDao mDao;
+
+        PopulateDbAsync(NotiRoomDatabase db){
+            mDao = db.notiItemDao();
+        }
+
+        @Override
+        protected Void doInBackground(final Void... params){
+            mDao.deleteAll();
+            NotiItem notiItem = new NotiItem("Test", "Test", "Test", Long.valueOf(1000), "Test");
+            mDao.insert(notiItem);
+            Log.d("DB on create", " doInBackground function");
+            return null;
+        }
     }
 }

@@ -3,14 +3,22 @@ package com.example.jefflin.notipreference;
 import android.content.Intent;
 import android.content.IntentFilter;
 import androidx.annotation.NonNull;
+
+import com.example.jefflin.notipreference.adapter.NotiItemAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /*
     Main activity, also the landing page
@@ -20,11 +28,22 @@ import java.io.InputStream;
 public class ActivityMain extends AppCompatActivity {
     final private int SURVEY_REQUEST = 1337;
 
+    private NotiViewModel mNotiViewModel;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setBotNavView();
+
+        mNotiViewModel = ViewModelProviders.of(this).get(NotiViewModel.class);
+        mNotiViewModel.getAllNotis().observe(this, new Observer<List<NotiItem>>() {
+            @Override
+            public void onChanged(@Nullable final List<NotiItem> notiItems) {
+                Log.d("live data on change", "QQQ");
+            }
+        });
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NotiListenerService.Arrival");
