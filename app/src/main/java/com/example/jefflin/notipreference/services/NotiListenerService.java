@@ -80,7 +80,9 @@ public class NotiListenerService extends NotificationListenerService {
             Log.d("NotiListenerService",category);
         }
 
-        if(!isOngoingCategoryRepeat(mData, new NotiItem(appName, title, content, postTime, category))){
+        if(!sbn.isOngoing()){
+            mData.add(new NotiItem(appName, title, content, postTime, category));
+        } else if (!isOngoingCategoryRepeat(mData, new NotiItem(appName, title, content, postTime, category))){
             mData.add(new NotiItem(appName, title, content, postTime, category));
         }
 
@@ -107,6 +109,7 @@ public class NotiListenerService extends NotificationListenerService {
         int j;
         boolean repeat = false;
         for (j=0; j<list.size(); j++) {
+            Log.d("item[" + j + "].category:", list.get(j).category);
             if (item.category.equals(list.get(j).category)
                     // list ongoing notification categories
                     && (item.category.equals("alarm")
@@ -115,7 +118,8 @@ public class NotiListenerService extends NotificationListenerService {
                     || item.category.equals("progress")
                     || item.category.equals("service")
                     || item.category.equals("status")
-                    || item.category.equals("transport"))
+                    || item.category.equals("transport")
+                    || item.category.equals("sys"))
             ) {
                 Log.d("repeat app name",item.appName);
                 Log.d("d",item.category);
