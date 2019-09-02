@@ -184,27 +184,6 @@ public class ActivityESM extends AppCompatActivity {
         return newList;
     }
 
-    private boolean isOngoingCategoryRepeat(ArrayList<NotiItem> list, NotiItem item) {
-        int j;
-        boolean repeat = false;
-        for (j=0; j<list.size(); j++) {
-            if (item.category.equals(list.get(j).category)
-                // list ongoing notification categories
-                && (item.category.equals("alarm")
-                || item.category.equals("call")
-                || item.category.equals("navigation")
-                || item.category.equals("progress")
-                || item.category.equals("service")
-                || item.category.equals("status")
-                || item.category.equals("transport"))
-            ) {
-                Log.d("d",item.category);
-                repeat = true;
-            }
-        }
-        return repeat;
-    }
-
     public ArrayList<NotiItem> getElementsIn8Hours(ArrayList<NotiItem> list) {
         // select all notifications between 8 hours
         Random rand = new Random();
@@ -228,6 +207,29 @@ public class ActivityESM extends AppCompatActivity {
         }
 
         return listInTimeRange;
+    }
+
+    private static boolean isOngoingCategoryRepeat(ArrayList<NotiItem> list, NotiItem item) {
+        Log.d("inside function: ", "ongoing repeat checking");
+        int j;
+        boolean repeat = false;
+        for (j=0; j<list.size(); j++) {
+            if (item.category.equals(list.get(j).category)
+                    // list ongoing notification categories
+                    && (item.category.equals("alarm")
+                    || item.category.equals("call")
+                    || item.category.equals("navigation")
+                    || item.category.equals("progress")
+                    || item.category.equals("service")
+                    || item.category.equals("status")
+                    || item.category.equals("transport"))
+            ) {
+                Log.d("repeat app name",item.appName);
+                Log.d("d",item.category);
+                repeat = true;
+            }
+        }
+        return repeat;
     }
 
     private int hourDifference (Long d1, Long d2) {

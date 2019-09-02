@@ -18,6 +18,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.jefflin.notipreference.ActivityMain;
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.R;
+import com.example.jefflin.notipreference.widgets.PushNotification;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -79,7 +80,9 @@ public class NotiListenerService extends NotificationListenerService {
             Log.d("NotiListenerService",category);
         }
 
-        mData.add(new NotiItem(appName, title, content, postTime, category));
+        if(!isOngoingCategoryRepeat(mData, new NotiItem(appName, title, content, postTime, category))){
+            mData.add(new NotiItem(appName, title, content, postTime, category));
+        }
 
         Toast.makeText(this.getBaseContext(),"Notification Received",Toast.LENGTH_LONG).show();
         Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
@@ -99,23 +102,32 @@ public class NotiListenerService extends NotificationListenerService {
         mData.addAll(mData6);
     }
 
+    private static boolean isOngoingCategoryRepeat(ArrayList<NotiItem> list, NotiItem item) {
+        Log.d("inside function: ", "ongoing repeat checking");
+        int j;
+        boolean repeat = false;
+        for (j=0; j<list.size(); j++) {
+            if (item.category.equals(list.get(j).category)
+                    // list ongoing notification categories
+                    && (item.category.equals("alarm")
+                    || item.category.equals("call")
+                    || item.category.equals("navigation")
+                    || item.category.equals("progress")
+                    || item.category.equals("service")
+                    || item.category.equals("status")
+                    || item.category.equals("transport"))
+            ) {
+                Log.d("repeat app name",item.appName);
+                Log.d("d",item.category);
+                repeat = true;
+            }
+        }
+        return repeat;
+    }
+
     private void pushNotification(){
         if(notiNum >= 10){
-            Intent intent = new Intent(this, ActivityMain.class);
-            //如果正在app裡就開一個新的task
-            //在外面就用existing的
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.ic_launcher)
-                    .setContentTitle("Survey Time!")
-                    .setContentText("Receive more than ten notifications")
-                    .setContentIntent(pendingIntent)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setAutoCancel(true);
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            notificationManager.notify(notiNum, builder.build());
+            PushNotification pushNotification = new PushNotification(this);
             notiNum = 0;
         }
         else {
