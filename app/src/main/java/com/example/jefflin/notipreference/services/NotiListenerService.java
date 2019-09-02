@@ -50,7 +50,6 @@ public class NotiListenerService extends NotificationListenerService {
         Log.d("NotiListenerService","posted");
         Log.d("is ongoing", Boolean.toString(sbn.isOngoing()));
         Log.d("app name", sbn.getPackageName());
-        pushNotification();
 
         try{
             packageName = sbn.getPackageName();
@@ -81,8 +80,10 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
         if(!sbn.isOngoing()){
+            pushNotification();
             mData.add(new NotiItem(appName, title, content, postTime, category));
-        } else if (!isOngoingCategoryRepeat(mData, new NotiItem(appName, title, content, postTime, category))){
+        } else if (!isOngoingAppNameRepeat(mData, new NotiItem(appName, title, content, postTime, category))){
+            pushNotification();
             mData.add(new NotiItem(appName, title, content, postTime, category));
         }
 
@@ -124,6 +125,22 @@ public class NotiListenerService extends NotificationListenerService {
                 Log.d("repeat app name",item.appName);
                 Log.d("d",item.category);
                 repeat = true;
+            }
+        }
+        return repeat;
+    }
+
+    private static boolean isOngoingAppNameRepeat(ArrayList<NotiItem> list, NotiItem item) {
+        Log.d("inside function ", "ongoing repeat appName checking");
+        int j;
+        boolean repeat = false;
+        for (j=0; j<list.size(); j++) {
+            Log.d("item[" + j + "].appname:", list.get(j).appName);
+            if (item.appName.equals(list.get(j).appName)) {
+                Log.d("repeat app name",item.appName);
+                Log.d("repeat app category",item.category);
+                repeat = true;
+                break;
             }
         }
         return repeat;
