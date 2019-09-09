@@ -28,7 +28,7 @@ public class NotiListenerService extends NotificationListenerService {
     private static ArrayList<NotiItem> mData = new ArrayList<NotiItem>();
     PackageManager packageManager;
     private int notiNum = 0;
-    private boolean spotifyRepeat;
+    private boolean spotifyRepeat = false;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -81,19 +81,17 @@ public class NotiListenerService extends NotificationListenerService {
             Log.d("NotiListenerService",category);
         }
 
-        if(!sbn.isOngoing()){
-            //check if spotify repeat, 避免按暫停時存到一堆不是ongoing 的 noti
-            if(appName == "Spotify") {
-                if(!spotifyRepeat) {
-                    spotifyRepeat = true;
-                    pushNotification();
-                    mData.add(new NotiItem(appName, title, content, postTime, category));
-                }
-            }
-            else {
+        //check if spotify repeat, 避免按暫停時存到一堆不是ongoing 的 noti
+        if(appName.equals("Spotify")) {
+            if(!spotifyRepeat) {
+                spotifyRepeat = true;
                 pushNotification();
                 mData.add(new NotiItem(appName, title, content, postTime, category));
             }
+        }
+        else if(!sbn.isOngoing()){
+            pushNotification();
+            mData.add(new NotiItem(appName, title, content, postTime, category));
         } else if (mData.isEmpty() || !isOngoingAppNameRepeat(mData, new NotiItem(appName, title, content, postTime, category))){
             pushNotification();
             mData.add(new NotiItem(appName, title, content, postTime, category));
