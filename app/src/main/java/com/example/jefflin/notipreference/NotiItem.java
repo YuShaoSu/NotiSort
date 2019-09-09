@@ -3,6 +3,7 @@ package com.example.jefflin.notipreference;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.room.ColumnInfo;
 import androidx.room.Dao;
@@ -29,6 +30,7 @@ public class NotiItem {
     @NonNull
     public Long postTime;
     @NonNull
+
     public String category;
 
     @PrimaryKey(autoGenerate = true)

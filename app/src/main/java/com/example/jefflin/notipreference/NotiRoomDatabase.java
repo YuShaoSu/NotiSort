@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {NotiItem.class}, version = 1)
@@ -23,6 +24,7 @@ public abstract class NotiRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             NotiRoomDatabase.class, "noti_database")
+//                            .addMigrations(MIGRATION_1_2)
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }
@@ -30,6 +32,16 @@ public abstract class NotiRoomDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
+
+//    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+//        @Override
+//        public void migrate(SupportSQLiteDatabase database) {
+//            database.execSQL("ALTER TABLE noti_table.title STRING NULL) ");
+//            database.execSQL("ALTER TABLE noti_table ALTER COLUMN (content STRING NULL) ");
+//            database.execSQL("ALTER TABLE noti_table ALTER COLUMN (category STRING NULL) ");
+//        }
+//    };
+
 
     private static RoomDatabase.Callback sRoomDatabaseCallback =
         new RoomDatabase.Callback(){
