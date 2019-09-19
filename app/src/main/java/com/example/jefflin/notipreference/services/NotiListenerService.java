@@ -23,12 +23,38 @@ import com.example.jefflin.notipreference.widgets.PushNotification;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.Semaphore;
 
 public class NotiListenerService extends NotificationListenerService {
     private static ArrayList<NotiItem> mData = new ArrayList<NotiItem>();
-    PackageManager packageManager;
+    static PackageManager packageManager;
     private int notiNum = 0;
-    private boolean spotifyRepeat = false;
+    private static boolean spotifyRepeat = false;
+
+    private static final String TAG = "MyNotificationService";
+    static NotiListenerService _this;
+    static Semaphore sem = new Semaphore(0);
+
+    public static NotiListenerService get() {
+        sem.acquireUninterruptibly();
+        NotiListenerService ret = _this;
+        sem.release();
+        return ret;
+    }
+
+    @Override
+    public void onListenerConnected() {
+        Log.i(TAG, "Connected");
+        _this = this;
+        sem.release();
+    }
+
+    @Override
+    public void onListenerDisconnected() {
+        Log.i(TAG, "Disconnected");
+        sem.acquireUninterruptibly();
+        _this = null;
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -138,5 +164,53 @@ public class NotiListenerService extends NotificationListenerService {
         else {
             notiNum++;
         }
+    }
+
+    public static ArrayList<NotiItem> getActiveNotis() {
+        NotiListenerService notiListenerService = NotiListenerService.get();
+        ArrayList<NotiItem> activeData = new ArrayList<NotiItem>();
+
+        for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
+            String packageName = "null";
+            String title = "null";
+            String content = "null";
+            String appName = "null";
+            String category = "null";
+            Long postTime = notification.getPostTime();
+
+            try{
+                packageName = notification.getPackageName();
+            } catch (Exception e) {
+                Log.d("d", "no packageName");
+            }
+            try{
+                title = notification.getNotification().extras.get("android.title").toString();
+
+            } catch (Exception e) {
+                Log.d("d", "no title");
+            }
+            try{
+                content = notification.getNotification().extras.get("android.text").toString();
+            } catch (Exception e) {
+                Log.d("d", "no content");
+            }
+            try {
+                ApplicationInfo applicationInfo = packageManager.getApplicationInfo( packageName, 0);
+                appName = (String) (applicationInfo != null ?
+                        packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
+            } catch (Exception e) {
+                Log.d("d","app name failed");
+            }
+            try {
+                category = (notification.getNotification().category == null) ? "null" : notification.getNotification().category;
+            } catch (Exception e){
+                Log.d("NotiListenerService",category);
+            }
+
+            Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
+
+            activeData.add(new NotiItem(appName, title, content, postTime, category));
+        }
+        return activeData;
     }
 }

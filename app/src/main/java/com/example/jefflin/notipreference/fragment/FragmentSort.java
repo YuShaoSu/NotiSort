@@ -1,5 +1,7 @@
 package com.example.jefflin.notipreference.fragment;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -7,6 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
+import android.service.notification.NotificationListenerService;
+import android.service.notification.StatusBarNotification;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +45,7 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
 
     ArrayList<NotiItem> mData;
     ArrayList<NotiItem> mData_6 = new ArrayList<NotiItem>();
+    ArrayList<NotiItem> mActiveData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,7 +105,8 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
     private void setRecyclerView(ViewGroup rootView) {
         mData = NotiListenerService.getData();
         mData_6 = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
-        mAdapter = new NotiItemAdapter(getActivity(), mData_6, onStartDragListener);
+        mActiveData = NotiListenerService.getActiveNotis();
+        mAdapter = new NotiItemAdapter(getActivity(), mActiveData, onStartDragListener);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_rank);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
