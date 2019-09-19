@@ -104,8 +104,8 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
 
     private void setRecyclerView(ViewGroup rootView) {
         mData = NotiListenerService.getData();
-        mData_6 = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
-        mActiveData = NotiListenerService.getActiveNotis();
+        //mData_6 = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
+        mActiveData = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
         mAdapter = new NotiItemAdapter(getActivity(), mActiveData, onStartDragListener);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_rank);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

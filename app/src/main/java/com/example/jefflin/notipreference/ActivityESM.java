@@ -34,6 +34,7 @@ public class ActivityESM extends AppCompatActivity {
     ArrayList<NotiItem> mData;
     ArrayList<NotiItem> mData_8hours;
     ArrayList<NotiItem> mData_6 = new ArrayList<NotiItem>();
+    ArrayList<NotiItem> mActiveData = new ArrayList<NotiItem>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class ActivityESM extends AppCompatActivity {
         mData = NotiListenerService.getData();
         mData_8hours = getElementsIn8Hours(mData);
         mData_6 = getRandom6Element(mData_8hours);
+        mActiveData = NotiListenerService.getActiveNotis();
 
         if (getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
@@ -76,7 +78,7 @@ public class ActivityESM extends AppCompatActivity {
                 Bundle xBundle = new Bundle();
                 xBundle.putSerializable("data", mESMQuestion);
                 xBundle.putString("style", style_string);
-                xBundle.putSerializable("arrayList", mData_6);
+                xBundle.putSerializable("arrayList", mActiveData);
                 fragsort.setArguments(xBundle);
                 arraylist_fragments.add(fragsort);
             }
