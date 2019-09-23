@@ -2,44 +2,20 @@
 {
   "survey_properties": {
     "intro_message": "<strong>Your feedback helps us to build a better mobile product.</strong><br><br><br>   Hello, Feedback from our clients, friends and family is how we make key decisions on what the future holds for XYZ App.<br><br>By combining data and previous feedback we have introduced many new features e.g. x, y, z.<br><br>It will take less than 2 minutes to answer the feedback quiz.",
-    "end_message": "耶耶耶感謝您ㄏㄏ～",
+    "end_message": "耶耶耶感謝您",
     "skip_intro": true
   },
   "ESMQuestions": [
     {
       "question_type": "Sort",
       "question_title": "請依想呈現順序排名",
-      "description": "1 of 6",
+      "description": "1 of 2",
       "required": false
     },
     {
-      "question_type": "Sort",
+      "question_type": "Scale",
       "question_title": "請依想看程度排名",
-      "description": "2 of 6",
-      "required": false
-    },
-    {
-      "question_type": "Sort",
-      "question_title": "請依重要程度排名",
-      "description": "3 of 6",
-      "required": false
-    },
-    {
-      "question_type": "Sort",
-      "question_title": "請依緊急程度排名",
-      "description": "4 of 6",
-      "required": false
-    },
-    {
-      "question_type": "Sort",
-      "question_title": "請依傳送者吸引人程度排名",
-      "description": "5 of 6",
-      "required": false
-    },
-    {
-      "question_type": "Sort",
-      "question_title": "請依內容吸引人程度排名",
-      "description": "6 of 6",
+      "description": "2 of 2",
       "required": false
     }
   ]
