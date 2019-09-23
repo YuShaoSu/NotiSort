@@ -66,33 +66,51 @@
             android:textColor="@color/grey_medium"
             android:layout_marginBottom="5dp"/>
 
-        <!--<RadioGroup-->
-            <!--android:id="@+id/likert_grp"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="4dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:orientation="horizontal"/>-->
-        <!--<RadioGroup-->
-            <!--android:id="@+id/likert_grp2"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="4dp"-->
-            <!--android:layout_marginStart="8dp" />-->
-        <!--<RadioGroup-->
-            <!--android:id="@+id/likert_grp3"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="4dp"-->
-            <!--android:layout_marginStart="8dp" />-->
-        <!--<RadioGroup-->
-            <!--android:id="@+id/likert_grp4"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="4dp"-->
-            <!--android:layout_marginStart="8dp" />-->
+
+        <!--&lt;!&ndash;提示&ndash;&gt;-->
+        <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_weight="1">-->
+
+            <!--<View style="@style/Space" />-->
+
+            <!--&lt;!&ndash;invisible for layout&ndash;&gt;-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:gravity="center"-->
+                <!--android:padding="2dp"-->
+                <!--android:text="Importance"-->
+                <!--android:textSize="13sp"-->
+                <!--android:textColor="@color/white" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:gravity="center"-->
+                <!--android:padding="2dp"-->
+                <!--android:text="Strongly \nDisagree"-->
+                <!--android:textColor="@color/grey_medium"-->
+                <!--android:textSize="8sp" />-->
+
+            <!--<View style="@style/Space" />-->
+
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:gravity="center"-->
+                <!--android:padding="2dp"-->
+                <!--android:text="Strongly \nAgree"-->
+                <!--android:textColor="@color/grey_medium"-->
+                <!--android:textSize="8sp" />-->
+
 
         <!--</LinearLayout>-->
+
 
         <!--first factor-->
         <RadioGroup
@@ -101,120 +119,74 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <View style="@style/Space" />
+
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_height="50dp"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1">
+                android:text="\nImportance"
+                android:textColor="#000000" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Strongly \nDisagree"
-                    android:textColor="#000000" />
+            <View style="@style/Space" />
 
-                <RadioButton
-                    android:id="@+id/strong_disagree0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
+            <RadioButton
+                android:id="@+id/strong_disagree0"
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1" >
+                android:text="Strongly\nDisagree"
+                android:button="@null"
+                android:drawableBottom="@android:drawable/btn_radio"
+                android:textSize="10sp"
+                android:padding="2dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Disagree"
-                    android:textColor="#000000" />
-
-                <RadioButton
-                    android:id="@+id/disagree0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
+            <RadioButton
+                android:id="@+id/disagree0"
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1" >
+                android:button="@null"
+                android:drawableBottom="@android:drawable/btn_radio"
+                android:text="\n"
+                android:textSize="10sp"
+                android:padding="2dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Neutral"
-                    android:textColor="#000000" />
-
-                <RadioButton
-                    android:id="@+id/neutral0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
+            <RadioButton
+                android:id="@+id/neutral0"
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1" >
+                android:button="@null"
+                android:drawableBottom="@android:drawable/btn_radio"
+                android:text="\n"
+                android:textSize="10sp"
+                android:padding="2dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Agree"
-                    android:textColor="#000000" />
-
-                <RadioButton
-                    android:id="@+id/agree0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
+            <RadioButton
+                android:id="@+id/agree0"
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1" >
+                android:button="@null"
+                android:drawableBottom="@android:drawable/btn_radio"
+                android:text="\n"
+                android:textSize="10sp"
+                android:padding="2dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Strongly \nAgree"
-                    android:textColor="#000000" />
+            <RadioButton
+                android:id="@+id/strong_agree0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Strongly\nAgree"
+                android:textSize="10sp"
+                android:button="@null"
+                android:drawableBottom="@android:drawable/btn_radio"
+                android:padding="2dp" />
 
-                <RadioButton
-                    android:id="@+id/strong_agree0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="2dp" />
-            </LinearLayout>
+            <View style="@style/Space" />
+
 
         </RadioGroup>
 
@@ -225,120 +197,60 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-            <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            <View style="@style/Space" />
 
-                <TextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:gravity="center"
                 android:padding="2dp"
-                android:text="Strongly \nDisagree"
+                android:text="Importance"
                 android:textColor="#000000" />
 
-                <RadioButton
+            <View style="@style/Space" />
+
+            <RadioButton
                 android:id="@+id/strong_disagree1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:button="@android:drawable/btn_radio"
                 android:padding="2dp" />
-            </LinearLayout>
 
-            <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_weight="1" >
-
-                <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:padding="2dp"
-                android:text="Disagree"
-                android:textColor="#000000" />
 
                 <RadioButton
                 android:id="@+id/disagree1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:button="@android:drawable/btn_radio"
                 android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_weight="1" >
-
-                <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:padding="2dp"
-                android:text="Neutral"
-                android:textColor="#000000" />
 
                 <RadioButton
                 android:id="@+id/neutral1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:button="@android:drawable/btn_radio"
                 android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_weight="1" >
-
-                <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:padding="2dp"
-                android:text="Agree"
-                android:textColor="#000000" />
 
                 <RadioButton
                 android:id="@+id/agree1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:button="@android:drawable/btn_radio"
                 android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_weight="1" >
-
-                <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:padding="2dp"
-                android:text="Strongly \nAgree"
-                android:textColor="#000000" />
 
                 <RadioButton
                 android:id="@+id/strong_agree1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:button="@android:drawable/btn_radio"
                 android:padding="2dp" />
-            </LinearLayout>
+
+            <View style="@style/Space" />
 
         </RadioGroup>
 
@@ -349,120 +261,59 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <View style="@style/Space" />
+
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_height="50dp"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1">
+                android:padding="2dp"
+                android:text="Importance"
+                android:textColor="#000000" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Strongly \nDisagree"
-                    android:textColor="#000000" />
+            <View style="@style/Space" />
 
-                <RadioButton
+            <RadioButton
                     android:id="@+id/strong_disagree2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Disagree"
-                    android:textColor="#000000" />
+                android:button="@android:drawable/btn_radio"
+                android:padding="2dp" />
 
                 <RadioButton
                     android:id="@+id/disagree2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:button="@android:drawable/btn_radio"
                     android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Neutral"
-                    android:textColor="#000000" />
 
                 <RadioButton
                     android:id="@+id/neutral2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:button="@android:drawable/btn_radio"
                     android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Agree"
-                    android:textColor="#000000" />
 
                 <RadioButton
                     android:id="@+id/agree2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:button="@android:drawable/btn_radio"
                     android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Strongly \nAgree"
-                    android:textColor="#000000" />
 
                 <RadioButton
                     android:id="@+id/strong_agree2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:button="@android:drawable/btn_radio"
                     android:padding="2dp" />
-            </LinearLayout>
+
+            <View style="@style/Space" />
 
         </RadioGroup>
 
@@ -473,120 +324,59 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1">
+            <View style="@style/Space" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Strongly \nDisagree"
-                    android:textColor="#000000" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:padding="2dp"
+                android:text="Importance"
+                android:textColor="#000000" />
+
+            <View style="@style/Space" />
 
                 <RadioButton
                     android:id="@+id/strong_disagree3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:button="@android:drawable/btn_radio"
                     android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Disagree"
-                    android:textColor="#000000" />
 
                 <RadioButton
                     android:id="@+id/disagree3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:button="@android:drawable/btn_radio"
                     android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Neutral"
-                    android:textColor="#000000" />
 
                 <RadioButton
                     android:id="@+id/neutral3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:button="@android:drawable/btn_radio"
                     android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Agree"
-                    android:textColor="#000000" />
 
                 <RadioButton
                     android:id="@+id/agree3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:button="@android:drawable/btn_radio"
                     android:padding="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Strongly \nAgree"
-                    android:textColor="#000000" />
 
                 <RadioButton
                     android:id="@+id/strong_agree3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:button="@android:drawable/btn_radio"
                     android:padding="2dp" />
-            </LinearLayout>
+
+            <View style="@style/Space" />
 
         </RadioGroup>
 
