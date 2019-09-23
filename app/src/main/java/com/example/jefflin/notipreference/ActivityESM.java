@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.jefflin.notipreference.fragment.FragmentScale;
+import com.example.jefflin.notipreference.fragment.FragmentSurvey;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.example.jefflin.notipreference.adapter.FragmentAdapter;
 import com.example.jefflin.notipreference.fragment.FragmentCheckboxes;
@@ -93,6 +94,15 @@ public class ActivityESM extends AppCompatActivity {
                 xBundle.putSerializable("arrayList", mData_6);
                 fragscale.setArguments(xBundle);
                 arraylist_fragments.add(fragscale);
+            }
+
+            if (mESMQuestion.getQuestionType().equals("Survey")) {
+                FragmentSurvey fragsurvey = new FragmentSurvey();
+                Bundle xBundle = new Bundle();
+                xBundle.putSerializable("data", mESMQuestion);
+                xBundle.putString("style", style_string);
+                fragsurvey.setArguments(xBundle);
+                arraylist_fragments.add(fragsurvey);
             }
 
             if (mESMQuestion.getQuestionType().equals("String")) {

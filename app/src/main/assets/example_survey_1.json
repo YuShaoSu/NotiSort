@@ -9,13 +9,19 @@
     {
       "question_type": "Sort",
       "question_title": "請依想呈現順序排名",
-      "description": "1 of 2",
+      "description": "1 of 3",
       "required": false
     },
     {
       "question_type": "Scale",
       "question_title": "請依想看程度排名",
-      "description": "2 of 2",
+      "description": "2 of 3",
+      "required": false
+    },
+    {
+      "question_type": "Survey",
+      "question_title": "請回答以下問題",
+      "description": "3 of 3",
       "required": false
     }
   ]
