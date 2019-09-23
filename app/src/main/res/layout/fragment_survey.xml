@@ -45,204 +45,355 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/top_bar"
-        android:orientation="vertical"
-        android:layout_margin="5pt">
-
+        android:paddingBottom="70dp"
+        android:clipToPadding="false">
         <LinearLayout
-            android:id="@+id/q1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginBottom="5pt">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1. 你身邊有人嗎?"/>
-            <RadioGroup
+            android:layout_margin="5pt">
+
+            <LinearLayout
+                android:id="@+id/q1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <RadioButton
-                    android:id="@+id/q1_1"
+                android:orientation="vertical"
+                android:layout_marginBottom="5pt">
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="有人" />
-                <RadioButton
-                    android:id="@+id/q1_2"
-                    android:layout_width="wrap_content"
+                    android:text="1. 你身邊有人嗎?"/>
+                <RadioGroup
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="沒人" />
-            </RadioGroup>
-        </LinearLayout>
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/q1_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="有人" />
+                    <RadioButton
+                        android:id="@+id/q1_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="沒人" />
+                </RadioGroup>
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/q2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2. 你在哪裡?"/>
-            <RadioGroup
+            <LinearLayout
+                android:id="@+id/q2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <RadioButton
-                    android:id="@+id/q2_1"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="住處" />
-                <RadioButton
-                    android:id="@+id/q2_2"
+                    android:text="2. 你在哪裡?"/>
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton
+                        android:id="@+id/q2_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="住處" />
+                    <RadioButton
+                        android:id="@+id/q2_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="工作場所" />
+                    <RadioButton
+                        android:id="@+id/q2_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="其他" />
+                </RadioGroup>
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="工作場所" />
-                <RadioButton
-                    android:id="@+id/q2_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="其他" />
-            </RadioGroup>
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:textSize="12sp"
-                android:layout_marginStart="13pt"/>
-        </LinearLayout>
+                    android:inputType="text"
+                    android:textSize="12sp"
+                    android:layout_marginStart="13pt"/>
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/q3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="5pt">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3. 你在進行什麼活動?"/>
-            <CheckBox
-                android:id="@+id/q3_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="沒在做事/放鬆"/>
-            <CheckBox
-                android:id="@+id/q3_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="工作/讀書"/>
-            <CheckBox
-                android:id="@+id/q3_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="運動"/>
-            <CheckBox
-                android:id="@+id/q3_4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="睡覺"/>
-            <CheckBox
-                android:id="@+id/q3_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="吃飯"/>
-            <CheckBox
-                android:id="@+id/q3_6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="通勤"/>
-            <CheckBox
-                android:id="@+id/q3_7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="其他"/>
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:textSize="12sp"
-                android:layout_marginStart="13pt"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/q4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4. 我很投入上述活動?"/>
-            <RadioGroup
+            <LinearLayout
+                android:id="@+id/q3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <RadioButton
-                    android:id="@+id/strong_disagree0"
+                android:orientation="vertical"
+                android:layout_marginBottom="5pt">
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Strongly\nDisagree"
-                    android:button="@null"
-                    android:drawableBottom="@android:drawable/btn_radio"
-                    android:textSize="10sp"
-                    android:padding="2dp" />
+                    android:text="3. 你在進行什麼活動?"/>
+                <CheckBox
+                    android:id="@+id/q3_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="沒在做事/放鬆"/>
+                <CheckBox
+                    android:id="@+id/q3_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="工作/讀書"/>
+                <CheckBox
+                    android:id="@+id/q3_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="運動"/>
+                <CheckBox
+                    android:id="@+id/q3_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="睡覺"/>
+                <CheckBox
+                    android:id="@+id/q3_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="吃飯"/>
+                <CheckBox
+                    android:id="@+id/q3_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="通勤"/>
+                <CheckBox
+                    android:id="@+id/q3_7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="其他"/>
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="12sp"
+                    android:layout_marginStart="13pt"/>
 
-                <RadioButton
-                    android:id="@+id/disagree0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:button="@null"
-                    android:drawableBottom="@android:drawable/btn_radio"
-                    android:text="\n"
-                    android:textSize="10sp"
-                    android:padding="2dp" />
+            </LinearLayout>
 
-                <RadioButton
-                    android:id="@+id/neutral0"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:button="@null"
-                    android:drawableBottom="@android:drawable/btn_radio"
-                    android:text="\n"
-                    android:textSize="10sp"
-                    android:padding="2dp" />
+                    android:text="4. 你很投入上述活動?"/>
+                <RadioGroup
+                    android:id="@+id/q4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="15dp">
 
-                <RadioButton
-                    android:id="@+id/agree0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:button="@null"
-                    android:drawableBottom="@android:drawable/btn_radio"
-                    android:text="\n"
-                    android:textSize="10sp"
-                    android:padding="2dp" />
+                    <RadioButton
+                        android:id="@+id/q4_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Strongly\nDisagree"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:textSize="10sp"
+                        android:padding="2dp" />
 
-                <RadioButton
-                    android:id="@+id/strong_agree0"
+                    <RadioButton
+                        android:id="@+id/q4_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:text="\n"
+                        android:textSize="10sp"
+                        android:padding="2dp" />
+
+                    <RadioButton
+                        android:id="@+id/q4_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:text="\n"
+                        android:textSize="10sp"
+                        android:padding="2dp" />
+
+                    <RadioButton
+                        android:id="@+id/q4_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:text="\n"
+                        android:textSize="10sp"
+                        android:padding="2dp" />
+
+                    <RadioButton
+                        android:id="@+id/q4_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Strongly\nAgree"
+                        android:textSize="10sp"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:padding="2dp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Strongly\nAgree"
-                    android:textSize="10sp"
-                    android:button="@null"
-                    android:drawableBottom="@android:drawable/btn_radio"
-                    android:padding="2dp" />
-            </RadioGroup>
+                    android:text="5. 你很忙碌?"/>
+                <RadioGroup
+                    android:id="@+id/q5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="15dp">
+
+                    <RadioButton
+                        android:id="@+id/q5_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Strongly\nDisagree"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:textSize="10sp"
+                        android:padding="2dp" />
+
+                    <RadioButton
+                        android:id="@+id/q5_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:text="\n"
+                        android:textSize="10sp"
+                        android:padding="2dp" />
+
+                    <RadioButton
+                        android:id="@+id/q5_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:text="\n"
+                        android:textSize="10sp"
+                        android:padding="2dp" />
+
+                    <RadioButton
+                        android:id="@+id/q5_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:text="\n"
+                        android:textSize="10sp"
+                        android:padding="2dp" />
+
+                    <RadioButton
+                        android:id="@+id/q5_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Strongly\nAgree"
+                        android:textSize="10sp"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:padding="2dp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6. 你的心情?"/>
+                <RadioGroup
+                    android:id="@+id/q6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="15dp">
+
+                    <RadioButton
+                        android:id="@+id/q6_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/happy"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:textSize="20sp"
+                        android:padding="2dp" />
+
+                    <RadioButton
+                        android:id="@+id/q6_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:text="@string/neutral"
+                        android:textSize="20sp"
+                        android:padding="2dp" />
+
+                    <RadioButton
+                        android:id="@+id/q6_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:text="@string/sad"
+                        android:textSize="20sp"
+                        android:padding="2dp" />
+
+                    <RadioButton
+                        android:id="@+id/q6_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:text="@string/cry"
+                        android:textSize="20sp"
+                        android:padding="2dp" />
+
+                    <RadioButton
+                        android:id="@+id/q6_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/angry"
+                        android:textSize="20sp"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:padding="2dp" />
+                </RadioGroup>
+            </LinearLayout>
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
     <include
         layout="@layout/footer"

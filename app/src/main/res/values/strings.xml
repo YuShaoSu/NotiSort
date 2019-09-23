@@ -35,4 +35,11 @@
     <string name="xcontinue">Continue</string>
     <string name="start">Start</string>
     <string name="close">Close</string>
+
+    <string name="happy">&#128512;</string>
+    <string name="neutral">&#128528;</string>
+    <string name="sad">&#128577;</string>
+    <string name="cry">&#128557;</string>
+    <string name="angry">&#128545;</string>
+    <string name="wtf">&#128565;</string>
 </resources>
