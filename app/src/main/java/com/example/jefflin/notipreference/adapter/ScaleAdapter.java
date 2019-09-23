@@ -51,12 +51,6 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
 
         int id =(position+1)*100;
 
-        for (int i = 0; i < 5; i++) {
-            RadioButton rb = new RadioButton(ScaleAdapter.this.mContext);
-            rb.setId(id++);
-            holder.scaleGroup.addView(rb);
-        }
-
     }
 
     @Override
@@ -78,7 +72,6 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
             title = (TextView) view.findViewById(R.id.title);
             content = (TextView) view.findViewById(R.id.content);
 
-            scaleGroup = (RadioGroup) view.findViewById(R.id.likert_grp);
 
 //            scaleGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 //                @Override
