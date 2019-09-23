@@ -13,7 +13,7 @@
       "required": false
     },
     {
-      "question_type": "Sort",
+      "question_type": "Scale",
       "question_title": "請依想看程度排名",
       "description": "2 of 6",
       "required": false

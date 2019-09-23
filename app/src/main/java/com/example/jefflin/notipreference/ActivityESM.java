@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.jefflin.notipreference.fragment.FragmentScale;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.example.jefflin.notipreference.adapter.FragmentAdapter;
 import com.example.jefflin.notipreference.fragment.FragmentCheckboxes;
@@ -67,6 +68,7 @@ public class ActivityESM extends AppCompatActivity {
             arraylist_fragments.add(frag_start);
         }
         FragmentSort fragsort = new FragmentSort();
+        FragmentScale fragscale = new FragmentScale();
 
         //- FILL -
         for (ESMQuestion mESMQuestion : mESMPojo.getESMQuestions()) {
@@ -79,6 +81,16 @@ public class ActivityESM extends AppCompatActivity {
                 xBundle.putSerializable("arrayList", mData_6);
                 fragsort.setArguments(xBundle);
                 arraylist_fragments.add(fragsort);
+            }
+
+            if (mESMQuestion.getQuestionType().equals("Scale")) {
+                fragscale = new FragmentScale();
+                Bundle xBundle = new Bundle();
+                xBundle.putSerializable("data", mESMQuestion);
+                xBundle.putString("style", style_string);
+                xBundle.putSerializable("arrayList", mData_6);
+                fragscale.setArguments(xBundle);
+                arraylist_fragments.add(fragscale);
             }
 
             if (mESMQuestion.getQuestionType().equals("String")) {
