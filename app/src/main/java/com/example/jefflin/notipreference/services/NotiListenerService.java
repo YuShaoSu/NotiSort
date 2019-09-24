@@ -65,6 +65,20 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn){
+
+        ArrayList<NotiItem> mActiveData;
+
+        mActiveData = getActiveNotis();
+
+        int i, category_count = 0;
+        if(mActiveData.size() > 7) {
+            for (i = 0; i < mActiveData.size(); ++i) {
+            }
+            mData = mActiveData;
+            PushNotification pushNotification = new PushNotification(this);
+            return;
+        }
+
         Drawable icon = null;
         String packageName = "null";
         String title = "null";
@@ -117,15 +131,15 @@ public class NotiListenerService extends NotificationListenerService {
         if(appName.equals("Spotify")) {
             if(!spotifyRepeat) {
                 spotifyRepeat = true;
-                pushNotification();
+//                pushNotification();
                 mData.add(new NotiItem(icon, appName, title, content, postTime, category));
             }
         }
         else if(!sbn.isOngoing()){
-            pushNotification();
+//            pushNotification();
             mData.add(new NotiItem(icon, appName, title, content, postTime, category));
         } else if (mData.isEmpty() || !isOngoingAppNameRepeat(mData, new NotiItem(icon, appName, title, content, postTime, category))){
-            pushNotification();
+//            pushNotification();
             mData.add(new NotiItem(icon, appName, title, content, postTime, category));
         }
 
@@ -147,14 +161,11 @@ public class NotiListenerService extends NotificationListenerService {
     }
 
     private static boolean isOngoingAppNameRepeat(ArrayList<NotiItem> list, NotiItem item) {
-        Log.d("inside function ", "ongoing repeat appName checking");
         int j;
         boolean repeat = false;
         for (j=0; j<list.size(); j++) {
             Log.d("item[" + j + "].appname:", list.get(j).appName);
             if (item.appName.equals(list.get(j).appName)) {
-                Log.d("repeat app name",item.appName);
-                Log.d("repeat app category",item.category);
                 repeat = true;
                 break;
             }
