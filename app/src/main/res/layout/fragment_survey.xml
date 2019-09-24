@@ -58,7 +58,6 @@
             android:layout_margin="5pt">
 
             <LinearLayout
-                android:id="@+id/q1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -68,6 +67,7 @@
                     android:layout_height="wrap_content"
                     android:text="1. 你身邊有人嗎?"/>
                 <RadioGroup
+                    android:id="@+id/q1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -75,7 +75,6 @@
                         android:id="@+id/q1_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:text="有人" />
                     <RadioButton
                         android:id="@+id/q1_2"
@@ -86,7 +85,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/q2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -95,6 +93,7 @@
                     android:layout_height="wrap_content"
                     android:text="2. 你在哪裡?"/>
                 <RadioGroup
+                    android:id="@+id/q2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -102,7 +101,6 @@
                         android:id="@+id/q2_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:text="住處" />
                     <RadioButton
                         android:id="@+id/q2_2"
@@ -116,6 +114,7 @@
                         android:text="其他" />
                 </RadioGroup>
                 <EditText
+                    android:id="@+id/q2_other"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -169,6 +168,7 @@
                     android:layout_height="wrap_content"
                     android:text="其他"/>
                 <EditText
+                    android:id="@+id/q3_other"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -201,7 +201,8 @@
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:textSize="10sp"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Strongly disagree"/>
 
                     <RadioButton
                         android:id="@+id/q4_2"
@@ -212,7 +213,8 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:text="\n"
                         android:textSize="10sp"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Disagree"/>
 
                     <RadioButton
                         android:id="@+id/q4_3"
@@ -223,7 +225,8 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:text="\n"
                         android:textSize="10sp"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Neutral"/>
 
                     <RadioButton
                         android:id="@+id/q4_4"
@@ -234,7 +237,8 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:text="\n"
                         android:textSize="10sp"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Agree"/>
 
                     <RadioButton
                         android:id="@+id/q4_5"
@@ -245,7 +249,8 @@
                         android:textSize="10sp"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Strongly agree"/>
                 </RadioGroup>
             </LinearLayout>
 
@@ -273,7 +278,8 @@
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:textSize="10sp"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Strongly disagree"/>
 
                     <RadioButton
                         android:id="@+id/q5_2"
@@ -284,7 +290,8 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:text="\n"
                         android:textSize="10sp"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Disagree"/>
 
                     <RadioButton
                         android:id="@+id/q5_3"
@@ -295,7 +302,8 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:text="\n"
                         android:textSize="10sp"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Neutral"/>
 
                     <RadioButton
                         android:id="@+id/q5_4"
@@ -306,7 +314,8 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:text="\n"
                         android:textSize="10sp"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Agree"/>
 
                     <RadioButton
                         android:id="@+id/q5_5"
@@ -317,7 +326,8 @@
                         android:textSize="10sp"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Strongly agree"/>
                 </RadioGroup>
             </LinearLayout>
 
@@ -345,7 +355,8 @@
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:textSize="20sp"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Happy"/>
 
                     <RadioButton
                         android:id="@+id/q6_2"
@@ -356,7 +367,8 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:text="@string/neutral"
                         android:textSize="20sp"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Neutral"/>
 
                     <RadioButton
                         android:id="@+id/q6_3"
@@ -367,7 +379,8 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:text="@string/sad"
                         android:textSize="20sp"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Sad"/>
 
                     <RadioButton
                         android:id="@+id/q6_4"
@@ -378,7 +391,8 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:text="@string/cry"
                         android:textSize="20sp"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Cry"/>
 
                     <RadioButton
                         android:id="@+id/q6_5"
@@ -389,7 +403,8 @@
                         android:textSize="20sp"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:padding="2dp" />
+                        android:padding="2dp"
+                        android:tag="Angry"/>
                 </RadioGroup>
             </LinearLayout>
         </LinearLayout>
