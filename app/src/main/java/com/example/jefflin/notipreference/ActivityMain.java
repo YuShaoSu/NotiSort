@@ -31,7 +31,6 @@ import java.util.List;
 public class ActivityMain extends AppCompatActivity {
     final private int SURVEY_REQUEST = 1337;
 
-    private NotiViewModel mNotiViewModel;
 
 
     @Override
@@ -42,13 +41,6 @@ public class ActivityMain extends AppCompatActivity {
 
         createNotificationChannel();
 
-        mNotiViewModel = ViewModelProviders.of(this).get(NotiViewModel.class);
-        mNotiViewModel.getAllNotis().observe(this, new Observer<List<NotiItem>>() {
-            @Override
-            public void onChanged(@Nullable final List<NotiItem> notiItems) {
-                Log.d("live data on change", "QQQ");
-            }
-        });
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NotiListenerService.Arrival");

@@ -1,6 +1,7 @@
 package com.example.jefflin.notipreference;
 
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,24 +20,18 @@ import java.util.List;
 /*
     A class that store notification object's attributes
  */
-@Entity(tableName = "noti_table")
 public class NotiItem {
-    @NonNull
     public String appName;
-    @NonNull
     public String title;
-    @NonNull
     public String content;
-    @NonNull
     public Long postTime;
-    @NonNull
-
     public String category;
+    public Drawable icon;
 
-    @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public NotiItem(String appName, String title, String content, Long postTime, String category) {
+    public NotiItem(Drawable icon, String appName, String title, String content, Long postTime, String category) {
+        this.icon = icon;
         this.appName = appName;
         this.title = title;
         this.content = content;
@@ -44,19 +39,5 @@ public class NotiItem {
         this.category = category;
     }
 
-    @Dao
-    public interface NotiItemDao {
-
-        @Insert(onConflict = OnConflictStrategy.REPLACE)
-        void insert(NotiItem notiItem);
-
-        @Query("DELETE FROM noti_table")
-        void deleteAll();
-
-
-        @Query("SELECT * FROM noti_table")
-        LiveData<List<NotiItem>> getAllNoti();
-
-    }
 
 }

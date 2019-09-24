@@ -43,9 +43,9 @@ public class ActivityESM extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_survey);
 
-        mData = NotiListenerService.getData();
-        mData_8hours = getElementsIn8Hours(mData);
-        mData_6 = getRandom6Element(mData_8hours);
+//        mData = NotiListenerService.getData();
+//        mData_8hours = getElementsIn8Hours(mData);
+//        mData_6 = getRandom6Element(mData_8hours);
         mActiveData = NotiListenerService.getActiveNotis();
 
         if (getIntent().getExtras() != null) {
@@ -91,7 +91,7 @@ public class ActivityESM extends AppCompatActivity {
                 Bundle xBundle = new Bundle();
                 xBundle.putSerializable("data", mESMQuestion);
                 xBundle.putString("style", style_string);
-                xBundle.putSerializable("arrayList", mData_6);
+                xBundle.putSerializable("arrayList", mActiveData);
                 fragscale.setArguments(xBundle);
                 arraylist_fragments.add(fragscale);
             }

@@ -44,7 +44,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
 
         NotiItem notiItem = mData.get(position);
 
-//        holder.iv_icon.setImageBitmap(icon);
+        holder.iv_icon.setImageDrawable(notiItem.icon);
         holder.tv_appname.setText(notiItem.appName);
         holder.tv_title.setText(notiItem.title);
         holder.tv_content.setText(notiItem.content);
@@ -69,7 +69,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-//        private ImageView iv_icon;
+        private ImageView iv_icon;
         private TextView tv_appname;
         private TextView tv_title;
         private TextView tv_content;
@@ -78,7 +78,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
 
         ViewHolder(View itemView) {
             super(itemView);
-//            iv_icon = (ImageView)itemView.findViewById(R.id.icon);
+            iv_icon = (ImageView)itemView.findViewById(R.id.icon);
             tv_appname = (TextView)itemView.findViewById(R.id.appname);
             tv_title = (TextView)itemView.findViewById(R.id.title);
             tv_content = (TextView)itemView.findViewById(R.id.content);

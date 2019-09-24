@@ -65,6 +65,7 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn){
+        Drawable icon = null;
         String packageName = "null";
         String title = "null";
         String content = "null";
@@ -106,21 +107,26 @@ public class NotiListenerService extends NotificationListenerService {
         } catch (Exception e){
             Log.d("NotiListenerService",category);
         }
+        try {
+            icon = packageManager.getApplicationIcon(packageName);
+        } catch (Exception e) {
+            Log.d("Rank","icon failed");
+        }
 
         //check if spotify repeat, 避免按暫停時存到一堆不是ongoing 的 noti
         if(appName.equals("Spotify")) {
             if(!spotifyRepeat) {
                 spotifyRepeat = true;
                 pushNotification();
-                mData.add(new NotiItem(appName, title, content, postTime, category));
+                mData.add(new NotiItem(icon, appName, title, content, postTime, category));
             }
         }
         else if(!sbn.isOngoing()){
             pushNotification();
-            mData.add(new NotiItem(appName, title, content, postTime, category));
-        } else if (mData.isEmpty() || !isOngoingAppNameRepeat(mData, new NotiItem(appName, title, content, postTime, category))){
+            mData.add(new NotiItem(icon, appName, title, content, postTime, category));
+        } else if (mData.isEmpty() || !isOngoingAppNameRepeat(mData, new NotiItem(icon, appName, title, content, postTime, category))){
             pushNotification();
-            mData.add(new NotiItem(appName, title, content, postTime, category));
+            mData.add(new NotiItem(icon, appName, title, content, postTime, category));
         }
 
         Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
@@ -171,6 +177,7 @@ public class NotiListenerService extends NotificationListenerService {
         ArrayList<NotiItem> activeData = new ArrayList<NotiItem>();
 
         for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
+            Drawable icon = null;
             String packageName = "null";
             String title = "null";
             String content = "null";
@@ -206,10 +213,15 @@ public class NotiListenerService extends NotificationListenerService {
             } catch (Exception e){
                 Log.d("NotiListenerService",category);
             }
+            try {
+                icon = packageManager.getApplicationIcon(packageName);
+            } catch (Exception e) {
+                Log.d("Rank","icon failed");
+            }
 
             Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
 
-            activeData.add(new NotiItem(appName, title, content, postTime, category));
+            activeData.add(new NotiItem(icon, appName, title, content, postTime, category));
         }
         return activeData;
     }

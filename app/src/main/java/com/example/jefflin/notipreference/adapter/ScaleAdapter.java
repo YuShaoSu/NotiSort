@@ -45,6 +45,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
 
         NotiItem notiItem = mData.get(position);
 
+        holder.icon.setImageDrawable(notiItem.icon);
         holder.appname.setText(notiItem.appName);
         holder.title.setText(notiItem.title);
         holder.content.setText(notiItem.content);
@@ -61,6 +62,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        private ImageView icon;
         private TextView appname;
         private TextView title;
         private TextView content;
@@ -68,17 +70,10 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
 
         ViewHolder(View view) {
             super(view);
+            icon = (ImageView)itemView.findViewById(R.id.icon);
             appname = (TextView) view.findViewById(R.id.appname);
             title = (TextView) view.findViewById(R.id.title);
             content = (TextView) view.findViewById(R.id.content);
-
-
-//            scaleGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(RadioGroup group, int checkedId) {
-//
-//                }
-//            });
         }
     }
 }
