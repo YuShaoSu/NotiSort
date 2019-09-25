@@ -67,6 +67,8 @@ public class FragmentScale extends Fragment  {
         setRecyclerView(rootView);
 //        setItemTouchHelper();
 
+
+
         return rootView;
 
     }

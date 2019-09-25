@@ -23,9 +23,11 @@ Features
 * user sorting / scaling of notifications
 * ESM questionnaire
 
-To do list
+NotiItem
 ---
-* finish functions of scaling, esm page
-* create db to store notification data
-* notification filter (filter out system app, alarm clock ...)
-* post the notification of this app
+* include:
+    * notification info
+    * likert-scale of each notification
+
+* likert-scale: use int to denote the scale
+    * 0 for strong agree and 5 for strong disagree

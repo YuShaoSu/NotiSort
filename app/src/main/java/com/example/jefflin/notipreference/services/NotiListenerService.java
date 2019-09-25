@@ -230,7 +230,7 @@ public class NotiListenerService extends NotificationListenerService {
                 Log.d("Rank","icon failed");
             }
 
-            Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
+//            Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
 
             activeData.add(new NotiItem(icon, appName, title, content, postTime, category));
         }

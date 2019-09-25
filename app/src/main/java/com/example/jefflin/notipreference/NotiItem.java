@@ -28,6 +28,11 @@ public class NotiItem {
     public String category;
     public Drawable icon;
 
+    public int factor0;
+    public int factor1;
+    public int factor2;
+    public int factor3;
+
     public int id;
 
     public NotiItem(Drawable icon, String appName, String title, String content, Long postTime, String category) {
@@ -37,6 +42,10 @@ public class NotiItem {
         this.content = content;
         this.postTime = postTime;
         this.category = category;
+        this.factor0 = -1;
+        this.factor1 = -1;
+        this.factor2 = -1;
+        this.factor3 = -1;
     }
 
 
