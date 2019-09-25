@@ -30,4 +30,4 @@ NotiItem
     * likert-scale of each notification
 
 * likert-scale: use int to denote the scale
-    * 0 for strong agree and 5 for strong disagree
+    * 4 for strong agree and 0 for strong disagree
