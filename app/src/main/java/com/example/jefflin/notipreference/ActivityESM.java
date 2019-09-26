@@ -12,19 +12,14 @@ import com.example.jefflin.notipreference.fragment.FragmentScale;
 import com.example.jefflin.notipreference.fragment.FragmentSurvey;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.example.jefflin.notipreference.adapter.FragmentAdapter;
-import com.example.jefflin.notipreference.fragment.FragmentCheckboxes;
 import com.example.jefflin.notipreference.fragment.FragmentEnd;
-import com.example.jefflin.notipreference.fragment.FragmentMultiline;
-import com.example.jefflin.notipreference.fragment.FragmentRadioboxes;
 import com.example.jefflin.notipreference.fragment.FragmentSort;
 import com.example.jefflin.notipreference.fragment.FragmentStart;
-import com.example.jefflin.notipreference.fragment.FragmentTextSimple;
 import com.example.jefflin.notipreference.model.ESMQuestion;
 import com.example.jefflin.notipreference.model.ESMPojo;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 
 public class ActivityESM extends AppCompatActivity {
@@ -105,41 +100,6 @@ public class ActivityESM extends AppCompatActivity {
                 arraylist_fragments.add(fragsurvey);
             }
 
-            if (mESMQuestion.getQuestionType().equals("String")) {
-                FragmentTextSimple frag = new FragmentTextSimple();
-                Bundle xBundle = new Bundle();
-                xBundle.putSerializable("data", mESMQuestion);
-                xBundle.putString("style", style_string);
-                frag.setArguments(xBundle);
-                arraylist_fragments.add(frag);
-            }
-
-            if (mESMQuestion.getQuestionType().equals("Checkboxes")) {
-                FragmentCheckboxes frag = new FragmentCheckboxes();
-                Bundle xBundle = new Bundle();
-                xBundle.putSerializable("data", mESMQuestion);
-                xBundle.putString("style", style_string);
-                frag.setArguments(xBundle);
-                arraylist_fragments.add(frag);
-            }
-
-            if (mESMQuestion.getQuestionType().equals("Radioboxes")) {
-                FragmentRadioboxes frag = new FragmentRadioboxes();
-                Bundle xBundle = new Bundle();
-                xBundle.putSerializable("data", mESMQuestion);
-                xBundle.putString("style", style_string);
-                frag.setArguments(xBundle);
-                arraylist_fragments.add(frag);
-            }
-
-            if (mESMQuestion.getQuestionType().equals("StringMultiline")) {
-                FragmentMultiline frag = new FragmentMultiline();
-                Bundle xBundle = new Bundle();
-                xBundle.putSerializable("data", mESMQuestion);
-                xBundle.putString("style", style_string);
-                frag.setArguments(xBundle);
-                arraylist_fragments.add(frag);
-            }
         }
 
         //- END -

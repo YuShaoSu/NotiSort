@@ -29,34 +29,6 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
     static final int agree = 3;
     static final int strong_agree = 4;
 
-//    private static final int strong_disagree0 = R.id.strong_disagree0;
-//    private static final int strong_disagree1 = R.id.strong_disagree1;
-//    private static final int strong_disagree2 = R.id.strong_disagree2;
-//    private static final int strong_disagree3 = R.id.strong_disagree3;
-//
-//    private static final int disagree0 = R.id.disagree0;
-//    private static final int disagree1 = R.id.disagree1;
-//    private static final int disagree2 = R.id.disagree2;
-//    private static final int disagree3 = R.id.disagree3;
-//
-//    private static final int neutral0 = R.id.neutral0;
-//    private static final int neutral1 = R.id.neutral1;
-//    private static final int neutral2 = R.id.neutral2;
-//    private static final int neutral3 = R.id.neutral3;
-//
-//    private static final int agree0 = R.id.agree0;
-//    private static final int agree1 = R.id.agree1;
-//    private static final int agree2 = R.id.agree2;
-//    private static final int agree3 = R.id.agree3;
-//
-//    private static final int strong_agree0 = R.id.strong_agree0;
-//    private static final int strong_agree1 = R.id.strong_agree1;
-//    private static final int strong_agree2 = R.id.strong_agree2;
-//    private static final int strong_agree3 = R.id.strong_agree3;
-
-
-    private RadioGroup lastCheckedRadioGroup = null;
-
     public ScaleAdapter(Context context, ArrayList<NotiItem> data){
         this.mContext = context;
         this.mData = data;
