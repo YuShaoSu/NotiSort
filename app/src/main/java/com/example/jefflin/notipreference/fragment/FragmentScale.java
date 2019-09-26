@@ -107,6 +107,8 @@ public class FragmentScale extends Fragment  {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-
-
+    public void changeActiveData() {
+        mActiveData = ((ActivityESM) mContext).getCurrentData();
+        mAdapter.notifyDataSetChanged();
+    }
 }
