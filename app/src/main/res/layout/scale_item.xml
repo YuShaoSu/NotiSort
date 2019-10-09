@@ -119,23 +119,23 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <View style="@style/Space" />
-
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:text="\nImportance"
+                android:layout_height="match_parent"
+                android:gravity="center|left"
+                android:text="@string/factor0"
                 android:textColor="#000000" />
 
-            <View style="@style/Space" />
+            <View
+                style="@style/Space"
+                android:layout_width="54dp" />
 
             <RadioButton
                 android:id="@+id/strong_disagree0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Strongly\nDisagree"
+                android:text="@string/stronglyDisagree"
                 android:button="@null"
                 android:drawableBottom="@android:drawable/btn_radio"
                 android:textSize="10sp"
@@ -179,7 +179,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Strongly\nAgree"
+                android:text="@string/stronglyAgree"
                 android:textSize="10sp"
                 android:button="@null"
                 android:drawableBottom="@android:drawable/btn_radio"
@@ -197,17 +197,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-            <View style="@style/Space" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:gravity="center"
                 android:padding="2dp"
-                android:text="Importance"
+                android:text="@string/factor1"
                 android:textColor="#000000" />
 
-            <View style="@style/Space" />
+            <View
+                style="@style/Space"
+                android:layout_width="55dp" />
 
             <RadioButton
                 android:id="@+id/strong_disagree1"
@@ -261,17 +261,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <View style="@style/Space" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:gravity="center"
                 android:padding="2dp"
-                android:text="Importance"
+                android:text="@string/factor2"
                 android:textColor="#000000" />
 
-            <View style="@style/Space" />
+            <View
+                style="@style/Space"
+                android:layout_width="25dp" />
 
             <RadioButton
                     android:id="@+id/strong_disagree2"
@@ -324,17 +324,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <View style="@style/Space" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:gravity="center"
                 android:padding="2dp"
-                android:text="Importance"
+                android:text="@string/factor3"
                 android:textColor="#000000" />
 
-            <View style="@style/Space" />
+            <View
+                style="@style/Space"
+                android:layout_width="11dp" />
 
                 <RadioButton
                     android:id="@+id/strong_disagree3"

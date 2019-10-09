@@ -17,7 +17,7 @@
     <string name="finish">完成</string>
 
 
-    <string name="displayOrder">請依<b>想呈現</b>順序排名</string>
+    <string name="displayOrder">請依<b>想處理</b>順序排名</string>
     <string name="viewOrder">請依<b>想看</b>程度排名</string>
     <string name="importanceOrder">請依<b>重要</b>程度排名</string>
     <string name="urgencyOrder">請依<b>緊急</b>程度排名</string>
@@ -35,6 +35,15 @@
     <string name="xcontinue">Continue</string>
     <string name="start">Start</string>
     <string name="close">Close</string>
+
+    <string name="factor0">\n   重要程度     </string>
+    <string name="factor1">   緊急程度     </string>
+    <string name="factor2">   內容吸引程度 </string>
+    <string name="factor3">   傳送者吸引程度</string>
+
+    <string name="stronglyDisagree">Strongly\nDisagree</string>
+    <string name="stronglyAgree">Strongly\nAgree</string>
+
 
     <string name="happy">&#128512;</string>
     <string name="neutral">&#128528;</string>
