@@ -79,71 +79,6 @@ public class NotiListenerService extends NotificationListenerService {
             return;
         }
 
-        Drawable icon = null;
-        String packageName = "null";
-        String title = "null";
-        String content = "null";
-        String appName = "null";
-        String category = "null";
-        Long postTime = sbn.getPostTime();
-
-        Notification notification = sbn.getNotification();
-
-        Log.d("NotiListenerService","posted");
-        Log.d("is ongoing", Boolean.toString(sbn.isOngoing()));
-        Log.d("app name", sbn.getPackageName());
-
-        try{
-            packageName = sbn.getPackageName();
-        } catch (Exception e) {
-            Log.d("d", "no packageName");
-        }
-        try{
-            title = notification.extras.get("android.title").toString();
-
-        } catch (Exception e) {
-            Log.d("d", "no title");
-        }
-        try{
-            content = notification.extras.get("android.text").toString();
-        } catch (Exception e) {
-            Log.d("d", "no content");
-        }
-        try {
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo( packageName, 0);
-            appName = (String) (applicationInfo != null ?
-                    packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
-        } catch (Exception e) {
-            Log.d("d","app name failed");
-        }
-        try {
-            category = (notification.category == null) ? "null" : notification.category;
-        } catch (Exception e){
-            Log.d("NotiListenerService",category);
-        }
-        try {
-            icon = packageManager.getApplicationIcon(packageName);
-        } catch (Exception e) {
-            Log.d("Rank","icon failed");
-        }
-
-        //check if spotify repeat, 避免按暫停時存到一堆不是ongoing 的 noti
-        if(appName.equals("Spotify")) {
-            if(!spotifyRepeat) {
-                spotifyRepeat = true;
-//                pushNotification();
-                mData.add(new NotiItem(icon, appName, title, content, postTime, category));
-            }
-        }
-        else if(!sbn.isOngoing()){
-//            pushNotification();
-            mData.add(new NotiItem(icon, appName, title, content, postTime, category));
-        } else if (mData.isEmpty() || !isOngoingAppNameRepeat(mData, new NotiItem(icon, appName, title, content, postTime, category))){
-//            pushNotification();
-            mData.add(new NotiItem(icon, appName, title, content, postTime, category));
-        }
-
-        Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
 
     }
 
@@ -154,23 +89,6 @@ public class NotiListenerService extends NotificationListenerService {
 
     public static ArrayList<NotiItem> getData() {
         return mData;
-    }
-
-    public static void putData( ArrayList<NotiItem> mData6) {
-        mData.addAll(mData6);
-    }
-
-    private static boolean isOngoingAppNameRepeat(ArrayList<NotiItem> list, NotiItem item) {
-        int j;
-        boolean repeat = false;
-        for (j=0; j<list.size(); j++) {
-            Log.d("item[" + j + "].appname:", list.get(j).appName);
-            if (item.appName.equals(list.get(j).appName)) {
-                repeat = true;
-                break;
-            }
-        }
-        return repeat;
     }
 
     private void pushNotification(){

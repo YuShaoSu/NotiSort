@@ -62,6 +62,17 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
         return mData.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

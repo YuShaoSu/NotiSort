@@ -28,9 +28,6 @@ public class ActivityESM extends AppCompatActivity {
     private ViewPager mPager;
     private String style_string = null;
 
-    ArrayList<NotiItem> mData;
-    ArrayList<NotiItem> mData_8hours;
-    ArrayList<NotiItem> mData_6 = new ArrayList<NotiItem>();
     ArrayList<NotiItem> mActiveData = new ArrayList<NotiItem>();
     ArrayList<NotiItem> mCurrentData = new ArrayList<NotiItem>();
 
@@ -49,9 +46,6 @@ public class ActivityESM extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_survey);
 
-//        mData = NotiListenerService.getData();
-//        mData_8hours = getElementsIn8Hours(mData);
-//        mData_6 = getRandom6Element(mData_8hours);
         mActiveData = NotiListenerService.getActiveNotis();
 
         if (getIntent().getExtras() != null) {
@@ -61,7 +55,6 @@ public class ActivityESM extends AppCompatActivity {
                 style_string = bundle.getString("style");
             }
         }
-
 
         Log.i("json Object = ", String.valueOf(mESMPojo.getESMQuestions()));
 
@@ -128,15 +121,12 @@ public class ActivityESM extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // put back 6 notifications
-        // NotiListenerService.putData(mData_6);
     }
 
     public void go_to_next() {
         mPager.setCurrentItem(mPager.getCurrentItem() + 1);
         fragscale.changeActiveData();
     }
-
 
     @Override
     public void onBackPressed() {
@@ -152,79 +142,6 @@ public class ActivityESM extends AppCompatActivity {
         returnIntent.putExtra("answers", instance.get_json_object());
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
-    }
-
-    public ArrayList<NotiItem> getRandom6Element(ArrayList<NotiItem> list) {
-        // randomly select 6 notifications
-        Random rand = new Random();
-        ArrayList<NotiItem> newList = new ArrayList<>();
-        ArrayList<NotiItem> list2 = new ArrayList<>(list);
-        int loopCount = 0;
-
-        for (int i=0; i<6; i++) {
-            loopCount ++;
-            try {
-                int randomIndex = rand.nextInt(list2.size());
-                //if (isOngoingCategoryRepeat(newList, list.get(randomIndex)) && newList.size()>0) {
-                //    i--;
-                //} else {
-                    newList.add(list2.get(randomIndex));
-                    list2.remove(randomIndex);
-                //}
-            } catch (Exception e) {
-                Log.d("d","not enough notifications here");
-            }
-            if (loopCount > 50) break;
-        }
-        return newList;
-    }
-
-    public ArrayList<NotiItem> getElementsIn8Hours(ArrayList<NotiItem> list) {
-        // select all notifications between 8 hours
-        Random rand = new Random();
-        ArrayList<NotiItem> listInTimeRange = new ArrayList<>();
-        ArrayList<NotiItem> list2 = new ArrayList<>(list);
-
-        try {
-            int randomIndex = rand.nextInt(list2.size());
-            NotiItem randomItem = list2.get(randomIndex);
-            Long randomTime = randomItem.postTime;
-            list2.remove(randomIndex);
-
-            for (int i = 0; i < list2.size(); i++) {
-                if (hourDifference(randomTime, list2.get(i).postTime) <= 4) {
-                    listInTimeRange.add(list2.get(i));
-                }
-            }
-            listInTimeRange.add(randomItem);
-        } catch (Exception e) {
-            Log.d("d", "d");
-        }
-
-        return listInTimeRange;
-    }
-
-    private static boolean isOngoingCategoryRepeat(ArrayList<NotiItem> list, NotiItem item) {
-        Log.d("inside function: ", "ongoing repeat checking");
-        int j;
-        boolean repeat = false;
-        for (j=0; j<list.size(); j++) {
-            if (item.category.equals(list.get(j).category)
-                    // list ongoing notification categories
-                    && (item.category.equals("alarm")
-                    || item.category.equals("call")
-                    || item.category.equals("navigation")
-                    || item.category.equals("progress")
-                    || item.category.equals("service")
-                    || item.category.equals("status")
-                    || item.category.equals("transport"))
-            ) {
-                Log.d("repeat app name",item.appName);
-                Log.d("d",item.category);
-                repeat = true;
-            }
-        }
-        return repeat;
     }
 
     private int hourDifference (Long d1, Long d2) {
