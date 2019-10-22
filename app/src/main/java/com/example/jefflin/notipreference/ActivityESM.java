@@ -32,6 +32,17 @@ public class ActivityESM extends AppCompatActivity {
     ArrayList<NotiItem> mData_8hours;
     ArrayList<NotiItem> mData_6 = new ArrayList<NotiItem>();
     ArrayList<NotiItem> mActiveData = new ArrayList<NotiItem>();
+    ArrayList<NotiItem> mCurrentData = new ArrayList<NotiItem>();
+
+    FragmentScale fragscale = new FragmentScale();
+
+    public ArrayList<NotiItem> getCurrentData() {
+        return mCurrentData;
+    }
+
+    public void putCurrentData(ArrayList<NotiItem> currentData) {
+        mCurrentData = currentData;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +77,6 @@ public class ActivityESM extends AppCompatActivity {
             arraylist_fragments.add(frag_start);
         }
         FragmentSort fragsort = new FragmentSort();
-        FragmentScale fragscale = new FragmentScale();
 
         //- FILL -
         for (ESMQuestion mESMQuestion : mESMPojo.getESMQuestions()) {
@@ -124,6 +134,7 @@ public class ActivityESM extends AppCompatActivity {
 
     public void go_to_next() {
         mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+        fragscale.changeActiveData();
     }
 
 

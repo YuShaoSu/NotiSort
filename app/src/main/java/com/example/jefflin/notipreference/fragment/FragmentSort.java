@@ -55,7 +55,6 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
         button_continue = (Button) rootView.findViewById(R.id.button_continue);
         textview_q_title = (TextView) rootView.findViewById(R.id.title);
         textview_q_discription = (TextView) rootView.findViewById(R.id.discription);
-
         iv_back = (ImageView) rootView.findViewById(R.id.back);
 
         iv_back.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +67,7 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
             @Override
             public void onClick(View v) {
                 //ESMAnswer.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
+                ((ActivityESM) mContext).putCurrentData(mActiveData);
                 ((ActivityESM) mContext).go_to_next();
             }
         });
