@@ -72,21 +72,21 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn){
-
         ArrayList<NotiItem> mActiveData;
-
         mActiveData = getActiveNotis();
 
         int i, category_count = 0;
-        if(mActiveData.size() > 7) {
-            for (i = 0; i < mActiveData.size(); ++i) {
-            }
+        if(mActiveData.size() > 5) {
             mData = mActiveData;
-            PushNotification pushNotification = new PushNotification(this);
-            return;
+            Notification notification = sbn.getNotification();
+            //check if the new post notification is ongoing
+            if (notification.category != null && !(
+                    notification.category.equals("alarm") || notification.category.equals("call") ||
+                    notification.category.equals("navigation") || notification.category.equals("progress") ||
+                    notification.category.equals("service") || notification.category.equals("transport"))) {
+                PushNotification pushNotification = new PushNotification(this);
+            }
         }
-
-
     }
 
     @Override
