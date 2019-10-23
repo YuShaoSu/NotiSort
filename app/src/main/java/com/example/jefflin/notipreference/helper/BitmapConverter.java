@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 
 public class BitmapConverter {
@@ -40,6 +41,8 @@ public class BitmapConverter {
     @NonNull
     public Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
         final Bitmap bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 10, out);      // compress to save memory
         final Canvas canvas = new Canvas(bmp);
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
