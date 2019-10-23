@@ -168,11 +168,15 @@ public class NotiListenerService extends NotificationListenerService {
                     shouldAdd = false;
                 }
             }
-            if (shouldAdd) {
+            if (shouldAdd && !isNotiSort(element)) {
                 newList.add(element);
             }
         }
 
         return newList;
+    }
+
+    private static boolean isNotiSort(NotiItem item) {
+        return item.appName.equals("NotiSort");
     }
 }
