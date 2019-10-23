@@ -36,19 +36,19 @@
     <string name="start">Start</string>
     <string name="close">Close</string>
 
-    <string name="factor0">\n   重要程度     </string>
-    <string name="factor1">   緊急程度     </string>
-    <string name="factor2">   內容吸引程度 </string>
-    <string name="factor3">   傳送者吸引程度</string>
+    <string name="factor0">\n重要程度</string>
+    <string name="factor1">緊急程度</string>
+    <string name="factor2">內容吸引程度</string>
+    <string name="factor3">傳送者吸引程度</string>
 
     <string name="stronglyDisagree">Strongly\nDisagree</string>
     <string name="stronglyAgree">Strongly\nAgree</string>
 
 
-    <string name="happy">&#128512;</string>
-    <string name="neutral">&#128528;</string>
-    <string name="sad">&#128577;</string>
-    <string name="cry">&#128557;</string>
-    <string name="angry">&#128545;</string>
-    <string name="wtf">&#128565;</string>
+    <string name="happy">&#128512;\n 非常開心 </string>
+    <string name="neutral">&#128528;\n   平平   </string>
+    <string name="sad">&#128577;\n稍微不開心</string>
+    <string name="cry">&#128557;\n非常不開心</string>
+    <string name="angry">&#128545;\n   生氣   </string>
+    <string name="wtf">&#128565;生氣</string>
 </resources>
