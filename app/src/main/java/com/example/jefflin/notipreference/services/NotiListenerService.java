@@ -23,6 +23,9 @@ import com.example.jefflin.notipreference.widgets.PushNotification;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.concurrent.Semaphore;
 
 public class NotiListenerService extends NotificationListenerService {
@@ -107,11 +110,11 @@ public class NotiListenerService extends NotificationListenerService {
 
         for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
             Drawable icon = null;
-            String packageName = "null";
-            String title = "null";
-            String content = "null";
-            String appName = "null";
-            String category = "null";
+            String packageName = " ";
+            String title = " ";
+            String content = " ";
+            String appName = " ";
+            String category = " ";
             Long postTime = notification.getPostTime();
 
             try{
@@ -138,7 +141,7 @@ public class NotiListenerService extends NotificationListenerService {
                 Log.d("d","app name failed");
             }
             try {
-                category = (notification.getNotification().category == null) ? "null" : notification.getNotification().category;
+                category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
             } catch (Exception e){
                 Log.d("NotiListenerService",category);
             }
@@ -152,6 +155,24 @@ public class NotiListenerService extends NotificationListenerService {
 
             activeData.add(new NotiItem(icon, appName, title, content, postTime, category));
         }
-        return activeData;
+        return getNotisWithoutDuplicate(activeData);
+    }
+
+    private static ArrayList<NotiItem> getNotisWithoutDuplicate(ArrayList<NotiItem> activeData) {
+        ArrayList<NotiItem> newList = new ArrayList<NotiItem>();
+
+        for (NotiItem element : activeData) {
+            boolean shouldAdd = true;
+            for (NotiItem newElement : newList) {
+                if (element.content.equals(newElement.content) && element.title.equals(newElement.title)) {
+                    shouldAdd = false;
+                }
+            }
+            if (shouldAdd) {
+                newList.add(element);
+            }
+        }
+
+        return newList;
     }
 }
