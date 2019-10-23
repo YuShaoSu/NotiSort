@@ -1,6 +1,9 @@
 package com.example.jefflin.notipreference.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.R;
+import com.example.jefflin.notipreference.helper.BitmapConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +52,11 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
 
         NotiItem notiItem = mData.get(position);
 
-        holder.icon.setImageDrawable(notiItem.icon);
+        BitmapConverter converter = new BitmapConverter();
+        Bitmap icon_ = converter.toBmp(notiItem.icon, notiItem.icon_height, notiItem.icon_width);
+        Drawable icon = new BitmapDrawable(mContext.getResources(), icon_);
+
+        holder.icon.setImageDrawable(icon);
         holder.appname.setText(notiItem.appName);
         holder.title.setText(notiItem.title);
         holder.content.setText(notiItem.content);

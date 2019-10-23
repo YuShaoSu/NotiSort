@@ -70,6 +70,7 @@ public class ActivityESM extends AppCompatActivity {
             arraylist_fragments.add(frag_start);
         }
         FragmentSort fragsort = new FragmentSort();
+        FragmentSort fragsort_display = new FragmentSort();
 
         //- FILL -
         for (ESMQuestion mESMQuestion : mESMPojo.getESMQuestions()) {
@@ -82,6 +83,16 @@ public class ActivityESM extends AppCompatActivity {
                 xBundle.putSerializable("arrayList", mActiveData);
                 fragsort.setArguments(xBundle);
                 arraylist_fragments.add(fragsort);
+            }
+
+            if (mESMQuestion.getQuestionType().equals("displaySort")) {
+                fragsort_display = new FragmentSort();
+                Bundle xBundle = new Bundle();
+                xBundle.putSerializable("data", mESMQuestion);
+                xBundle.putString("style", style_string);
+                xBundle.putSerializable("arrayList", mActiveData);
+                fragsort_display.setArguments(xBundle);
+                arraylist_fragments.add(fragsort_display);
             }
 
             if (mESMQuestion.getQuestionType().equals("Scale")) {

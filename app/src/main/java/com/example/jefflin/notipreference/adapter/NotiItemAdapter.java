@@ -3,6 +3,9 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jefflin.notipreference.NotiItem;
+import com.example.jefflin.notipreference.helper.BitmapConverter;
 import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
 import com.example.jefflin.notipreference.R;
 
@@ -44,7 +48,11 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
 
         NotiItem notiItem = mData.get(position);
 
-        holder.iv_icon.setImageDrawable(notiItem.icon);
+        BitmapConverter converter = new BitmapConverter();
+        Bitmap icon_ = converter.toBmp(notiItem.icon, notiItem.icon_height, notiItem.icon_width);
+        Drawable icon = new BitmapDrawable(mContext.getResources(), icon_);
+
+        holder.iv_icon.setImageDrawable(icon);
         holder.tv_appname.setText(notiItem.appName);
         holder.tv_title.setText(notiItem.title);
         holder.tv_content.setText(notiItem.content);

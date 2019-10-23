@@ -5,7 +5,10 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
@@ -18,6 +21,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.jefflin.notipreference.ActivityMain;
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.R;
+import com.example.jefflin.notipreference.helper.BitmapConverter;
 import com.example.jefflin.notipreference.widgets.PushNotification;
 
 import java.util.ArrayList;
@@ -109,12 +113,14 @@ public class NotiListenerService extends NotificationListenerService {
         ArrayList<NotiItem> activeData = new ArrayList<NotiItem>();
 
         for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
-            Drawable icon = null;
-            String packageName = " ";
-            String title = " ";
-            String content = " ";
-            String appName = " ";
-            String category = " ";
+            byte[] icon = null;
+            String packageName = "null";
+            String title = "null";
+            String content = "null";
+            String appName = "null";
+            String category = "null";
+            int icon_height = 1;
+            int icon_width = 1;
             Long postTime = notification.getPostTime();
 
             try{
@@ -146,14 +152,20 @@ public class NotiListenerService extends NotificationListenerService {
                 Log.d("NotiListenerService",category);
             }
             try {
-                icon = packageManager.getApplicationIcon(packageName);
+                BitmapConverter converter = new BitmapConverter();
+//                BitmapDrawable tmpDraw = (BitmapDrawable)packageManager.getApplicationIcon(packageName);
+                Bitmap Bmp = converter.getBitmapFromDrawable(packageManager.getApplicationIcon(packageName));
+                icon = converter.toByte(Bmp);
+                icon_height = Bmp.getHeight();
+                icon_width = Bmp.getWidth();
+
             } catch (Exception e) {
-                Log.d("Rank","icon failed");
+                Log.e("Rank","icon failed", e);
             }
 
 //            Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
 
-            activeData.add(new NotiItem(icon, appName, title, content, postTime, category));
+            activeData.add(new NotiItem(icon, appName, title, content, postTime, category, icon_height, icon_width));
         }
         return getNotisWithoutDuplicate(activeData);
     }

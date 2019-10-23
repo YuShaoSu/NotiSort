@@ -19,9 +19,9 @@
       "required": false
     },
     {
-      "question_type": "Sort",
+      "question_type": "displaySort",
       "question_title": "請依通知列希望的呈現順序排名",
-      "description": "3-- of 4",
+      "description": "3 of 4",
       "required": false
     },
     {
