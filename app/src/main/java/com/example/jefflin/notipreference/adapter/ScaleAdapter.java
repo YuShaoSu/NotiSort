@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.R;
-import com.example.jefflin.notipreference.helper.BitmapConverter;
+import com.example.jefflin.notipreference.helper.IconHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +52,8 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
 
         NotiItem notiItem = mData.get(position);
 
-        BitmapConverter converter = new BitmapConverter();
-        Bitmap icon_ = converter.toBmp(notiItem.icon, notiItem.icon_height, notiItem.icon_width);
+        IconHandler iconHandler = new IconHandler();
+        Bitmap icon_ = iconHandler.loadImageFromStorage(notiItem.icon, notiItem.appName);
         Drawable icon = new BitmapDrawable(mContext.getResources(), icon_);
 
         holder.icon.setImageDrawable(icon);

@@ -14,11 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jefflin.notipreference.NotiItem;
-import com.example.jefflin.notipreference.helper.BitmapConverter;
+import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
 import com.example.jefflin.notipreference.R;
 
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,8 +47,8 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
 
         NotiItem notiItem = mData.get(position);
 
-        BitmapConverter converter = new BitmapConverter();
-        Bitmap icon_ = converter.toBmp(notiItem.icon, notiItem.icon_height, notiItem.icon_width);
+        IconHandler iconHandler = new IconHandler();
+        Bitmap icon_ = iconHandler.loadImageFromStorage(notiItem.icon, notiItem.appName);
         Drawable icon = new BitmapDrawable(mContext.getResources(), icon_);
 
         holder.iv_icon.setImageDrawable(icon);

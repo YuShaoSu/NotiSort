@@ -28,9 +28,10 @@ public class NotiItem implements Serializable {
     public String content;
     public Long postTime;
     public String category;
-    public byte[] icon;
-    public int icon_height;
-    public int icon_width;
+//    public byte[] icon;
+//    public int icon_height;
+//    public int icon_width;
+    public String icon;
 
     public int factor0;
     public int factor1;
@@ -39,15 +40,15 @@ public class NotiItem implements Serializable {
 
     public int id;
 //Drawable icon,
-    public NotiItem(byte[] icon, String appName, String title, String content, Long postTime, String category, int icon_height, int icon_width) {
+    public NotiItem(String icon, String appName, String title, String content, Long postTime, String category) {
         this.icon = icon;
         this.appName = appName;
         this.title = title;
         this.content = content;
         this.postTime = postTime;
         this.category = category;
-        this.icon_height = icon_height;
-        this.icon_width = icon_width;
+//        this.icon_height = icon_height;
+//        this.icon_width = icon_width;
         this.factor0 = -1;
         this.factor1 = -1;
         this.factor2 = -1;

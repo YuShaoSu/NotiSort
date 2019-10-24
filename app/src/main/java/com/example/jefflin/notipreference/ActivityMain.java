@@ -2,6 +2,7 @@ package com.example.jefflin.notipreference;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -31,8 +33,6 @@ import java.util.List;
 public class ActivityMain extends AppCompatActivity {
     final private int SURVEY_REQUEST = 1337;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +41,8 @@ public class ActivityMain extends AppCompatActivity {
 
         createNotificationChannel();
 
+        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
+        globalVariable.setDirPath(getApplicationContext(), "iconDir");
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NotiListenerService.Arrival");

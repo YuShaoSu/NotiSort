@@ -1,35 +1,24 @@
 package com.example.jefflin.notipreference.services;
 
 import android.app.Notification;
-import android.app.PendingIntent;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.example.jefflin.notipreference.ActivityMain;
+import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.NotiItem;
-import com.example.jefflin.notipreference.R;
-import com.example.jefflin.notipreference.helper.BitmapConverter;
+import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.widgets.PushNotification;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.concurrent.Semaphore;
 
 public class NotiListenerService extends NotificationListenerService {
@@ -37,6 +26,8 @@ public class NotiListenerService extends NotificationListenerService {
     static PackageManager packageManager;
     private int notiNum = 0;
     private static boolean spotifyRepeat = false;
+
+    private Context mContext;
 
     private static final String TAG = "MyNotificationService";
     static NotiListenerService _this;
@@ -113,7 +104,8 @@ public class NotiListenerService extends NotificationListenerService {
         ArrayList<NotiItem> activeData = new ArrayList<NotiItem>();
 
         for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
-            byte[] icon = null;
+//            byte[] icon = null;
+            String icon = "null";
             String packageName = "null";
             String title = "null";
             String content = "null";
@@ -152,20 +144,20 @@ public class NotiListenerService extends NotificationListenerService {
                 Log.d("NotiListenerService",category);
             }
             try {
-                BitmapConverter converter = new BitmapConverter();
+                IconHandler iconHandler = new IconHandler();
 //                BitmapDrawable tmpDraw = (BitmapDrawable)packageManager.getApplicationIcon(packageName);
-                Bitmap Bmp = converter.getBitmapFromDrawable(packageManager.getApplicationIcon(packageName));
-                icon = converter.toByte(Bmp);
-                icon_height = Bmp.getHeight();
-                icon_width = Bmp.getWidth();
-
+//                final GlobalClass global = (GlobalClass) getApplicationContext();
+                icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
+//                icon = converter.toByte(Bmp);
+//                icon_height = Bmp.getHeight();
+//                icon_width = Bmp.getWidth();
             } catch (Exception e) {
                 Log.e("Rank","icon failed", e);
             }
 
 //            Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
 
-            activeData.add(new NotiItem(icon, appName, title, content, postTime, category, icon_height, icon_width));
+            activeData.add(new NotiItem(icon, appName, title, content, postTime, category));
         }
         return getNotisWithoutDuplicate(activeData);
     }
