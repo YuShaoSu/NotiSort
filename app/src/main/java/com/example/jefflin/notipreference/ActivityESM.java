@@ -30,6 +30,7 @@ public class ActivityESM extends AppCompatActivity {
 
     ArrayList<NotiItem> mActiveData = new ArrayList<NotiItem>();
     ArrayList<NotiItem> mCurrentData = new ArrayList<NotiItem>();
+    ArrayList<NotiItem> mActiveDataDisplay = new ArrayList<NotiItem>();
 
     FragmentScale fragscale = new FragmentScale();
 
@@ -46,7 +47,8 @@ public class ActivityESM extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_survey);
 
-        mActiveData = NotiListenerService.getActiveNotis();
+        mActiveData = NotiListenerService.getActiveNotis().get("click");
+        mActiveDataDisplay = NotiListenerService.getActiveNotis().get("display");
 
         if (getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
@@ -90,7 +92,7 @@ public class ActivityESM extends AppCompatActivity {
                 Bundle xBundle = new Bundle();
                 xBundle.putSerializable("data", mESMQuestion);
                 xBundle.putString("style", style_string);
-                xBundle.putSerializable("arrayList", mActiveData);
+                xBundle.putSerializable("arrayList", mActiveDataDisplay);
                 fragsort_display.setArguments(xBundle);
                 arraylist_fragments.add(fragsort_display);
             }

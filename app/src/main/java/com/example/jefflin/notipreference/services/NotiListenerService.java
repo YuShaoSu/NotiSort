@@ -19,6 +19,8 @@ import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.widgets.PushNotification;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 public class NotiListenerService extends NotificationListenerService {
@@ -64,7 +66,7 @@ public class NotiListenerService extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn){
         ArrayList<NotiItem> mActiveData;
-        mActiveData = getActiveNotis();
+        mActiveData = getActiveNotis().get("click");
 
         int i, category_count = 0;
         if(mActiveData.size() > 5) {
@@ -99,12 +101,13 @@ public class NotiListenerService extends NotificationListenerService {
         }
     }
 
-    public static ArrayList<NotiItem> getActiveNotis() {
+    public static Map<String, ArrayList<NotiItem>> getActiveNotis() {
         NotiListenerService notiListenerService = NotiListenerService.get();
         ArrayList<NotiItem> activeData = new ArrayList<NotiItem>();
-
+        ArrayList<NotiItem> activeDataDisplay = new ArrayList<NotiItem>();
+        int order = 0;
+        Map<String, ArrayList<NotiItem>> map = new HashMap();
         for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
-//            byte[] icon = null;
             String icon = "null";
             String packageName = "null";
             String title = "null";
@@ -145,21 +148,20 @@ public class NotiListenerService extends NotificationListenerService {
             }
             try {
                 IconHandler iconHandler = new IconHandler();
-//                BitmapDrawable tmpDraw = (BitmapDrawable)packageManager.getApplicationIcon(packageName);
-//                final GlobalClass global = (GlobalClass) getApplicationContext();
                 icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
-//                icon = converter.toByte(Bmp);
-//                icon_height = Bmp.getHeight();
-//                icon_width = Bmp.getWidth();
             } catch (Exception e) {
                 Log.e("Rank","icon failed", e);
             }
 
 //            Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
 
-            activeData.add(new NotiItem(icon, appName, title, content, postTime, category));
+            activeData.add(new NotiItem(icon, appName, title, content, postTime, category, order));
+            activeDataDisplay.add(new NotiItem(icon, appName, title, content, postTime, category, order));
+            order++;
+            map.put("click", getNotisWithoutDuplicate(activeData));
+            map.put("display", getNotisWithoutDuplicate(activeDataDisplay));
         }
-        return getNotisWithoutDuplicate(activeData);
+        return map;
     }
 
     private static ArrayList<NotiItem> getNotisWithoutDuplicate(ArrayList<NotiItem> activeData) {
