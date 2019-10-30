@@ -151,7 +151,7 @@ public class ActivitySurvey extends AppCompatActivity {
         }
     }
 
-    public void event_survey_completed(ESMAnswer instance) {
+    public void event_survey_completed(SurveyAnswer instance) {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("answers", instance.get_json_object());
         setResult(Activity.RESULT_OK, returnIntent);

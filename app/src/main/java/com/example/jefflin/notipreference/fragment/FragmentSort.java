@@ -61,7 +61,7 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
         button_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ESMAnswer.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
+                //SurveyAnswer.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
                 ((ActivitySurvey) mContext).putCurrentData(mActiveData);
                 ((ActivitySurvey) mContext).go_to_next();
             }

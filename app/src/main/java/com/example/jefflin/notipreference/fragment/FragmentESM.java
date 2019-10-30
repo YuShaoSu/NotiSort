@@ -19,14 +19,13 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.jefflin.notipreference.ActivitySurvey;
 import com.example.jefflin.notipreference.Answer;
-import com.example.jefflin.notipreference.ESMAnswer;
+import com.example.jefflin.notipreference.SurveyAnswer;
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.model.ESMQuestion;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class FragmentESM extends Fragment  {
 
@@ -284,17 +283,16 @@ public class FragmentESM extends Fragment  {
                     answer.setEsmQ4(selectedRadioButtonText4);
                     answer.setEsmQ5(selectedRadioButtonText5);
                     answer.setEsmQ6(selectedRadioButtonText6);
+
+                    String json = SurveyAnswer.getInstance().getAnswer(answer);
+
+                    Log.i("ans in json:", json);
+
                 }
                 else {  // scale not done or other err(not set on current)
                     Log.d("answer handler", "scale not done");
                 }
 
-                ESMAnswer.getInstance().put_answer("1. 身邊有人嗎？", selectedRadioButtonText1);
-                ESMAnswer.getInstance().put_answer("2. 你在哪裡？", selectedRadioButtonText2);
-                ESMAnswer.getInstance().put_answer("3. 你在進行什麼活動?", checkedText3);
-                ESMAnswer.getInstance().put_answer("4. 你很投入活動?", selectedRadioButtonText4);
-                ESMAnswer.getInstance().put_answer("5. 你很忙碌?", selectedRadioButtonText5);
-                ESMAnswer.getInstance().put_answer("6. 你的心情?", selectedRadioButtonText6);
 
                 ((ActivitySurvey) mContext).go_to_next();
             }
