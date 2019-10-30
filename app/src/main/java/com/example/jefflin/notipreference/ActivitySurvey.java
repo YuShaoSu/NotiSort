@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.jefflin.notipreference.fragment.FragmentScale;
-import com.example.jefflin.notipreference.fragment.FragmentSurvey;
+import com.example.jefflin.notipreference.fragment.FragmentESM;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.example.jefflin.notipreference.adapter.FragmentAdapter;
 import com.example.jefflin.notipreference.fragment.FragmentEnd;
@@ -20,9 +20,8 @@ import com.example.jefflin.notipreference.model.ESMPojo;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-public class ActivityESM extends AppCompatActivity {
+public class ActivitySurvey extends AppCompatActivity {
 
     private ESMPojo mESMPojo;
     private ViewPager mPager;
@@ -108,9 +107,11 @@ public class ActivityESM extends AppCompatActivity {
             }
 
             if (mESMQuestion.getQuestionType().equals("Survey")) {
-                FragmentSurvey fragsurvey = new FragmentSurvey();
+                FragmentESM fragsurvey = new FragmentESM();
                 Bundle xBundle = new Bundle();
                 xBundle.putSerializable("data", mESMQuestion);
+                xBundle.putSerializable("arrayList", mActiveData);
+                xBundle.putSerializable("arrayListDisplay", mActiveDataDisplay);
                 xBundle.putString("style", style_string);
                 fragsurvey.setArguments(xBundle);
                 arraylist_fragments.add(fragsurvey);

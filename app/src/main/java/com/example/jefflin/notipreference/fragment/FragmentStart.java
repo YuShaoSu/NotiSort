@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.jefflin.notipreference.R;
-import com.example.jefflin.notipreference.ActivityESM;
+import com.example.jefflin.notipreference.ActivitySurvey;
 import com.example.jefflin.notipreference.model.ESMProperties;
 
 
@@ -30,7 +30,7 @@ public class FragmentStart extends Fragment {
         button_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ActivityESM) mContext).go_to_next();
+                ((ActivitySurvey) mContext).go_to_next();
             }
         });
 

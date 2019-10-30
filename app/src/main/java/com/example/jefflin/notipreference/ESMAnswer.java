@@ -21,7 +21,7 @@ public class ESMAnswer {
 
     public String get_json_object() {
         Gson gson = new Gson();
-        return gson.toJson(answered_hashmap,LinkedHashMap.class);
+        return gson.toJson(answered_hashmap, LinkedHashMap.class);
     }
 
     @Override

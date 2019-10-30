@@ -1,7 +1,7 @@
 package com.example.jefflin.notipreference.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,24 +16,19 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.jefflin.notipreference.ActivityESM;
+import com.example.jefflin.notipreference.ActivitySurvey;
+import com.example.jefflin.notipreference.Answer;
 import com.example.jefflin.notipreference.ESMAnswer;
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.R;
-import com.example.jefflin.notipreference.adapter.NotiItemAdapter;
-import com.example.jefflin.notipreference.adapter.ScaleAdapter;
-import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
 import com.example.jefflin.notipreference.model.ESMQuestion;
-import com.example.jefflin.notipreference.services.NotiListenerService;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
-public class FragmentSurvey extends Fragment  {
+public class FragmentESM extends Fragment  {
 
     private FragmentActivity mContext;
     private Button button_continue;
@@ -62,6 +57,9 @@ public class FragmentSurvey extends Fragment  {
     private Boolean q4_selected;
     private Boolean q5_selected;
     private Boolean q6_selected;
+
+    ArrayList<NotiItem> mActiveData;
+    ArrayList<NotiItem> mActiveDataDisplay;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -274,6 +272,23 @@ public class FragmentSurvey extends Fragment  {
                 RadioButton selectedRadioButton6 = (RadioButton) rootView.findViewById(radioGroupQ6.getCheckedRadioButtonId());
                 String selectedRadioButtonText6 = selectedRadioButton6.getTag().toString();
 
+
+                // handle answer of previous
+                Answer answer = new Answer(3, Calendar.getInstance().getTimeInMillis(), 0);
+                if(answer.answerHandler(mActiveData, mActiveDataDisplay)){
+                    // scale check passed and done put notifications into answer
+                    // now put ESM answer
+                    answer.setEsmQ1(selectedRadioButtonText1);
+                    answer.setEsmQ2(selectedRadioButtonText2);
+                    answer.setEsmQ3(checkedText3);
+                    answer.setEsmQ4(selectedRadioButtonText4);
+                    answer.setEsmQ5(selectedRadioButtonText5);
+                    answer.setEsmQ6(selectedRadioButtonText6);
+                }
+                else {  // scale not done or other err(not set on current)
+                    Log.d("answer handler", "scale not done");
+                }
+
                 ESMAnswer.getInstance().put_answer("1. 身邊有人嗎？", selectedRadioButtonText1);
                 ESMAnswer.getInstance().put_answer("2. 你在哪裡？", selectedRadioButtonText2);
                 ESMAnswer.getInstance().put_answer("3. 你在進行什麼活動?", checkedText3);
@@ -281,7 +296,7 @@ public class FragmentSurvey extends Fragment  {
                 ESMAnswer.getInstance().put_answer("5. 你很忙碌?", selectedRadioButtonText5);
                 ESMAnswer.getInstance().put_answer("6. 你的心情?", selectedRadioButtonText6);
 
-                ((ActivityESM) mContext).go_to_next();
+                ((ActivitySurvey) mContext).go_to_next();
             }
         });
 
@@ -296,6 +311,10 @@ public class FragmentSurvey extends Fragment  {
         ESMQuestion q_data = (ESMQuestion) getArguments().getSerializable("data");
         textview_q_title.setText(q_data.getQuestionTitle());
         textview_q_discription.setText(q_data.getDescription());
+
+        // for survey answer handle
+        mActiveData = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
+        mActiveDataDisplay = (ArrayList<NotiItem>) getArguments().getSerializable("arrayListDisplay");
 
         if (q_data.getRequired()) {
             button_continue.setVisibility(View.GONE);

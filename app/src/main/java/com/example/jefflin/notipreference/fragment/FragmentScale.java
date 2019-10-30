@@ -11,16 +11,13 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.jefflin.notipreference.ActivityESM;
+import com.example.jefflin.notipreference.ActivitySurvey;
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.R;
-import com.example.jefflin.notipreference.adapter.NotiItemAdapter;
 import com.example.jefflin.notipreference.adapter.ScaleAdapter;
-import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
 import com.example.jefflin.notipreference.model.ESMQuestion;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 
@@ -61,7 +58,7 @@ public class FragmentScale extends Fragment  {
         button_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ActivityESM) mContext).go_to_next();
+                ((ActivitySurvey) mContext).go_to_next();
             }
         });
         setRecyclerView(rootView);
@@ -105,7 +102,7 @@ public class FragmentScale extends Fragment  {
     }
 
     public void changeActiveData() {
-        mActiveData = ((ActivityESM) mContext).getCurrentData();
+        mActiveData = ((ActivitySurvey) mContext).getCurrentData();
         mAdapter.notifyDataSetChanged();
     }
 }

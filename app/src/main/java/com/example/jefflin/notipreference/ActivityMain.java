@@ -2,28 +2,21 @@ package com.example.jefflin.notipreference;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import androidx.annotation.NonNull;
 
-import com.example.jefflin.notipreference.adapter.NotiItemAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 /*
     Main activity, also the landing page
@@ -50,7 +43,7 @@ public class ActivityMain extends AppCompatActivity {
 
     private void setBotNavView(){
         final Intent setting = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-        final Intent survey = new Intent(ActivityMain.this, ActivityESM.class);
+        final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
         final Intent intent_history = new Intent(this, ActivityHistory.class);
 
         survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));

@@ -15,9 +15,6 @@ public class GlobalClass extends Application {
 
     public static void setDirPath(Context context, String dirName) {
         dirPath = context.getDir(dirName, Context.MODE_PRIVATE);
-
-        Log.d("pathName: ", String.valueOf(dirPath));
-
     }
 
 }

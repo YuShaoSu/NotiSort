@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.jefflin.notipreference.ESMAnswer;
 import com.example.jefflin.notipreference.R;
-import com.example.jefflin.notipreference.ActivityESM;
+import com.example.jefflin.notipreference.ActivitySurvey;
 import com.example.jefflin.notipreference.model.ESMProperties;
 
 public class FragmentEnd extends Fragment {
@@ -33,7 +33,7 @@ public class FragmentEnd extends Fragment {
             @Override
             public void onClick(View v) {
 
-                ((ActivityESM) mContext).event_survey_completed(ESMAnswer.getInstance());
+                ((ActivitySurvey) mContext).event_survey_completed(ESMAnswer.getInstance());
 
             }
         });

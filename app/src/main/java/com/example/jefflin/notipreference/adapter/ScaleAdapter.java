@@ -61,8 +61,6 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
         holder.title.setText(notiItem.title);
         holder.content.setText(notiItem.content);
 
-        int id =(position+1)*100;
-
     }
 
     @Override
@@ -107,6 +105,8 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
                     Log.d("checked button id", String.valueOf(group.getCheckedRadioButtonId()));
                     Log.d("get adapter position: ", String.valueOf(getAdapterPosition()));
+
+
 
                     switch (group.getCheckedRadioButtonId()){
                         case R.id.strong_agree0:

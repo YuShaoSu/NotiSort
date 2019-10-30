@@ -1,7 +1,5 @@
 package com.example.jefflin.notipreference.fragment;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -9,9 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
-import android.service.notification.NotificationListenerService;
-import android.service.notification.StatusBarNotification;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +19,7 @@ import com.example.jefflin.notipreference.adapter.NotiItemAdapter;
 import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.example.jefflin.notipreference.R;
-import com.example.jefflin.notipreference.ActivityESM;
+import com.example.jefflin.notipreference.ActivitySurvey;
 import com.example.jefflin.notipreference.model.ESMQuestion;
 
 import java.util.ArrayList;
@@ -67,8 +62,8 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
             @Override
             public void onClick(View v) {
                 //ESMAnswer.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
-                ((ActivityESM) mContext).putCurrentData(mActiveData);
-                ((ActivityESM) mContext).go_to_next();
+                ((ActivitySurvey) mContext).putCurrentData(mActiveData);
+                ((ActivitySurvey) mContext).go_to_next();
             }
         });
         setRecyclerView(rootView);
