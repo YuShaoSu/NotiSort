@@ -10,13 +10,19 @@ import java.util.LinkedHashMap;
 public class SurveyAnswer {
     private volatile static SurveyAnswer uniqueInstance;
     private final LinkedHashMap<String, String> answered_hashmap = new LinkedHashMap<>();
+    private String postJson;
 
     private SurveyAnswer() {
     }
 
     public String getAnswer(Answer answer) {
         Gson gson = new Gson();
-        return gson.toJson(answer);
+        postJson = gson.toJson(answer);
+        return postJson;
+    }
+
+    public String getPostJson() {
+        return postJson;
     }
 
     public void put_answer(String key, String value) {

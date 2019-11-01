@@ -94,12 +94,12 @@ public class ActivityMain extends AppCompatActivity {
         if (requestCode == SURVEY_REQUEST) {
             if (resultCode == RESULT_OK) {
 
-                String answers_json = data.getExtras().getString("answers");
+                String jsonPost = SurveyAnswer.getInstance().getPostJson();
                 Log.d("****", "****************** WE HAVE ANSWERS ******************");
-                Log.v("ANSWERS JSON", answers_json);
+                Log.v("ANSWERS JSON", jsonPost);
                 Log.d("****", "*****************************************************");
 
-                Log.d("****", answers_json);
+                Log.d("****", jsonPost);
             }
         }
     }
