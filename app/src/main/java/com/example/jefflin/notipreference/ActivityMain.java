@@ -2,16 +2,19 @@ package com.example.jefflin.notipreference;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
 import androidx.annotation.NonNull;
 
+import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -30,7 +33,6 @@ public class ActivityMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setBotNavView();
 
         createNotificationChannel();
 
@@ -39,6 +41,20 @@ public class ActivityMain extends AppCompatActivity {
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NotiListenerService.Arrival");
+
+        if (!isNotiListenerEnabled()) {
+            final Intent setting = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+            startActivity(setting);
+        }
+
+        if (isNotiListenerEnabled()) {
+            final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
+            survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
+            startActivityForResult(survey, SURVEY_REQUEST);
+        }
+
+
+        setBotNavView();
     }
 
     private void setBotNavView(){
@@ -118,4 +134,10 @@ public class ActivityMain extends AppCompatActivity {
         }
     }
 
+    private boolean isNotiListenerEnabled() {
+        ComponentName cn = new ComponentName(this, NotiListenerService.class);
+        String flat = Settings.Secure.getString(this.getContentResolver(), "enabled_notification_listeners");
+        final boolean enabled = flat != null && flat.contains(cn.flattenToString());
+        return enabled;
+    }
 }
