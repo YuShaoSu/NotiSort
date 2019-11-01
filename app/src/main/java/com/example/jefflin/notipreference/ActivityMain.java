@@ -7,6 +7,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import androidx.annotation.NonNull;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -17,9 +27,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 /*
     Main activity, also the landing page
@@ -95,6 +109,7 @@ public class ActivityMain extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 String jsonPost = SurveyAnswer.getInstance().getPostJson();
+                postAnswer(jsonPost);
                 Log.d("****", "****************** WE HAVE ANSWERS ******************");
                 Log.v("ANSWERS JSON", jsonPost);
                 Log.d("****", "*****************************************************");
@@ -140,4 +155,53 @@ public class ActivityMain extends AppCompatActivity {
         final boolean enabled = flat != null && flat.contains(cn.flattenToString());
         return enabled;
     }
+
+    private void postAnswer(String jsonPost) {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            String URL = "http://neighborbob.nctu.me:5000/survey";
+            final String requestBody = jsonPost;
+
+            Log.d("postAnswer", "postAnswer function in activityMain");
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.i("VOLLEY", response);
+                    if(response == "200") Toast.makeText(getApplicationContext(),"notisort server received!", Toast.LENGTH_LONG);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("VOLLEY", error.toString());
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    String responseString = "";
+                    if (response != null) {
+                        responseString = String.valueOf(response.statusCode);
+                        // can get more details such as response.headers
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                }
+            };
+
+            requestQueue.add(stringRequest);
+    }
+
 }
