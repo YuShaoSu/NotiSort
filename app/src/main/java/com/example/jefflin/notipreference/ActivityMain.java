@@ -1,8 +1,11 @@
 package com.example.jefflin.notipreference;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import androidx.annotation.NonNull;
@@ -17,6 +20,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -34,6 +38,8 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 /*
     Main activity, also the landing page
@@ -69,6 +75,8 @@ public class ActivityMain extends AppCompatActivity {
 
 
         setBotNavView();
+
+        setSchedule();
     }
 
     private void setBotNavView(){
@@ -154,6 +162,39 @@ public class ActivityMain extends AppCompatActivity {
         String flat = Settings.Secure.getString(this.getContentResolver(), "enabled_notification_listeners");
         final boolean enabled = flat != null && flat.contains(cn.flattenToString());
         return enabled;
+    }
+
+    private void setSchedule() {
+        Intent myIntent = new Intent(ActivityMain.this , SurveyManager.class);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+        PendingIntent pi0 = PendingIntent.getService(this, 0, myIntent, 0);
+        Calendar c0 = Calendar.getInstance();
+        c0.set(Calendar.HOUR_OF_DAY, 8);
+        c0.set(Calendar.MINUTE, 0);
+        c0.set(Calendar.SECOND, 0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c0.getTimeInMillis(), TimeUnit.DAYS.toMillis(1), pi0);
+
+        PendingIntent pi1 = PendingIntent.getService(this, 1, myIntent, 0);
+        Calendar c1 = Calendar.getInstance();
+        c1.set(Calendar.HOUR_OF_DAY, 12);
+        c1.set(Calendar.MINUTE, 0);
+        c1.set(Calendar.SECOND, 0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c1.getTimeInMillis(), TimeUnit.DAYS.toMillis(1) , pi1);
+
+        PendingIntent pi2 = PendingIntent.getService(this, 2, myIntent, 0);
+        Calendar c2 = Calendar.getInstance();
+        c2.set(Calendar.HOUR_OF_DAY, 16);
+        c2.set(Calendar.MINUTE, 0);
+        c2.set(Calendar.SECOND, 0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c2.getTimeInMillis(), TimeUnit.DAYS.toMillis(1) , pi2);
+
+        PendingIntent pi3 = PendingIntent.getService(this, 3, myIntent, 0);
+        Calendar c3 = Calendar.getInstance();
+        c3.set(Calendar.HOUR_OF_DAY, 20);
+        c3.set(Calendar.MINUTE, 0);
+        c3.set(Calendar.SECOND, 0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c3.getTimeInMillis(), TimeUnit.DAYS.toMillis(1) , pi3);
     }
 
     private void postAnswer(String jsonPost) {

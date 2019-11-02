@@ -11,7 +11,7 @@ import com.example.jefflin.notipreference.NotiItem;
 import java.util.ArrayList;
 import java.util.Map;
 
-class SurveyManager extends BroadcastReceiver {
+public class SurveyManager extends BroadcastReceiver {
     private static volatile SurveyManager uniqueInstance;
     Map<String, ArrayList<NotiItem>> mMap;
     private boolean isSurveDone;
