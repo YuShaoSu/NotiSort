@@ -171,12 +171,17 @@ public class ActivityMain extends AppCompatActivity {
             myIntent.putExtra("interval", i);
             myIntent.setAction("next_interval");
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                ComponentName componentName = new ComponentName(getPackageName(),getPackageName() + ".receiver.SampleManager");
+                myIntent.setComponent(componentName);
+            }
+
             PendingIntent pi = PendingIntent.getBroadcast(this, i, myIntent, 0);
             Calendar c = Calendar.getInstance();
             c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[i]);
-            c.set(Calendar.MINUTE, 50);
+            c.set(Calendar.MINUTE, 0);
             c.set(Calendar.SECOND, 0);
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), TimeUnit.MINUTES.toMillis(15), pi);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), TimeUnit.DAYS.toMillis(1), pi);
             Log.d("interval time", String.valueOf(c.getTime()));
         }
 
