@@ -20,6 +20,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.jefflin.notipreference.manager.SampleManager;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -58,6 +59,8 @@ public class ActivityMain extends AppCompatActivity {
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NotiListenerService.Arrival");
+
+        Log.d("activity main", "on create");
 
         if (!isNotiListenerEnabled()) {
             final Intent setting = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
@@ -161,36 +164,55 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void setSchedule() {
-        Intent myIntent = new Intent(ActivityMain.this , SurveyManager.class);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
 
-        PendingIntent pi0 = PendingIntent.getService(this, 0, myIntent, 0);
-        Calendar c0 = Calendar.getInstance();
-        c0.set(Calendar.HOUR_OF_DAY, 8);
-        c0.set(Calendar.MINUTE, 0);
-        c0.set(Calendar.SECOND, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c0.getTimeInMillis(), TimeUnit.DAYS.toMillis(1), pi0);
+        for (int i = 0; i < 4; ++i){
+            Intent myIntent = new Intent(ActivityMain.this , SampleManager.class);
+            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+            myIntent.putExtra("interval", i);
+            myIntent.setAction("next_interval");
 
-        PendingIntent pi1 = PendingIntent.getService(this, 1, myIntent, 0);
-        Calendar c1 = Calendar.getInstance();
-        c1.set(Calendar.HOUR_OF_DAY, 12);
-        c1.set(Calendar.MINUTE, 0);
-        c1.set(Calendar.SECOND, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c1.getTimeInMillis(), TimeUnit.DAYS.toMillis(1) , pi1);
+            PendingIntent pi = PendingIntent.getBroadcast(this, i, myIntent, 0);
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[i]);
+            c.set(Calendar.MINUTE, 50);
+            c.set(Calendar.SECOND, 0);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), TimeUnit.MINUTES.toMillis(15), pi);
+            Log.d("interval time", String.valueOf(c.getTime()));
+        }
 
-        PendingIntent pi2 = PendingIntent.getService(this, 2, myIntent, 0);
-        Calendar c2 = Calendar.getInstance();
-        c2.set(Calendar.HOUR_OF_DAY, 16);
-        c2.set(Calendar.MINUTE, 0);
-        c2.set(Calendar.SECOND, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c2.getTimeInMillis(), TimeUnit.DAYS.toMillis(1) , pi2);
-
-        PendingIntent pi3 = PendingIntent.getService(this, 3, myIntent, 0);
-        Calendar c3 = Calendar.getInstance();
-        c3.set(Calendar.HOUR_OF_DAY, 20);
-        c3.set(Calendar.MINUTE, 0);
-        c3.set(Calendar.SECOND, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c3.getTimeInMillis(), TimeUnit.DAYS.toMillis(1) , pi3);
+//        Intent myIntent = new Intent(ActivityMain.this , SampleManager.class);
+//        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+//        myIntent.putExtra("schedule", "next_interval");
+//        myIntent.setAction("next_interval");
+//
+//        PendingIntent pi0 = PendingIntent.getBroadcast(this, 0, myIntent, 0);
+//        Calendar c0 = Calendar.getInstance();
+//        c0.set(Calendar.HOUR_OF_DAY, 8);
+//        c0.set(Calendar.MINUTE, 0);
+//        c0.set(Calendar.SECOND, 0);
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c0.getTimeInMillis(), TimeUnit.DAYS.toMillis(1), pi0);
+//
+//        PendingIntent pi1 = PendingIntent.getBroadcast(this, 1, myIntent, 0);
+//        Calendar c1 = Calendar.getInstance();
+//        c1.set(Calendar.HOUR_OF_DAY, 12);
+//        c1.set(Calendar.MINUTE, 0);
+//        c1.set(Calendar.SECOND, 0);
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c1.getTimeInMillis(), TimeUnit.DAYS.toMillis(1) , pi1);
+//
+//        PendingIntent pi2 = PendingIntent.getBroadcast(this, 2, myIntent, 0);
+//        Calendar c2 = Calendar.getInstance();
+//        c2.set(Calendar.HOUR_OF_DAY, 16);
+//        c2.set(Calendar.MINUTE, 0);
+//        c2.set(Calendar.SECOND, 0);
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c2.getTimeInMillis(), TimeUnit.DAYS.toMillis(1) , pi2);
+//
+//        PendingIntent pi3 = PendingIntent.getBroadcast(this, 3, myIntent, 0);
+//        Calendar c3 = Calendar.getInstance();
+//        c3.set(Calendar.HOUR_OF_DAY, 23);
+//        c3.set(Calendar.MINUTE, 0);
+//        c3.set(Calendar.SECOND, 0);
+//        Log.d("interval 3", String.valueOf(c3.getTime()));
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c3.getTimeInMillis(), TimeUnit.MINUTES.toMillis(10) , pi3);
     }
 
     private void postAnswer(String jsonPost) {
@@ -202,10 +224,10 @@ public class ActivityMain extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     Log.i("VOLLEY", response);
-                    if(response == "200") {
+                    if(response.equals("200")) {
                         Log.d("post", "succeed");
                         Toast.makeText(getApplicationContext(),"notisort server received!", Toast.LENGTH_LONG);
-                        SurveyManager.getInstance().setSurveyDone(true);
+                        SurveyManager.getInstance().surveyDone();
                     }
                 }
             }, new Response.ErrorListener() {

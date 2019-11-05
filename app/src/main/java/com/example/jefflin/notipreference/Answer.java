@@ -55,11 +55,11 @@ public class Answer {
         for (int i = 0; i < notiItems.size(); i++) {
             NotiItem item = notiItems.get(i);
             NotiItem itemD = notiItemsD.get(i);
-            if(item.checkScale()) {
+//            if(item.checkScale()) {
                 item.setClickOrder(i);
                 itemD.setDisplayOrder(i);
-            }
-            else return false;
+//            }
+//            else return false;
         }
 
         Collections.sort(notiItems);

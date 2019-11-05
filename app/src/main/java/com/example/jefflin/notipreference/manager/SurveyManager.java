@@ -1,9 +1,5 @@
 package com.example.jefflin.notipreference.manager;
 
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.example.jefflin.notipreference.NotiItem;
@@ -12,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SurveyManager extends BroadcastReceiver {
+public class SurveyManager {
     private static volatile SurveyManager uniqueInstance;
     Map<String, ArrayList<NotiItem>> mMap = new HashMap<>();
     private boolean isSurveyDone;
@@ -22,13 +18,6 @@ public class SurveyManager extends BroadcastReceiver {
     private SurveyManager() {
         setSurveyDone(false);
         setSurveyBlock(false);
-    }
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        Log.d("","broadcast in surveyManager");
-        setSurveyBlock(false);
-        setSurveyDone(false);
     }
 
     public static SurveyManager getInstance() {
@@ -46,10 +35,7 @@ public class SurveyManager extends BroadcastReceiver {
     public void setSurveyBlock(boolean surveyBlock) { isSurveyBlock = surveyBlock; }
 
     public boolean isSurveyDone() { return isSurveyDone; }
-    public void setSurveyDone(boolean surveyDone) {
-        isSurveyDone = surveyDone;
-        if(surveyDone)  mMap.clear();
-    }
+    public void setSurveyDone(boolean surveyDone) { isSurveyDone = surveyDone; }
 
     public void setMap(Map<String, ArrayList<NotiItem>> map) {
         mMap = map;
@@ -60,5 +46,17 @@ public class SurveyManager extends BroadcastReceiver {
 
     public boolean isNotiNull() {
         return mMap.isEmpty();
+    }
+
+    public void surveyInit() {
+        isSurveyBlock = false;
+        isSurveyDone = false;
+    }
+
+    public void surveyDone() {
+        Log.d("SuveyManager", "survey done");
+        isSurveyDone = true;
+        isSurveyBlock = false;
+        mMap.clear();
     }
 }
