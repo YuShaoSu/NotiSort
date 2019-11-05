@@ -83,8 +83,6 @@ public class FragmentScale extends Fragment  {
     }
 
     private void setRecyclerView(ViewGroup rootView) {
-        mData = NotiListenerService.getData();
-//        mData_6 = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
         mActiveData = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_scale);

@@ -1,5 +1,6 @@
 package com.example.jefflin.notipreference.services;
 
+import android.Manifest;
 import android.app.Notification;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -10,12 +11,16 @@ import android.graphics.Bitmap;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+
+import androidx.core.content.ContextCompat;
 
 import com.example.jefflin.notipreference.ActivityMain;
 import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
+import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.widgets.PushNotification;
 
 import java.util.ArrayList;
@@ -24,12 +29,9 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 public class NotiListenerService extends NotificationListenerService {
-    private static ArrayList<NotiItem> mData = new ArrayList<NotiItem>();
     static PackageManager packageManager;
     private int notiNum = 0;
-    private static boolean spotifyRepeat = false;
 
-    private Context mContext;
 
     private static final String TAG = "MyNotificationService";
     static NotiListenerService _this;
@@ -60,24 +62,40 @@ public class NotiListenerService extends NotificationListenerService {
     public IBinder onBind(Intent intent) {
         Log.d("NotiListenerService","bind");
         packageManager = getPackageManager();
+
+        // set up some essential value
+//        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
+        GlobalClass.setDirPath(getApplicationContext(), "iconDir");
+//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
+//            TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+//            GlobalClass.setDeviceID(tm.getDeviceId());
+//            Log.d("device id", tm.getDeviceId());
+//        }
+//        else    {
+            GlobalClass.setUUID();
+            Log.d("UUID", "device id not get");
+//        }
+
+
         return super.onBind(intent);
     }
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn){
         ArrayList<NotiItem> mActiveData;
-        mActiveData = getActiveNotis().get("click");
+        Map<String, ArrayList<NotiItem>> map = getActiveNotis();
+        mActiveData = map.get("click");
 
-        int i, category_count = 0;
-        if(mActiveData.size() > 5) {
-            mData = mActiveData;
+
+        if(!SurveyManager.getInstance().isSurveyDone() && !SurveyManager.getInstance().isSurveyBlock() && mActiveData.size() > 5) {
             Notification notification = sbn.getNotification();
             //check if the new post notification is ongoing
             if (notification.category != null && !(
                     notification.category.equals("alarm") || notification.category.equals("call") ||
                     notification.category.equals("navigation") || notification.category.equals("progress") ||
                     notification.category.equals("service") || notification.category.equals("transport"))) {
-                PushNotification pushNotification = new PushNotification(this);
+                SurveyManager.getInstance().setMap(map);
+                new PushNotification(this);
             }
         }
     }
@@ -85,20 +103,6 @@ public class NotiListenerService extends NotificationListenerService {
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn){
         Log.d("NotiListenerService","removed");
-    }
-
-    public static ArrayList<NotiItem> getData() {
-        return mData;
-    }
-
-    private void pushNotification(){
-        if(notiNum >= 10){
-            PushNotification pushNotification = new PushNotification(this);
-            notiNum = 0;
-        }
-        else {
-            notiNum++;
-        }
     }
 
     public static Map<String, ArrayList<NotiItem>> getActiveNotis() {
@@ -114,8 +118,7 @@ public class NotiListenerService extends NotificationListenerService {
             String content = "null";
             String appName = "null";
             String category = "null";
-            int icon_height = 1;
-            int icon_width = 1;
+
             Long postTime = notification.getPostTime();
 
             try{

@@ -56,9 +56,6 @@ public class ActivityMain extends AppCompatActivity {
 
         createNotificationChannel();
 
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        globalVariable.setDirPath(getApplicationContext(), "iconDir");
-
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NotiListenerService.Arrival");
 
@@ -72,7 +69,6 @@ public class ActivityMain extends AppCompatActivity {
             survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
             startActivityForResult(survey, SURVEY_REQUEST);
         }
-
 
         setBotNavView();
 
@@ -202,13 +198,15 @@ public class ActivityMain extends AppCompatActivity {
             String URL = "http://neighborbob.nctu.me:5000/survey";
             final String requestBody = jsonPost;
 
-            Log.d("postAnswer", "postAnswer function in activityMain");
-
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Log.i("VOLLEY", response);
-                    if(response == "200") Toast.makeText(getApplicationContext(),"notisort server received!", Toast.LENGTH_LONG);
+                    if(response == "200") {
+                        Log.d("post", "succeed");
+                        Toast.makeText(getApplicationContext(),"notisort server received!", Toast.LENGTH_LONG);
+                        SurveyManager.getInstance().setSurveyDone(true);
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override

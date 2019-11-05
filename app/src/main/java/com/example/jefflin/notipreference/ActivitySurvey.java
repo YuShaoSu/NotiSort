@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.jefflin.notipreference.fragment.FragmentScale;
 import com.example.jefflin.notipreference.fragment.FragmentESM;
+import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.example.jefflin.notipreference.adapter.FragmentAdapter;
 import com.example.jefflin.notipreference.fragment.FragmentEnd;
@@ -46,9 +47,10 @@ public class ActivitySurvey extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_survey);
 
-        mActiveData = NotiListenerService.getActiveNotis().get("click");
-        mActiveDataDisplay = NotiListenerService.getActiveNotis().get("display");
-
+        if(!SurveyManager.getInstance().isNotiNull()) {
+            mActiveData = SurveyManager.getInstance().getMap().get("click");
+            mActiveDataDisplay = SurveyManager.getInstance().getMap().get("display");
+        }
         if (getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
             mESMPojo = new Gson().fromJson(bundle.getString("json_survey"), ESMPojo.class);

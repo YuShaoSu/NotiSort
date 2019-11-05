@@ -103,30 +103,21 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
             scaleGroup0.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    Log.d("checked button id", String.valueOf(group.getCheckedRadioButtonId()));
-                    Log.d("get adapter position: ", String.valueOf(getAdapterPosition()));
-
-
 
                     switch (group.getCheckedRadioButtonId()){
                         case R.id.strong_agree0:
-                            Log.d("strong agree in f0", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor0 = strong_agree;
                             break;
                         case R.id.agree0:
-                            Log.d("agree in f0", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor0 = agree;
                             break;
                         case R.id.neutral0:
-                            Log.d("neutral in f0", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor0 = neutral;
                             break;
                         case R.id.disagree0:
-                            Log.d("disagree in f0", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor0 = disagree;
                             break;
                         case R.id.strong_disagree0:
-                            Log.d("strong disagree in f0", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor0 = strong_disagree;
                             break;
                         default:
@@ -140,28 +131,21 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
             scaleGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    Log.d("checked button id", String.valueOf(group.getCheckedRadioButtonId()));
-                    Log.d("get adapter position: ", String.valueOf(getAdapterPosition()));
 
                     switch (group.getCheckedRadioButtonId()){
                         case R.id.strong_agree1:
-                            Log.d("strong agree in f1", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor1 = strong_agree;
                             break;
                         case R.id.agree1:
-                            Log.d("agree in f1", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor1 = agree;
                             break;
                         case R.id.neutral1:
-                            Log.d("neutral in f1", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor1 = neutral;
                             break;
                         case R.id.disagree1:
-                            Log.d("disagree in f1", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor1 = disagree;
                             break;
                         case R.id.strong_disagree1:
-                            Log.d("strong disagree in f1", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor1 = strong_disagree;
                             break;
                         default:
@@ -176,28 +160,21 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
             scaleGroup2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    Log.d("checked button id", String.valueOf(group.getCheckedRadioButtonId()));
-                    Log.d("get adapter position: ", String.valueOf(getAdapterPosition()));
 
                     switch (group.getCheckedRadioButtonId()){
                         case R.id.strong_agree2:
-                            Log.d("strong agree in f2", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor2 = strong_agree;
                             break;
                         case R.id.agree2:
-                            Log.d("agree in f2", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor2 = agree;
                             break;
                         case R.id.neutral2:
-                            Log.d("neutral in f2", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor2 = neutral;
                             break;
                         case R.id.disagree2:
-                            Log.d("disagree in f2", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor2 = disagree;
                             break;
                         case R.id.strong_disagree2:
-                            Log.d("strong disagree in f2", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor2 = strong_disagree;
                             break;
                         default:
@@ -214,28 +191,20 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
             scaleGroup3.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    Log.d("checked button id", String.valueOf(group.getCheckedRadioButtonId()));
-                    Log.d("get adapter position: ", String.valueOf(getAdapterPosition()));
-
                     switch (group.getCheckedRadioButtonId()){
                         case R.id.strong_agree3:
-                            Log.d("strong agree in f3", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor3 = strong_agree;
                             break;
                         case R.id.agree3:
-                            Log.d("agree in f3", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor3 = agree;
                             break;
                         case R.id.neutral3:
-                            Log.d("neutral in f3", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor3 = neutral;
                             break;
                         case R.id.disagree3:
-                            Log.d("disagree in f3", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor3 = disagree;
                             break;
                         case R.id.strong_disagree3:
-                            Log.d("strong disagree in f3", String.valueOf(getAdapterPosition()));
                             mData.get(getAdapterPosition()).factor3 = strong_disagree;
                             break;
                         default:

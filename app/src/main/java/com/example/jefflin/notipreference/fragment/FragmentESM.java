@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.jefflin.notipreference.ActivitySurvey;
 import com.example.jefflin.notipreference.Answer;
+import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.SurveyAnswer;
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.R;
@@ -273,7 +274,7 @@ public class FragmentESM extends Fragment  {
 
 
                 // handle answer of previous
-                Answer answer = new Answer(3, Calendar.getInstance().getTimeInMillis(), 0);
+                Answer answer = new Answer(GlobalClass.getDeviceID(), Calendar.getInstance().getTimeInMillis(), 0);
                 if(answer.answerHandler(mActiveData, mActiveDataDisplay)){
                     // scale check passed and done put notifications into answer
                     // now put ESM answer
