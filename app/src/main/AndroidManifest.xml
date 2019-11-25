@@ -16,7 +16,7 @@
 
         <receiver android:name=".manager.SampleManager">
             <intent-filter>
-                <action android:name="next_interval" />
+                <action android:name="com.example.jefflin.notipreference.next_interval" />
             </intent-filter>
         </receiver>
 

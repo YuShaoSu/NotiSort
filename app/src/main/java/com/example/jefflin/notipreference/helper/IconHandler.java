@@ -93,7 +93,6 @@ public class IconHandler {
         try {
             File f=new File(path, iconName);
             icon = BitmapFactory.decodeStream(new FileInputStream(f));
-            Log.d("load icon from", String.valueOf(f));
         }
         catch (FileNotFoundException e)
         {

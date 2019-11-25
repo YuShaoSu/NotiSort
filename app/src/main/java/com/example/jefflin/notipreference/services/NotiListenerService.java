@@ -104,6 +104,11 @@ public class NotiListenerService extends NotificationListenerService {
         Log.d("NotiListenerService","removed");
     }
 
+    @Override
+    public boolean onUnbind(Intent intent) {
+        return super.onUnbind(intent);
+    }
+
     public static Map<String, ArrayList<NotiItem>> getActiveNotis() {
         NotiListenerService notiListenerService = NotiListenerService.get();
         ArrayList<NotiItem> activeData = new ArrayList<NotiItem>();
@@ -187,4 +192,5 @@ public class NotiListenerService extends NotificationListenerService {
     private static boolean isNotiSort(NotiItem item) {
         return item.appName.equals("NotiSort");
     }
+
 }

@@ -76,6 +76,7 @@ public class ActivityMain extends AppCompatActivity {
         setBotNavView();
 
         setSchedule();
+
     }
 
     private void setBotNavView(){
@@ -165,23 +166,23 @@ public class ActivityMain extends AppCompatActivity {
 
     private void setSchedule() {
 
-        for (int i = 0; i < 4; ++i){
+        for (int i = 0; i < 7; ++i){
             Intent myIntent = new Intent(ActivityMain.this , SampleManager.class);
             AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
             myIntent.putExtra("interval", i);
-            myIntent.setAction("next_interval");
+            myIntent.setAction("com.example.jefflin.notipreference.next_interval");
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                ComponentName componentName = new ComponentName(getPackageName(),getPackageName() + ".receiver.SampleManager");
+                ComponentName componentName = new ComponentName(getPackageName(),getPackageName() + ".manager.SampleManager");
                 myIntent.setComponent(componentName);
             }
 
-            PendingIntent pi = PendingIntent.getBroadcast(this, i, myIntent, 0);
+            PendingIntent pi = PendingIntent.getBroadcast(this, i, myIntent, PendingIntent.FLAG_ONE_SHOT);
             Calendar c = Calendar.getInstance();
             c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[i]);
-            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.MINUTE, 25);
             c.set(Calendar.SECOND, 0);
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), TimeUnit.DAYS.toMillis(1), pi);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
             Log.d("interval time", String.valueOf(c.getTime()));
         }
 

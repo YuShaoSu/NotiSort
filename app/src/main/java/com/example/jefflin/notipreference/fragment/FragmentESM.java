@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.jefflin.notipreference.ActivitySurvey;
-import com.example.jefflin.notipreference.Answer;
+import com.example.jefflin.notipreference.model.Answer;
 import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.SurveyAnswer;
 import com.example.jefflin.notipreference.NotiItem;

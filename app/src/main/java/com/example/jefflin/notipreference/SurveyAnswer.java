@@ -1,5 +1,6 @@
 package com.example.jefflin.notipreference;
 
+import com.example.jefflin.notipreference.model.Answer;
 import com.google.gson.Gson;
 
 

@@ -1,4 +1,6 @@
-package com.example.jefflin.notipreference;
+package com.example.jefflin.notipreference.model;
+
+import com.example.jefflin.notipreference.NotiItem;
 
 import java.util.ArrayList;
 import java.util.Collections;

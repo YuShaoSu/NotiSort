@@ -59,8 +59,6 @@ public class ActivitySurvey extends AppCompatActivity {
             }
         }
 
-        Log.i("json Object = ", String.valueOf(mESMPojo.getESMQuestions()));
-
         final ArrayList<Fragment> arraylist_fragments = new ArrayList<>();
 
         //- START -
