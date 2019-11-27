@@ -23,6 +23,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.jefflin.notipreference.manager.SampleManager;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.services.NotiListenerService;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -75,7 +77,7 @@ public class ActivityMain extends AppCompatActivity {
 
         setBotNavView();
 
-        setSchedule();
+//        setSchedule();
 
     }
 
@@ -116,7 +118,7 @@ public class ActivityMain extends AppCompatActivity {
         if (requestCode == SURVEY_REQUEST) {
             if (resultCode == RESULT_OK) {
 
-                String jsonPost = SurveyAnswer.getInstance().getPostJson();
+                String jsonPost = SurveyManager.getInstance().getPostJson();
                 postAnswer(jsonPost);
                 Log.d("****", "****************** WE HAVE ANSWERS ******************");
                 Log.v("ANSWERS JSON", jsonPost);
@@ -166,21 +168,21 @@ public class ActivityMain extends AppCompatActivity {
 
     private void setSchedule() {
 
-        for (int i = 0; i < 7; ++i){
+        for (int i = 0; i < 9; ++i){
             Intent myIntent = new Intent(ActivityMain.this , SampleManager.class);
             AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
             myIntent.putExtra("interval", i);
             myIntent.setAction("com.example.jefflin.notipreference.next_interval");
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                ComponentName componentName = new ComponentName(getPackageName(),getPackageName() + ".manager.SampleManager");
-                myIntent.setComponent(componentName);
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                ComponentName componentName = new ComponentName(getPackageName(),getPackageName() + ".manager.SampleManager");
+//                myIntent.setComponent(componentName);
+//            }
 
-            PendingIntent pi = PendingIntent.getBroadcast(this, i, myIntent, PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent pi = PendingIntent.getBroadcast(this, i, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             Calendar c = Calendar.getInstance();
             c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[i]);
-            c.set(Calendar.MINUTE, 25);
+            c.set(Calendar.MINUTE, 40);
             c.set(Calendar.SECOND, 0);
             alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
             Log.d("interval time", String.valueOf(c.getTime()));

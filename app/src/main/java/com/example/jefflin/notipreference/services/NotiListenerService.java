@@ -1,13 +1,17 @@
 package com.example.jefflin.notipreference.services;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.media.AudioManager;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
@@ -20,10 +24,15 @@ import com.example.jefflin.notipreference.ActivityMain;
 import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
+import com.example.jefflin.notipreference.manager.SampleManager;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.widgets.PushNotification;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
@@ -31,7 +40,8 @@ import java.util.concurrent.Semaphore;
 public class NotiListenerService extends NotificationListenerService {
     static PackageManager packageManager;
     private int notiNum = 0;
-
+    private FusedLocationProviderClient fusedLocationClient;
+    private AudioManager mAudioManager;
 
     private static final String TAG = "MyNotificationService";
     static NotiListenerService _this;
@@ -74,6 +84,9 @@ public class NotiListenerService extends NotificationListenerService {
             Log.d("UUID", "device id not get");
         }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        setSchedule();
 
         return super.onBind(intent);
     }
@@ -91,11 +104,32 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
          if(mActiveData.size() > 5) {
-            Notification notification = sbn.getNotification();
-            //check if the new post notification is ongoing
-                SurveyManager.getInstance().setMap(map);
-                SurveyManager.getInstance().setSurveyBlock(true);
-                new PushNotification(this);
+
+             // Contextual Data
+             // location
+             fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                 @Override
+                 public void onSuccess(Location location) {
+                     // Got last known location. In some rare situations this can be null.
+                     if (location != null) {
+                         // Logic to handle location object
+                         Log.d("Survey Post location", String.valueOf(location));
+                         SurveyManager.getInstance().setCurrentLocation(location.getLatitude(), location.getLongitude());
+                     }
+                     else {
+                         Log.d("Survey Post location", "Failed");
+                     }
+                 }
+             });
+
+             // ringer mode
+             SurveyManager.getInstance().setRingerMode(mAudioManager.getRingerMode());
+
+             Notification notification = sbn.getNotification();
+             //check if the new post notification is ongoing
+             SurveyManager.getInstance().setMap(map);
+             SurveyManager.getInstance().setSurveyBlock(true);
+             new PushNotification(this);
         }
     }
 
@@ -191,6 +225,23 @@ public class NotiListenerService extends NotificationListenerService {
 
     private static boolean isNotiSort(NotiItem item) {
         return item.appName.equals("NotiSort");
+    }
+
+    private void setSchedule(){
+        for (int i = 0; i < 9; ++i){
+            Intent myIntent = new Intent(this , SampleManager.class);
+            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+            myIntent.putExtra("interval", i);
+            myIntent.setAction("com.example.jefflin.notipreference.next_interval");
+
+            PendingIntent pi = PendingIntent.getBroadcast(this, i, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[i]);
+            c.set(Calendar.MINUTE, 57);
+            c.set(Calendar.SECOND, 0);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
+            Log.d("interval time", String.valueOf(c.getTime()));
+        }
     }
 
 }

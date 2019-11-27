@@ -18,9 +18,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.jefflin.notipreference.ActivitySurvey;
+import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.model.Answer;
 import com.example.jefflin.notipreference.GlobalClass;
-import com.example.jefflin.notipreference.SurveyAnswer;
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.model.ESMQuestion;
@@ -273,8 +273,8 @@ public class FragmentESM extends Fragment  {
                 String selectedRadioButtonText6 = selectedRadioButton6.getTag().toString();
 
 
-                // handle answer of previous
-                Answer answer = new Answer(GlobalClass.getDeviceID(), Calendar.getInstance().getTimeInMillis(), 0);
+                // handle the answers of previous
+                Answer answer = new Answer(GlobalClass.getDeviceID(), SurveyManager.getInstance().getSurveyPostTime(), Calendar.getInstance().getTimeInMillis(), 0);
                 if(answer.answerHandler(mActiveData, mActiveDataDisplay)){
                     // scale check passed and done put notifications into answer
                     // now put ESM answer
@@ -285,7 +285,10 @@ public class FragmentESM extends Fragment  {
                     answer.setEsmQ5(selectedRadioButtonText5);
                     answer.setEsmQ6(selectedRadioButtonText6);
 
-                    String json = SurveyAnswer.getInstance().getAnswer(answer);
+                    // contextual data
+                    answer.setContext(SurveyManager.getInstance().getLocation(), SurveyManager.getInstance().getRingerMode());
+
+                    String json = SurveyManager.getInstance().getAnswer(answer);
 
                     Log.i("ans in json:", json);
 

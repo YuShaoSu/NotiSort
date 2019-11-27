@@ -1,5 +1,7 @@
 package com.example.jefflin.notipreference.model;
 
+import android.location.Location;
+
 import com.example.jefflin.notipreference.NotiItem;
 
 import java.util.ArrayList;
@@ -8,7 +10,8 @@ import java.util.Collections;
 public class Answer {
 
     private String id;
-    private long time;
+    private long surveyPostTime;
+    private long surveyFinishTime;
     private int interval;
     private ArrayList<NotiItem> notifications;
     private String esm_q1;
@@ -17,11 +20,21 @@ public class Answer {
     private String esm_q4;
     private String esm_q5;
     private String esm_q6;
+    private double latitude;
+    private double longtitude;
+    private int ringerMode;
 
-    public Answer(String id, long time, int interval) {
+    public Answer(String id, long surveyPostTime, long surveyFinishTime, int interval) {
         this.id = id;
-        this.time = time;
+        this.surveyPostTime = surveyPostTime;
+        this.surveyFinishTime = surveyFinishTime;
         this.interval = interval;
+    }
+
+    public void setContext(double[] location, int mRingerMode) {
+        latitude = location[0];
+        longtitude = location[1];
+        ringerMode = mRingerMode;
     }
 
 
@@ -29,9 +42,6 @@ public class Answer {
         this.id = id;
     }
 
-    public void setTime(long time) {
-        this.time = time;
-    }
 
     public void setInterval(int interval) {
         this.interval = interval;

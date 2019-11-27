@@ -11,7 +11,7 @@ import java.util.UUID;
 public class GlobalClass extends Application {
     private static File dirPath;
     private static String deviceID;
-    private static int intervalTime[] = {8, 12, 15, 16, 17, 19, 20};
+    private static int intervalTime[] = {0, 1, 8, 12, 13, 14, 15, 16, 17};
 
     public static File getDirPath() {
         return dirPath;

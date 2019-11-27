@@ -34,10 +34,10 @@ public class SampleManager extends BroadcastReceiver {
         myIntent.putExtra("interval", interval);
         myIntent.setAction("com.example.jefflin.notipreference.next_interval");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ComponentName componentName = new ComponentName(context.getPackageName(),context.getPackageName() + ".manager.SampleManager");
-            myIntent.setComponent(componentName);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            ComponentName componentName = new ComponentName(context.getPackageName(),context.getPackageName() + ".manager.SampleManager");
+//            myIntent.setComponent(componentName);
+//        }
 
         PendingIntent pi = PendingIntent.getBroadcast(context, Integer.parseInt(interval) + 10, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         Calendar c = Calendar.getInstance();

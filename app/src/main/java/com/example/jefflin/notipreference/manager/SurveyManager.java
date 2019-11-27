@@ -1,19 +1,28 @@
 package com.example.jefflin.notipreference.manager;
 
+import android.location.Location;
 import android.util.Log;
 
 import com.example.jefflin.notipreference.NotiItem;
+import com.example.jefflin.notipreference.model.Answer;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SurveyManager {
     private static volatile SurveyManager uniqueInstance;
     Map<String, ArrayList<NotiItem>> mMap = new HashMap<>();
+    private final LinkedHashMap<String, String> answered_hashmap = new LinkedHashMap<>();
     private boolean isSurveyDone;
     private boolean isSurveyBlock;
     private int interval;
+    private Long surveyPostTime;
 
     private SurveyManager() {
         setSurveyDone(false);
@@ -37,9 +46,13 @@ public class SurveyManager {
     public boolean isSurveyDone() { return isSurveyDone; }
     public void setSurveyDone(boolean surveyDone) { isSurveyDone = surveyDone; }
 
+    public long getSurveyPostTime() { return surveyPostTime; }
+
     public void setMap(Map<String, ArrayList<NotiItem>> map) {
+        surveyPostTime = Calendar.getInstance().getTimeInMillis();
         mMap = map;
     }
+
     public Map<String, ArrayList<NotiItem>> getMap() {
         return mMap;
     }
@@ -59,4 +72,33 @@ public class SurveyManager {
         isSurveyBlock = false;
         mMap.clear();
     }
+
+    // contextual data
+    private double longtitude;
+    private double latitude;
+    public void setCurrentLocation(double mLatitude, double mLongtitude) { longtitude = mLongtitude; latitude = mLatitude; }
+    public double[] getLocation() { return new double[] { latitude, longtitude}; }
+
+    private int ringerMode;
+    public void setRingerMode(int ringerMode) { this.ringerMode = ringerMode; }
+    public int getRingerMode() { return ringerMode; }
+
+    // answer json
+    private String postJson;
+
+    public String getAnswer(Answer answer) {
+        Gson gson = new Gson();
+        postJson = gson.toJson(answer);
+        return postJson;
+    }
+
+    public String get_json_object() {
+        Gson gson = new Gson();
+        return gson.toJson(answered_hashmap, LinkedHashMap.class);
+    }
+
+    public String getPostJson() {
+        return postJson;
+    }
+
 }
