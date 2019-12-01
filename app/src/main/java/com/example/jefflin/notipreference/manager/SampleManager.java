@@ -25,8 +25,7 @@ public class SampleManager extends BroadcastReceiver {
         String interval = String.valueOf(intent.getExtras().get("interval"));
         Log.d("SampleManager", "broadcast received");
         Log.d("SampleManager", interval);
-//        if(intent.getExtras().get("schedule").equals("next_interval"))  SurveyManager.getInstance().surveyInit();
-//        else Log.d("SampleManager", "not me!");
+
         SurveyManager.getInstance().surveyInit();
 
         Intent myIntent = new Intent(context , SampleManager.class);
@@ -34,16 +33,12 @@ public class SampleManager extends BroadcastReceiver {
         myIntent.putExtra("interval", interval);
         myIntent.setAction("com.example.jefflin.notipreference.next_interval");
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            ComponentName componentName = new ComponentName(context.getPackageName(),context.getPackageName() + ".manager.SampleManager");
-//            myIntent.setComponent(componentName);
-//        }
 
         PendingIntent pi = PendingIntent.getBroadcast(context, Integer.parseInt(interval) + 10, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[Integer.parseInt(interval)]);
         c.add(Calendar.DAY_OF_YEAR, 1);
-        c.set(Calendar.MINUTE, 00);
+        c.set(Calendar.MINUTE, GlobalClass.getIntervalMinute());
         c.set(Calendar.SECOND, 0);
         alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
         Log.d("SampleManager interval", String.valueOf(c.getTime()));

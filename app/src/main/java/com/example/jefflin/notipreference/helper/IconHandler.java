@@ -66,7 +66,10 @@ public class IconHandler {
     public String saveToInternalStorage(Drawable drawable, File dir, String iconName){
         Bitmap bitmapImage = getBitmapFromDrawable(drawable);
 
-        File mypath=new File(dir, iconName);
+        File mypath = new File(dir, iconName);
+
+        if(mypath.exists())
+            return dir.getAbsolutePath();
 
         FileOutputStream fos = null;
         try {

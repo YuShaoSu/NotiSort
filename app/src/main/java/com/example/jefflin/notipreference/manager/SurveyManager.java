@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TimerTask;
 
 public class SurveyManager {
     private static volatile SurveyManager uniqueInstance;
@@ -59,6 +60,11 @@ public class SurveyManager {
 
     public boolean isNotiNull() {
         return mMap.isEmpty();
+    }
+
+    public void surveyUnblock() {
+        isSurveyBlock = false;
+        mMap.clear();
     }
 
     public void surveyInit() {

@@ -1,5 +1,6 @@
 package com.example.jefflin.notipreference;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -28,10 +29,14 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -41,7 +46,9 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /*
@@ -51,6 +58,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ActivityMain extends AppCompatActivity {
     final private int SURVEY_REQUEST = 1337;
+    final private int MY_PERMISSION_REQUEST_CODE = 55;
+    final private int MY_PERMISSION_LOCATION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +84,12 @@ public class ActivityMain extends AppCompatActivity {
             startActivityForResult(survey, SURVEY_REQUEST);
         }
 
+        GlobalClass.setDirPath(getApplicationContext(), "iconDir");
+
+        setPermission();
         setBotNavView();
 
-//        setSchedule();
+//      setSchedule();
 
     }
 
@@ -174,11 +186,6 @@ public class ActivityMain extends AppCompatActivity {
             myIntent.putExtra("interval", i);
             myIntent.setAction("com.example.jefflin.notipreference.next_interval");
 
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                ComponentName componentName = new ComponentName(getPackageName(),getPackageName() + ".manager.SampleManager");
-//                myIntent.setComponent(componentName);
-//            }
-
             PendingIntent pi = PendingIntent.getBroadcast(this, i, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             Calendar c = Calendar.getInstance();
             c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[i]);
@@ -187,40 +194,87 @@ public class ActivityMain extends AppCompatActivity {
             alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
             Log.d("interval time", String.valueOf(c.getTime()));
         }
+    }
 
-//        Intent myIntent = new Intent(ActivityMain.this , SampleManager.class);
-//        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-//        myIntent.putExtra("schedule", "next_interval");
-//        myIntent.setAction("next_interval");
-//
-//        PendingIntent pi0 = PendingIntent.getBroadcast(this, 0, myIntent, 0);
-//        Calendar c0 = Calendar.getInstance();
-//        c0.set(Calendar.HOUR_OF_DAY, 8);
-//        c0.set(Calendar.MINUTE, 0);
-//        c0.set(Calendar.SECOND, 0);
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c0.getTimeInMillis(), TimeUnit.DAYS.toMillis(1), pi0);
-//
-//        PendingIntent pi1 = PendingIntent.getBroadcast(this, 1, myIntent, 0);
-//        Calendar c1 = Calendar.getInstance();
-//        c1.set(Calendar.HOUR_OF_DAY, 12);
-//        c1.set(Calendar.MINUTE, 0);
-//        c1.set(Calendar.SECOND, 0);
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c1.getTimeInMillis(), TimeUnit.DAYS.toMillis(1) , pi1);
-//
-//        PendingIntent pi2 = PendingIntent.getBroadcast(this, 2, myIntent, 0);
-//        Calendar c2 = Calendar.getInstance();
-//        c2.set(Calendar.HOUR_OF_DAY, 16);
-//        c2.set(Calendar.MINUTE, 0);
-//        c2.set(Calendar.SECOND, 0);
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c2.getTimeInMillis(), TimeUnit.DAYS.toMillis(1) , pi2);
-//
-//        PendingIntent pi3 = PendingIntent.getBroadcast(this, 3, myIntent, 0);
-//        Calendar c3 = Calendar.getInstance();
-//        c3.set(Calendar.HOUR_OF_DAY, 23);
-//        c3.set(Calendar.MINUTE, 0);
-//        c3.set(Calendar.SECOND, 0);
-//        Log.d("interval 3", String.valueOf(c3.getTime()));
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c3.getTimeInMillis(), TimeUnit.MINUTES.toMillis(10) , pi3);
+    private void setPermission() {
+
+        List<String> permissions = new ArrayList<String>();
+        //String[] permissions = new String[];
+
+        // set permission
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
+            TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            GlobalClass.setDeviceID(tm.getDeviceId());
+            Log.d("Permission", "device read granted");
+        }
+        else {
+            permissions.add(Manifest.permission.READ_PHONE_STATE);
+        }
+
+        if(chkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
+            Log.d("Permission", "location granted");
+        }
+        else {
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
+//        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                Manifest.permission.READ_PHONE_STATE)) {
+//            // Show an explanation to the user *asynchronously* -- don't block
+//            // this thread waiting for the user's response! After the user
+//            // sees the explanation, try again to request the permission.
+//        }
+//        else {
+            // No explanation needed; request the permission
+
+        String[] permissionsArray = new String[permissions.size()];
+        permissionsArray = permissions.toArray(permissionsArray);
+        if(!permissions.isEmpty()) {
+            ActivityCompat.requestPermissions(this,
+                    permissionsArray,
+                    MY_PERMISSION_REQUEST_CODE);
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+//        }
+        }
+
+    }
+
+    private boolean chkPermission(String permission){
+        return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSION_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                                == PackageManager.PERMISSION_GRANTED) {
+                        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                        GlobalClass.setDeviceID(tm.getDeviceId());
+                        Log.d("Permission device", tm.getDeviceId());
+                    }
+                    else {
+                        GlobalClass.setUUID();
+                        Log.d("Permission device", GlobalClass.getDeviceID());
+                    }
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
     }
 
     private void postAnswer(String jsonPost) {

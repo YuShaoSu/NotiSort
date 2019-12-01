@@ -18,6 +18,7 @@ import android.service.notification.StatusBarNotification;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.jefflin.notipreference.ActivityMain;
@@ -26,6 +27,7 @@ import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.manager.SampleManager;
 import com.example.jefflin.notipreference.manager.SurveyManager;
+import com.example.jefflin.notipreference.widgets.BlockTask;
 import com.example.jefflin.notipreference.widgets.PushNotification;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -35,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 public class NotiListenerService extends NotificationListenerService {
@@ -73,17 +77,6 @@ public class NotiListenerService extends NotificationListenerService {
         Log.d("NotiListenerService","bind");
         packageManager = getPackageManager();
 
-        GlobalClass.setDirPath(getApplicationContext(), "iconDir");
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
-            TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            GlobalClass.setDeviceID(tm.getDeviceId());
-            Log.d("device id", tm.getDeviceId());
-        }
-        else    {
-            GlobalClass.setUUID();
-            Log.d("UUID", "device id not get");
-        }
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         setSchedule();
@@ -93,7 +86,7 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn){
-        if(SurveyManager.getInstance().isSurveyDone() || SurveyManager.getInstance().isSurveyBlock()) return;
+        if(SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone()) return;
         ArrayList<NotiItem> mActiveData;
         Map<String, ArrayList<NotiItem>> map = getActiveNotis();
         mActiveData = map.get("click");
@@ -121,9 +114,12 @@ public class NotiListenerService extends NotificationListenerService {
                      }
                  }
              });
-
              // ringer mode
              SurveyManager.getInstance().setRingerMode(mAudioManager.getRingerMode());
+
+             // block
+             Timer timer = new Timer();
+             timer.schedule(new BlockTask(), 600000);
 
              Notification notification = sbn.getNotification();
              //check if the new post notification is ongoing
@@ -150,9 +146,10 @@ public class NotiListenerService extends NotificationListenerService {
         int order = 0;
         Map<String, ArrayList<NotiItem>> map = new HashMap();
         for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
+
             String icon = "null";
             String packageName = "null";
-            String title = "null";
+            String title = "";
             String content = "null";
             String appName = "null";
             String category = "null";
@@ -162,30 +159,33 @@ public class NotiListenerService extends NotificationListenerService {
             try{
                 packageName = notification.getPackageName();
             } catch (Exception e) {
-                Log.d("d", "no packageName");
+                Log.e("NotiListenerService", "package name failed", e);
             }
             try{
                 title = notification.getNotification().extras.get("android.title").toString();
 
             } catch (Exception e) {
-                Log.d("d", "no title");
+                Log.d("NotiListenerService", "title failed");
+//                continue;
             }
             try{
                 content = notification.getNotification().extras.get("android.text").toString();
             } catch (Exception e) {
-                Log.d("d", "no content");
+                Log.d("NotiListenerService", "content failed");
+//                continue;
             }
             try {
                 ApplicationInfo applicationInfo = packageManager.getApplicationInfo( packageName, 0);
                 appName = (String) (applicationInfo != null ?
                         packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
             } catch (Exception e) {
-                Log.d("d","app name failed");
+                Log.e("NotiListenerService", "appName failed", e);
+//                continue;
             }
             try {
                 category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
             } catch (Exception e){
-                Log.d("NotiListenerService",category);
+                Log.e("NotiListenerService", "category failed", e);
             }
             try {
                 IconHandler iconHandler = new IconHandler();
@@ -228,7 +228,7 @@ public class NotiListenerService extends NotificationListenerService {
     }
 
     private void setSchedule(){
-        for (int i = 0; i < 9; ++i){
+        for (int i = 0; i < 5; ++i){
             Intent myIntent = new Intent(this , SampleManager.class);
             AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
             myIntent.putExtra("interval", i);
@@ -237,7 +237,7 @@ public class NotiListenerService extends NotificationListenerService {
             PendingIntent pi = PendingIntent.getBroadcast(this, i, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             Calendar c = Calendar.getInstance();
             c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[i]);
-            c.set(Calendar.MINUTE, 57);
+            c.set(Calendar.MINUTE, GlobalClass.getIntervalMinute());
             c.set(Calendar.SECOND, 0);
             alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
             Log.d("interval time", String.valueOf(c.getTime()));
