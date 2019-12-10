@@ -55,6 +55,7 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((ActivitySurvey) mContext).onBackPressed();
             }
         });
 

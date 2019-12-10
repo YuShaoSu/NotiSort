@@ -52,6 +52,7 @@ public class FragmentScale extends Fragment  {
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((ActivitySurvey) mContext).onBackPressed();
             }
         });
 
