@@ -23,6 +23,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.jefflin.notipreference.manager.SampleManager;
 import com.example.jefflin.notipreference.manager.SurveyManager;
+import com.example.jefflin.notipreference.model.NotiDao;
+import com.example.jefflin.notipreference.model.NotiDatabase;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -39,6 +41,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -59,7 +62,9 @@ import java.util.concurrent.TimeUnit;
 public class ActivityMain extends AppCompatActivity {
     final private int SURVEY_REQUEST = 1337;
     final private int MY_PERMISSION_REQUEST_CODE = 55;
-    final private int MY_PERMISSION_LOCATION = 1;
+    private NotiDao notiDao;
+    final private String SURVEY_POST = "survey";
+    final private String ITEM_POST = "notification";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +90,7 @@ public class ActivityMain extends AppCompatActivity {
         }
 
         GlobalClass.setDirPath(getApplicationContext(), "iconDir");
+        notiDao = NotiDatabase.getInstance(getApplicationContext()).notiDao();
 
         setPermission();
         setBotNavView();
@@ -131,10 +137,14 @@ public class ActivityMain extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 String jsonPost = SurveyManager.getInstance().getPostJson();
-                postAnswer(jsonPost);
+                postRequest(jsonPost, SURVEY_POST);
                 Log.d("****", "****************** WE HAVE ANSWERS ******************");
                 Log.v("ANSWERS JSON", jsonPost);
                 Log.d("****", "*****************************************************");
+
+                String notiPost = SurveyManager.getItemJson(notiDao.getAll());
+                postRequest(notiPost, ITEM_POST);
+
 
                 Log.d("****", jsonPost);
             }
@@ -277,9 +287,9 @@ public class ActivityMain extends AppCompatActivity {
         }
     }
 
-    private void postAnswer(String jsonPost) {
+    private void postRequest(String jsonPost, final String url) {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
-            String URL = "http://neighborbob.nctu.me:5000/survey";
+            String URL = "http://neighborbob.nctu.me:5000/" + url;
             final String requestBody = jsonPost;
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
@@ -290,6 +300,7 @@ public class ActivityMain extends AppCompatActivity {
                         Log.d("post", "succeed");
                         Toast.makeText(getApplicationContext(),"notisort server received!", Toast.LENGTH_LONG);
                         SurveyManager.getInstance().surveyDone();
+                        if(url.equals("notifications")) notiDao.deleteAll();
                     }
                 }
             }, new Response.ErrorListener() {

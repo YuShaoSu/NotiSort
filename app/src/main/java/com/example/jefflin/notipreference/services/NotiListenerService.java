@@ -20,13 +20,17 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.room.Room;
 
 import com.example.jefflin.notipreference.ActivityMain;
 import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
+import com.example.jefflin.notipreference.manager.DatabaseManager;
 import com.example.jefflin.notipreference.manager.SampleManager;
 import com.example.jefflin.notipreference.manager.SurveyManager;
+import com.example.jefflin.notipreference.model.NotiDao;
+import com.example.jefflin.notipreference.model.NotiDatabase;
 import com.example.jefflin.notipreference.widgets.BlockTask;
 import com.example.jefflin.notipreference.widgets.PushNotification;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -86,6 +90,12 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn){
+//        Log.d("post id", String.valueOf(sbn.getId()));
+//        DatabaseManager db = new DatabaseManager(getApplicationContext());
+//        db.getNotiDao().insertNoti(setNotiItem(sbn, -1));
+        NotiDatabase db = NotiDatabase.getInstance(this);
+        db.notiDao().deleteAll();
+//        db.notiDao().insertNoti(setNotiItem(sbn, -1));
         if(SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone()) return;
         ArrayList<NotiItem> mActiveData;
         Map<String, ArrayList<NotiItem>> map = getActiveNotis();
@@ -97,6 +107,8 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
          if(mActiveData.size() > 5) {
+
+             Log.d("query test", String.valueOf(db.notiDao().getAll()));
 
              // Contextual Data
              // location
@@ -132,6 +144,7 @@ public class NotiListenerService extends NotificationListenerService {
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn){
         Log.d("NotiListenerService","removed");
+        Log.d("remove id",String.valueOf(sbn.getId()));
     }
 
     @Override
@@ -146,63 +159,67 @@ public class NotiListenerService extends NotificationListenerService {
         int order = 0;
         Map<String, ArrayList<NotiItem>> map = new HashMap();
         for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
-
-            String icon = "null";
-            String packageName = "null";
-            String title = "";
-            String content = "null";
-            String appName = "null";
-            String category = "null";
-
-            Long postTime = notification.getPostTime();
-
-            try{
-                packageName = notification.getPackageName();
-            } catch (Exception e) {
-                Log.e("NotiListenerService", "package name failed", e);
-            }
-            try{
-                title = notification.getNotification().extras.get("android.title").toString();
-
-            } catch (Exception e) {
-                Log.d("NotiListenerService", "title failed");
-//                continue;
-            }
-            try{
-                content = notification.getNotification().extras.get("android.text").toString();
-            } catch (Exception e) {
-                Log.d("NotiListenerService", "content failed");
-//                continue;
-            }
-            try {
-                ApplicationInfo applicationInfo = packageManager.getApplicationInfo( packageName, 0);
-                appName = (String) (applicationInfo != null ?
-                        packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
-            } catch (Exception e) {
-                Log.e("NotiListenerService", "appName failed", e);
-//                continue;
-            }
-            try {
-                category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
-            } catch (Exception e){
-                Log.e("NotiListenerService", "category failed", e);
-            }
-            try {
-                IconHandler iconHandler = new IconHandler();
-                icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
-            } catch (Exception e) {
-                Log.e("Rank","icon failed", e);
-            }
-
-//            Log.d("Notification Info:", "   App name: " + appName + "  Title: " + title + "  Content: " + content + "   Category: " + category);
-
-            activeData.add(new NotiItem(icon, appName, title, content, postTime, category, order));
-            activeDataDisplay.add(new NotiItem(icon, appName, title, content, postTime, category, order));
+            activeData.add(setNotiItem(notification, order));
+            activeDataDisplay.add(setNotiItem(notification, order));
             order++;
             map.put("click", getNotisWithoutDuplicate(activeData));
             map.put("display", getNotisWithoutDuplicate(activeDataDisplay));
         }
         return map;
+    }
+
+    public static NotiItem setNotiItem(StatusBarNotification notification, int order) {
+        String icon = "null";
+        String packageName = "null";
+        String title = "";
+        String content = "null";
+        String appName = "null";
+        String category = "null";
+
+        Long postTime = notification.getPostTime();
+
+        try{
+            packageName = notification.getPackageName();
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "package name failed", e);
+        }
+        try{
+            title = notification.getNotification().extras.get("android.title").toString();
+
+        } catch (Exception e) {
+            Log.d("NotiListenerService", "title failed");
+//                continue;
+        }
+        try{
+            content = notification.getNotification().extras.get("android.text").toString();
+        } catch (Exception e) {
+            Log.d("NotiListenerService", "content failed");
+//                continue;
+        }
+        try {
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo( packageName, 0);
+            appName = (String) (applicationInfo != null ?
+                    packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "appName failed", e);
+//                continue;
+        }
+        try {
+            category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
+        } catch (Exception e){
+            Log.e("NotiListenerService", "category failed", e);
+        }
+        try {
+            IconHandler iconHandler = new IconHandler();
+            icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
+        } catch (Exception e) {
+            Log.e("Rank","icon failed", e);
+        }
+
+        NotiItem notiItem = new NotiItem(appName, title, content, postTime, category, order);
+        notiItem.setIcon(icon);
+
+        return notiItem;
     }
 
     private static ArrayList<NotiItem> getNotisWithoutDuplicate(ArrayList<NotiItem> activeData) {

@@ -1,46 +1,55 @@
 package com.example.jefflin.notipreference;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 import androidx.room.ColumnInfo;
-import androidx.room.Dao;
 import androidx.room.Entity;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import androidx.room.Query;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+
 
 /*
     A class that store notification object's attributes
- */
+*/
+@Entity(tableName = "noti_items")
 public class NotiItem implements Serializable, Comparable<NotiItem> {
-    public String appName;
-    public String title;
-    public String content;
-    public Long postTime;
-    public String category;
-    public String icon;
+    @PrimaryKey(autoGenerate = true)
+    public int id;
 
+    @ColumnInfo(name = "app_name")
+    public String appName;
+
+    @ColumnInfo(name = "title")
+    public String title;
+
+    @ColumnInfo(name = "content")
+    public String content;
+
+    @ColumnInfo(name = "post_time")
+    public Long postTime;
+
+    @ColumnInfo(name = "category")
+    public String category;
+
+    @Ignore
+    public String icon;
+    @Ignore
     public int factor0;
+    @Ignore
     public int factor1;
+    @Ignore
     public int factor2;
+    @Ignore
     public int factor3;
 
-    private int origin_order;
+    @ColumnInfo(name = "origin_order")
+    public int origin_order;
+    @Ignore
     private int click_order = -1;
+    @Ignore
     private int display_order = -1;
 
-    public NotiItem(String icon, String appName, String title, String content, Long postTime, String category, int origin_order) {
-        this.icon = icon;
+    public NotiItem(String appName, String title, String content, Long postTime, String category, int origin_order) {
         this.appName = appName;
         this.title = title;
         this.content = content;
@@ -62,6 +71,10 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     // false for not set correctly
     public boolean checkScale() {
         return (factor0 != -1 && factor1 != -1 && factor2 != -1 && factor3 != -1);
+    }
+
+    public void setIcon(String mIcon) {
+        this.icon = mIcon;
     }
 
     public int setFactor(int qN, int value) {

@@ -1,7 +1,11 @@
 package com.example.jefflin.notipreference.widgets;
 
+import android.content.Context;
 import android.util.Log;
 
+import androidx.core.app.NotificationManagerCompat;
+
+import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 
 import java.util.TimerTask;
@@ -16,4 +20,5 @@ public class BlockTask extends TimerTask {
             SurveyManager.getInstance().surveyUnblock();
         }
     }
+
 }

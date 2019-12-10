@@ -8,6 +8,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.jefflin.notipreference.ActivityMain;
+import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.R;
 
 public class PushNotification {
@@ -25,9 +26,10 @@ public class PushNotification {
                 .setContentText("Receive more than ten notifications")
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setTimeoutAfter(595000)
                 .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(20, builder.build());
+        notificationManager.notify(GlobalClass.notificationID, builder.build());
     }
 
 }

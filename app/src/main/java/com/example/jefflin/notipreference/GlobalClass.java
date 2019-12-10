@@ -13,6 +13,7 @@ public class GlobalClass extends Application {
     private static String deviceID;
     private static int intervalTime[] = {8, 12, 15, 18, 21};
     private static int intervalMinute = 00;
+    public static int notificationID = 20;
 
     public static File getDirPath() {
         return dirPath;
