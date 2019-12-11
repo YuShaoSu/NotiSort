@@ -1,48 +1,45 @@
 package com.example.jefflin.notipreference.services;
 
-import android.Manifest;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.media.AudioManager;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
-import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.room.Room;
-
-import com.example.jefflin.notipreference.ActivityMain;
 import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
-import com.example.jefflin.notipreference.manager.DatabaseManager;
-import com.example.jefflin.notipreference.manager.SampleManager;
+import com.example.jefflin.notipreference.receiver.ActivityRecognitionReceiver;
+import com.example.jefflin.notipreference.receiver.SampleReceiver;
 import com.example.jefflin.notipreference.manager.SurveyManager;
-import com.example.jefflin.notipreference.model.NotiDao;
-import com.example.jefflin.notipreference.model.NotiDatabase;
+import com.example.jefflin.notipreference.database.NotiDatabase;
 import com.example.jefflin.notipreference.widgets.BlockTask;
 import com.example.jefflin.notipreference.widgets.PushNotification;
+import com.google.android.gms.location.ActivityRecognition;
+import com.google.android.gms.location.ActivityTransition;
+import com.google.android.gms.location.ActivityTransitionRequest;
+import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 public class NotiListenerService extends NotificationListenerService {
@@ -84,6 +81,7 @@ public class NotiListenerService extends NotificationListenerService {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         setSchedule();
+        requestActivityTransitionUpdates(this);
 
         return super.onBind(intent);
     }
@@ -96,6 +94,7 @@ public class NotiListenerService extends NotificationListenerService {
         NotiDatabase db = NotiDatabase.getInstance(this);
         db.notiDao().deleteAll();
 //        db.notiDao().insertNoti(setNotiItem(sbn, -1));
+        Log.d("onPost AR DB", String.valueOf(db.activityRecognitionDao().getAll()));
         if(SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone()) return;
         ArrayList<NotiItem> mActiveData;
         Map<String, ArrayList<NotiItem>> map = getActiveNotis();
@@ -246,7 +245,7 @@ public class NotiListenerService extends NotificationListenerService {
 
     private void setSchedule(){
         for (int i = 0; i < 5; ++i){
-            Intent myIntent = new Intent(this , SampleManager.class);
+            Intent myIntent = new Intent(this , SampleReceiver.class);
             AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
             myIntent.putExtra("interval", i);
             myIntent.setAction("com.example.jefflin.notipreference.next_interval");
@@ -259,6 +258,105 @@ public class NotiListenerService extends NotificationListenerService {
             alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
             Log.d("interval time", String.valueOf(c.getTime()));
         }
+    }
+
+    void requestActivityTransitionUpdates(final Context context) {
+        ActivityTransitionRequest request = buildActivityRecogRequest();
+        // PendingIntent pendingIntent;  // Your pending intent to receive callbacks.
+        Intent intent = new Intent(this, ActivityRecognitionReceiver.class);
+        intent.setAction("com.example.jefflin.notipreference.activity_recog_transition");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Task task = ActivityRecognition.getClient(context)
+                .requestActivityTransitionUpdates(request, pendingIntent);
+        task.addOnSuccessListener(
+                new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        Toast.makeText(context,
+                                "Successfully requested activity updates",
+                                Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+        task.addOnFailureListener(
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(context,
+                                "Requesting activity updates failed to start",
+                                Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+    }
+
+
+    private ActivityTransitionRequest buildActivityRecogRequest(){
+        List<ActivityTransition> transitions = new ArrayList<>();
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.IN_VEHICLE)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.IN_VEHICLE)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.WALKING)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.WALKING)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.RUNNING)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.RUNNING)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build());
+
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.ON_BICYCLE)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.ON_BICYCLE)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.STILL)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build());
+
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.STILL)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build());
+
+        return new ActivityTransitionRequest(transitions);
+
     }
 
 }

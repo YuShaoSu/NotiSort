@@ -21,13 +21,11 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.jefflin.notipreference.manager.SampleManager;
+import com.example.jefflin.notipreference.receiver.SampleReceiver;
 import com.example.jefflin.notipreference.manager.SurveyManager;
-import com.example.jefflin.notipreference.model.NotiDao;
-import com.example.jefflin.notipreference.model.NotiDatabase;
+import com.example.jefflin.notipreference.database.NotiDao;
+import com.example.jefflin.notipreference.database.NotiDatabase;
 import com.example.jefflin.notipreference.services.NotiListenerService;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,10 +39,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Switch;
 import android.widget.Toast;
-
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,7 +47,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /*
     Main activity, also the landing page
@@ -191,7 +185,7 @@ public class ActivityMain extends AppCompatActivity {
     private void setSchedule() {
 
         for (int i = 0; i < 9; ++i){
-            Intent myIntent = new Intent(ActivityMain.this , SampleManager.class);
+            Intent myIntent = new Intent(ActivityMain.this , SampleReceiver.class);
             AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
             myIntent.putExtra("interval", i);
             myIntent.setAction("com.example.jefflin.notipreference.next_interval");

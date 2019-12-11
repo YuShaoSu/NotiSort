@@ -1,12 +1,7 @@
 package com.example.jefflin.notipreference.manager;
 
-import android.app.Application;
-import android.content.Context;
-
-import androidx.room.Room;
-
-import com.example.jefflin.notipreference.model.NotiDao;
-import com.example.jefflin.notipreference.model.NotiDatabase;
+import com.example.jefflin.notipreference.database.NotiDao;
+import com.example.jefflin.notipreference.database.NotiDatabase;
 
 public class DatabaseManager {
     private NotiDao notiDao;

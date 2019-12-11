@@ -1,16 +1,9 @@
 package com.example.jefflin.notipreference.manager;
 
-import android.location.Location;
 import android.util.Log;
-
-import androidx.room.Room;
 
 import com.example.jefflin.notipreference.NotiItem;
 import com.example.jefflin.notipreference.model.Answer;
-import com.example.jefflin.notipreference.model.NotiDao;
-import com.example.jefflin.notipreference.model.NotiDatabase;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -19,7 +12,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimerTask;
 
 public class SurveyManager {
     private static volatile SurveyManager uniqueInstance;

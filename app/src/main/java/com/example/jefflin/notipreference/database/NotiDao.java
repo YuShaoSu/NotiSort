@@ -1,10 +1,8 @@
-package com.example.jefflin.notipreference.model;
+package com.example.jefflin.notipreference.database;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
-import androidx.room.Index;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.jefflin.notipreference.NotiItem;

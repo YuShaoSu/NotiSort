@@ -1,34 +1,32 @@
-package com.example.jefflin.notipreference.manager;
+package com.example.jefflin.notipreference.receiver;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 
-import com.example.jefflin.notipreference.ActivityMain;
 import com.example.jefflin.notipreference.GlobalClass;
+import com.example.jefflin.notipreference.manager.SurveyManager;
 
 import java.util.Calendar;
 
 import static android.content.Context.ALARM_SERVICE;
 
-public class SampleManager extends BroadcastReceiver {
+public class SampleReceiver extends BroadcastReceiver {
 
-    public SampleManager() {}
+    public SampleReceiver() {}
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String interval = String.valueOf(intent.getExtras().get("interval"));
-        Log.d("SampleManager", "broadcast received");
-        Log.d("SampleManager", interval);
+        Log.d("SampleReceiver", "broadcast received");
+        Log.d("SampleReceiver", interval);
 
         SurveyManager.getInstance().surveyInit();
 
-        Intent myIntent = new Intent(context , SampleManager.class);
+        Intent myIntent = new Intent(context , SampleReceiver.class);
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(ALARM_SERVICE);
         myIntent.putExtra("interval", interval);
         myIntent.setAction("com.example.jefflin.notipreference.next_interval");
@@ -41,7 +39,7 @@ public class SampleManager extends BroadcastReceiver {
         c.set(Calendar.MINUTE, GlobalClass.getIntervalMinute());
         c.set(Calendar.SECOND, 0);
         alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
-        Log.d("SampleManager interval", String.valueOf(c.getTime()));
+        Log.d("SampleReceiver interval", String.valueOf(c.getTime()));
     }
 
     public void surveyDone() {
