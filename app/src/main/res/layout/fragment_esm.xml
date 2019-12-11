@@ -347,7 +347,7 @@
                     android:layout_marginStart="15dp">
 
                     <RadioButton
-                        android:id="@+id/q6_0"
+                        android:id="@+id/q6_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -359,7 +359,7 @@
                         android:tag="Happy"/>
 
                     <RadioButton
-                        android:id="@+id/q6_1"
+                        android:id="@+id/q6_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -371,7 +371,7 @@
                         android:tag="Happy"/>
 
                     <RadioButton
-                        android:id="@+id/q6_2"
+                        android:id="@+id/q6_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -383,7 +383,7 @@
                         android:tag="Neutral"/>
 
                     <RadioButton
-                        android:id="@+id/q6_3"
+                        android:id="@+id/q6_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -395,7 +395,7 @@
                         android:tag="Sad"/>
 
                     <RadioButton
-                        android:id="@+id/q6_4"
+                        android:id="@+id/q6_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -406,6 +406,7 @@
                         android:padding="2dp"
                         android:tag="Cry"/>
 
+                </RadioGroup>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

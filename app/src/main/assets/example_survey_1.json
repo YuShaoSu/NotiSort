@@ -8,7 +8,7 @@
   "ESMQuestions": [
     {
       "question_type": "Sort",
-      "question_title": "請依想先點擊順序排名",
+      "question_title": "請依想先點擊順序排名\n(假設下列通知皆尚未點擊過)",
       "description": "1 of 4",
       "required": false
     },
