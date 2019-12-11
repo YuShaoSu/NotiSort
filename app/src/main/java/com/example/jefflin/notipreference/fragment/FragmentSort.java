@@ -14,10 +14,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.jefflin.notipreference.NotiItem;
+import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.adapter.NotiItemAdapter;
 import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
-import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.ActivitySurvey;
 import com.example.jefflin.notipreference.model.ESMQuestion;

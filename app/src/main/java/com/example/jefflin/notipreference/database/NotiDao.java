@@ -5,7 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.jefflin.notipreference.NotiItem;
+import com.example.jefflin.notipreference.model.NotiItem;
 
 import java.util.List;
 

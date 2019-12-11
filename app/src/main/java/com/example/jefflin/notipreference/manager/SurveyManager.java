@@ -2,7 +2,7 @@ package com.example.jefflin.notipreference.manager;
 
 import android.util.Log;
 
-import com.example.jefflin.notipreference.NotiItem;
+import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.model.Answer;
 import com.google.gson.Gson;
 

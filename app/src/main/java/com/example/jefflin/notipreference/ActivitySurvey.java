@@ -6,12 +6,11 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
 
 import com.example.jefflin.notipreference.fragment.FragmentScale;
 import com.example.jefflin.notipreference.fragment.FragmentESM;
 import com.example.jefflin.notipreference.manager.SurveyManager;
-import com.example.jefflin.notipreference.services.NotiListenerService;
+import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.adapter.FragmentAdapter;
 import com.example.jefflin.notipreference.fragment.FragmentEnd;
 import com.example.jefflin.notipreference.fragment.FragmentSort;

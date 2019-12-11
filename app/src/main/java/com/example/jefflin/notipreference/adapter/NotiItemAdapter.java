@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.jefflin.notipreference.NotiItem;
+import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
 import com.example.jefflin.notipreference.R;

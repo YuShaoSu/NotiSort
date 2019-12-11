@@ -1,9 +1,5 @@
 package com.example.jefflin.notipreference.model;
 
-import android.location.Location;
-
-import com.example.jefflin.notipreference.NotiItem;
-
 import java.util.ArrayList;
 import java.util.Collections;
 

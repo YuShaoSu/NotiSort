@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.example.jefflin.notipreference.adapter.NotiItemAdapter;
 import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;

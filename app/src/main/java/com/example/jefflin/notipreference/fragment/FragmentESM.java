@@ -21,7 +21,7 @@ import com.example.jefflin.notipreference.ActivitySurvey;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.model.Answer;
 import com.example.jefflin.notipreference.GlobalClass;
-import com.example.jefflin.notipreference.NotiItem;
+import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.model.ESMQuestion;
 

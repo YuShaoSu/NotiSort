@@ -15,10 +15,14 @@ import android.service.notification.StatusBarNotification;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.jefflin.notipreference.GlobalClass;
-import com.example.jefflin.notipreference.NotiItem;
+import com.example.jefflin.notipreference.model.LocationUpdateModel;
+import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.receiver.ActivityRecognitionReceiver;
+import com.example.jefflin.notipreference.receiver.LocationUpdateReceiver;
 import com.example.jefflin.notipreference.receiver.SampleReceiver;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.database.NotiDatabase;
@@ -29,7 +33,9 @@ import com.google.android.gms.location.ActivityTransition;
 import com.google.android.gms.location.ActivityTransitionRequest;
 import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -82,6 +88,7 @@ public class NotiListenerService extends NotificationListenerService {
         mAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         setSchedule();
         requestActivityTransitionUpdates(this);
+//        requestLocationUpdates(this);
 
         return super.onBind(intent);
     }
@@ -91,10 +98,31 @@ public class NotiListenerService extends NotificationListenerService {
 //        Log.d("post id", String.valueOf(sbn.getId()));
 //        DatabaseManager db = new DatabaseManager(getApplicationContext());
 //        db.getNotiDao().insertNoti(setNotiItem(sbn, -1));
-        NotiDatabase db = NotiDatabase.getInstance(this);
+        final NotiDatabase db = NotiDatabase.getInstance(this);
         db.notiDao().deleteAll();
 //        db.notiDao().insertNoti(setNotiItem(sbn, -1));
-        Log.d("onPost AR DB", String.valueOf(db.activityRecognitionDao().getAll()));
+        // Contextual Data
+        // location
+        fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                // Got last known location. In some rare situations this can be null.
+                if (location != null) {
+                    Log.d("onPost location", String.valueOf(location));
+                    db.locationUpdateDao().insert(
+                                new LocationUpdateModel(location.getLongitude(),
+                                location.getLatitude(), location.getAccuracy(),
+                                location.getTime()
+                            ));
+                }
+                else {
+                    Log.d("Survey Post location", "Failed");
+                }
+            }
+        });
+
+        Log.d("onPost AR DB", String.valueOf(db.activityRecognitionDao().getAll().size()));
+        Log.d("onPost LU DB", String.valueOf(db.locationUpdateDao().getAll().size()));
         if(SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone()) return;
         ArrayList<NotiItem> mActiveData;
         Map<String, ArrayList<NotiItem>> map = getActiveNotis();
@@ -142,8 +170,8 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn){
-        Log.d("NotiListenerService","removed");
-        Log.d("remove id",String.valueOf(sbn.getId()));
+//        Log.d("NotiListenerService","removed");
+//        Log.d("remove id",String.valueOf(sbn.getId()));
     }
 
     @Override
@@ -260,9 +288,32 @@ public class NotiListenerService extends NotificationListenerService {
         }
     }
 
+    // receive too much!
+    void requestLocationUpdates(final Context context) {
+        LocationRequest request = new LocationRequest()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(5);
+        Intent intent = new Intent(this, LocationUpdateReceiver.class);
+        intent.setAction("com.example.jefflin.notipreference.location_update");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Task task = fusedLocationClient.requestLocationUpdates(request, pendingIntent);
+        task.addOnCompleteListener(
+                new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            Log.d("request Location task", "success");
+                        } else {
+                            Log.d("request Location task", "fail");
+                        }
+                    }
+                }
+        );
+
+    }
+
     void requestActivityTransitionUpdates(final Context context) {
         ActivityTransitionRequest request = buildActivityRecogRequest();
-        // PendingIntent pendingIntent;  // Your pending intent to receive callbacks.
         Intent intent = new Intent(this, ActivityRecognitionReceiver.class);
         intent.setAction("com.example.jefflin.notipreference.activity_recog_transition");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -276,6 +327,7 @@ public class NotiListenerService extends NotificationListenerService {
                                 "Successfully requested activity updates",
                                 Toast.LENGTH_SHORT)
                                 .show();
+                        Log.d("request AR task", "success");
                     }
                 });
         task.addOnFailureListener(
@@ -286,6 +338,7 @@ public class NotiListenerService extends NotificationListenerService {
                                 "Requesting activity updates failed to start",
                                 Toast.LENGTH_SHORT)
                                 .show();
+                        Log.d("request AR task", "fail");
                     }
                 });
     }

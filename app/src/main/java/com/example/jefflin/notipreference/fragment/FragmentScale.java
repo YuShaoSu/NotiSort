@@ -15,11 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jefflin.notipreference.ActivitySurvey;
-import com.example.jefflin.notipreference.NotiItem;
+import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.adapter.ScaleAdapter;
 import com.example.jefflin.notipreference.model.ESMQuestion;
-import com.example.jefflin.notipreference.services.NotiListenerService;
 
 import java.util.ArrayList;
 
