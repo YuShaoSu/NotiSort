@@ -63,7 +63,7 @@ public class FragmentESM extends Fragment  {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_survey, container, false);
+        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_esm, container, false);
 
         button_continue = (Button) rootView.findViewById(R.id.button_continue);
         textview_q_title = (TextView) rootView.findViewById(R.id.title);
