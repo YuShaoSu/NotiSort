@@ -61,7 +61,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
         holder.appname.setText(notiItem.appName);
         holder.title.setText(notiItem.title);
         holder.content.setText(notiItem.content);
-        holder.reason.setText(resources.getString(R.string.factor_text, position));
+        holder.reason.setText(resources.getString(R.string.factor_text, position + 1));
 //        holder.reason_placeholder.setText(resources.getString(R.string.factor_text, position));
 
 
