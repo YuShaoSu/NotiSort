@@ -1,6 +1,7 @@
 package com.example.jefflin.notipreference.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,8 +37,6 @@ public class FragmentScale extends Fragment  {
     private ImageView iv_back;
 
 
-    ArrayList<NotiItem> mData;
-    ArrayList<NotiItem> mData_6 = new ArrayList<NotiItem>();
     ArrayList<NotiItem> mActiveData;
 
     @Override

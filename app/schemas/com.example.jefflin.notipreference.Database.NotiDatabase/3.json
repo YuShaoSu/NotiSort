@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "4bbb2a840d89c3a61519682ec2af33c4",
+    "identityHash": "431bfd4244799798b449437b4bdb2cc8",
     "entities": [
       {
         "tableName": "noti_items",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `app_name` TEXT, `title` TEXT, `content` TEXT, `post_time` INTEGER, `category` TEXT, `sort_reason` TEXT, `origin_order` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `app_name` TEXT, `title` TEXT, `content` TEXT, `post_time` INTEGER, `category` TEXT, `origin_order` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -41,12 +41,6 @@
           {
             "fieldPath": "category",
             "columnName": "category",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "sortReason",
-            "columnName": "sort_reason",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -164,7 +158,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4bbb2a840d89c3a61519682ec2af33c4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '431bfd4244799798b449437b4bdb2cc8')"
     ]
   }
 }

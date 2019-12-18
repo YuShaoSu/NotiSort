@@ -7,9 +7,15 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -17,6 +23,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.jefflin.notipreference.ActivitySurvey;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.helper.IconHandler;
@@ -93,7 +100,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
         private TextView title;
         private TextView content;
         private TextView position;
-        private TextView reason_box;
+        private EditText reason_box;
         private RadioGroup scaleGroup0;
         private RadioGroup scaleGroup1;
         private RadioGroup scaleGroup2;
@@ -106,8 +113,41 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
             appName = (TextView) view.findViewById(R.id.appname);
             title = (TextView) view.findViewById(R.id.title);
             content = (TextView) view.findViewById(R.id.content);
-            reason_box = view.findViewById(R.id.likert_scale_reason_box);
             position = view.findViewById(R.id.scale_item_position);
+            reason_box = view.findViewById(R.id.likert_scale_reason_box);
+
+
+            reason_box.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        Log.d("text", "done");
+                        return false;   // return false to hide the keyboard
+                    }
+                    else    return true;
+                }
+            });
+
+
+            reason_box.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                    reason_done.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                    Log.d("text onChange", getAdapterPosition() + " " + s.toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    Log.d("text afterChange", getAdapterPosition() + " " + s.toString());
+                    if(s.toString().trim().length() > 0) {
+                        mData.get(getAdapterPosition()).setSortReason(s.toString());
+                    }
+                }
+            });
 
             scaleGroup0 = (RadioGroup) view.findViewById(R.id.likert_scale0);
             scaleGroup0.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -117,6 +157,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                     switch (group.getCheckedRadioButtonId()){
                         case R.id.strong_agree0:
                             mData.get(getAdapterPosition()).factor0 = strong_agree;
+                            Log.d("edit text", reason_box.getText().toString());
                             break;
                         case R.id.agree0:
                             mData.get(getAdapterPosition()).factor0 = agree;

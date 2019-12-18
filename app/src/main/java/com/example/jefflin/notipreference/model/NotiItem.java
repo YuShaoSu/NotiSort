@@ -31,7 +31,7 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     @ColumnInfo(name = "category")
     public String category;
 
-    @ColumnInfo(name = "sort_reason")
+    @Ignore
     public String sortReason;
 
     @Ignore

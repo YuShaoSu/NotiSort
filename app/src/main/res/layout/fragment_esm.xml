@@ -65,7 +65,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1. 你身邊有人嗎?"/>
+                    android:text="1. 你正在與人互動嗎?"/>
                 <RadioGroup
                     android:id="@+id/q1"
                     android:layout_width="match_parent"
@@ -75,12 +75,12 @@
                         android:id="@+id/q1_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="有人" />
+                        android:text="是" />
                     <RadioButton
                         android:id="@+id/q1_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="沒人" />
+                        android:text="否" />
                 </RadioGroup>
             </LinearLayout>
 

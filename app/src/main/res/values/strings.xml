@@ -17,6 +17,7 @@
     <string name="go">go</string>
     <string name="next">繼續</string>
     <string name="finish">完成</string>
+    <string name="done">確定</string>
 
 
     <string name="displayOrder">請依<b>想處理</b>順序排名</string>

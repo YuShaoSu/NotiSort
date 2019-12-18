@@ -360,15 +360,25 @@
 
             </RadioGroup>
 
-
-            <EditText
-                android:id="@+id/likert_scale_reason_box"
-                android:layout_width="369dp"
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="80"
-                android:hint="@string/factor_extra_text"
-                android:inputType="text"
-                android:textSize="14dp" />
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/likert_scale_reason_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="80"
+                    android:hint="@string/factor_extra_text"
+                    android:inputType="text"
+                    android:textSize="14dp"
+                    android:imeOptions="actionDone"
+                    android:paddingBottom="20dp"/>
+
+
+            </RelativeLayout>
 
         </LinearLayout>
 
