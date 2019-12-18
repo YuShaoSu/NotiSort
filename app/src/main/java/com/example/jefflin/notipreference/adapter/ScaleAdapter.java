@@ -63,24 +63,11 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
         holder.appName.setText(notiItem.appName);
         holder.title.setText(notiItem.title);
         holder.content.setText(notiItem.content);
-        holder.reason.setText(resources.getString(R.string.factor_text, position + 1));
+        holder.position.setText(String.valueOf(position + 1));
 
-//        TextWatcher textWatcher = new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable holder.) {
-//
-//            }
-//        }
+        if(!notiItem.category.equals("msg")) {
+            holder.scaleGroup3.setVisibility(View.GONE);
+        }
 
     }
 
@@ -99,15 +86,13 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
         return position;
     }
 
-
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView icon;
         private TextView appName;
         private TextView title;
         private TextView content;
-        private TextView reason;
+        private TextView position;
         private TextView reason_box;
         private RadioGroup scaleGroup0;
         private RadioGroup scaleGroup1;
@@ -121,8 +106,8 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
             appName = (TextView) view.findViewById(R.id.appname);
             title = (TextView) view.findViewById(R.id.title);
             content = (TextView) view.findViewById(R.id.content);
-            reason = view.findViewById(R.id.likert_scale_reason);
             reason_box = view.findViewById(R.id.likert_scale_reason_box);
+            position = view.findViewById(R.id.scale_item_position);
 
             scaleGroup0 = (RadioGroup) view.findViewById(R.id.likert_scale0);
             scaleGroup0.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

@@ -8,350 +8,369 @@
     android:layout_marginBottom="2dp"
     android:background="@color/white">
 
-
-<RelativeLayout
+    <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical"
-        android:id="@+id/all"
-        android:layout_margin="10dp">
+
+
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:id="@+id/all"
+            android:layout_margin="10dp">
 
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                tools:visibility="visible"
-                android:layout_margin="3dp"
-                android:background="@color/white"/>
-            <TextView
-                android:id="@+id/appname"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:textColor="@color/grey_medium"
-                android:textSize="13sp"/>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="3dp"
+                    android:background="@color/white"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/appname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:textColor="@color/grey_medium"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/rank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_margin="3dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/scale_item_position"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="3dp"
+                    android:background="@drawable/circle"
+                    android:gravity="center"
+                    android:shadowRadius="10.0"
+                    android:textColor="@color/grey_medium"
+                    android:textFontWeight="200"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+
             <TextView
-                android:id="@+id/rank"
-                android:layout_gravity="end"
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
+                android:layout_margin="2dp"
                 android:textColor="@color/black"
-                android:textSize="13sp"/>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:textColor="@color/black"
-            android:textSize="15sp"/>
-
-        <TextView
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:textSize="13sp"
-            android:textColor="@color/grey_medium"
-            android:layout_marginBottom="5dp"/>
-
-
-        <!--first factor-->
-        <RadioGroup
-            android:id="@+id/likert_scale0"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                android:textSize="15sp" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center|left"
-                android:text="@string/factor0"
-                android:textColor="#000000" />
-
-            <View
-                style="@style/Space"
-                android:layout_width="54dp" />
-
-            <RadioButton
-                android:id="@+id/strong_disagree0"
-                android:layout_width="wrap_content"
+                android:id="@+id/content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/stronglyDisagree"
-                android:button="@null"
-                android:drawableBottom="@android:drawable/btn_radio"
-                android:textSize="10sp"
-                android:padding="2dp" />
+                android:layout_margin="2dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/grey_medium"
+                android:textSize="13sp" />
 
-            <RadioButton
-                android:id="@+id/disagree0"
-                android:layout_width="wrap_content"
+
+            <!--first factor-->
+            <RadioGroup
+                android:id="@+id/likert_scale0"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:button="@null"
-                android:drawableBottom="@android:drawable/btn_radio"
-                android:text="\n"
-                android:textSize="10sp"
-                android:padding="2dp" />
+                android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/neutral0"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center|left"
+                    android:text="@string/factor0"
+                    android:textColor="#000000" />
+
+                <View
+                    style="@style/Space"
+                    android:layout_width="54dp" />
+
+                <RadioButton
+                    android:id="@+id/strong_disagree0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableBottom="@android:drawable/btn_radio"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/stronglyDisagree"
+                    android:textSize="10sp" />
+
+                <RadioButton
+                    android:id="@+id/disagree0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableBottom="@android:drawable/btn_radio"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="\n"
+                    android:textSize="10sp" />
+
+                <RadioButton
+                    android:id="@+id/neutral0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableBottom="@android:drawable/btn_radio"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="\n"
+                    android:textSize="10sp" />
+
+                <RadioButton
+                    android:id="@+id/agree0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableBottom="@android:drawable/btn_radio"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="\n"
+                    android:textSize="10sp" />
+
+                <RadioButton
+                    android:id="@+id/strong_agree0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableBottom="@android:drawable/btn_radio"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/stronglyAgree"
+                    android:textSize="10sp" />
+
+                <View style="@style/Space" />
+
+
+            </RadioGroup>
+
+            <!--second factor-->
+            <RadioGroup
+                android:id="@+id/likert_scale1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:button="@null"
-                android:drawableBottom="@android:drawable/btn_radio"
-                android:text="\n"
-                android:textSize="10sp"
-                android:padding="2dp" />
+                android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/agree0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:button="@null"
-                android:drawableBottom="@android:drawable/btn_radio"
-                android:text="\n"
-                android:textSize="10sp"
-                android:padding="2dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/factor1"
+                    android:textColor="#000000" />
 
-            <RadioButton
-                android:id="@+id/strong_agree0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/stronglyAgree"
-                android:textSize="10sp"
-                android:button="@null"
-                android:drawableBottom="@android:drawable/btn_radio"
-                android:padding="2dp" />
+                <View
+                    style="@style/Space"
+                    android:layout_width="55dp" />
 
-            <View style="@style/Space" />
-
-
-        </RadioGroup>
-
-        <!--second factor-->
-        <RadioGroup
-        android:id="@+id/likert_scale1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:padding="2dp"
-                android:text="@string/factor1"
-                android:textColor="#000000" />
-
-            <View
-                style="@style/Space"
-                android:layout_width="55dp" />
-
-            <RadioButton
-                android:id="@+id/strong_disagree1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:button="@android:drawable/btn_radio"
-                android:padding="2dp" />
+                <RadioButton
+                    android:id="@+id/strong_disagree1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
+                    android:padding="2dp" />
 
 
                 <RadioButton
-                android:id="@+id/disagree1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:button="@android:drawable/btn_radio"
-                android:padding="2dp" />
+                    android:id="@+id/disagree1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
+                    android:padding="2dp" />
 
                 <RadioButton
-                android:id="@+id/neutral1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:button="@android:drawable/btn_radio"
-                android:padding="2dp" />
+                    android:id="@+id/neutral1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
+                    android:padding="2dp" />
 
                 <RadioButton
-                android:id="@+id/agree1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:button="@android:drawable/btn_radio"
-                android:padding="2dp" />
+                    android:id="@+id/agree1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
+                    android:padding="2dp" />
 
                 <RadioButton
-                android:id="@+id/strong_agree1"
-                android:layout_width="wrap_content"
+                    android:id="@+id/strong_agree1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
+                    android:padding="2dp" />
+
+                <View style="@style/Space" />
+
+            </RadioGroup>
+
+            <!--third factor-->
+            <RadioGroup
+                android:id="@+id/likert_scale2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:button="@android:drawable/btn_radio"
-                android:padding="2dp" />
+                android:orientation="horizontal">
 
-            <View style="@style/Space" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/factor2"
+                    android:textColor="#000000" />
 
-        </RadioGroup>
+                <View
+                    style="@style/Space"
+                    android:layout_width="25dp" />
 
-        <!--third factor-->
-        <RadioGroup
-            android:id="@+id/likert_scale2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:padding="2dp"
-                android:text="@string/factor2"
-                android:textColor="#000000" />
-
-            <View
-                style="@style/Space"
-                android:layout_width="25dp" />
-
-            <RadioButton
+                <RadioButton
                     android:id="@+id/strong_disagree2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:button="@android:drawable/btn_radio"
                     android:gravity="center"
-                android:button="@android:drawable/btn_radio"
-                android:padding="2dp" />
+                    android:padding="2dp" />
 
                 <RadioButton
                     android:id="@+id/disagree2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
                     android:padding="2dp" />
 
                 <RadioButton
                     android:id="@+id/neutral2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
                     android:padding="2dp" />
 
                 <RadioButton
                     android:id="@+id/agree2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
                     android:padding="2dp" />
 
                 <RadioButton
                     android:id="@+id/strong_agree2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
                     android:padding="2dp" />
 
-            <View style="@style/Space" />
+                <View style="@style/Space" />
 
-        </RadioGroup>
+            </RadioGroup>
 
-        <!--fourth factor-->
-        <RadioGroup
-            android:id="@+id/likert_scale3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            <!--fourth factor-->
+            <RadioGroup
+                android:id="@+id/likert_scale3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:padding="2dp"
-                android:text="@string/factor3"
-                android:textColor="#000000" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/factor3"
+                    android:textColor="#000000" />
 
-            <View
-                style="@style/Space"
-                android:layout_width="11dp" />
+                <View
+                    style="@style/Space"
+                    android:layout_width="11dp" />
 
                 <RadioButton
                     android:id="@+id/strong_disagree3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
                     android:padding="2dp" />
 
                 <RadioButton
                     android:id="@+id/disagree3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
                     android:padding="2dp" />
 
                 <RadioButton
                     android:id="@+id/neutral3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
                     android:padding="2dp" />
 
                 <RadioButton
                     android:id="@+id/agree3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
                     android:padding="2dp" />
 
                 <RadioButton
                     android:id="@+id/strong_agree3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
                     android:padding="2dp" />
 
-            <View style="@style/Space" />
+                <View style="@style/Space" />
 
-        </RadioGroup>
+            </RadioGroup>
 
-        <TextView
-            android:id="@+id/likert_scale_reason"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:padding="2dp"
-            android:textColor="#000000" />
 
-        <EditText
-            android:id="@+id/likert_scale_reason_box"
-            android:layout_width="369dp"
-            android:layout_height="wrap_content"
-            android:ems="80"
-            android:inputType="text"
-            android:textSize="14dp" />
+            <EditText
+                android:id="@+id/likert_scale_reason_box"
+                android:layout_width="369dp"
+                android:layout_height="wrap_content"
+                android:ems="80"
+                android:hint="@string/factor_extra_text"
+                android:inputType="text"
+                android:textSize="14dp" />
 
-    </LinearLayout>
+        </LinearLayout>
 
 </RelativeLayout>
 

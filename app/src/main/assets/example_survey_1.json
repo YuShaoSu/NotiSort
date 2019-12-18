@@ -8,7 +8,7 @@
   "ESMQuestions": [
     {
       "question_type": "Sort",
-      "question_title": "請依想先點擊順序排名\n(假設下列通知皆尚未點擊過)",
+      "question_title": "請依想先點擊順序排名\n(請依現在情境做排序)",
       "description": "1 of 4",
       "required": false
     },
@@ -20,7 +20,7 @@
     },
     {
       "question_type": "displaySort",
-      "question_title": "請依通知列希望的呈現順序排名",
+      "question_title": "請依通知列希望的呈現順序排名\n(請依現在情境做排序)",
       "description": "3 of 4",
       "required": false
     },
