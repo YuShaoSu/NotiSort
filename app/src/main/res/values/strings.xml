@@ -6,6 +6,8 @@
     <string name="profile">全部通知</string>
     <string name="history">全部通知</string>
 
+    <string name="accessibility_service_description">Collect screen event</string>
+
     <string name="channelName">surveyRequest</string>
     <string name="channelDescription">Time to do survey!</string>
     <string name="channelID">20</string>

@@ -18,7 +18,6 @@ public class GlobalClass extends Application {
     public static File getDirPath() {
         return dirPath;
     }
-
     public static void setDirPath(Context context, String dirName) {
         dirPath = context.getDir(dirName, Context.MODE_PRIVATE);
     }
@@ -26,13 +25,11 @@ public class GlobalClass extends Application {
     public static String getDeviceID() {
         return deviceID;
     }
-
     public static void setDeviceID(String deviceId) {
         deviceID = deviceId;
     }
 
     public static int[] getIntervalTime() { return intervalTime; }
-
     public static int getIntervalMinute() { return intervalMinute; }
 
     public static void setUUID() {

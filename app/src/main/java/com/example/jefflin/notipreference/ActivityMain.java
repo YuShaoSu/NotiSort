@@ -21,6 +21,8 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.jefflin.notipreference.database.ActivityRecognitionDao;
+import com.example.jefflin.notipreference.database.LocationUpdateDao;
 import com.example.jefflin.notipreference.receiver.SampleReceiver;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.database.NotiDao;
@@ -57,8 +59,12 @@ public class ActivityMain extends AppCompatActivity {
     final private int SURVEY_REQUEST = 1337;
     final private int MY_PERMISSION_REQUEST_CODE = 55;
     private NotiDao notiDao;
+    private ActivityRecognitionDao activityRecognitionDao;
+    private LocationUpdateDao locationUpdateDao;
     final private String SURVEY_POST = "survey";
     final private String ITEM_POST = "notification";
+    final private String AR_POST = "activity_recognition";
+    final private String LU_POST = "location_update";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +91,8 @@ public class ActivityMain extends AppCompatActivity {
 
         GlobalClass.setDirPath(getApplicationContext(), "iconDir");
         notiDao = NotiDatabase.getInstance(getApplicationContext()).notiDao();
+        activityRecognitionDao = NotiDatabase.getInstance(getApplicationContext()).activityRecognitionDao();
+        locationUpdateDao = NotiDatabase.getInstance(getApplicationContext()).locationUpdateDao();
 
         setPermission();
         setBotNavView();
@@ -138,6 +146,12 @@ public class ActivityMain extends AppCompatActivity {
 
                 String notiPost = SurveyManager.getItemJson(notiDao.getAll());
                 postRequest(notiPost, ITEM_POST);
+
+                String ARPost = SurveyManager.getARJson(activityRecognitionDao.getAll());
+                postRequest(ARPost, AR_POST);
+
+                String LUPost = SurveyManager.getLUJson(locationUpdateDao.getAll());
+                postRequest(LUPost, LU_POST);
 
 
                 Log.d("****", jsonPost);
@@ -295,6 +309,8 @@ public class ActivityMain extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"notisort server received!", Toast.LENGTH_LONG);
                         SurveyManager.getInstance().surveyDone();
                         if(url.equals("notifications")) notiDao.deleteAll();
+                        else if(url.equals(AR_POST)) activityRecognitionDao.deleteAll();
+                        else if(url.equals(LU_POST)) locationUpdateDao.deleteAll();
                     }
                 }
             }, new Response.ErrorListener() {

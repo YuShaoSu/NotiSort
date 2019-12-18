@@ -2,6 +2,8 @@ package com.example.jefflin.notipreference.manager;
 
 import android.util.Log;
 
+import com.example.jefflin.notipreference.model.ActivityRecognitionModel;
+import com.example.jefflin.notipreference.model.LocationUpdateModel;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.model.Answer;
 import com.google.gson.Gson;
@@ -79,8 +81,12 @@ public class SurveyManager {
     // contextual data
     private double longtitude;
     private double latitude;
-    public void setCurrentLocation(double mLatitude, double mLongtitude) { longtitude = mLongtitude; latitude = mLatitude; }
-    public double[] getLocation() { return new double[] { latitude, longtitude}; }
+    private float accuracy;
+    public void setCurrentLocation(double mLatitude, double mLongtitude, float mAccuracy) { longtitude = mLongtitude; latitude = mLatitude; accuracy = mAccuracy;}
+    public double[] getLocation() { return new double[] { latitude, longtitude, accuracy }; }
+    public double getLatitude() { return latitude; }
+    public double getLongtitude() { return longtitude; }
+    public float getAccuracy() { return accuracy; }
 
     private int ringerMode;
     public void setRingerMode(int ringerMode) { this.ringerMode = ringerMode; }
@@ -103,6 +109,16 @@ public class SurveyManager {
     public static String getItemJson(List<NotiItem> notiItems) {
         Gson gson = new Gson();
         return gson.toJson(notiItems);
+    }
+
+    public static String getARJson(List<ActivityRecognitionModel> activityRecognitionModels){
+        Gson gson = new Gson();
+        return gson.toJson(activityRecognitionModels);
+    }
+
+    public static String getLUJson(List<LocationUpdateModel> locationUpdateModels){
+        Gson gson = new Gson();
+        return gson.toJson(locationUpdateModels);
     }
 
     public String getPostJson() {

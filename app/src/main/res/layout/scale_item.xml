@@ -344,7 +344,7 @@
             android:textColor="#000000" />
 
         <EditText
-            android:id="@+id/likert_scale_reason_placeholder"
+            android:id="@+id/likert_scale_reason_box"
             android:layout_width="369dp"
             android:layout_height="wrap_content"
             android:ems="80"
@@ -352,7 +352,6 @@
             android:textSize="14dp" />
 
     </LinearLayout>
-
 
 </RelativeLayout>
 

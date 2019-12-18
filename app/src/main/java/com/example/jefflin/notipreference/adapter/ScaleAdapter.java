@@ -5,6 +5,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,12 +60,27 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
         Drawable icon = new BitmapDrawable(resources, icon_);
 
         holder.icon.setImageDrawable(icon);
-        holder.appname.setText(notiItem.appName);
+        holder.appName.setText(notiItem.appName);
         holder.title.setText(notiItem.title);
         holder.content.setText(notiItem.content);
         holder.reason.setText(resources.getString(R.string.factor_text, position + 1));
-//        holder.reason_placeholder.setText(resources.getString(R.string.factor_text, position));
 
+//        TextWatcher textWatcher = new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable holder.) {
+//
+//            }
+//        }
 
     }
 
@@ -87,11 +104,11 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView icon;
-        private TextView appname;
+        private TextView appName;
         private TextView title;
         private TextView content;
         private TextView reason;
-        private TextView reason_placeholder;
+        private TextView reason_box;
         private RadioGroup scaleGroup0;
         private RadioGroup scaleGroup1;
         private RadioGroup scaleGroup2;
@@ -101,11 +118,11 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
         ViewHolder(View view) {
             super(view);
             icon = (ImageView) view.findViewById(R.id.icon);
-            appname = (TextView) view.findViewById(R.id.appname);
+            appName = (TextView) view.findViewById(R.id.appname);
             title = (TextView) view.findViewById(R.id.title);
             content = (TextView) view.findViewById(R.id.content);
             reason = view.findViewById(R.id.likert_scale_reason);
-            reason_placeholder = view.findViewById(R.id.likert_scale_reason_placeholder);
+            reason_box = view.findViewById(R.id.likert_scale_reason_box);
 
             scaleGroup0 = (RadioGroup) view.findViewById(R.id.likert_scale0);
             scaleGroup0.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

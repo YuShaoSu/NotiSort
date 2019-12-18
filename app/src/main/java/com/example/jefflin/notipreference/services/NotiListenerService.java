@@ -9,7 +9,9 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.media.AudioManager;
+import android.os.BatteryManager;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.jefflin.notipreference.GlobalClass;
+import com.example.jefflin.notipreference.manager.ContextManager;
 import com.example.jefflin.notipreference.model.LocationUpdateModel;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
@@ -48,11 +51,15 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.Semaphore;
 
+import static android.view.accessibility.AccessibilityEvent.eventTypeToString;
+
 public class NotiListenerService extends NotificationListenerService {
     static PackageManager packageManager;
     private int notiNum = 0;
     private FusedLocationProviderClient fusedLocationClient;
-    private AudioManager mAudioManager;
+    private AudioManager audioManager;
+    private BatteryManager batteryManager;
+    private PowerManager powerManager;
 
     private static final String TAG = "MyNotificationService";
     static NotiListenerService _this;
@@ -85,44 +92,35 @@ public class NotiListenerService extends NotificationListenerService {
         packageManager = getPackageManager();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        batteryManager = (BatteryManager)getSystemService(Context.BATTERY_SERVICE);
+        powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
         setSchedule();
         requestActivityTransitionUpdates(this);
-//        requestLocationUpdates(this);
+        requestLocationUpdates(this);
 
         return super.onBind(intent);
     }
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn){
-//        Log.d("post id", String.valueOf(sbn.getId()));
-//        DatabaseManager db = new DatabaseManager(getApplicationContext());
-//        db.getNotiDao().insertNoti(setNotiItem(sbn, -1));
         final NotiDatabase db = NotiDatabase.getInstance(this);
-        db.notiDao().deleteAll();
-//        db.notiDao().insertNoti(setNotiItem(sbn, -1));
-        // Contextual Data
-        // location
-        fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                // Got last known location. In some rare situations this can be null.
-                if (location != null) {
-                    Log.d("onPost location", String.valueOf(location));
-                    db.locationUpdateDao().insert(
-                                new LocationUpdateModel(location.getLongitude(),
-                                location.getLatitude(), location.getAccuracy(),
-                                location.getTime()
+        db.notiDao().insertNoti(setNotiItem(sbn, -1));
+
+        db.locationUpdateDao().insert(
+                                new LocationUpdateModel(ContextManager.getInstance().locatoinLongtitude,
+                                ContextManager.getInstance().locatoinLatitude, ContextManager.getInstance().locatoinAccuracy,
+                                sbn.getPostTime()
                             ));
-                }
-                else {
-                    Log.d("Survey Post location", "Failed");
-                }
-            }
-        });
+        Log.d("onPosted Access", String.valueOf(eventTypeToString(ContextManager.getInstance().accessibilityType)));
+        Log.d("onPosted Battery level", String.valueOf(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)));
+        Log.d("onPosted Battery charge", String.valueOf(batteryManager.isCharging()));
+        Log.d("onPosted Screen on/off", String.valueOf(powerManager.isInteractive()));
+        Log.d("onPosted idle", String.valueOf(powerManager.isDeviceIdleMode()));
+        Log.d("onPosted power save", String.valueOf(powerManager.isPowerSaveMode()));
 
         Log.d("onPost AR DB", String.valueOf(db.activityRecognitionDao().getAll().size()));
-        Log.d("onPost LU DB", String.valueOf(db.locationUpdateDao().getAll().size()));
+//        Log.d("onPost LU DB", String.valueOf(db.locationUpdateDao().getAll().size()));
         if(SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone()) return;
         ArrayList<NotiItem> mActiveData;
         Map<String, ArrayList<NotiItem>> map = getActiveNotis();
@@ -137,24 +135,26 @@ public class NotiListenerService extends NotificationListenerService {
 
              Log.d("query test", String.valueOf(db.notiDao().getAll()));
 
+             SurveyManager.getInstance().setCurrentLocation(ContextManager.getInstance().locatoinLatitude,
+                        ContextManager.getInstance().locatoinLongtitude, ContextManager.getInstance().locatoinAccuracy);
              // Contextual Data
              // location
-             fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-                 @Override
-                 public void onSuccess(Location location) {
-                     // Got last known location. In some rare situations this can be null.
-                     if (location != null) {
-                         // Logic to handle location object
-                         Log.d("Survey Post location", String.valueOf(location));
-                         SurveyManager.getInstance().setCurrentLocation(location.getLatitude(), location.getLongitude());
-                     }
-                     else {
-                         Log.d("Survey Post location", "Failed");
-                     }
-                 }
-             });
+//             fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+//                 @Override
+//                 public void onSuccess(Location location) {
+//                     // Got last known location. In some rare situations this can be null.
+//                     if (location != null) {
+//                         // Logic to handle location object
+//                         Log.d("Survey Post location", String.valueOf(location));
+//                         SurveyManager.getInstance().setCurrentLocation(location.getLatitude(), location.getLongitude());
+//                     }
+//                     else {
+//                         Log.d("Survey Post location", "Failed");
+//                     }
+//                 }
+//             });
              // ringer mode
-             SurveyManager.getInstance().setRingerMode(mAudioManager.getRingerMode());
+             SurveyManager.getInstance().setRingerMode(audioManager.getRingerMode());
 
              // block
              Timer timer = new Timer();

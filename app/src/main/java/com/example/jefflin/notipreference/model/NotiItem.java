@@ -31,6 +31,9 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     @ColumnInfo(name = "category")
     public String category;
 
+    @ColumnInfo(name = "sort_reason")
+    public String sortReason;
+
     @Ignore
     public String icon;
     @Ignore
@@ -60,6 +63,7 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
         this.factor2 = -1;
         this.factor3 = -1;
         this.origin_order = origin_order;
+        this.sortReason = "";
     }
 
     @Override
@@ -107,4 +111,6 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     public int getOriginOrder() {
         return origin_order;
     }
+
+    public void setSortReason(String reason) { this.sortReason = reason; }
 }
