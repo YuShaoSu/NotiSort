@@ -2,6 +2,7 @@ package com.example.jefflin.notipreference.manager;
 
 import android.util.Log;
 
+import com.example.jefflin.notipreference.model.Accessibility;
 import com.example.jefflin.notipreference.model.ActivityRecognitionModel;
 import com.example.jefflin.notipreference.model.LocationUpdateModel;
 import com.example.jefflin.notipreference.model.NotiItem;
@@ -114,6 +115,11 @@ public class SurveyManager {
     public static String getARJson(List<ActivityRecognitionModel> activityRecognitionModels){
         Gson gson = new Gson();
         return gson.toJson(activityRecognitionModels);
+    }
+
+    public static String getACJson(List<Accessibility> accessibilities){
+        Gson gson = new Gson();
+        return gson.toJson(accessibilities);
     }
 
     public static String getLUJson(List<LocationUpdateModel> locationUpdateModels){

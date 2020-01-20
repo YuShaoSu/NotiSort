@@ -65,7 +65,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1. 你正在與人互動嗎?"/>
+                    android:text="1. Are you interacting with others?"/>
                 <RadioGroup
                     android:id="@+id/q1"
                     android:layout_width="match_parent"
@@ -75,12 +75,12 @@
                         android:id="@+id/q1_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="是" />
+                        android:text="yes" />
                     <RadioButton
                         android:id="@+id/q1_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="否" />
+                        android:text="no" />
                 </RadioGroup>
             </LinearLayout>
 
@@ -91,7 +91,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2. 你在哪裡?"/>
+                    android:text="2. Where are you?"/>
                 <RadioGroup
                     android:id="@+id/q2"
                     android:layout_width="match_parent"
@@ -101,17 +101,17 @@
                         android:id="@+id/q2_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="住處" />
+                        android:text="Home" />
                     <RadioButton
                         android:id="@+id/q2_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="工作場所" />
+                        android:text="Workplace" />
                     <RadioButton
                         android:id="@+id/q2_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="其他" />
+                        android:text="Other" />
                 </RadioGroup>
                 <EditText
                     android:id="@+id/q2_other"
@@ -131,42 +131,42 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3. 你在進行什麼活動?"/>
+                    android:text="3. Please describe your current task/activity."/>
                 <CheckBox
                     android:id="@+id/q3_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="沒在做事/放鬆"/>
+                    android:text="Leisure/Idle"/>
                 <CheckBox
                     android:id="@+id/q3_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="工作/讀書"/>
+                    android:text="Working/Studying"/>
                 <CheckBox
                     android:id="@+id/q3_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="運動"/>
+                    android:text="Exercising"/>
                 <CheckBox
                     android:id="@+id/q3_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="睡覺"/>
+                    android:text="Sleeping"/>
                 <CheckBox
                     android:id="@+id/q3_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="吃飯"/>
+                    android:text="Eating"/>
                 <CheckBox
                     android:id="@+id/q3_6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="通勤"/>
+                    android:text="Heading to some place"/>
                 <CheckBox
                     android:id="@+id/q3_7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="其他"/>
+                    android:text="Other"/>
                 <EditText
                     android:id="@+id/q3_other"
                     android:layout_width="wrap_content"
@@ -184,7 +184,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4. 你很投入上述活動?"/>
+                    android:text="4. You are very involved in the task/activity."/>
                 <RadioGroup
                     android:id="@+id/q4"
                     android:layout_width="match_parent"
@@ -261,7 +261,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5. 你很忙碌?"/>
+                    android:text="5. Are you busy?"/>
                 <RadioGroup
                     android:id="@+id/q5"
                     android:layout_width="match_parent"

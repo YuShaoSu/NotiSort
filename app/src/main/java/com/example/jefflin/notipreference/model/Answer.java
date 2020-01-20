@@ -18,6 +18,12 @@ public class Answer {
     private String esm_q6;
     private double latitude;
     private double longtitude;
+    public float locationAccuracy;
+    public boolean isCharging;
+    public int battery;
+    public boolean isScreenOn;
+    public boolean isDeviceIdle;
+    public boolean isPowerSave;
     private int ringerMode;
 
     public Answer(String id, long surveyPostTime, long surveyFinishTime, int interval) {
@@ -27,10 +33,22 @@ public class Answer {
         this.interval = interval;
     }
 
-    public void setContext(double[] location, int mRingerMode) {
+    public void setContext(double[] location, float accuracy, int mRingerMode) {
         latitude = location[0];
         longtitude = location[1];
+        locationAccuracy = accuracy;
         ringerMode = mRingerMode;
+    }
+
+    public void setBattery(int mBattery, boolean is_charging){
+        battery = mBattery;
+        isCharging = is_charging;
+    }
+
+    public void setStatus(boolean screen, boolean idle, boolean powerSave){
+        isScreenOn = screen;
+        isDeviceIdle = idle;
+        isPowerSave = powerSave;
     }
 
 

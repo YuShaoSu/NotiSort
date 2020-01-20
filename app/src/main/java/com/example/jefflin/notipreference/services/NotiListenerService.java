@@ -12,6 +12,7 @@ import android.media.AudioManager;
 import android.os.BatteryManager;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
@@ -49,134 +50,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
 import static android.view.accessibility.AccessibilityEvent.eventTypeToString;
 
 public class NotiListenerService extends NotificationListenerService {
+    private static final String TAG = "MyNotificationService";
     static PackageManager packageManager;
+    static NotiListenerService _this;
+    static Semaphore sem = new Semaphore(0);
+    Executor mExecutor = Executors.newSingleThreadExecutor();
     private int notiNum = 0;
     private FusedLocationProviderClient fusedLocationClient;
     private AudioManager audioManager;
     private BatteryManager batteryManager;
     private PowerManager powerManager;
 
-    private static final String TAG = "MyNotificationService";
-    static NotiListenerService _this;
-    static Semaphore sem = new Semaphore(0);
-
     public static NotiListenerService get() {
         sem.acquireUninterruptibly();
         NotiListenerService ret = _this;
         sem.release();
         return ret;
-    }
-
-    @Override
-    public void onListenerConnected() {
-        Log.i(TAG, "Connected");
-        _this = this;
-        sem.release();
-    }
-
-    @Override
-    public void onListenerDisconnected() {
-        Log.i(TAG, "Disconnected");
-        sem.acquireUninterruptibly();
-        _this = null;
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        Log.d("NotiListenerService","bind");
-        packageManager = getPackageManager();
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        batteryManager = (BatteryManager)getSystemService(Context.BATTERY_SERVICE);
-        powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
-        setSchedule();
-        requestActivityTransitionUpdates(this);
-        requestLocationUpdates(this);
-
-        return super.onBind(intent);
-    }
-
-    @Override
-    public void onNotificationPosted(StatusBarNotification sbn){
-        final NotiDatabase db = NotiDatabase.getInstance(this);
-        db.notiDao().insertNoti(setNotiItem(sbn, -1));
-
-        db.locationUpdateDao().insert(
-                                new LocationUpdateModel(ContextManager.getInstance().locatoinLongtitude,
-                                ContextManager.getInstance().locatoinLatitude, ContextManager.getInstance().locatoinAccuracy,
-                                sbn.getPostTime()
-                            ));
-        Log.d("onPosted Access", String.valueOf(eventTypeToString(ContextManager.getInstance().accessibilityType)));
-        Log.d("onPosted Battery level", String.valueOf(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)));
-        Log.d("onPosted Battery charge", String.valueOf(batteryManager.isCharging()));
-        Log.d("onPosted Screen on/off", String.valueOf(powerManager.isInteractive()));
-        Log.d("onPosted idle", String.valueOf(powerManager.isDeviceIdleMode()));
-        Log.d("onPosted power save", String.valueOf(powerManager.isPowerSaveMode()));
-
-        Log.d("onPost AR DB", String.valueOf(db.activityRecognitionDao().getAll().size()));
-//        Log.d("onPost LU DB", String.valueOf(db.locationUpdateDao().getAll().size()));
-        if(SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone()) return;
-        ArrayList<NotiItem> mActiveData;
-        Map<String, ArrayList<NotiItem>> map = getActiveNotis();
-        mActiveData = map.get("click");
-
-        if(!sbn.isOngoing()) {
-            Log.d("done", String.valueOf(SurveyManager.getInstance().isSurveyDone()));
-            Log.d("block", String.valueOf(SurveyManager.getInstance().isSurveyBlock()));
-        }
-
-         if(mActiveData.size() > 5) {
-
-             Log.d("query test", String.valueOf(db.notiDao().getAll()));
-
-             SurveyManager.getInstance().setCurrentLocation(ContextManager.getInstance().locatoinLatitude,
-                        ContextManager.getInstance().locatoinLongtitude, ContextManager.getInstance().locatoinAccuracy);
-             // Contextual Data
-             // location
-//             fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-//                 @Override
-//                 public void onSuccess(Location location) {
-//                     // Got last known location. In some rare situations this can be null.
-//                     if (location != null) {
-//                         // Logic to handle location object
-//                         Log.d("Survey Post location", String.valueOf(location));
-//                         SurveyManager.getInstance().setCurrentLocation(location.getLatitude(), location.getLongitude());
-//                     }
-//                     else {
-//                         Log.d("Survey Post location", "Failed");
-//                     }
-//                 }
-//             });
-             // ringer mode
-             SurveyManager.getInstance().setRingerMode(audioManager.getRingerMode());
-
-             // block
-             Timer timer = new Timer();
-             timer.schedule(new BlockTask(), 600000);
-
-             Notification notification = sbn.getNotification();
-             //check if the new post notification is ongoing
-             SurveyManager.getInstance().setMap(map);
-             SurveyManager.getInstance().setSurveyBlock(true);
-             new PushNotification(this);
-        }
-    }
-
-    @Override
-    public void onNotificationRemoved(StatusBarNotification sbn){
-//        Log.d("NotiListenerService","removed");
-//        Log.d("remove id",String.valueOf(sbn.getId()));
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        return super.onUnbind(intent);
     }
 
     public static Map<String, ArrayList<NotiItem>> getActiveNotis() {
@@ -205,26 +101,26 @@ public class NotiListenerService extends NotificationListenerService {
 
         Long postTime = notification.getPostTime();
 
-        try{
+        try {
             packageName = notification.getPackageName();
         } catch (Exception e) {
             Log.e("NotiListenerService", "package name failed", e);
         }
-        try{
+        try {
             title = notification.getNotification().extras.get("android.title").toString();
 
         } catch (Exception e) {
             Log.d("NotiListenerService", "title failed");
 //                continue;
         }
-        try{
+        try {
             content = notification.getNotification().extras.get("android.text").toString();
         } catch (Exception e) {
             Log.d("NotiListenerService", "content failed");
 //                continue;
         }
         try {
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo( packageName, 0);
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
             appName = (String) (applicationInfo != null ?
                     packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
         } catch (Exception e) {
@@ -233,14 +129,14 @@ public class NotiListenerService extends NotificationListenerService {
         }
         try {
             category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
-        } catch (Exception e){
+        } catch (Exception e) {
             Log.e("NotiListenerService", "category failed", e);
         }
         try {
             IconHandler iconHandler = new IconHandler();
             icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
         } catch (Exception e) {
-            Log.e("Rank","icon failed", e);
+            Log.e("Rank", "icon failed", e);
         }
 
         NotiItem notiItem = new NotiItem(appName, title, content, postTime, category, order);
@@ -271,10 +167,117 @@ public class NotiListenerService extends NotificationListenerService {
         return item.appName.equals("NotiSort");
     }
 
-    private void setSchedule(){
-        for (int i = 0; i < 5; ++i){
-            Intent myIntent = new Intent(this , SampleReceiver.class);
-            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+    @Override
+    public void onListenerConnected() {
+        Log.i(TAG, "Connected");
+        _this = this;
+        sem.release();
+    }
+
+    @Override
+    public void onListenerDisconnected() {
+        Log.i(TAG, "Disconnected");
+        sem.acquireUninterruptibly();
+        _this = null;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        Log.d("NotiListenerService", "bind");
+        packageManager = getPackageManager();
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        batteryManager = (BatteryManager) getSystemService(Context.BATTERY_SERVICE);
+        powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        setSchedule();
+        requestActivityTransitionUpdates(this);
+        requestLocationUpdates(this);
+
+        return super.onBind(intent);
+    }
+
+    @Override
+    public void onNotificationPosted(StatusBarNotification sbn) {
+        final NotiDatabase db = NotiDatabase.getInstance(this);
+        final NotiItem item;
+        item = setNotiItem(sbn, -1);
+
+        item.setLocation(ContextManager.getInstance().locatoinLongtitude,
+                ContextManager.getInstance().locatoinLatitude, ContextManager.getInstance().locatoinAccuracy);
+        item.setBattery(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY), batteryManager.isCharging());
+        item.setRingerTone(audioManager.getRingerMode());
+        item.setScreenOn(powerManager.isInteractive());
+        item.setDeviceIdle(powerManager.isDeviceIdleMode());
+        item.setDeviceIdle(powerManager.isPowerSaveMode());
+
+        mExecutor.execute(new Runnable() {
+                               @Override
+                               public void run() {
+                                   db.notiDao().insertNoti(item);
+                               }
+                           }
+        );
+
+
+//        db.locationUpdateDao().insert(
+//                                new LocationUpdateModel(ContextManager.getInstance().locatoinLongtitude,
+//                                ContextManager.getInstance().locatoinLatitude, ContextManager.getInstance().locatoinAccuracy,
+//                                sbn.getPostTime()
+//                            ));
+//        Log.d("onPosted Access", String.valueOf(eventTypeToString(ContextManager.getInstance().accessibilityType)));
+//        Log.d("onPosted Battery level", String.valueOf(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)));
+//        Log.d("onPosted Battery charge", String.valueOf(batteryManager.isCharging()));
+//        Log.d("onPosted Screen on/off", String.valueOf(powerManager.isInteractive()));
+//        Log.d("onPosted idle", String.valueOf(powerManager.isDeviceIdleMode()));
+//        Log.d("onPosted power save", String.valueOf(powerManager.isPowerSaveMode()));
+
+
+//        Log.d("onPost AR DB", String.valueOf(db.activityRecognitionDao().getAll().size()));
+//        Log.d("onPost LU DB", String.valueOf(db.locationUpdateDao().getAll().size()));
+//        if(SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone()) return;
+        if (SurveyManager.getInstance().isSurveyBlock()) return;
+        ArrayList<NotiItem> mActiveData;
+        Map<String, ArrayList<NotiItem>> map = getActiveNotis();
+        mActiveData = map.get("click");
+
+        if (!sbn.isOngoing()) {
+            Log.d("done", String.valueOf(SurveyManager.getInstance().isSurveyDone()));
+            Log.d("block", String.valueOf(SurveyManager.getInstance().isSurveyBlock()));
+        }
+
+        if (mActiveData.size() > 5) {
+
+//            Log.d("query test", String.valueOf(db.notiDao().getAll()));
+
+
+            // block
+            Timer timer = new Timer();
+            timer.schedule(new BlockTask(), 600000);
+
+            Notification notification = sbn.getNotification();
+            //check if the new post notification is ongoing
+            SurveyManager.getInstance().setMap(map);
+            SurveyManager.getInstance().setSurveyBlock(true);
+            new PushNotification(this);
+        }
+    }
+
+    @Override
+    public void onNotificationRemoved(StatusBarNotification sbn) {
+//        Log.d("NotiListenerService","removed");
+//        Log.d("remove id",String.valueOf(sbn.getId()));
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        return super.onUnbind(intent);
+    }
+
+    private void setSchedule() {
+        for (int i = 0; i < 5; ++i) {
+            Intent myIntent = new Intent(this, SampleReceiver.class);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             myIntent.putExtra("interval", i);
             myIntent.setAction("com.example.jefflin.notipreference.next_interval");
 
@@ -344,7 +347,7 @@ public class NotiListenerService extends NotificationListenerService {
     }
 
 
-    private ActivityTransitionRequest buildActivityRecogRequest(){
+    private ActivityTransitionRequest buildActivityRecogRequest() {
         List<ActivityTransition> transitions = new ArrayList<>();
 
         transitions.add(

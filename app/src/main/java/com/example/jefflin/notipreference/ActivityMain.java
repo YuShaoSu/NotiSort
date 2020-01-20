@@ -9,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
 import androidx.annotation.NonNull;
 
 import com.android.volley.AuthFailureError;
@@ -21,6 +22,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.jefflin.notipreference.database.AccessibilityDao;
 import com.example.jefflin.notipreference.database.ActivityRecognitionDao;
 import com.example.jefflin.notipreference.database.LocationUpdateDao;
 import com.example.jefflin.notipreference.receiver.SampleReceiver;
@@ -49,6 +51,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /*
     Main activity, also the landing page
@@ -61,10 +65,13 @@ public class ActivityMain extends AppCompatActivity {
     private NotiDao notiDao;
     private ActivityRecognitionDao activityRecognitionDao;
     private LocationUpdateDao locationUpdateDao;
+    private AccessibilityDao accessibilityDao;
     final private String SURVEY_POST = "survey";
     final private String ITEM_POST = "notification";
     final private String AR_POST = "activity_recognition";
     final private String LU_POST = "location_update";
+    final private String AC_POST = "accessibility";
+    Executor mExecutor = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +100,7 @@ public class ActivityMain extends AppCompatActivity {
         notiDao = NotiDatabase.getInstance(getApplicationContext()).notiDao();
         activityRecognitionDao = NotiDatabase.getInstance(getApplicationContext()).activityRecognitionDao();
         locationUpdateDao = NotiDatabase.getInstance(getApplicationContext()).locationUpdateDao();
+        accessibilityDao = NotiDatabase.getInstance(getApplicationContext()).accessibilityDao();
 
         setPermission();
         setBotNavView();
@@ -101,7 +109,7 @@ public class ActivityMain extends AppCompatActivity {
 
     }
 
-    private void setBotNavView(){
+    private void setBotNavView() {
         final Intent setting = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
         final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
         final Intent intent_history = new Intent(this, ActivityHistory.class);
@@ -144,14 +152,22 @@ public class ActivityMain extends AppCompatActivity {
                 Log.v("ANSWERS JSON", jsonPost);
                 Log.d("****", "*****************************************************");
 
-                String notiPost = SurveyManager.getItemJson(notiDao.getAll());
-                postRequest(notiPost, ITEM_POST);
+                mExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        String notiPost = SurveyManager.getItemJson(notiDao.getAll());
+                        postRequest(notiPost, ITEM_POST);
 
-                String ARPost = SurveyManager.getARJson(activityRecognitionDao.getAll());
-                postRequest(ARPost, AR_POST);
+                        String ARPost = SurveyManager.getARJson(activityRecognitionDao.getAll());
+                        postRequest(ARPost, AR_POST);
 
-                String LUPost = SurveyManager.getLUJson(locationUpdateDao.getAll());
-                postRequest(LUPost, LU_POST);
+                        String ACPost = SurveyManager.getACJson(accessibilityDao.getAll());
+                        postRequest(ACPost, AC_POST);
+                    }
+                });
+
+//                String LUPost = SurveyManager.getLUJson(locationUpdateDao.getAll());
+//                postRequest(LUPost, LU_POST);
 
 
                 Log.d("****", jsonPost);
@@ -198,9 +214,9 @@ public class ActivityMain extends AppCompatActivity {
 
     private void setSchedule() {
 
-        for (int i = 0; i < 9; ++i){
-            Intent myIntent = new Intent(ActivityMain.this , SampleReceiver.class);
-            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        for (int i = 0; i < 9; ++i) {
+            Intent myIntent = new Intent(ActivityMain.this, SampleReceiver.class);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             myIntent.putExtra("interval", i);
             myIntent.setAction("com.example.jefflin.notipreference.next_interval");
 
@@ -220,20 +236,24 @@ public class ActivityMain extends AppCompatActivity {
         //String[] permissions = new String[];
 
         // set permission
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
             TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
             GlobalClass.setDeviceID(tm.getDeviceId());
             Log.d("Permission", "device read granted");
-        }
-        else {
+        } else {
             permissions.add(Manifest.permission.READ_PHONE_STATE);
         }
 
-        if(chkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
+        if (chkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
             Log.d("Permission", "location granted");
-        }
-        else {
+        } else {
             permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
+        if (chkPermission(Manifest.permission.PACKAGE_USAGE_STATS)) {
+            Log.d("Permission", "usage stats granted");
+        } else {
+            permissions.add(Manifest.permission.PACKAGE_USAGE_STATS);
         }
 
 //        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -243,11 +263,11 @@ public class ActivityMain extends AppCompatActivity {
 //            // sees the explanation, try again to request the permission.
 //        }
 //        else {
-            // No explanation needed; request the permission
+        // No explanation needed; request the permission
 
         String[] permissionsArray = new String[permissions.size()];
         permissionsArray = permissions.toArray(permissionsArray);
-        if(!permissions.isEmpty()) {
+        if (!permissions.isEmpty()) {
             ActivityCompat.requestPermissions(this,
                     permissionsArray,
                     MY_PERMISSION_REQUEST_CODE);
@@ -259,7 +279,7 @@ public class ActivityMain extends AppCompatActivity {
 
     }
 
-    private boolean chkPermission(String permission){
+    private boolean chkPermission(String permission) {
         return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -273,13 +293,12 @@ public class ActivityMain extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                                == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                            == PackageManager.PERMISSION_GRANTED) {
                         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
                         GlobalClass.setDeviceID(tm.getDeviceId());
                         Log.d("Permission device", tm.getDeviceId());
-                    }
-                    else {
+                    } else {
                         GlobalClass.setUUID();
                         Log.d("Permission device", GlobalClass.getDeviceID());
                     }
@@ -296,56 +315,62 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void postRequest(String jsonPost, final String url) {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            String URL = "http://neighborbob.nctu.me:5000/" + url;
-            final String requestBody = jsonPost;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String URL = "http://neighborbob.nctu.me:5000/" + url;
+        final String requestBody = jsonPost;
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.i("VOLLEY", response);
-                    if(response.equals("200")) {
-                        Log.d("post", "succeed");
-                        Toast.makeText(getApplicationContext(),"notisort server received!", Toast.LENGTH_LONG);
-                        SurveyManager.getInstance().surveyDone();
-                        if(url.equals("notifications")) notiDao.deleteAll();
-                        else if(url.equals(AR_POST)) activityRecognitionDao.deleteAll();
-                        else if(url.equals(LU_POST)) locationUpdateDao.deleteAll();
-                    }
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i("VOLLEY", response);
+                if (response.equals("200")) {
+                    Log.d("post", "succeed");
+                    Toast.makeText(getApplicationContext(), "notisort server received!", Toast.LENGTH_LONG);
+                    SurveyManager.getInstance().surveyDone();
+                    mExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (url.equals("notifications")) notiDao.deleteAll();
+                            else if (url.equals(AR_POST)) activityRecognitionDao.deleteAll();
+                            else if (url.equals(LU_POST)) locationUpdateDao.deleteAll();
+                            else if (url.equals(AC_POST)) accessibilityDao.deleteAll();
+                        }
+                    });
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
-                }
-            }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("VOLLEY", error.toString());
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
 
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return requestBody == null ? null : requestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                        return null;
-                    }
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
                 }
+            }
 
-                @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                        // can get more details such as response.headers
-                    }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                String responseString = "";
+                if (response != null) {
+                    responseString = String.valueOf(response.statusCode);
+                    // can get more details such as response.headers
                 }
-            };
+                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+            }
+        };
 
-            requestQueue.add(stringRequest);
+        requestQueue.add(stringRequest);
     }
 
 }

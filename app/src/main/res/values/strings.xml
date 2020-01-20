@@ -15,7 +15,7 @@
 
     <string name="back">返回</string>
     <string name="go">go</string>
-    <string name="next">繼續</string>
+    <string name="next">Continue</string>
     <string name="finish">完成</string>
     <string name="done">確定</string>
 
@@ -35,7 +35,7 @@
     <string name="scale">請勾選以下問題</string>
     <string name="ESM">請回答以下問題</string>
 
-    <string name="xcontinue">Continue</string>
+    <string name="xcontinue">繼續</string>
     <string name="start">Start</string>
     <string name="close">Close</string>
 

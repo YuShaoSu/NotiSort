@@ -1,6 +1,10 @@
 package com.example.jefflin.notipreference.fragment;
 
+import android.content.Context;
+import android.media.AudioManager;
+import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.jefflin.notipreference.ActivitySurvey;
+import com.example.jefflin.notipreference.manager.ContextManager;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.model.Answer;
 import com.example.jefflin.notipreference.GlobalClass;
@@ -279,6 +284,11 @@ public class FragmentESM extends Fragment  {
                 if(answer.answerHandler(mActiveData, mActiveDataDisplay)){
                     // scale check passed and done put notifications into answer
                     // now put ESM answer
+                    AudioManager audioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+                    BatteryManager batteryManager = (BatteryManager)mContext.getSystemService(Context.BATTERY_SERVICE);
+                    PowerManager powerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+
+
                     answer.setEsmQ1(selectedRadioButtonText1);
                     answer.setEsmQ2(selectedRadioButtonText2);
                     answer.setEsmQ3(checkedText3);
@@ -287,7 +297,13 @@ public class FragmentESM extends Fragment  {
                     answer.setEsmQ6(selectedRadioButtonText6);
 
                     // contextual data
-                    answer.setContext(SurveyManager.getInstance().getLocation(), SurveyManager.getInstance().getRingerMode());
+                    SurveyManager.getInstance().setCurrentLocation(ContextManager.getInstance().locatoinLatitude,
+                            ContextManager.getInstance().locatoinLongtitude, ContextManager.getInstance().locatoinAccuracy);
+                    SurveyManager.getInstance().setRingerMode(audioManager.getRingerMode());
+                    answer.setContext(SurveyManager.getInstance().getLocation(), ContextManager.getInstance().locatoinAccuracy,
+                            SurveyManager.getInstance().getRingerMode());
+                    answer.setBattery(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY), batteryManager.isCharging());
+                    answer.setStatus(powerManager.isInteractive(), powerManager.isDeviceIdleMode(), powerManager.isPowerSaveMode());
 
                     String json = SurveyManager.getInstance().getAnswer(answer);
 

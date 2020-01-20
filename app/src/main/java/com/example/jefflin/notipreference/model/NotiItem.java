@@ -31,6 +31,54 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     @ColumnInfo(name = "category")
     public String category;
 
+    //
+
+    // location
+    @ColumnInfo
+    public double longtitude;
+    @ColumnInfo
+    public double latitude;
+    @ColumnInfo(name = "location_accuracy")
+    public float locationAccuracy;
+
+    // battery
+    @ColumnInfo(name = "is_charging")
+    public boolean isCharging;
+    @ColumnInfo
+    public int battery;
+
+    // ringer
+    @ColumnInfo(name = "ringer_tone")
+    public int ringerTone;
+
+    // screen & status
+    @ColumnInfo(name = "is_screen_on")
+    public boolean isScreenOn;
+    @ColumnInfo(name = "is_device_idle")
+    public boolean isDeviceIdle;
+    @ColumnInfo(name = "is_power_save")
+    public boolean isPowerSave;
+
+
+    //
+
+    public void setLocation(double longtitude, double latitude, float locationAccuracy){
+        this.longtitude = longtitude;
+        this.latitude = latitude;
+        this.locationAccuracy = locationAccuracy;
+    }
+
+    public void setBattery(int battery, boolean charging){
+        this.battery = battery;
+        isCharging = charging;
+    }
+
+    public void setRingerTone(int ringerTone) { this.ringerTone = ringerTone; }
+
+    public void setScreenOn(boolean screenOn) { isScreenOn = screenOn; }
+    public void setDeviceIdle(boolean deviceIdle) { isDeviceIdle = deviceIdle; }
+    public void setPowerSave(boolean powerSave) { isPowerSave = powerSave; }
+
     @Ignore
     public String sortReason;
 
@@ -95,22 +143,17 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     public void setClickOrder(int click_order) {
         this.click_order = click_order;
     }
-
     public int getClickOrder() {
         return click_order;
     }
-
     public int getDisplayOrder() {
         return display_order;
     }
-
     public void setDisplayOrder(int display_order) {
         this.display_order = display_order;
     }
-
     public int getOriginOrder() {
         return origin_order;
     }
-
     public void setSortReason(String reason) { this.sortReason = reason; }
 }

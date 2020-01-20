@@ -7,7 +7,9 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.example.jefflin.notipreference.database.NotiDatabase;
 import com.example.jefflin.notipreference.manager.ContextManager;
+import com.example.jefflin.notipreference.model.Accessibility;
 
 import java.util.Calendar;
 
@@ -22,7 +24,7 @@ public class MyAccessibilityService extends AccessibilityService {
     }
 
 
-    //    @Override
+//    @Override
 //    protected void onServiceConnected() {
 //        super.onServiceConnected();
 //        Log.d("AccessibilityService", "Connected");
@@ -74,6 +76,9 @@ public class MyAccessibilityService extends AccessibilityService {
         time = Calendar.getInstance().getTimeInMillis();
 
         ContextManager.getInstance().setCurrentAccessibility(eventType, pack, text, extra);
+
+        NotiDatabase.getInstance(this).accessibilityDao().insert(
+                new Accessibility(eventType, pack, text, extra));
 
     }
 }
