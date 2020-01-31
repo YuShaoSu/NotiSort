@@ -1,46 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/activity_main"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_light"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/grey_light">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/white"
-        android:elevation="2dp"
-        android:id="@+id/top_bar">
+        android:elevation="2dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
                 android:id="@+id/back"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/icon_back"
                 android:clickable="true"
-                android:focusable="true"/>
+                android:focusable="true"
+                android:src="@drawable/icon_back" />
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:background="@color/white"
                 android:text="@string/displayOrder"
-                android:textSize="15sp"
                 android:textColor="@color/grey_dark"
-                android:background="@color/white"/>
+                android:textSize="15sp" />
+
             <TextView
                 android:id="@+id/discription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3 of 3"
-                android:textSize="14sp"
-                android:layout_centerInParent="true"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="10dp"/>
+                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:text="3 of 3"
+                android:textSize="14sp" />
         </RelativeLayout>
 
     </androidx.appcompat.widget.Toolbar>
@@ -49,33 +53,38 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/top_bar"
-        android:paddingBottom="70dp"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        android:paddingBottom="70dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="5pt">
+            android:layout_margin="5pt"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="5pt">
+                android:layout_marginBottom="5pt"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1. Are you interacting with others?"/>
+                    android:text="1. Are you interacting with others?" />
+
                 <RadioGroup
                     android:id="@+id/q1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <RadioButton
                         android:id="@+id/q1_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="yes" />
+
                     <RadioButton
                         android:id="@+id/q1_2"
                         android:layout_width="wrap_content"
@@ -88,92 +97,107 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2. Where are you?"/>
+                    android:text="2. Where are you?" />
+
                 <RadioGroup
                     android:id="@+id/q2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <RadioButton
                         android:id="@+id/q2_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Home" />
+
                     <RadioButton
                         android:id="@+id/q2_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Workplace" />
+
                     <RadioButton
                         android:id="@+id/q2_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Other" />
                 </RadioGroup>
+
                 <EditText
                     android:id="@+id/q2_other"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="13pt"
                     android:inputType="text"
-                    android:textSize="12sp"
-                    android:layout_marginStart="13pt"/>
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/q3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="5pt">
+                android:layout_marginBottom="5pt"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3. Please describe your current task/activity."/>
+                    android:text="3. Please describe your current task/activity." />
+
                 <CheckBox
                     android:id="@+id/q3_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Leisure/Idle"/>
+                    android:text="Leisure/Idle" />
+
                 <CheckBox
                     android:id="@+id/q3_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Working/Studying"/>
+                    android:text="Working/Studying" />
+
                 <CheckBox
                     android:id="@+id/q3_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Exercising"/>
+                    android:text="Exercising" />
+
                 <CheckBox
                     android:id="@+id/q3_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sleeping"/>
+                    android:text="Sleeping" />
+
                 <CheckBox
                     android:id="@+id/q3_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Eating"/>
+                    android:text="Eating" />
+
                 <CheckBox
                     android:id="@+id/q3_6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Heading to some place"/>
+                    android:text="Heading to some place" />
+
                 <CheckBox
                     android:id="@+id/q3_7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Other"/>
+                    android:text="Other" />
+
                 <EditText
                     android:id="@+id/q3_other"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="13pt"
                     android:inputType="text"
-                    android:textSize="12sp"
-                    android:layout_marginStart="13pt"/>
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -181,76 +205,78 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4. You are very involved in the task/activity."/>
+                    android:text="4. You are very involved in the task/activity." />
+
                 <RadioGroup
                     android:id="@+id/q4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginStart="15dp">
+                    android:layout_marginStart="15dp"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/q4_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Strongly\nDisagree"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:textSize="10sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Strongly disagree"/>
+                        android:tag="Strongly disagree"
+                        android:text="Strongly\nDisagree"
+                        android:textSize="10sp" />
 
                     <RadioButton
                         android:id="@+id/q4_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:text="\n"
-                        android:textSize="10sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Disagree"/>
+                        android:tag="Disagree"
+                        android:text="\n"
+                        android:textSize="10sp" />
 
                     <RadioButton
                         android:id="@+id/q4_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:text="\n"
-                        android:textSize="10sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Neutral"/>
+                        android:tag="Neutral"
+                        android:text="\n"
+                        android:textSize="10sp" />
 
                     <RadioButton
                         android:id="@+id/q4_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:text="\n"
-                        android:textSize="10sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Agree"/>
+                        android:tag="Agree"
+                        android:text="\n"
+                        android:textSize="10sp" />
 
                     <RadioButton
                         android:id="@+id/q4_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Strongly\nAgree"
-                        android:textSize="10sp"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Strongly agree"/>
+                        android:tag="Strongly agree"
+                        android:text="Strongly\nAgree"
+                        android:textSize="10sp" />
                 </RadioGroup>
             </LinearLayout>
 
@@ -258,76 +284,78 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5. Are you busy?"/>
+                    android:text="5. Are you busy?" />
+
                 <RadioGroup
                     android:id="@+id/q5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginStart="15dp">
+                    android:layout_marginStart="15dp"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/q5_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Strongly\nDisagree"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:textSize="10sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Strongly disagree"/>
+                        android:tag="Strongly disagree"
+                        android:text="Strongly\nDisagree"
+                        android:textSize="10sp" />
 
                     <RadioButton
                         android:id="@+id/q5_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:text="\n"
-                        android:textSize="10sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Disagree"/>
+                        android:tag="Disagree"
+                        android:text="\n"
+                        android:textSize="10sp" />
 
                     <RadioButton
                         android:id="@+id/q5_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:text="\n"
-                        android:textSize="10sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Neutral"/>
+                        android:tag="Neutral"
+                        android:text="\n"
+                        android:textSize="10sp" />
 
                     <RadioButton
                         android:id="@+id/q5_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:text="\n"
-                        android:textSize="10sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Agree"/>
+                        android:tag="Agree"
+                        android:text="\n"
+                        android:textSize="10sp" />
 
                     <RadioButton
                         android:id="@+id/q5_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Strongly\nAgree"
-                        android:textSize="10sp"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Strongly agree"/>
+                        android:tag="Strongly agree"
+                        android:text="Strongly\nAgree"
+                        android:textSize="10sp" />
                 </RadioGroup>
             </LinearLayout>
 
@@ -335,86 +363,119 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="6. 你的心情?"/>
+                    android:text="6. 你的心情?" />
+
                 <RadioGroup
                     android:id="@+id/q6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginStart="15dp">
+                    android:layout_marginStart="15dp"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/q6_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/very_happy"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:textSize="15sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Happy"/>
+                        android:tag="Happy"
+                        android:text="@string/very_happy"
+                        android:textSize="15sp" />
 
                     <RadioButton
                         android:id="@+id/q6_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/happy"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:textSize="15sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Happy"/>
+                        android:tag="Happy"
+                        android:text="@string/happy"
+                        android:textSize="15sp" />
 
                     <RadioButton
                         android:id="@+id/q6_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:text="@string/neutral"
-                        android:textSize="15sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Neutral"/>
+                        android:tag="Neutral"
+                        android:text="@string/neutral"
+                        android:textSize="15sp" />
 
                     <RadioButton
                         android:id="@+id/q6_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:text="@string/sad"
-                        android:textSize="15sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Sad"/>
+                        android:tag="Sad"
+                        android:text="@string/sad"
+                        android:textSize="15sp" />
 
                     <RadioButton
                         android:id="@+id/q6_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:button="@null"
                         android:drawableBottom="@android:drawable/btn_radio"
-                        android:text="@string/cry"
-                        android:textSize="15sp"
+                        android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Cry"/>
+                        android:tag="Cry"
+                        android:text="@string/cry"
+                        android:textSize="15sp" />
 
                 </RadioGroup>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7. 下列為排序結果，請問造成兩種排列不同的原因為何?" />
+
+
+                <EditText
+                    android:id="@+id/q7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="80"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:textSize="14dp" />
+
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_esm_sort"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="50dp" />
+
+
         </LinearLayout>
     </ScrollView>
 
     <include
         layout="@layout/footer"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></include>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"></include>
 
 </RelativeLayout>

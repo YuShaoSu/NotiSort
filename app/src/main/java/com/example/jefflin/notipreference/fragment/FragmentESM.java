@@ -20,8 +20,12 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jefflin.notipreference.ActivitySurvey;
+import com.example.jefflin.notipreference.adapter.TwoListItemsAdapter;
 import com.example.jefflin.notipreference.manager.ContextManager;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.model.Answer;
@@ -33,7 +37,9 @@ import com.example.jefflin.notipreference.model.ESMQuestion;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class FragmentESM extends Fragment  {
+public class FragmentESM extends Fragment {
+
+    private TwoListItemsAdapter twoListItemsAdapter;
 
     private FragmentActivity mContext;
     private Button button_continue;
@@ -67,7 +73,7 @@ public class FragmentESM extends Fragment  {
     ArrayList<NotiItem> mActiveDataDisplay;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_esm, container, false);
 
         button_continue = (Button) rootView.findViewById(R.id.button_continue);
@@ -82,6 +88,8 @@ public class FragmentESM extends Fragment  {
                 ((ActivitySurvey) mContext).onBackPressed();
             }
         });
+
+        setRecyclerView(rootView);
 
         radioGroupQ1 = rootView.findViewById(R.id.q1);
         radioGroupQ2 = rootView.findViewById(R.id.q2);
@@ -250,22 +258,28 @@ public class FragmentESM extends Fragment  {
                 if (checkBoxQ3_1.isChecked()) {
                     checkedText3_1 = checkBoxQ3_1.getText().toString();
                     checkedText3 = checkedText3 + checkedText3_1 + ", ";
-                } if (checkBoxQ3_2.isChecked()) {
+                }
+                if (checkBoxQ3_2.isChecked()) {
                     checkedText3_2 = checkBoxQ3_2.getText().toString();
                     checkedText3 = checkedText3 + checkedText3_2 + ", ";
-                } if (checkBoxQ3_3.isChecked()) {
+                }
+                if (checkBoxQ3_3.isChecked()) {
                     checkedText3_3 = checkBoxQ3_3.getText().toString();
                     checkedText3 = checkedText3 + checkedText3_3 + ", ";
-                } if (checkBoxQ3_4.isChecked()) {
+                }
+                if (checkBoxQ3_4.isChecked()) {
                     checkedText3_4 = checkBoxQ3_4.getText().toString();
                     checkedText3 = checkedText3 + checkedText3_4 + ", ";
-                } if (checkBoxQ3_5.isChecked()) {
+                }
+                if (checkBoxQ3_5.isChecked()) {
                     checkedText3_5 = checkBoxQ3_5.getText().toString();
                     checkedText3 = checkedText3 + checkedText3_5 + ", ";
-                } if (checkBoxQ3_6.isChecked()) {
+                }
+                if (checkBoxQ3_6.isChecked()) {
                     checkedText3_6 = checkBoxQ3_6.getText().toString();
                     checkedText3 = checkedText3 + checkedText3_6 + ", ";
-                } if (checkBoxQ3_7.isChecked()) {
+                }
+                if (checkBoxQ3_7.isChecked()) {
                     checkedText3_7 = checkBoxQ3_7.getText().toString();
                     checkedText3 = checkedText3 + checkedText3_7 + ":" + editTextQ3.getText().toString() + ", ";
                 }
@@ -281,12 +295,12 @@ public class FragmentESM extends Fragment  {
 
                 // handle the answers of previous
                 Answer answer = new Answer(GlobalClass.getDeviceID(), SurveyManager.getInstance().getSurveyPostTime(), Calendar.getInstance().getTimeInMillis(), 0);
-                if(answer.answerHandler(mActiveData, mActiveDataDisplay)){
+                if (answer.answerHandler(mActiveData, mActiveDataDisplay)) {
                     // scale check passed and done put notifications into answer
                     // now put ESM answer
-                    AudioManager audioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
-                    BatteryManager batteryManager = (BatteryManager)mContext.getSystemService(Context.BATTERY_SERVICE);
-                    PowerManager powerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+                    AudioManager audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+                    BatteryManager batteryManager = (BatteryManager) mContext.getSystemService(Context.BATTERY_SERVICE);
+                    PowerManager powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
 
 
                     answer.setEsmQ1(selectedRadioButtonText1);
@@ -309,8 +323,7 @@ public class FragmentESM extends Fragment  {
 
                     Log.i("ans in json:", json);
 
-                }
-                else {  // scale not done or other err(not set on current)
+                } else {  // scale not done or other err(not set on current)
                     Log.d("answer handler", "scale not done");
                 }
 
@@ -331,12 +344,23 @@ public class FragmentESM extends Fragment  {
         textview_q_title.setText(q_data.getQuestionTitle());
         textview_q_discription.setText(q_data.getDescription());
 
-        // for survey answer handle
-        mActiveData = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
-        mActiveDataDisplay = (ArrayList<NotiItem>) getArguments().getSerializable("arrayListDisplay");
 
         if (q_data.getRequired()) {
             button_continue.setVisibility(View.GONE);
         }
+    }
+
+    private void setRecyclerView(ViewGroup rootView) {
+        // for survey answer handle
+        mActiveData = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
+        mActiveDataDisplay = (ArrayList<NotiItem>) getArguments().getSerializable("arrayListDisplay");
+        RecyclerView recyclerView = rootView.findViewById(R.id.recycler_esm_sort);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        twoListItemsAdapter = new TwoListItemsAdapter(getActivity(), mActiveData, mActiveDataDisplay);
+        recyclerView.setAdapter(twoListItemsAdapter);
+    }
+
+    public void refreshAdapter() {
+        twoListItemsAdapter.notifyDataSetChanged();
     }
 }

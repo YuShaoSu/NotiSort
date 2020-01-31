@@ -6,11 +6,13 @@ import android.os.Build;
 import android.util.Log;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 public class GlobalClass extends Application {
     private static File dirPath;
-    private static String deviceID;
+    private static String deviceID = "";
     private static int intervalTime[] = {8, 12, 15, 18, 21};
     private static int intervalMinute = 00;
     public static int notificationID = 20;
@@ -23,10 +25,12 @@ public class GlobalClass extends Application {
     }
 
     public static String getDeviceID() {
+        if (deviceID.equals("")) setUUID();
         return deviceID;
     }
-    public static void setDeviceID(String deviceId) {
-        deviceID = deviceId;
+    public static void setDeviceID(String id) {
+        if (!deviceID.equals("")) return;
+        deviceID = id;
     }
 
     public static int[] getIntervalTime() { return intervalTime; }
@@ -56,6 +60,12 @@ public class GlobalClass extends Application {
         }
 
         deviceID =  new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
+    }
+
+    public static String Epoch2DateString(long epochSeconds, String formatString) {
+        Date updatedate = new Date(epochSeconds);
+        SimpleDateFormat format = new SimpleDateFormat(formatString);
+        return format.format(updatedate);
     }
 
 }

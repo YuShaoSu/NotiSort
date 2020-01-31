@@ -1,7 +1,9 @@
 package com.example.jefflin.notipreference.manager;
 
 public class ContextManager {
+
     private static volatile ContextManager uniqueInstance;
+
     public static ContextManager getInstance() {
         if (uniqueInstance == null) {
             synchronized (ContextManager.class) {
@@ -35,5 +37,24 @@ public class ContextManager {
         this.locatoinLatitude = mLatitude;
         this.locatoinAccuracy = mAccuracy;
     }
+
+    public int phoneSignalType;
+    public int phoneSignalStrength;
+    public void setPhoneState(int type, int strength) {
+        // type:
+        // 0: LTE; 1: GSM 3G; 2: CDMA
+        this.phoneSignalType = type;
+        this.phoneSignalStrength = strength;
+    }
+
+    // Sensor data
+    public float[] accelerometer;
+    public float[] gyroscope;
+    public float[] gravity;
+    public float[] linearAcceleration;
+    public float[] rotationVector;
+    public float proximity;
+    public float[] magneticField;
+    public float light, pressure, relativeHumidity, ambientTemperature;
 
 }

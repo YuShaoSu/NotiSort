@@ -3,26 +3,33 @@ package com.example.jefflin.notipreference.services;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.location.Location;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.jefflin.notipreference.GlobalClass;
+import com.example.jefflin.notipreference.Listener.SensorListener;
 import com.example.jefflin.notipreference.manager.ContextManager;
-import com.example.jefflin.notipreference.model.LocationUpdateModel;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.receiver.ActivityRecognitionReceiver;
@@ -30,6 +37,7 @@ import com.example.jefflin.notipreference.receiver.LocationUpdateReceiver;
 import com.example.jefflin.notipreference.receiver.SampleReceiver;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.database.NotiDatabase;
+import com.example.jefflin.notipreference.Listener.TelephonyListener;
 import com.example.jefflin.notipreference.widgets.BlockTask;
 import com.example.jefflin.notipreference.widgets.PushNotification;
 import com.google.android.gms.location.ActivityRecognition;
@@ -54,8 +62,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
-import static android.view.accessibility.AccessibilityEvent.eventTypeToString;
-
 public class NotiListenerService extends NotificationListenerService {
     private static final String TAG = "MyNotificationService";
     static PackageManager packageManager;
@@ -67,6 +73,11 @@ public class NotiListenerService extends NotificationListenerService {
     private AudioManager audioManager;
     private BatteryManager batteryManager;
     private PowerManager powerManager;
+    private UsageStatsManager usageStatsManager;
+    private ConnectivityManager connectivityManager;
+    private TelephonyManager telephonyManager;
+    private SensorManager sensorManager;
+    private SensorListener sensorListener = new SensorListener();
 
     public static NotiListenerService get() {
         sem.acquireUninterruptibly();
@@ -190,9 +201,16 @@ public class NotiListenerService extends NotificationListenerService {
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         batteryManager = (BatteryManager) getSystemService(Context.BATTERY_SERVICE);
         powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        usageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
+        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
         setSchedule();
         requestActivityTransitionUpdates(this);
         requestLocationUpdates(this);
+        requestPhoneStateUpdates(this);
+        registerSensorUpdates(this);
 
         return super.onBind(intent);
     }
@@ -211,13 +229,31 @@ public class NotiListenerService extends NotificationListenerService {
         item.setDeviceIdle(powerManager.isDeviceIdleMode());
         item.setDeviceIdle(powerManager.isPowerSaveMode());
 
+        Network[] networks = connectivityManager.getAllNetworks();
+        Log.d("Connectivity", "networks length " + networks.length);
+        for (Network n : networks) {
+            Log.d("Connectivity", String.valueOf(connectivityManager.getNetworkInfo(n)));
+        }
+
+        // recent app
+        List<UsageStats> recentApp;
+        recentApp = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST,
+                System.currentTimeMillis() - 5000,
+                System.currentTimeMillis());
+        for (UsageStats u : recentApp) {
+            if (u.getLastTimeUsed() == 0) continue;
+            Log.d("usage stat", u.getPackageName() + " " + (sbn.getPostTime() - u.getLastTimeUsed()) / 1000 + " " + GlobalClass.Epoch2DateString(u.getLastTimeUsed(), "MM-dd HH:MM:SS"));
+        }
+
+        Log.d("tel call state", String.valueOf(telephonyManager.getCallState()));
+//        Log.d("tel sig strength", ContextManager.getInstance().phoneSignalType + " " + ContextManager.getInstance().phoneSignalStrength);
+
         mExecutor.execute(new Runnable() {
-                               @Override
-                               public void run() {
-                                   db.notiDao().insertNoti(item);
-                               }
-                           }
-        );
+            @Override
+            public void run() {
+                db.notiDao().insertNoti(item);
+            }
+        });
 
 
 //        db.locationUpdateDao().insert(
@@ -248,8 +284,6 @@ public class NotiListenerService extends NotificationListenerService {
 
         if (mActiveData.size() > 5) {
 
-//            Log.d("query test", String.valueOf(db.notiDao().getAll()));
-
 
             // block
             Timer timer = new Timer();
@@ -265,8 +299,6 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
-//        Log.d("NotiListenerService","removed");
-//        Log.d("remove id",String.valueOf(sbn.getId()));
     }
 
     @Override
@@ -291,7 +323,22 @@ public class NotiListenerService extends NotificationListenerService {
         }
     }
 
-    // receive too much!
+    void registerSensorUpdates(final Context context) {
+        List<Sensor> sensorList;
+        sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+        for(Sensor s : sensorList){
+            sensorManager.registerListener(sensorListener, sensorManager.getDefaultSensor(s.getType()), SensorManager.SENSOR_DELAY_NORMAL);
+            Log.d("sensor regis", s.getName());
+        }
+    }
+
+    void requestPhoneStateUpdates(final Context context) {
+        // if API level >= 29, don't use callback
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) return;
+        TelephonyListener telephonyListener = new TelephonyListener(context);
+        telephonyManager.listen(telephonyListener, PhoneStateListener.LISTEN_CALL_STATE | PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+    }
+
     void requestLocationUpdates(final Context context) {
         LocationRequest request = new LocationRequest()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)

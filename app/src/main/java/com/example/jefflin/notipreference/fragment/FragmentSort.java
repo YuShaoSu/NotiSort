@@ -1,6 +1,7 @@
 package com.example.jefflin.notipreference.fragment;
 
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,7 +24,7 @@ import com.example.jefflin.notipreference.model.ESMQuestion;
 
 import java.util.ArrayList;
 
-public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnStartDragListener{
+public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnStartDragListener {
 
     private FragmentActivity mContext;
     private Button button_continue;
@@ -63,6 +64,8 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
             public void onClick(View v) {
                 //SurveyAnswer.getInstance().put_answer(textview_q_title.getText().toString(), editText_answer.getText().toString().trim());
                 ((ActivitySurvey) mContext).putCurrentData(mActiveData);
+                if (getArguments().getInt("sortType") == 1)
+                    ((ActivitySurvey) mContext).refreshFragsurvey();
                 ((ActivitySurvey) mContext).go_to_next();
             }
         });

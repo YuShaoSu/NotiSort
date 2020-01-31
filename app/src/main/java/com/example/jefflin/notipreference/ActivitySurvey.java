@@ -3,6 +3,7 @@ package com.example.jefflin.notipreference;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class ActivitySurvey extends AppCompatActivity {
     ArrayList<NotiItem> mActiveDataDisplay = new ArrayList<NotiItem>();
 
     FragmentScale fragscale = new FragmentScale();
+    FragmentESM fragsurvey;
 
     public ArrayList<NotiItem> getCurrentData() {
         return mCurrentData;
@@ -46,7 +48,7 @@ public class ActivitySurvey extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_survey);
 
-        if(!SurveyManager.getInstance().isNotiNull()) {
+        if (!SurveyManager.getInstance().isNotiNull()) {
             mActiveData = SurveyManager.getInstance().getMap().get("click");
             mActiveDataDisplay = SurveyManager.getInstance().getMap().get("display");
         }
@@ -81,6 +83,7 @@ public class ActivitySurvey extends AppCompatActivity {
                 xBundle.putSerializable("data", mESMQuestion);
                 xBundle.putString("style", style_string);
                 xBundle.putSerializable("arrayList", mActiveData);
+                xBundle.putInt("sortType", 0);
                 fragsort.setArguments(xBundle);
                 arraylist_fragments.add(fragsort);
             }
@@ -91,6 +94,7 @@ public class ActivitySurvey extends AppCompatActivity {
                 xBundle.putSerializable("data", mESMQuestion);
                 xBundle.putString("style", style_string);
                 xBundle.putSerializable("arrayList", mActiveDataDisplay);
+                xBundle.putInt("sortType", 1);
                 fragsort_display.setArguments(xBundle);
                 arraylist_fragments.add(fragsort_display);
             }
@@ -106,7 +110,7 @@ public class ActivitySurvey extends AppCompatActivity {
             }
 
             if (mESMQuestion.getQuestionType().equals("Survey")) {
-                FragmentESM fragsurvey = new FragmentESM();
+                fragsurvey = new FragmentESM();
                 Bundle xBundle = new Bundle();
                 xBundle.putSerializable("data", mESMQuestion);
                 xBundle.putSerializable("arrayList", mActiveData);
@@ -141,6 +145,10 @@ public class ActivitySurvey extends AppCompatActivity {
         fragscale.changeActiveData();
     }
 
+    public void refreshFragsurvey() {
+        fragsurvey.refreshAdapter();
+    }
+
     @Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {
@@ -157,7 +165,7 @@ public class ActivitySurvey extends AppCompatActivity {
         finish();
     }
 
-    private int hourDifference (Long d1, Long d2) {
+    private int hourDifference(Long d1, Long d2) {
         long diff = Math.abs(d1 - d2);
         return (int) (diff / (60 * 60 * 1000));
     }
