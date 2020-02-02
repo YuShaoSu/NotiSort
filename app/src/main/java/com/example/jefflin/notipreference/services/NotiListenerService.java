@@ -55,8 +55,10 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -282,8 +284,8 @@ public class NotiListenerService extends NotificationListenerService {
             Log.d("block", String.valueOf(SurveyManager.getInstance().isSurveyBlock()));
         }
 
-        if (mActiveData.size() > 5) {
-
+        if (mActiveData.size() > 5 && getNumberOfCategory(mActiveData) > 3) {
+            // check if number of category > 3
 
             // block
             Timer timer = new Timer();
@@ -295,6 +297,19 @@ public class NotiListenerService extends NotificationListenerService {
             SurveyManager.getInstance().setSurveyBlock(true);
             new PushNotification(this);
         }
+    }
+
+    private int getNumberOfCategory(ArrayList<NotiItem> data) {
+        ArrayList<String> categories = new ArrayList<String>();
+
+        for (NotiItem element : data) {
+            categories.add(element.category);
+        }
+
+        Set<String> distinct = new HashSet<>(categories);
+
+        Log.d("categories", Integer.toString(distinct.size()));
+        return distinct.size();
     }
 
     @Override
