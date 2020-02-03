@@ -7,6 +7,7 @@ import com.example.jefflin.notipreference.model.ActivityRecognitionModel;
 import com.example.jefflin.notipreference.model.LocationUpdateModel;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.model.Answer;
+import com.example.jefflin.notipreference.model.NotiModel;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -107,9 +108,9 @@ public class SurveyManager {
         return gson.toJson(answered_hashmap, LinkedHashMap.class);
     }
 
-    public static String getItemJson(List<NotiItem> notiItems) {
+    public static String getItemJson(List<NotiModel> notiModels) {
         Gson gson = new Gson();
-        return gson.toJson(notiItems);
+        return gson.toJson(notiModels);
     }
 
     public static String getARJson(List<ActivityRecognitionModel> activityRecognitionModels){

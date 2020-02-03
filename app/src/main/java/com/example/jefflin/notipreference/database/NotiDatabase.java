@@ -14,8 +14,9 @@ import com.example.jefflin.notipreference.model.LocationUpdateModel;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.model.ActivityRecognitionModel;
+import com.example.jefflin.notipreference.model.NotiModel;
 
-@Database(entities = {NotiItem.class, ActivityRecognitionModel.class, LocationUpdateModel.class, Accessibility.class}, version = 4)
+@Database(entities = {NotiModel.class, NotiItem.class, ActivityRecognitionModel.class, LocationUpdateModel.class, Accessibility.class}, version = 6)
 public abstract class NotiDatabase extends RoomDatabase {
     private static volatile NotiDatabase uniqueInstance;
 
@@ -32,7 +33,7 @@ public abstract class NotiDatabase extends RoomDatabase {
             synchronized (SurveyManager.class) {
                 if (uniqueInstance == null) {
                     uniqueInstance = Room.inMemoryDatabaseBuilder(context, NotiDatabase.class).
-                            addMigrations(MIGRATION1_2, MIGRATION2_3, MIGRATION3_4).build();
+                            addMigrations(MIGRATION1_2, MIGRATION2_3, MIGRATION3_4, MIGRATION4_5, MIGRATION5_6).build();
                 }
             }
         }
@@ -76,6 +77,27 @@ public abstract class NotiDatabase extends RoomDatabase {
             database.execSQL("ALTER TABLE noti_item ADD is_screen_on BOOLEAN");
             database.execSQL("ALTER TABLE noti_item ADD is_device_idle BOOLEAN");
             database.execSQL("ALTER TABLE noti_item ADD is_power_save BOOLEAN");
+        }
+    };
+
+    static final Migration MIGRATION4_5 = new Migration(4, 5) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE `noti_model` (`id` INTEGER, `app_name` TEXT, "
+                    + "`title` TEXT, `content` TEXT, `post_time` LONG, `category` TEXT, "
+                    + "`longtitude` DOUBLE, `latitude` DOUBLE, `location_accuracy` FLOAT, "
+                    + "`is_charging` BOOLEAN, `battery` INTEGER, `ringer_tone` INTEGER, "
+                    + "`is_screen_on` BOOLEAN, `is_device_idle` BOOLEAN, `is_power_save` BOOLEAN)");
+        }
+    };
+
+    static final Migration MIGRATION5_6 = new Migration(5, 6) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("DROP TABLE `noti_items`");
+            database.execSQL("ALTER TABLE noti_model ADD did TEXT");
+            database.execSQL("ALTER TABLE accessbility ADD did TEXT");
+            database.execSQL("ALTER TABLE activity_recognition ADD did TEXT");
         }
     };
 

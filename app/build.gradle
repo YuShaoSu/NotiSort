@@ -23,6 +23,10 @@ android {
     }
     productFlavors {
     }
+
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
 }
 
 dependencies {
@@ -36,9 +40,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    testImplementation 'com.android.support.test:runner:1.0.2'
+
 
     // Room components
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    testImplementation "android.arch.persistence.room:testing:1.1.1"
     annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 

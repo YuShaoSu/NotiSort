@@ -31,53 +31,6 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     @ColumnInfo(name = "category")
     public String category;
 
-    //
-
-    // location
-    @ColumnInfo
-    public double longtitude;
-    @ColumnInfo
-    public double latitude;
-    @ColumnInfo(name = "location_accuracy")
-    public float locationAccuracy;
-
-    // battery
-    @ColumnInfo(name = "is_charging")
-    public boolean isCharging;
-    @ColumnInfo
-    public int battery;
-
-    // ringer
-    @ColumnInfo(name = "ringer_tone")
-    public int ringerTone;
-
-    // screen & status
-    @ColumnInfo(name = "is_screen_on")
-    public boolean isScreenOn;
-    @ColumnInfo(name = "is_device_idle")
-    public boolean isDeviceIdle;
-    @ColumnInfo(name = "is_power_save")
-    public boolean isPowerSave;
-
-
-    //
-
-    public void setLocation(double longtitude, double latitude, float locationAccuracy){
-        this.longtitude = longtitude;
-        this.latitude = latitude;
-        this.locationAccuracy = locationAccuracy;
-    }
-
-    public void setBattery(int battery, boolean charging){
-        this.battery = battery;
-        isCharging = charging;
-    }
-
-    public void setRingerTone(int ringerTone) { this.ringerTone = ringerTone; }
-
-    public void setScreenOn(boolean screenOn) { isScreenOn = screenOn; }
-    public void setDeviceIdle(boolean deviceIdle) { isDeviceIdle = deviceIdle; }
-    public void setPowerSave(boolean powerSave) { isPowerSave = powerSave; }
 
     @Ignore
     public String sortReason;
@@ -93,12 +46,16 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     @Ignore
     public int factor3;
 
+    @Ignore
     @ColumnInfo(name = "origin_order")
     public int origin_order;
     @Ignore
     private int click_order = -1;
     @Ignore
     private int display_order = -1;
+
+    public NotiItem() {
+    }
 
     public NotiItem(String appName, String title, String content, Long postTime, String category, int origin_order) {
         this.appName = appName;
@@ -130,12 +87,21 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     }
 
     public int setFactor(int qN, int value) {
-        switch(qN) {
-            case 0: this.factor0 = value; break;
-            case 1: this.factor1 = value; break;
-            case 2: this.factor2 = value; break;
-            case 3: this.factor3 = value; break;
-            default: return -1;
+        switch (qN) {
+            case 0:
+                this.factor0 = value;
+                break;
+            case 1:
+                this.factor1 = value;
+                break;
+            case 2:
+                this.factor2 = value;
+                break;
+            case 3:
+                this.factor3 = value;
+                break;
+            default:
+                return -1;
         }
         return value;
     }
@@ -143,17 +109,72 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     public void setClickOrder(int click_order) {
         this.click_order = click_order;
     }
+
     public int getClickOrder() {
         return click_order;
     }
+
     public int getDisplayOrder() {
         return display_order;
     }
+
     public void setDisplayOrder(int display_order) {
         this.display_order = display_order;
     }
+
     public int getOriginOrder() {
         return origin_order;
     }
-    public void setSortReason(String reason) { this.sortReason = reason; }
+
+    public void setSortReason(String reason) {
+        this.sortReason = reason;
+    }
+
+    //
+    // location
+//    @ColumnInfo
+//    public double longtitude;
+//    @ColumnInfo
+//    public double latitude;
+//    @ColumnInfo(name = "location_accuracy")
+//    public float locationAccuracy;
+//
+//    // battery
+//    @ColumnInfo(name = "is_charging")
+//    public boolean isCharging;
+//    @ColumnInfo
+//    public int battery;
+//
+//    // ringer
+//    @ColumnInfo(name = "ringer_tone")
+//    public int ringerTone;
+//
+//    // screen & status
+//    @ColumnInfo(name = "is_screen_on")
+//    public boolean isScreenOn;
+//    @ColumnInfo(name = "is_device_idle")
+//    public boolean isDeviceIdle;
+//    @ColumnInfo(name = "is_power_save")
+//    public boolean isPowerSave;
+//
+//
+//    //
+//
+//    public void setLocation(double longtitude, double latitude, float locationAccuracy){
+//        this.longtitude = longtitude;
+//        this.latitude = latitude;
+//        this.locationAccuracy = locationAccuracy;
+//    }
+//
+//    public void setBattery(int battery, boolean charging){
+//        this.battery = battery;
+//        isCharging = charging;
+//    }
+//
+//    public void setRingerTone(int ringerTone) { this.ringerTone = ringerTone; }
+//
+//    public void setScreenOn(boolean screenOn) { isScreenOn = screenOn; }
+//    public void setDeviceIdle(boolean deviceIdle) { isDeviceIdle = deviceIdle; }
+//    public void setPowerSave(boolean powerSave) { isPowerSave = powerSave; }
+
 }

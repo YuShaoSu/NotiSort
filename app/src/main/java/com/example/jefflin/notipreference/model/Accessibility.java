@@ -29,7 +29,7 @@ public class Accessibility {
     @ColumnInfo
     public Long timestamp;
 
-    @ColumnInfo(name = "device_id")
+    @ColumnInfo(name = "did")
     public String deviceID;
 
     public Accessibility(){}

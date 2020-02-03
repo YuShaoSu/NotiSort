@@ -32,6 +32,7 @@ import com.example.jefflin.notipreference.Listener.SensorListener;
 import com.example.jefflin.notipreference.manager.ContextManager;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
+import com.example.jefflin.notipreference.model.NotiModel;
 import com.example.jefflin.notipreference.receiver.ActivityRecognitionReceiver;
 import com.example.jefflin.notipreference.receiver.LocationUpdateReceiver;
 import com.example.jefflin.notipreference.receiver.SampleReceiver;
@@ -88,98 +89,6 @@ public class NotiListenerService extends NotificationListenerService {
         return ret;
     }
 
-    public static Map<String, ArrayList<NotiItem>> getActiveNotis() {
-        NotiListenerService notiListenerService = NotiListenerService.get();
-        ArrayList<NotiItem> activeData = new ArrayList<NotiItem>();
-        ArrayList<NotiItem> activeDataDisplay = new ArrayList<NotiItem>();
-        int order = 0;
-        Map<String, ArrayList<NotiItem>> map = new HashMap();
-        for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
-            activeData.add(setNotiItem(notification, order));
-            activeDataDisplay.add(setNotiItem(notification, order));
-            order++;
-            map.put("click", getNotisWithoutDuplicate(activeData));
-            map.put("display", getNotisWithoutDuplicate(activeDataDisplay));
-        }
-        return map;
-    }
-
-    public static NotiItem setNotiItem(StatusBarNotification notification, int order) {
-        String icon = "null";
-        String packageName = "null";
-        String title = "";
-        String content = "null";
-        String appName = "null";
-        String category = "null";
-
-        Long postTime = notification.getPostTime();
-
-        try {
-            packageName = notification.getPackageName();
-        } catch (Exception e) {
-            Log.e("NotiListenerService", "package name failed", e);
-        }
-        try {
-            title = notification.getNotification().extras.get("android.title").toString();
-
-        } catch (Exception e) {
-            Log.d("NotiListenerService", "title failed");
-//                continue;
-        }
-        try {
-            content = notification.getNotification().extras.get("android.text").toString();
-        } catch (Exception e) {
-            Log.d("NotiListenerService", "content failed");
-//                continue;
-        }
-        try {
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
-            appName = (String) (applicationInfo != null ?
-                    packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
-        } catch (Exception e) {
-            Log.e("NotiListenerService", "appName failed", e);
-//                continue;
-        }
-        try {
-            category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
-        } catch (Exception e) {
-            Log.e("NotiListenerService", "category failed", e);
-        }
-        try {
-            IconHandler iconHandler = new IconHandler();
-            icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
-        } catch (Exception e) {
-            Log.e("Rank", "icon failed", e);
-        }
-
-        NotiItem notiItem = new NotiItem(appName, title, content, postTime, category, order);
-        notiItem.setIcon(icon);
-
-        return notiItem;
-    }
-
-    private static ArrayList<NotiItem> getNotisWithoutDuplicate(ArrayList<NotiItem> activeData) {
-        ArrayList<NotiItem> newList = new ArrayList<NotiItem>();
-
-        for (NotiItem element : activeData) {
-            boolean shouldAdd = true;
-            for (NotiItem newElement : newList) {
-                if (element.content.equals(newElement.content) && element.title.equals(newElement.title)) {
-                    shouldAdd = false;
-                }
-            }
-            if (shouldAdd && !isNotiSort(element)) {
-                newList.add(element);
-            }
-        }
-
-        return newList;
-    }
-
-    private static boolean isNotiSort(NotiItem item) {
-        return item.appName.equals("NotiSort");
-    }
-
     @Override
     public void onListenerConnected() {
         Log.i(TAG, "Connected");
@@ -220,16 +129,16 @@ public class NotiListenerService extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         final NotiDatabase db = NotiDatabase.getInstance(this);
-        final NotiItem item;
-        item = setNotiItem(sbn, -1);
+        final NotiModel noti;
+        noti = setNotiModel(sbn);
 
-        item.setLocation(ContextManager.getInstance().locatoinLongtitude,
+        noti.setLocation(ContextManager.getInstance().locatoinLongtitude,
                 ContextManager.getInstance().locatoinLatitude, ContextManager.getInstance().locatoinAccuracy);
-        item.setBattery(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY), batteryManager.isCharging());
-        item.setRingerTone(audioManager.getRingerMode());
-        item.setScreenOn(powerManager.isInteractive());
-        item.setDeviceIdle(powerManager.isDeviceIdleMode());
-        item.setDeviceIdle(powerManager.isPowerSaveMode());
+        noti.setBattery(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY), batteryManager.isCharging());
+        noti.setRingerTone(audioManager.getRingerMode());
+        noti.setScreenOn(powerManager.isInteractive());
+        noti.setDeviceIdle(powerManager.isDeviceIdleMode());
+        noti.setDeviceIdle(powerManager.isPowerSaveMode());
 
         Network[] networks = connectivityManager.getAllNetworks();
         Log.d("Connectivity", "networks length " + networks.length);
@@ -253,7 +162,7 @@ public class NotiListenerService extends NotificationListenerService {
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                db.notiDao().insertNoti(item);
+                db.notiDao().insertNoti(noti);
             }
         });
 
@@ -347,6 +256,139 @@ public class NotiListenerService extends NotificationListenerService {
         return super.onUnbind(intent);
     }
 
+    public static Map<String, ArrayList<NotiItem>> getActiveNotis() {
+        NotiListenerService notiListenerService = NotiListenerService.get();
+        ArrayList<NotiItem> activeDataAttend = new ArrayList<NotiItem>();
+        ArrayList<NotiItem> activeDataDisplay = new ArrayList<NotiItem>();
+        int order = 0;
+        Map<String, ArrayList<NotiItem>> map = new HashMap();
+        for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
+            activeDataAttend.add(setNotiItem(notification, order));
+            activeDataDisplay.add(setNotiItem(notification, order));
+            order++;
+            map.put("click", getNotisWithoutDuplicate(activeDataAttend));
+            map.put("display", getNotisWithoutDuplicate(activeDataDisplay));
+        }
+        return map;
+    }
+
+
+    private static ArrayList<NotiItem> getNotisWithoutDuplicate(ArrayList<NotiItem> activeData) {
+        ArrayList<NotiItem> newList = new ArrayList<NotiItem>();
+
+        for (NotiItem element : activeData) {
+            boolean shouldAdd = true;
+            for (NotiItem newElement : newList) {
+                if (element.content.equals(newElement.content) && element.title.equals(newElement.title)) {
+                    shouldAdd = false;
+                }
+            }
+            if (shouldAdd && !isNotiSort(element)) {
+                newList.add(element);
+            }
+        }
+
+        return newList;
+    }
+
+    private static boolean isNotiSort(NotiItem item) {
+        return item.appName.equals("NotiSort");
+    }
+
+    private static NotiModel setNotiModel(StatusBarNotification notification) {
+        String packageName = "null";
+        String title = "";
+        String content = "null";
+        String appName = "null";
+        String category = "null";
+
+        Long postTime = notification.getPostTime();
+
+        try {
+            packageName = notification.getPackageName();
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "package name failed", e);
+        }
+        try {
+            title = notification.getNotification().extras.get("android.title").toString();
+
+        } catch (Exception e) {
+            Log.d("NotiListenerService", "title failed");
+        }
+        try {
+            content = notification.getNotification().extras.get("android.text").toString();
+        } catch (Exception e) {
+            Log.d("NotiListenerService", "content failed");
+        }
+        try {
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+            appName = (String) (applicationInfo != null ?
+                    packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "appName failed", e);
+        }
+        try {
+            category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "category failed", e);
+        }
+
+        NotiModel notiModel = new NotiModel(appName, title, content, postTime, category);
+
+        return notiModel;
+    }
+
+    public static NotiItem setNotiItem(StatusBarNotification notification, int order) {
+        String icon = "null";
+        String packageName = "null";
+        String title = "";
+        String content = "null";
+        String appName = "null";
+        String category = "null";
+
+        Long postTime = notification.getPostTime();
+
+        try {
+            packageName = notification.getPackageName();
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "package name failed", e);
+        }
+        try {
+            title = notification.getNotification().extras.get("android.title").toString();
+
+        } catch (Exception e) {
+            Log.d("NotiListenerService", "title failed");
+        }
+        try {
+            content = notification.getNotification().extras.get("android.text").toString();
+        } catch (Exception e) {
+            Log.d("NotiListenerService", "content failed");
+        }
+        try {
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+            appName = (String) (applicationInfo != null ?
+                    packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "appName failed", e);
+        }
+        try {
+            category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "category failed", e);
+        }
+        try {
+            IconHandler iconHandler = new IconHandler();
+            icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "icon failed", e);
+        }
+
+        NotiItem notiItem = new NotiItem(appName, title, content, postTime, category, order);
+        notiItem.setIcon(icon);
+
+        return notiItem;
+    }
+
     private void setSchedule() {
         for (int i = 0; i < 5; ++i) {
             Intent myIntent = new Intent(this, SampleReceiver.class);
@@ -367,7 +409,7 @@ public class NotiListenerService extends NotificationListenerService {
     void registerSensorUpdates(final Context context) {
         List<Sensor> sensorList;
         sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
-        for(Sensor s : sensorList){
+        for (Sensor s : sensorList) {
             sensorManager.registerListener(sensorListener, sensorManager.getDefaultSensor(s.getType()), SensorManager.SENSOR_DELAY_NORMAL);
             Log.d("sensor regis", s.getName());
         }

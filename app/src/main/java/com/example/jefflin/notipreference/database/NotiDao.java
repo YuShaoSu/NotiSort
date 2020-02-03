@@ -6,20 +6,21 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.example.jefflin.notipreference.model.NotiItem;
+import com.example.jefflin.notipreference.model.NotiModel;
 
 import java.util.List;
 
 @Dao
 public interface NotiDao {
-    @Query("SELECT * FROM noti_items")
-    List<NotiItem> getAll();
+    @Query("SELECT * FROM noti_model")
+    List<NotiModel> getAll();
 
     @Insert
-    void insertNoti(NotiItem notiItem);
+    void insertNoti(NotiModel notiModel);
 
     @Delete
-    void deleteNoti(NotiItem... notiItems);
+    void deleteNoti(NotiModel... notiModels);
 
-    @Query("DELETE FROM noti_items")
+    @Query("DELETE FROM noti_model")
     void deleteAll();
 }

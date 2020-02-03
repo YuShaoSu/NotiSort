@@ -23,7 +23,7 @@ public class ActivityRecognitionModel {
     @ColumnInfo(name = "timestamp")
     private long timestamp;
 
-    @ColumnInfo(name = "device_id")
+    @ColumnInfo(name = "did")
     private String deviceID;
 
     public ActivityRecognitionModel() {}
