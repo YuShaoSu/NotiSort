@@ -284,8 +284,10 @@ public class NotiListenerService extends NotificationListenerService {
             Log.d("block", String.valueOf(SurveyManager.getInstance().isSurveyBlock()));
         }
 
-        if (mActiveData.size() > 5 && getNumberOfCategory(mActiveData) > 3) {
-            // check if number of category > 3
+        if (mActiveData.size() > 5 && getNumberOfCategory(mActiveData) >= 4) {
+            // get 6 notifications
+            // TODO: newData is still unused
+            ArrayList<NotiItem> newData = getNotificationsWithCategories(mActiveData, 6, 4);
 
             // block
             Timer timer = new Timer();
@@ -307,9 +309,33 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
         Set<String> distinct = new HashSet<>(categories);
-
-        Log.d("categories", Integer.toString(distinct.size()));
         return distinct.size();
+    }
+
+    private ArrayList<NotiItem> getNotificationsWithCategories(ArrayList<NotiItem> data, int numNoti, int numCategory) {
+        ArrayList<NotiItem> subData = new ArrayList<NotiItem>();
+        ArrayList<String> categories = new ArrayList<String>();
+
+        // Example
+        // numNoti = 6, numCategory = 4
+        // input = [a,a,a,a,a,a,b,b,b,c,c,c,d,d,d]
+        // output = [a,a,a,b,c,d]
+
+        for (NotiItem element : data) {
+            // add to categories if its a new category
+            if (!categories.contains(element.category)) {
+                categories.add(element.category);
+            }
+            // add to subData if space is enough
+            if (subData.size()-categories.size() < numNoti-numCategory) {
+                subData.add(element);
+            }
+            if (subData.size() == numNoti){
+                break;
+            }
+        }
+
+        return subData;
     }
 
     @Override
