@@ -24,9 +24,9 @@ public class TelephonyListener extends PhoneStateListener {
         String[] parts = sig.split(" ");
 //        Log.d("signal strength", sig);
 
-        final int LTE = 0;
-        final int GSM = 1;
-        final int CDMA = 2;
+        final String LTE = "LTE";
+        final String GSM = "GSM";
+        final String CDMA = "CDMA";
 
 
         int dbm = -999;

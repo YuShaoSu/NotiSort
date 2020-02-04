@@ -59,8 +59,54 @@ public class NotiModel {
     public String network;
     public int callState;
     public String recentApp;
+    public String signalType;
+    public int signalDbm;
+
+    // sensor
+    public float accelerometerX, accelerometerY, accelerometerZ;
+    public float gyroscopeX, gyroscopeY, gyroscopeZ;
+    public float gravityX, gravityY, gravityZ;
+    public float linearAccelerationX, linearAccelerationY, linearAccelerationZ;
+    public float rotationVectorX, rotationVectorY, rotationVectorZ, rotationVectorCos, rotationVectorAccu;
+    public float proximity;
+    public float magneticFieldX, magneticFieldY, magneticFieldZ;
+    public float light, pressure, relativeHumidity, ambientTemperature;
 
     //
+    public void setSensor(float[] accelerometer,
+                          float[] gyroscope,
+                          float[] gravity,
+                          float[] linearAcceleration,
+                          float[] rotationVector,
+                          float proximity,
+                          float[] magneticField,
+                          float light, float pressure, float relativeHumidity, float ambientTemperature) {
+        this.accelerometerX = accelerometer[0];
+        this.accelerometerY = accelerometer[1];
+        this.accelerometerZ = accelerometer[2];
+        this.gyroscopeX = gyroscope[0];
+        this.gyroscopeY = gyroscope[1];
+        this.gyroscopeZ = gyroscope[2];
+        this.gravityX = gravity[0];
+        this.gravityY = gravity[1];
+        this.gravityZ = gravity[2];
+        this.linearAccelerationX = linearAcceleration[0];
+        this.linearAccelerationY = linearAcceleration[1];
+        this.linearAccelerationZ = linearAcceleration[2];
+        this.rotationVectorX = rotationVector[0];
+        this.rotationVectorY = rotationVector[1];
+        this.rotationVectorZ = rotationVector[2];
+        this.rotationVectorCos = rotationVector[3];
+        this.rotationVectorAccu = rotationVector[4];
+        this.proximity = proximity;
+        this.magneticFieldX = magneticField[0];
+        this.magneticFieldY = magneticField[1];
+        this.magneticFieldZ = magneticField[2];
+        this.light = light;
+        this.pressure = pressure;
+        this.relativeHumidity = relativeHumidity;
+        this.ambientTemperature = ambientTemperature;
+    }
 
     public void setLocation(double longtitude, double latitude, float locationAccuracy) {
         this.longtitude = longtitude;

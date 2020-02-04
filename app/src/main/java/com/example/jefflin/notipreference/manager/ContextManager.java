@@ -38,23 +38,23 @@ public class ContextManager {
         this.locatoinAccuracy = mAccuracy;
     }
 
-    public int phoneSignalType;
-    public int phoneSignalStrength;
-    public void setPhoneState(int type, int strength) {
+    public String phoneSignalType;
+    public int phoneSignalDbm;
+    public void setPhoneState(String type, int dbm) {
         // type:
         // 0: LTE; 1: GSM 3G; 2: CDMA
         this.phoneSignalType = type;
-        this.phoneSignalStrength = strength;
+        this.phoneSignalDbm = dbm;
     }
 
     // Sensor data
-    public float[] accelerometer;
-    public float[] gyroscope;
-    public float[] gravity;
-    public float[] linearAcceleration;
-    public float[] rotationVector;
-    public float proximity;
-    public float[] magneticField;
-    public float light, pressure, relativeHumidity, ambientTemperature;
+    public float[] accelerometer = {-9999, -9999, -9999};
+    public float[] gyroscope = {-9999, -9999, -9999};
+    public float[] gravity = {-9999, -9999, -9999};
+    public float[] linearAcceleration = {-9999, -9999, -9999};
+    public float[] rotationVector = {-9999, -9999, -9999, -9999, -9999};
+    public float proximity = -9999;
+    public float[] magneticField = {-9999, -9999, -9999};
+    public float light = -9999, pressure = -9999, relativeHumidity = -9999, ambientTemperature = -9999;
 
 }

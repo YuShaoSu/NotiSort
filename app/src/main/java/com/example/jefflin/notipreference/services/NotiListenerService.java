@@ -20,7 +20,9 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.telephony.CellSignalStrength;
 import android.telephony.PhoneStateListener;
+import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -81,6 +83,7 @@ public class NotiListenerService extends NotificationListenerService {
     private TelephonyManager telephonyManager;
     private SensorManager sensorManager;
     private SensorListener sensorListener = new SensorListener();
+    static ContextManager contextManager = ContextManager.getInstance();
 
     public static NotiListenerService get() {
         sem.acquireUninterruptibly();
@@ -141,22 +144,6 @@ public class NotiListenerService extends NotificationListenerService {
         });
 
 
-//        db.locationUpdateDao().insert(
-//                                new LocationUpdateModel(ContextManager.getInstance().locatoinLongtitude,
-//                                ContextManager.getInstance().locatoinLatitude, ContextManager.getInstance().locatoinAccuracy,
-//                                sbn.getPostTime()
-//                            ));
-//        Log.d("onPosted Access", String.valueOf(eventTypeToString(ContextManager.getInstance().accessibilityType)));
-//        Log.d("onPosted Battery level", String.valueOf(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)));
-//        Log.d("onPosted Battery charge", String.valueOf(batteryManager.isCharging()));
-//        Log.d("onPosted Screen on/off", String.valueOf(powerManager.isInteractive()));
-//        Log.d("onPosted idle", String.valueOf(powerManager.isDeviceIdleMode()));
-//        Log.d("onPosted power save", String.valueOf(powerManager.isPowerSaveMode()));
-
-
-//        Log.d("onPost AR DB", String.valueOf(db.activityRecognitionDao().getAll().size()));
-//        Log.d("onPost LU DB", String.valueOf(db.locationUpdateDao().getAll().size()));
-//        if(SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone()) return;
         if (SurveyManager.getInstance().isSurveyBlock()) return;
         ArrayList<NotiItem> mActiveData;
         Map<String, ArrayList<NotiItem>> map = getActiveNotis();
@@ -222,8 +209,8 @@ public class NotiListenerService extends NotificationListenerService {
     }
 
     private NotiModel setContext(NotiModel notiModel) {
-        notiModel.setLocation(ContextManager.getInstance().locatoinLongtitude,
-                ContextManager.getInstance().locatoinLatitude, ContextManager.getInstance().locatoinAccuracy);
+        notiModel.setLocation(contextManager.locatoinLongtitude,
+                contextManager.locatoinLatitude, contextManager.locatoinAccuracy);
         notiModel.setBattery(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY), batteryManager.isCharging());
         notiModel.setRingerTone(audioManager.getRingerMode());
         notiModel.setScreenOn(powerManager.isInteractive());
@@ -256,7 +243,35 @@ public class NotiListenerService extends NotificationListenerService {
         }
         notiModel.recentApp = rappSB.toString();
 
-//        Log.d("tel sig strength", ContextManager.getInstance().phoneSignalType + " " + ContextManager.getInstance().phoneSignalStrength);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            SignalStrength signalStrength = telephonyManager.getSignalStrength();
+            try {
+                List<CellSignalStrength> ss = signalStrength.getCellSignalStrengths();
+                for (CellSignalStrength s : ss) {
+                    notiModel.signalType = s.toString();
+                    notiModel.signalDbm = s.getDbm();
+                }
+            } catch (NullPointerException e) {
+                Log.e("signal strength", "getCellSignalStrength null pt", e);
+            }
+        } else {
+            notiModel.signalType = contextManager.phoneSignalType;
+            notiModel.signalDbm = contextManager.phoneSignalDbm;
+        }
+
+        // Sensors
+        notiModel.setSensor(contextManager.accelerometer,
+                contextManager.gyroscope,
+                contextManager.gravity,
+                contextManager.linearAcceleration,
+                contextManager.rotationVector,
+                contextManager.proximity,
+                contextManager.magneticField,
+                contextManager.light,
+                contextManager.pressure,
+                contextManager.relativeHumidity,
+                contextManager.ambientTemperature);
+
 
         return notiModel;
     }
@@ -431,9 +446,11 @@ public class NotiListenerService extends NotificationListenerService {
 
     void requestPhoneStateUpdates(final Context context) {
         // if API level >= 29, don't use callback
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) return;
-        TelephonyListener telephonyListener = new TelephonyListener(context);
-        telephonyManager.listen(telephonyListener, PhoneStateListener.LISTEN_CALL_STATE | PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        } else {
+            TelephonyListener telephonyListener = new TelephonyListener(context);
+            telephonyManager.listen(telephonyListener, PhoneStateListener.LISTEN_CALL_STATE | PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+        }
     }
 
     void requestLocationUpdates(final Context context) {
