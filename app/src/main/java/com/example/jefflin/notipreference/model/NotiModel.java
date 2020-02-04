@@ -136,12 +136,13 @@ public class NotiModel {
     }
 
 
-    public NotiModel(String appName, String title, String content, Long postTime, String category) {
+    public NotiModel(String appName, String title, String content, Long postTime, String category, String deviceID) {
         this.appName = appName;
         this.title = title;
         this.content = content;
         this.postTime = postTime;
         this.category = category;
+        this.deviceID = deviceID;
     }
 
 }

@@ -154,7 +154,7 @@ public class NotiListenerService extends NotificationListenerService {
             Log.d("block", String.valueOf(SurveyManager.getInstance().isSurveyBlock()));
         }
 
-        if (mActiveData.size() > 5 && getNumberOfCategory(mActiveData) >= 4) {
+        if (mActiveData.size() > 5) { //&& getNumberOfCategory(mActiveData) >= 4) {
             // get 6 notifications
             // TODO: newData is still unused
             ArrayList<NotiItem> newData = getNotificationsWithCategories(mActiveData, 6, 4);
@@ -235,7 +235,7 @@ public class NotiListenerService extends NotificationListenerService {
                 System.currentTimeMillis() - 5000,
                 System.currentTimeMillis());
         for (UsageStats u : recentApp) {
-//            if (u.getLastTimeUsed() == 0) continue;
+            if (u.getLastTimeUsed() == 0) continue;
 //            Log.d("usage stat", u.getPackageName() + " " + (notiModel.postTime - u.getLastTimeUsed()) / 1000 + " " + GlobalClass.Epoch2DateString(u.getLastTimeUsed(), "MM-dd HH:MM:SS"));
             rappSB.append(u.getPackageName());
             rappSB.append(" : ");
@@ -362,7 +362,7 @@ public class NotiListenerService extends NotificationListenerService {
             Log.e("NotiListenerService", "category failed", e);
         }
 
-        NotiModel notiModel = new NotiModel(appName, title, content, postTime, category);
+        NotiModel notiModel = new NotiModel(appName, title, content, postTime, category, GlobalClass.getDeviceID());
 
         return setContext(notiModel);
     }

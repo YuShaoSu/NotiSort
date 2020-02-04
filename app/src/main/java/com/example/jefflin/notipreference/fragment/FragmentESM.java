@@ -1,10 +1,19 @@
 package com.example.jefflin.notipreference.fragment;
 
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.telephony.CellSignalStrength;
+import android.telephony.SignalStrength;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +45,7 @@ import com.example.jefflin.notipreference.model.ESMQuestion;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class FragmentESM extends Fragment {
 
@@ -298,10 +308,15 @@ public class FragmentESM extends Fragment {
                 if (answer.answerHandler(mActiveData, mActiveDataDisplay)) {
                     // scale check passed and done put notifications into answer
                     // now put ESM answer
+
                     AudioManager audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
                     BatteryManager batteryManager = (BatteryManager) mContext.getSystemService(Context.BATTERY_SERVICE);
                     PowerManager powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
-
+                    UsageStatsManager usageStatsManager = (UsageStatsManager) mContext.getSystemService(Context.USAGE_STATS_SERVICE);
+                    ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+                    TelephonyManager telephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+                    SensorManager sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+                    ContextManager contextManager = ContextManager.getInstance();
 
                     answer.setEsmQ1(selectedRadioButtonText1);
                     answer.setEsmQ2(selectedRadioButtonText2);
@@ -311,13 +326,68 @@ public class FragmentESM extends Fragment {
                     answer.setEsmQ6(selectedRadioButtonText6);
 
                     // contextual data
-                    SurveyManager.getInstance().setCurrentLocation(ContextManager.getInstance().locatoinLatitude,
-                            ContextManager.getInstance().locatoinLongtitude, ContextManager.getInstance().locatoinAccuracy);
-                    SurveyManager.getInstance().setRingerMode(audioManager.getRingerMode());
-                    answer.setContext(SurveyManager.getInstance().getLocation(), ContextManager.getInstance().locatoinAccuracy,
-                            SurveyManager.getInstance().getRingerMode());
-                    answer.setBattery(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY), batteryManager.isCharging());
-                    answer.setStatus(powerManager.isInteractive(), powerManager.isDeviceIdleMode(), powerManager.isPowerSaveMode());
+
+                    // location
+                    answer.setLocation(contextManager.locatoinLongtitude,
+                            contextManager.locatoinLatitude, contextManager.locatoinAccuracy);
+
+                    // status
+                    answer.isCharging = batteryManager.isCharging();
+                    answer.battery = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+                    answer.isScreenOn = powerManager.isInteractive();
+                    answer.isDeviceIdle = powerManager.isDeviceIdleMode();
+                    answer.isPowerSave = powerManager.isPowerSaveMode();
+                    answer.ringerMode = audioManager.getRingerMode();
+                    answer.callState = telephonyManager.getCallState();
+                    // recent app
+                    StringBuilder rappSB = new StringBuilder();
+                    List<UsageStats> recentApp;
+                    recentApp = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST,
+                            System.currentTimeMillis() - 5000,
+                            System.currentTimeMillis());
+                    for (UsageStats u : recentApp) {
+                        if (u.getLastTimeUsed() == 0) continue;
+                        rappSB.append(u.getPackageName());
+                        rappSB.append(" : ");
+                        rappSB.append(u.getLastTimeUsed() + "; ");
+                    }
+                    answer.recentApp = rappSB.toString();
+
+                    Network[] networks = connectivityManager.getAllNetworks();
+                    StringBuilder ntwSB = new StringBuilder();
+                    for (Network n : networks) {
+                        ntwSB.append(connectivityManager.getNetworkInfo(n));
+                    }
+                    answer.network = ntwSB.toString();
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        SignalStrength signalStrength = telephonyManager.getSignalStrength();
+                        try {
+                            List<CellSignalStrength> ss = signalStrength.getCellSignalStrengths();
+                            for (CellSignalStrength s : ss) {
+                                answer.signalType = s.toString();
+                                answer.signalDbm = s.getDbm();
+                            }
+                        } catch (NullPointerException e) {
+                            Log.e("signal strength", "getCellSignalStrength null pt", e);
+                        }
+                    } else {
+                        answer.signalType = contextManager.phoneSignalType;
+                        answer.signalDbm = contextManager.phoneSignalDbm;
+                    }
+
+                    // Sensors
+                    answer.setSensor(contextManager.accelerometer,
+                            contextManager.gyroscope,
+                            contextManager.gravity,
+                            contextManager.linearAcceleration,
+                            contextManager.rotationVector,
+                            contextManager.proximity,
+                            contextManager.magneticField,
+                            contextManager.light,
+                            contextManager.pressure,
+                            contextManager.relativeHumidity,
+                            contextManager.ambientTemperature);
 
                     String json = SurveyManager.getInstance().getAnswer(answer);
 
