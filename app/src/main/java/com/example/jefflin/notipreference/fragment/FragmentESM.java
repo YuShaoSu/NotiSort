@@ -304,7 +304,7 @@ public class FragmentESM extends Fragment {
 
 
                 // handle the answers of previous
-                Answer answer = new Answer(GlobalClass.getDeviceID(), SurveyManager.getInstance().getSurveyPostTime(), Calendar.getInstance().getTimeInMillis(), 0);
+                Answer answer = new Answer(GlobalClass.getDeviceID(), SurveyManager.getInstance().getSurveyPostTime(), Calendar.getInstance().getTimeInMillis(), SurveyManager.getInstance().getInterval());
                 if (answer.answerHandler(mActiveData, mActiveDataDisplay)) {
                     // scale check passed and done put notifications into answer
                     // now put ESM answer

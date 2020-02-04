@@ -20,10 +20,11 @@ public class SampleReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String interval = String.valueOf(intent.getExtras().get("interval"));
+        int interval = intent.getIntExtra("interval", 0);
         Log.d("SampleReceiver", "broadcast received");
-        Log.d("SampleReceiver", interval);
+        Log.d("SampleReceiver", String.valueOf(interval));
 
+        SurveyManager.getInstance().setInterval(interval);
         SurveyManager.getInstance().surveyInit();
 
         Intent myIntent = new Intent(context , SampleReceiver.class);
@@ -32,9 +33,9 @@ public class SampleReceiver extends BroadcastReceiver {
         myIntent.setAction("com.example.jefflin.notipreference.next_interval");
 
 
-        PendingIntent pi = PendingIntent.getBroadcast(context, Integer.parseInt(interval) + 10, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pi = PendingIntent.getBroadcast(context, interval + 10, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[Integer.parseInt(interval)]);
+        c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[interval]);
         c.add(Calendar.DAY_OF_YEAR, 1);
         c.set(Calendar.MINUTE, GlobalClass.getIntervalMinute());
         c.set(Calendar.SECOND, 0);

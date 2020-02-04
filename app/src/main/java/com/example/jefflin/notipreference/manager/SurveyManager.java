@@ -80,6 +80,14 @@ public class SurveyManager {
         mMap.clear();
     }
 
+    public void setInterval(int interval) {
+        this.interval = interval;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
     // contextual data
     private double longtitude;
     private double latitude;
