@@ -55,6 +55,11 @@ public class NotiModel {
     @ColumnInfo(name = "did")
     public String deviceID;
 
+    // need migration
+    public String network;
+    public int callState;
+    public String recentApp;
+
     //
 
     public void setLocation(double longtitude, double latitude, float locationAccuracy) {

@@ -132,32 +132,6 @@ public class NotiListenerService extends NotificationListenerService {
         final NotiModel noti;
         noti = setNotiModel(sbn);
 
-        noti.setLocation(ContextManager.getInstance().locatoinLongtitude,
-                ContextManager.getInstance().locatoinLatitude, ContextManager.getInstance().locatoinAccuracy);
-        noti.setBattery(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY), batteryManager.isCharging());
-        noti.setRingerTone(audioManager.getRingerMode());
-        noti.setScreenOn(powerManager.isInteractive());
-        noti.setDeviceIdle(powerManager.isDeviceIdleMode());
-        noti.setDeviceIdle(powerManager.isPowerSaveMode());
-
-        Network[] networks = connectivityManager.getAllNetworks();
-        Log.d("Connectivity", "networks length " + networks.length);
-        for (Network n : networks) {
-            Log.d("Connectivity", String.valueOf(connectivityManager.getNetworkInfo(n)));
-        }
-
-        // recent app
-        List<UsageStats> recentApp;
-        recentApp = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST,
-                System.currentTimeMillis() - 5000,
-                System.currentTimeMillis());
-        for (UsageStats u : recentApp) {
-            if (u.getLastTimeUsed() == 0) continue;
-            Log.d("usage stat", u.getPackageName() + " " + (sbn.getPostTime() - u.getLastTimeUsed()) / 1000 + " " + GlobalClass.Epoch2DateString(u.getLastTimeUsed(), "MM-dd HH:MM:SS"));
-        }
-
-        Log.d("tel call state", String.valueOf(telephonyManager.getCallState()));
-//        Log.d("tel sig strength", ContextManager.getInstance().phoneSignalType + " " + ContextManager.getInstance().phoneSignalStrength);
 
         mExecutor.execute(new Runnable() {
             @Override
@@ -236,15 +210,55 @@ public class NotiListenerService extends NotificationListenerService {
                 categories.add(element.category);
             }
             // add to subData if space is enough
-            if (subData.size()-categories.size() < numNoti-numCategory) {
+            if (subData.size() - categories.size() < numNoti - numCategory) {
                 subData.add(element);
             }
-            if (subData.size() == numNoti){
+            if (subData.size() == numNoti) {
                 break;
             }
         }
 
         return subData;
+    }
+
+    private NotiModel setContext(NotiModel notiModel) {
+        notiModel.setLocation(ContextManager.getInstance().locatoinLongtitude,
+                ContextManager.getInstance().locatoinLatitude, ContextManager.getInstance().locatoinAccuracy);
+        notiModel.setBattery(batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY), batteryManager.isCharging());
+        notiModel.setRingerTone(audioManager.getRingerMode());
+        notiModel.setScreenOn(powerManager.isInteractive());
+        notiModel.setDeviceIdle(powerManager.isDeviceIdleMode());
+        notiModel.setPowerSave(powerManager.isPowerSaveMode());
+        notiModel.callState = telephonyManager.getCallState();
+
+        Network[] networks = connectivityManager.getAllNetworks();
+        Log.d("Connectivity", "networks length " + networks.length);
+        StringBuilder ntwSB = new StringBuilder();
+        for (Network n : networks) {
+//            Log.d("Connectivity", String.valueOf(connectivityManager.getNetworkInfo(n)));
+            ntwSB.append(connectivityManager.getNetworkInfo(n));
+        }
+        notiModel.network = ntwSB.toString();
+
+
+        // recent app
+        StringBuilder rappSB = new StringBuilder();
+        List<UsageStats> recentApp;
+        recentApp = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST,
+                System.currentTimeMillis() - 5000,
+                System.currentTimeMillis());
+        for (UsageStats u : recentApp) {
+//            if (u.getLastTimeUsed() == 0) continue;
+//            Log.d("usage stat", u.getPackageName() + " " + (notiModel.postTime - u.getLastTimeUsed()) / 1000 + " " + GlobalClass.Epoch2DateString(u.getLastTimeUsed(), "MM-dd HH:MM:SS"));
+            rappSB.append(u.getPackageName());
+            rappSB.append(" : ");
+            rappSB.append(u.getLastTimeUsed() + "; ");
+        }
+        notiModel.recentApp = rappSB.toString();
+
+//        Log.d("tel sig strength", ContextManager.getInstance().phoneSignalType + " " + ContextManager.getInstance().phoneSignalStrength);
+
+        return notiModel;
     }
 
     @Override
@@ -295,7 +309,7 @@ public class NotiListenerService extends NotificationListenerService {
         return item.appName.equals("NotiSort");
     }
 
-    private static NotiModel setNotiModel(StatusBarNotification notification) {
+    private NotiModel setNotiModel(StatusBarNotification notification) {
         String packageName = "null";
         String title = "";
         String content = "null";
@@ -335,7 +349,7 @@ public class NotiListenerService extends NotificationListenerService {
 
         NotiModel notiModel = new NotiModel(appName, title, content, postTime, category);
 
-        return notiModel;
+        return setContext(notiModel);
     }
 
     public static NotiItem setNotiItem(StatusBarNotification notification, int order) {
