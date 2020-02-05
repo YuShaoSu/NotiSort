@@ -85,6 +85,8 @@ public class NotiListenerService extends NotificationListenerService {
     private SensorListener sensorListener = new SensorListener();
     static ContextManager contextManager = ContextManager.getInstance();
 
+    private static Map<String, ArrayList<NotiItem>> itemMap;
+
     public static NotiListenerService get() {
         sem.acquireUninterruptibly();
         NotiListenerService ret = _this;
@@ -144,34 +146,30 @@ public class NotiListenerService extends NotificationListenerService {
         });
 
 
-        if (SurveyManager.getInstance().isSurveyBlock()) return;
-        ArrayList<NotiItem> mActiveData;
-        Map<String, ArrayList<NotiItem>> map = getActiveNotis();
-        mActiveData = map.get("click");
+        if (SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone()) return;
+//        ArrayList<NotiItem> mActiveData;
+//        Map<String, ArrayList<NotiItem>> map = getActiveNotis();
+//        mActiveData = map.get("click");
 
-        if (!sbn.isOngoing()) {
-            Log.d("done", String.valueOf(SurveyManager.getInstance().isSurveyDone()));
-            Log.d("block", String.valueOf(SurveyManager.getInstance().isSurveyBlock()));
-        }
+//        if (!sbn.isOngoing()) {
+//            Log.d("done", String.valueOf(SurveyManager.getInstance().isSurveyDone()));
+//            Log.d("block", String.valueOf(SurveyManager.getInstance().isSurveyBlock()));
+//        }
 
-        if (mActiveData.size() > 5) { //&& getNumberOfCategory(mActiveData) >= 4) {
-            // get 6 notifications
-            // TODO: newData is still unused
-            ArrayList<NotiItem> newData = getNotificationsWithCategories(mActiveData, 6, 4);
+        if (getActiveNotis()) {
 
             // block
             Timer timer = new Timer();
             timer.schedule(new BlockTask(), 600000);
 
-            Notification notification = sbn.getNotification();
             //check if the new post notification is ongoing
-            SurveyManager.getInstance().setMap(map);
+            SurveyManager.getInstance().setMap(itemMap);
             SurveyManager.getInstance().setSurveyBlock(true);
             new PushNotification(this);
         }
     }
 
-    private int getNumberOfCategory(ArrayList<NotiItem> data) {
+    private static int getNumberOfCategory(ArrayList<NotiItem> data) {
         ArrayList<String> categories = new ArrayList<String>();
 
         for (NotiItem element : data) {
@@ -182,7 +180,7 @@ public class NotiListenerService extends NotificationListenerService {
         return distinct.size();
     }
 
-    private ArrayList<NotiItem> getNotificationsWithCategories(ArrayList<NotiItem> data, int numNoti, int numCategory) {
+    private static ArrayList<NotiItem> getNotificationsWithCategories(ArrayList<NotiItem> data, int numNoti, int numCategory) {
         ArrayList<NotiItem> subData = new ArrayList<NotiItem>();
         ArrayList<String> categories = new ArrayList<String>();
 
@@ -285,20 +283,23 @@ public class NotiListenerService extends NotificationListenerService {
         return super.onUnbind(intent);
     }
 
-    public static Map<String, ArrayList<NotiItem>> getActiveNotis() {
+    public static boolean getActiveNotis() {
         NotiListenerService notiListenerService = NotiListenerService.get();
         ArrayList<NotiItem> activeDataAttend = new ArrayList<NotiItem>();
         ArrayList<NotiItem> activeDataDisplay = new ArrayList<NotiItem>();
         int order = 0;
-        Map<String, ArrayList<NotiItem>> map = new HashMap();
+        itemMap = new HashMap();
         for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
             activeDataAttend.add(setNotiItem(notification, order));
             activeDataDisplay.add(setNotiItem(notification, order));
             order++;
-            map.put("click", getNotisWithoutDuplicate(activeDataAttend));
-            map.put("display", getNotisWithoutDuplicate(activeDataDisplay));
         }
-        return map;
+        if(order < 5 || getNumberOfCategory(activeDataAttend) < 3)   return false;       // mActiveData.size() > 5 && getNumberOfCategory(mActiveData) >= 3
+        ArrayList<NotiItem> surveyDataAttend = getNotificationsWithCategories(activeDataAttend, 6, 3);
+        ArrayList<NotiItem> surveyDataDisplay = getNotificationsWithCategories(activeDataAttend, 6, 3);
+        itemMap.put("click", getNotisWithoutDuplicate(surveyDataAttend));
+        itemMap.put("display", getNotisWithoutDuplicate(surveyDataDisplay));
+        return true;
     }
 
 

@@ -45,7 +45,7 @@ public class ActivityHistory extends AppCompatActivity implements NotiItemMoveCa
     }
 
     private void setRecyclerView() {
-        mData = NotiListenerService.getActiveNotis().get("click");
+//        mData = NotiListenerService.getActiveNotis().get("click");
         mAdapter = new NotiItemAdapter(this, mData, onStartDragListener);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_rank);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
