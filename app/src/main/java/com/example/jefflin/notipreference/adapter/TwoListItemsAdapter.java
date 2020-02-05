@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.helper.IconHandler;
+import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.model.NotiItem;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class TwoListItemsAdapter extends RecyclerView.Adapter<TwoListItemsAdapte
     private List<NotiItem> mActiveDataDisplay;
     private List<NotiItem> combine = new ArrayList<NotiItem>();
     private Context mContext;
+//    private boolean show = false;
 
 
     public TwoListItemsAdapter(Context context, ArrayList<NotiItem> dataAttend, ArrayList<NotiItem> dataDisplay) {
@@ -61,6 +63,7 @@ public class TwoListItemsAdapter extends RecyclerView.Adapter<TwoListItemsAdapte
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         combineTwoList();
+//        if (!show) return;
         NotiItem notiItem = combine.get(position);
 
         IconHandler iconHandler = new IconHandler();
@@ -81,6 +84,8 @@ public class TwoListItemsAdapter extends RecyclerView.Adapter<TwoListItemsAdapte
 
     private void combineTwoList() {
         combine.clear();
+//        show = SurveyManager.getInstance().twoListDiff((ArrayList<NotiItem>) mActiveDataAttend, (ArrayList<NotiItem>) mActiveDataDisplay);
+//        if (!show) return;
         for (int i = 0; i < mActiveDataDisplay.size(); i++) {
             combine.add(mActiveDataAttend.get(i));
             combine.add(mActiveDataDisplay.get(i));

@@ -79,16 +79,28 @@ public class FragmentESM extends Fragment {
     private Boolean q5_selected;
     private Boolean q6_selected;
 
+    private RecyclerView recyclerView;
+    private TextView q7_title;
+    private EditText q7;
+
+    private boolean twoList;
+
     ArrayList<NotiItem> mActiveData;
     ArrayList<NotiItem> mActiveDataDisplay;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_esm, container, false);
+        
+        setRecyclerView(rootView);
 
         button_continue = (Button) rootView.findViewById(R.id.button_continue);
         textview_q_title = (TextView) rootView.findViewById(R.id.title);
         textview_q_discription = (TextView) rootView.findViewById(R.id.discription);
+
+        q7_title = (TextView) rootView.findViewById(R.id.q7_title);
+        q7 = (EditText) rootView.findViewById(R.id.q7);
+
 
         iv_back = (ImageView) rootView.findViewById(R.id.back);
 
@@ -99,7 +111,6 @@ public class FragmentESM extends Fragment {
             }
         });
 
-        setRecyclerView(rootView);
 
         radioGroupQ1 = rootView.findViewById(R.id.q1);
         radioGroupQ2 = rootView.findViewById(R.id.q2);
@@ -315,7 +326,7 @@ public class FragmentESM extends Fragment {
                     UsageStatsManager usageStatsManager = (UsageStatsManager) mContext.getSystemService(Context.USAGE_STATS_SERVICE);
                     ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
                     TelephonyManager telephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-                    SensorManager sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+//                    SensorManager sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
                     ContextManager contextManager = ContextManager.getInstance();
 
                     answer.setEsmQ1(selectedRadioButtonText1);
@@ -424,13 +435,25 @@ public class FragmentESM extends Fragment {
         // for survey answer handle
         mActiveData = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
         mActiveDataDisplay = (ArrayList<NotiItem>) getArguments().getSerializable("arrayListDisplay");
-        RecyclerView recyclerView = rootView.findViewById(R.id.recycler_esm_sort);
+        recyclerView = rootView.findViewById(R.id.recycler_esm_sort);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         twoListItemsAdapter = new TwoListItemsAdapter(getActivity(), mActiveData, mActiveDataDisplay);
         recyclerView.setAdapter(twoListItemsAdapter);
     }
 
     public void refreshAdapter() {
+        twoList = SurveyManager.getInstance().twoListDiff(mActiveData, mActiveDataDisplay);
         twoListItemsAdapter.notifyDataSetChanged();
+        // whether to add q7
+        if (twoList) {
+            q7_title.setVisibility(View.VISIBLE);
+            q7.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            q7_title.setVisibility(View.INVISIBLE);
+            q7.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+        }
     }
+
 }
