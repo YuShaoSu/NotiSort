@@ -41,6 +41,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
     static final int neutral = 2;
     static final int agree = 3;
     static final int strong_agree = 4;
+    static final int not_apply = 5;
 
     public ScaleAdapter(Context context, ArrayList<NotiItem> data){
         this.mContext = context;
@@ -228,6 +229,8 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                         case R.id.strong_disagree2:
                             mData.get(getAdapterPosition()).factor2 = strong_disagree;
                             break;
+                        case R.id.not_apply_2:
+                            mData.get(getAdapterPosition()).factor2 = not_apply
                         default:
                             mData.get(getAdapterPosition()).factor2 = -1;
                     }
