@@ -230,7 +230,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                             mData.get(getAdapterPosition()).factor2 = strong_disagree;
                             break;
                         case R.id.not_apply_2:
-                            mData.get(getAdapterPosition()).factor2 = not_apply
+                            mData.get(getAdapterPosition()).factor2 = not_apply;
                         default:
                             mData.get(getAdapterPosition()).factor2 = -1;
                     }
