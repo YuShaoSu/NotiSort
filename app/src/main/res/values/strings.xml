@@ -49,6 +49,7 @@
 
     <string name="stronglyDisagree">Strongly\nDisagree</string>
     <string name="stronglyAgree">Strongly\nAgree</string>
+    <string name="notApply">\n不適用</string>
 
 
     <string name="very_happy">非常開心 </string>

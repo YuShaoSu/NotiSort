@@ -163,6 +163,15 @@
                     android:text="@string/stronglyAgree"
                     android:textSize="10sp" />
 
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/notApply"
+                    android:textSize="10sp" />
+
                 <View style="@style/Space" />
 
 
@@ -185,7 +194,7 @@
 
                 <View
                     style="@style/Space"
-                    android:layout_width="55dp" />
+                    android:layout_width="21dp" />
 
                 <RadioButton
                     android:id="@+id/strong_disagree1"
@@ -228,6 +237,14 @@
                     android:gravity="center"
                     android:padding="2dp" />
 
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:textSize="10sp" />
+
                 <View style="@style/Space" />
 
             </RadioGroup>
@@ -249,7 +266,8 @@
 
                 <View
                     style="@style/Space"
-                    android:layout_width="25dp" />
+                    android:layout_width="26dp"
+                    android:layout_height="match_parent" />
 
                 <RadioButton
                     android:id="@+id/strong_disagree2"
@@ -291,6 +309,15 @@
                     android:gravity="center"
                     android:padding="2dp" />
 
+                <RadioButton
+                    android:id="@+id/not_apply_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:textSize="10sp" />
+
                 <View style="@style/Space" />
 
             </RadioGroup>
@@ -313,7 +340,7 @@
 
                 <View
                     style="@style/Space"
-                    android:layout_width="11dp" />
+                    android:layout_width="1dp" />
 
                 <RadioButton
                     android:id="@+id/strong_disagree3"
@@ -354,6 +381,14 @@
                     android:button="@android:drawable/btn_radio"
                     android:gravity="center"
                     android:padding="2dp" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:textSize="10sp" />
 
                 <View style="@style/Space" />
 
