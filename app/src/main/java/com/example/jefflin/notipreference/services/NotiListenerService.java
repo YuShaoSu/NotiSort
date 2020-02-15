@@ -73,7 +73,6 @@ public class NotiListenerService extends NotificationListenerService {
     static NotiListenerService _this;
     static Semaphore sem = new Semaphore(0);
     Executor mExecutor = Executors.newSingleThreadExecutor();
-    private int notiNum = 0;
     private FusedLocationProviderClient fusedLocationClient;
     private AudioManager audioManager;
     private BatteryManager batteryManager;
@@ -137,7 +136,6 @@ public class NotiListenerService extends NotificationListenerService {
         final NotiModel noti;
         noti = setNotiModel(sbn);
 
-
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -146,57 +144,20 @@ public class NotiListenerService extends NotificationListenerService {
         });
 
 
-        if (SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone()) return;
+        if (SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone())
+            return;
 
         if (getActiveNotis()) {
-
             // block
             Timer timer = new Timer();
             timer.schedule(new BlockTask(), 600000);
 
-            //check if the new post notification is ongoing
             SurveyManager.getInstance().setMap(itemMap);
             SurveyManager.getInstance().setSurveyBlock(true);
             new PushNotification(this);
         }
     }
 
-    private static int getNumberOfCategory(ArrayList<NotiItem> data) {
-        ArrayList<String> categories = new ArrayList<String>();
-
-        for (NotiItem element : data) {
-            categories.add(element.category);
-        }
-
-        Set<String> distinct = new HashSet<>(categories);
-        return distinct.size();
-    }
-
-    private static ArrayList<NotiItem> getNotificationsWithCategories(ArrayList<NotiItem> data, int numNoti, int numCategory) {
-        ArrayList<NotiItem> subData = new ArrayList<NotiItem>();
-        ArrayList<String> categories = new ArrayList<String>();
-
-        // Example
-        // numNoti = 6, numCategory = 4
-        // input = [a,a,a,a,a,a,b,b,b,c,c,c,d,d,d]
-        // output = [a,a,a,b,c,d]
-
-        for (NotiItem element : data) {
-            // add to categories if its a new category
-            if (!categories.contains(element.category)) {
-                categories.add(element.category);
-            }
-            // add to subData if space is enough
-            if (subData.size() - categories.size() < numNoti - numCategory) {
-                subData.add(element);
-            }
-            if (subData.size() == numNoti) {
-                break;
-            }
-        }
-
-        return subData;
-    }
 
     private NotiModel setContext(NotiModel notiModel) {
         notiModel.setLocation(contextManager.locatoinLongtitude,
@@ -209,10 +170,8 @@ public class NotiListenerService extends NotificationListenerService {
         notiModel.callState = telephonyManager.getCallState();
 
         Network[] networks = connectivityManager.getAllNetworks();
-        Log.d("Connectivity", "networks length " + networks.length);
         StringBuilder ntwSB = new StringBuilder();
         for (Network n : networks) {
-//            Log.d("Connectivity", String.valueOf(connectivityManager.getNetworkInfo(n)));
             ntwSB.append(connectivityManager.getNetworkInfo(n));
         }
         notiModel.network = ntwSB.toString();
@@ -226,7 +185,6 @@ public class NotiListenerService extends NotificationListenerService {
                 System.currentTimeMillis());
         for (UsageStats u : recentApp) {
             if (u.getLastTimeUsed() == 0) continue;
-//            Log.d("usage stat", u.getPackageName() + " " + (notiModel.postTime - u.getLastTimeUsed()) / 1000 + " " + GlobalClass.Epoch2DateString(u.getLastTimeUsed(), "MM-dd HH:MM:SS"));
             rappSB.append(u.getPackageName());
             rappSB.append(" : ");
             rappSB.append(u.getLastTimeUsed() + "; ");
@@ -277,25 +235,65 @@ public class NotiListenerService extends NotificationListenerService {
 
     public static boolean getActiveNotis() {
         NotiListenerService notiListenerService = NotiListenerService.get();
-        ArrayList<NotiItem> activeDataAttend = new ArrayList<NotiItem>();
-        ArrayList<NotiItem> activeDataDisplay = new ArrayList<NotiItem>();
+        ArrayList<NotiItem> attend = new ArrayList<NotiItem>();
+        ArrayList<NotiItem> display = new ArrayList<NotiItem>();
         int order = 0;
         itemMap = new HashMap();
         for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
-            activeDataAttend.add(setNotiItem(notification, order));
-            activeDataDisplay.add(setNotiItem(notification, order));
+            attend.add(setNotiItem(notification, order));
+            display.add(setNotiItem(notification, order));
             order++;
         }
-        if(order < 5 || getNumberOfCategory(activeDataAttend) < 3)   return false;       // mActiveData.size() > 5 && getNumberOfCategory(mActiveData) >= 3
-        ArrayList<NotiItem> surveyDataAttend = getNotificationsWithCategories(activeDataAttend, 6, 3);
-        ArrayList<NotiItem> surveyDataDisplay = getNotificationsWithCategories(activeDataAttend, 6, 3);
-        itemMap.put("click", getNotisWithoutDuplicate(surveyDataAttend));
-        itemMap.put("display", getNotisWithoutDuplicate(surveyDataDisplay));
+        if (order < 5 || getNumberOfCategory(attend) < 3)
+            return false;
+        attend = getNotisWithoutDuplicateNull(attend);
+        display = getNotisWithoutDuplicateNull(display);
+        if (attend.size() < 5)
+            return false;
+        itemMap.put("click", getNotificationsWithCategories(attend, 6, 3));
+        itemMap.put("display", getNotificationsWithCategories(display, 6, 3));
         return true;
     }
 
+    private static int getNumberOfCategory(ArrayList<NotiItem> data) {
+        ArrayList<String> categories = new ArrayList<String>();
 
-    private static ArrayList<NotiItem> getNotisWithoutDuplicate(ArrayList<NotiItem> activeData) {
+        for (NotiItem element : data) {
+            categories.add(element.category);
+        }
+
+        Set<String> distinct = new HashSet<>(categories);
+        return distinct.size();
+    }
+
+    private static ArrayList<NotiItem> getNotificationsWithCategories(ArrayList<NotiItem> data, int numNoti, int numCategory) {
+        ArrayList<NotiItem> subData = new ArrayList<NotiItem>();
+        ArrayList<String> categories = new ArrayList<String>();
+
+        // Example
+        // numNoti = 6, numCategory = 4
+        // input = [a,a,a,a,a,a,b,b,b,c,c,c,d,d,d]
+        // output = [a,a,a,b,c,d]
+
+        for (NotiItem element : data) {
+            // add to categories if its a new category
+            if (!categories.contains(element.category)) {
+                categories.add(element.category);
+            }
+            // add to subData if space is enough
+            if (subData.size() - categories.size() < numNoti - numCategory) {
+                subData.add(element);
+            }
+            if (subData.size() == numNoti) {
+                break;
+            }
+        }
+
+        return subData;
+    }
+
+
+    private static ArrayList<NotiItem> getNotisWithoutDuplicateNull(ArrayList<NotiItem> activeData) {
         ArrayList<NotiItem> newList = new ArrayList<NotiItem>();
 
         for (NotiItem element : activeData) {
@@ -305,7 +303,7 @@ public class NotiListenerService extends NotificationListenerService {
                     shouldAdd = false;
                 }
             }
-            if (shouldAdd && !isNotiSort(element)) {
+            if (shouldAdd && !isNull(element) && !isNotiSort(element)) {
                 newList.add(element);
             }
         }
@@ -315,6 +313,10 @@ public class NotiListenerService extends NotificationListenerService {
 
     private static boolean isNotiSort(NotiItem item) {
         return item.appName.equals("NotiSort");
+    }
+
+    private static boolean isNull(NotiItem item) {
+        return item.content.equals("null") || item.title.equals("null");
     }
 
     private NotiModel setNotiModel(StatusBarNotification notification) {
@@ -363,7 +365,7 @@ public class NotiListenerService extends NotificationListenerService {
     public static NotiItem setNotiItem(StatusBarNotification notification, int order) {
         String icon = "null";
         String packageName = "null";
-        String title = "";
+        String title = "null";
         String content = "null";
         String appName = "null";
         String category = "null";
