@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.jefflin.notipreference.model.NotiItem;
@@ -30,6 +32,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
     private Context mContext;
     private List<NotiItem> mData;
     private NotiItemMoveCallback.OnStartDragListener mDragListener;
+
 
     public NotiItemAdapter(Context context, ArrayList<NotiItem> data, NotiItemMoveCallback.OnStartDragListener dragListener) {
         this.mContext = context;
@@ -55,6 +58,14 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         holder.tv_appname.setText(notiItem.appName);
         holder.tv_title.setText(notiItem.title);
         holder.tv_content.setText(notiItem.content);
+
+        // check if won't click
+        if(notiItem.getClickOrder() == -9999) {
+            holder.linearLayout.setBackgroundColor(Color.parseColor("#DDDDDD"));
+        }
+        else {
+            holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
 
         holder.iv_drag.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -82,6 +93,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         private TextView tv_content;
         private TextView tv_rank;
         private ImageView iv_drag;
+        private LinearLayout linearLayout;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -90,6 +102,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
             tv_title = (TextView)itemView.findViewById(R.id.title);
             tv_content = (TextView)itemView.findViewById(R.id.content);
             iv_drag = (ImageView)itemView.findViewById(R.id.drag);
+            linearLayout = (LinearLayout)itemView.findViewById(R.id.noti_item);
         }
     }
 
@@ -127,8 +140,13 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
 
     @Override
     public void onRowDelete(int pos) {
+        NotiItem item;
+        item = mData.get(pos);
+        item.setClickOrder(item.getClickOrder() == -9999 ? -1 : -9999);
+        mData.add(item);
         mData.remove(pos);
         notifyItemRemoved(pos);
+        notifyItemInserted(mData.size() - 1);
     }
 
 }

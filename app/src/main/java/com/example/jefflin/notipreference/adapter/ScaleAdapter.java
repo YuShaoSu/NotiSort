@@ -31,7 +31,7 @@ import com.example.jefflin.notipreference.helper.IconHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder>  {
+public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> {
 
     private Context mContext;
     private List<NotiItem> mData;
@@ -43,14 +43,14 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
     static final int strong_agree = 4;
     static final int not_apply = 5;
 
-    public ScaleAdapter(Context context, ArrayList<NotiItem> data){
+    public ScaleAdapter(Context context, ArrayList<NotiItem> data) {
         this.mContext = context;
         this.mData = data;
     }
 
     @Override
     public ScaleAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
-                                                      int viewType){
+                                                      int viewType) {
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.scale_item, parent, false);
 
@@ -71,9 +71,15 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
         holder.appName.setText(notiItem.appName);
         holder.title.setText(notiItem.title);
         holder.content.setText(notiItem.content);
-        holder.position.setText(String.valueOf(position + 1));
 
-        if(!notiItem.category.equals("msg")) {
+        // check if won't click
+        if (notiItem.getClickOrder() == -9999) {
+            holder.position.setText("N");
+        } else {
+            holder.position.setText(String.valueOf(position + 1));
+        }
+
+        if (!notiItem.category.equals("msg")) {
             holder.scaleGroup3.setVisibility(View.GONE);
         }
 
@@ -124,8 +130,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         Log.d("text", "done");
                         return false;   // return false to hide the keyboard
-                    }
-                    else    return true;
+                    } else return true;
                 }
             });
 
@@ -144,7 +149,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d("text afterChange", getAdapterPosition() + " " + s.toString());
-                    if(s.toString().trim().length() > 0) {
+                    if (s.toString().trim().length() > 0) {
                         mData.get(getAdapterPosition()).setSortReason(s.toString());
                     }
                 }
@@ -155,7 +160,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                    switch (group.getCheckedRadioButtonId()){
+                    switch (group.getCheckedRadioButtonId()) {
                         case R.id.strong_agree0:
                             mData.get(getAdapterPosition()).factor0 = strong_agree;
                             Log.d("edit text", reason_box.getText().toString());
@@ -184,7 +189,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                    switch (group.getCheckedRadioButtonId()){
+                    switch (group.getCheckedRadioButtonId()) {
                         case R.id.strong_agree1:
                             mData.get(getAdapterPosition()).factor1 = strong_agree;
                             break;
@@ -213,7 +218,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                    switch (group.getCheckedRadioButtonId()){
+                    switch (group.getCheckedRadioButtonId()) {
                         case R.id.strong_agree2:
                             mData.get(getAdapterPosition()).factor2 = strong_agree;
                             break;
@@ -238,14 +243,13 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                 }
 
 
-
             });
 
             scaleGroup3 = (RadioGroup) view.findViewById(R.id.likert_scale3);
             scaleGroup3.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    switch (group.getCheckedRadioButtonId()){
+                    switch (group.getCheckedRadioButtonId()) {
                         case R.id.strong_agree3:
                             mData.get(getAdapterPosition()).factor3 = strong_agree;
                             break;

@@ -27,6 +27,7 @@ public class NotiItemMoveCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         mAdapter.onRowDelete(viewHolder.getAdapterPosition());
+//        mAdapter.onRowMoved(viewHolder.getAdapterPosition(), viewHolder.);
     }
 
     @Override

@@ -2,12 +2,14 @@ package com.example.jefflin.notipreference.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +45,7 @@ public class TwoListItemsAdapter extends RecyclerView.Adapter<TwoListItemsAdapte
         private TextView tv_appname;
         private TextView tv_title;
         private TextView tv_content;
+        private LinearLayout linearLayout;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -50,6 +53,7 @@ public class TwoListItemsAdapter extends RecyclerView.Adapter<TwoListItemsAdapte
             tv_appname = (TextView) itemView.findViewById(R.id.appname);
             tv_title = (TextView) itemView.findViewById(R.id.title);
             tv_content = (TextView) itemView.findViewById(R.id.content);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.esm_item_backgound);
         }
     }
 
@@ -74,6 +78,13 @@ public class TwoListItemsAdapter extends RecyclerView.Adapter<TwoListItemsAdapte
         holder.tv_appname.setText(notiItem.appName);
         holder.tv_title.setText(notiItem.title);
         holder.tv_content.setText(notiItem.content);
+
+        if(notiItem.getClickOrder() == -9999) {
+            holder.linearLayout.setBackgroundColor(Color.parseColor("#DDDDDD"));
+        }
+        else {
+            holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
 
     }
 
