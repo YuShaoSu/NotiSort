@@ -147,14 +147,6 @@ public class NotiListenerService extends NotificationListenerService {
 
 
         if (SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone()) return;
-//        ArrayList<NotiItem> mActiveData;
-//        Map<String, ArrayList<NotiItem>> map = getActiveNotis();
-//        mActiveData = map.get("click");
-
-//        if (!sbn.isOngoing()) {
-//            Log.d("done", String.valueOf(SurveyManager.getInstance().isSurveyDone()));
-//            Log.d("block", String.valueOf(SurveyManager.getInstance().isSurveyBlock()));
-//        }
 
         if (getActiveNotis()) {
 

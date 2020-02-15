@@ -47,8 +47,8 @@
     <string name="factor_text">您將此通知排在第 %d 位想要點擊通知的原因為？</string>
     <string name="factor_extra_text">補充說明</string>
 
-    <string name="stronglyDisagree">Strongly\nDisagree</string>
-    <string name="stronglyAgree">Strongly\nAgree</string>
+    <string name="stronglyDisagree">低</string>
+    <string name="stronglyAgree">高</string>
     <string name="notApply">\n不適用</string>
 
 
