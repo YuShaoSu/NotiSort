@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "315785687654",
+    "firebase_url": "https://notisort.firebaseio.com",
+    "project_id": "notisort",
+    "storage_bucket": "notisort.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315785687654:android:ffe3347d3fa4576b1a33a7",
+        "android_client_info": {
+          "package_name": "com.example.jefflin.notipreference"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "315785687654-jj6r4en71o523m5age18p45i3jaunh5f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvKcbZ4_X52cYd1YFEPpoB63QL77IGFJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "315785687654-jj6r4en71o523m5age18p45i3jaunh5f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

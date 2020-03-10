@@ -146,6 +146,8 @@ public class Answer {
         this.esm_q6 = esm_q6;
     }
 
+    public void setEsmQ7(String esm_q7) { this.esm_q7 = esm_q7; }
+
     // false for scale check fails
     public boolean answerHandler(ArrayList<NotiItem> notiItems, ArrayList<NotiItem> notiItemsD) {
 

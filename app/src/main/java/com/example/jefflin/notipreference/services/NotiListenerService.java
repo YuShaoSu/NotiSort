@@ -150,7 +150,7 @@ public class NotiListenerService extends NotificationListenerService {
         if (getActiveNotis()) {
             // block
             Timer timer = new Timer();
-            timer.schedule(new BlockTask(), 600000);
+            timer.schedule(new BlockTask(), 900000);
 
             SurveyManager.getInstance().setMap(itemMap);
             SurveyManager.getInstance().setSurveyBlock(true);
@@ -482,10 +482,6 @@ public class NotiListenerService extends NotificationListenerService {
                 new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void result) {
-                        Toast.makeText(context,
-                                "Successfully requested activity updates",
-                                Toast.LENGTH_SHORT)
-                                .show();
                         Log.d("request AR task", "success");
                     }
                 });
@@ -493,10 +489,6 @@ public class NotiListenerService extends NotificationListenerService {
                 new OnFailureListener() {
                     @Override
                     public void onFailure(Exception e) {
-                        Toast.makeText(context,
-                                "Requesting activity updates failed to start",
-                                Toast.LENGTH_SHORT)
-                                .show();
                         Log.d("request AR task", "fail");
                     }
                 });

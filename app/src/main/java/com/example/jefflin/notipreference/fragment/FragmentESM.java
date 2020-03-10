@@ -312,7 +312,14 @@ public class FragmentESM extends Fragment {
                 String selectedRadioButtonText5 = selectedRadioButton5.getTag().toString();
                 RadioButton selectedRadioButton6 = (RadioButton) rootView.findViewById(radioGroupQ6.getCheckedRadioButtonId());
                 String selectedRadioButtonText6 = selectedRadioButton6.getTag().toString();
+                String q7Text;
 
+                if(twoList) {
+                    q7Text = q7.getText().toString();
+                }
+                else {
+                    q7Text = "null";
+                }
 
                 // handle the answers of previous
                 Answer answer = new Answer(GlobalClass.getDeviceID(), SurveyManager.getInstance().getSurveyPostTime(), Calendar.getInstance().getTimeInMillis(), SurveyManager.getInstance().getInterval());
@@ -335,6 +342,7 @@ public class FragmentESM extends Fragment {
                     answer.setEsmQ4(selectedRadioButtonText4);
                     answer.setEsmQ5(selectedRadioButtonText5);
                     answer.setEsmQ6(selectedRadioButtonText6);
+                    answer.setEsmQ7(q7Text);
 
                     // contextual data
 
