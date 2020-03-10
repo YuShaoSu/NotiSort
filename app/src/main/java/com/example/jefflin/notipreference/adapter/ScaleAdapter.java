@@ -74,14 +74,14 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
 
         // check if won't click
         if (notiItem.getClickOrder() == -9999) {
-            holder.position.setText("N");
+            holder.position.setText("X");
         } else {
             holder.position.setText(String.valueOf(position + 1));
         }
 
-        if (!notiItem.category.equals("msg")) {
-            holder.scaleGroup3.setVisibility(View.GONE);
-        }
+//        if (!notiItem.category.equals("msg")) {
+//            holder.scaleGroup3.setVisibility(View.GONE);
+//        }
 
     }
 
@@ -177,6 +177,8 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                         case R.id.strong_disagree0:
                             mData.get(getAdapterPosition()).factor0 = strong_disagree;
                             break;
+                        case R.id.not_apply_0:
+                            mData.get(getAdapterPosition()).factor0 = not_apply;
                         default:
                             mData.get(getAdapterPosition()).factor0 = -1;
                     }
@@ -205,6 +207,8 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                         case R.id.strong_disagree1:
                             mData.get(getAdapterPosition()).factor1 = strong_disagree;
                             break;
+                        case R.id.not_apply_1:
+                            mData.get(getAdapterPosition()).factor1 = not_apply;
                         default:
                             mData.get(getAdapterPosition()).factor1 = -1;
                     }
@@ -234,8 +238,6 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                         case R.id.strong_disagree2:
                             mData.get(getAdapterPosition()).factor2 = strong_disagree;
                             break;
-                        case R.id.not_apply_2:
-                            mData.get(getAdapterPosition()).factor2 = not_apply;
                         default:
                             mData.get(getAdapterPosition()).factor2 = -1;
                     }

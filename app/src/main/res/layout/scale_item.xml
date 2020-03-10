@@ -106,7 +106,7 @@
 
                 <View
                     style="@style/Space"
-                    android:layout_width="54dp" />
+                    android:layout_width="31dp" />
 
                 <RadioButton
                     android:id="@+id/strong_disagree0"
@@ -164,13 +164,17 @@
                     android:textSize="10sp" />
 
                 <RadioButton
+                    android:id="@+id/not_apply_0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:button="@null"
+                    android:drawableBottom="@android:drawable/btn_radio"
                     android:gravity="center"
                     android:padding="2dp"
                     android:text="@string/notApply"
                     android:textSize="10sp" />
+
+
 
                 <View style="@style/Space" />
 
@@ -194,7 +198,7 @@
 
                 <View
                     style="@style/Space"
-                    android:layout_width="21dp" />
+                    android:layout_width="48dp" />
 
                 <RadioButton
                     android:id="@+id/strong_disagree1"
@@ -236,6 +240,15 @@
                     android:button="@android:drawable/btn_radio"
                     android:gravity="center"
                     android:padding="2dp" />
+
+                <RadioButton
+                    android:id="@+id/not_apply_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@android:drawable/btn_radio"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:textSize="10sp" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -309,15 +322,6 @@
                     android:gravity="center"
                     android:padding="2dp" />
 
-                <RadioButton
-                    android:id="@+id/not_apply_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@android:drawable/btn_radio"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:textSize="10sp" />
-
                 <View style="@style/Space" />
 
             </RadioGroup>
@@ -340,7 +344,7 @@
 
                 <View
                     style="@style/Space"
-                    android:layout_width="1dp" />
+                    android:layout_width="33dp" />
 
                 <RadioButton
                     android:id="@+id/strong_disagree3"

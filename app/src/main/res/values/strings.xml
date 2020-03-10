@@ -39,10 +39,10 @@
     <string name="start">Start</string>
     <string name="close">Close</string>
 
-    <string name="factor0">\n重要程度</string>
-    <string name="factor1">緊急程度</string>
-    <string name="factor2">內容吸引程度</string>
-    <string name="factor3">傳送者吸引程度</string>
+    <string name="factor2">重要程度</string>
+    <string name="factor3">緊急程度</string>
+    <string name="factor1">內容吸引程度</string>
+    <string name="factor0">\n傳送者吸引程度</string>
     <string name="factor4">app吸引程度</string>
     <string name="factor_text">您將此通知排在第 %d 位想要點擊通知的原因為？</string>
     <string name="factor_extra_text">補充說明</string>
