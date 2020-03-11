@@ -150,7 +150,6 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
 
     @Override
     public void onRowSelected(ViewHolder myViewHolder) {
-
     }
 
     @Override

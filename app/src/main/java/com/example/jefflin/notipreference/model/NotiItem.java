@@ -38,13 +38,13 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     @Ignore
     public String icon;
     @Ignore
-    public int factor0;
+    public int sender_attractiveness;
     @Ignore
-    public int factor1;
+    public int content_attractiveness;
     @Ignore
-    public int factor2;
+    public int importance;
     @Ignore
-    public int factor3;
+    public int urgency;
 
     @Ignore
     @ColumnInfo(name = "origin_order")
@@ -53,6 +53,14 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     private int click_order = -1;
     @Ignore
     private int display_order = -1;
+
+    private int not_attend_no_info = -1;
+    private int not_attend_no_use = -1;
+    private int not_attend_other = -1;
+
+    private int not_display_dup = -1;
+    private int not_display_not_relate = -1;
+    private int not_display_other = -1;
 
     public NotiItem() {
     }
@@ -63,10 +71,10 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
         this.content = content;
         this.postTime = postTime;
         this.category = category;
-        this.factor0 = -1;
-        this.factor1 = -1;
-        this.factor2 = -1;
-        this.factor3 = -1;
+        this.sender_attractiveness = -1;
+        this.content_attractiveness = -1;
+        this.importance = -1;
+        this.urgency = -1;
         this.origin_order = origin_order;
         this.sortReason = "";
     }
@@ -79,7 +87,7 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
 
     // false for not set correctly
     public boolean checkScale() {
-        return (factor0 != -1 && factor1 != -1 && factor2 != -1 && factor3 != -1);
+        return (sender_attractiveness != -1 && content_attractiveness != -1 && importance != -1 && urgency != -1);
     }
 
     public void setIcon(String mIcon) {
@@ -89,16 +97,16 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     public int setFactor(int qN, int value) {
         switch (qN) {
             case 0:
-                this.factor0 = value;
+                this.sender_attractiveness = value;
                 break;
             case 1:
-                this.factor1 = value;
+                this.content_attractiveness = value;
                 break;
             case 2:
-                this.factor2 = value;
+                this.importance = value;
                 break;
             case 3:
-                this.factor3 = value;
+                this.urgency = value;
                 break;
             default:
                 return -1;

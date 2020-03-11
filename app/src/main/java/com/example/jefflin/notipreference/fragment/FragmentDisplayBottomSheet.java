@@ -17,7 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
 
     public boolean not_display_duplicate = false;
-    public boolean not_display_no_relate = false;
+    public boolean not_display_not_relate = false;
     public boolean not_display_other = false;
 
 
@@ -57,14 +57,14 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 Log.d("relate", "check");
-                if(!not_display_no_relate){
+                if(!not_display_not_relate){
                     relate.setBackgroundResource(R.drawable.check_small_round_button);
                     relate.setTextColor(Color.parseColor("#FFFFFF"));
                 } else {
                     relate.setBackgroundResource(R.drawable.not_check_small_round_button);
                     relate.setTextColor(Color.parseColor("#000000"));
                 }
-                not_display_no_relate = !not_display_no_relate;
+                not_display_not_relate = !not_display_not_relate;
             }
         });
 
