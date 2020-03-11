@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/factor_not_attend"
+        android:textSize="15dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/not_attend_0"
+            android:layout_width="110dp"
+            android:layout_height="31dp"
+            android:background="@drawable/not_check_small_round_button"
+            android:text="@string/not_attend_0"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="3dp"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/not_attend_1"
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:background="@drawable/not_check_small_round_button"
+            android:text="@string/not_attend_1"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="3dp"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/not_attend_2"
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:background="@drawable/not_check_small_round_button"
+            android:text="@string/not_attend_2"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="3dp"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

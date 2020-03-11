@@ -47,6 +47,16 @@
     <string name="factor_text">您將此通知排在第 %d 位想要點擊通知的原因為？</string>
     <string name="factor_extra_text">補充說明</string>
 
+    <string name="factor_not_attend">請問不用處理的原因為何？(可複選)</string>
+    <string name="not_attend_0">無需得知更多資訊</string>
+    <string name="not_attend_1">點擊無作用</string>
+    <string name="not_attend_2">其他</string>
+
+    <string name="factor_not_display">請問不需要顯示的原因為何？(可複選)</string>
+    <string name="not_display_0">重複</string>
+    <string name="not_display_1">不相關</string>
+    <string name="not_display_2">其他</string>
+
     <string name="stronglyDisagree">\n低</string>
     <string name="stronglyAgree">\n高</string>
     <string name="notApply">\n不適用</string>

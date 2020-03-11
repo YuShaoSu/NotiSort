@@ -37,6 +37,7 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
     private NotiItemMoveCallback.OnStartDragListener onStartDragListener = this;
     private ImageView iv_back;
 
+    private int sortType;
 
     ArrayList<NotiItem> mData;
     ArrayList<NotiItem> mData_6 = new ArrayList<NotiItem>();
@@ -101,8 +102,9 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
     }
 
     private void setRecyclerView(ViewGroup rootView) {
+        sortType = getArguments().getInt("sortType");
         mActiveData = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
-        mAdapter = new NotiItemAdapter(getActivity(), mActiveData, onStartDragListener);
+        mAdapter = new NotiItemAdapter(getActivity(), mActiveData, onStartDragListener, sortType);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_rank);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);

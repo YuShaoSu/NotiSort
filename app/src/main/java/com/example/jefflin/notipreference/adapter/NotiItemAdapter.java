@@ -1,5 +1,7 @@
 package com.example.jefflin.notipreference.adapter;
+
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.jefflin.notipreference.ActivitySurvey;
+import com.example.jefflin.notipreference.fragment.FragmentAttendBottomSheet;
+import com.example.jefflin.notipreference.fragment.FragmentDisplayBottomSheet;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
@@ -32,7 +37,15 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
     private Context mContext;
     private List<NotiItem> mData;
     private NotiItemMoveCallback.OnStartDragListener mDragListener;
+    private int sortType;
 
+
+    public NotiItemAdapter(Context context, ArrayList<NotiItem> data, NotiItemMoveCallback.OnStartDragListener dragListener, int sortType) {
+        this.mContext = context;
+        this.mData = data;
+        this.mDragListener = dragListener;
+        this.sortType = sortType;
+    }
 
     public NotiItemAdapter(Context context, ArrayList<NotiItem> data, NotiItemMoveCallback.OnStartDragListener dragListener) {
         this.mContext = context;
@@ -40,7 +53,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         this.mDragListener = dragListener;
     }
 
-    public void setNoti(List<NotiItem> notiItems){
+    public void setNoti(List<NotiItem> notiItems) {
         mData = notiItems;
         notifyDataSetChanged();
     }
@@ -60,11 +73,18 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         holder.tv_content.setText(notiItem.content);
 
         // check if won't click
-        if(notiItem.getClickOrder() == -9999) {
-            holder.linearLayout.setBackgroundColor(Color.parseColor("#DDDDDD"));
-        }
-        else {
-            holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        if (sortType == 0) {
+            if (notiItem.getClickOrder() == -9999) {
+                holder.linearLayout.setBackgroundColor(Color.parseColor("#DDDDDD"));
+            } else {
+                holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+        } else if (sortType == 1) {
+            if (notiItem.getDisplayOrder() == -9999) {
+                holder.linearLayout.setBackgroundColor(Color.parseColor("#DDDDDD"));
+            } else {
+                holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
         }
 
         holder.iv_drag.setOnTouchListener(new View.OnTouchListener() {
@@ -97,12 +117,12 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
 
         ViewHolder(View itemView) {
             super(itemView);
-            iv_icon = (ImageView)itemView.findViewById(R.id.icon);
-            tv_appname = (TextView)itemView.findViewById(R.id.appname);
-            tv_title = (TextView)itemView.findViewById(R.id.title);
-            tv_content = (TextView)itemView.findViewById(R.id.content);
-            iv_drag = (ImageView)itemView.findViewById(R.id.drag);
-            linearLayout = (LinearLayout)itemView.findViewById(R.id.noti_item);
+            iv_icon = (ImageView) itemView.findViewById(R.id.icon);
+            tv_appname = (TextView) itemView.findViewById(R.id.appname);
+            tv_title = (TextView) itemView.findViewById(R.id.title);
+            tv_content = (TextView) itemView.findViewById(R.id.content);
+            iv_drag = (ImageView) itemView.findViewById(R.id.drag);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.noti_item);
         }
     }
 
@@ -115,7 +135,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
     }
 
     @Override
-    public void onRowMoved (int fromPosition, int toPosition) {
+    public void onRowMoved(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(mData, i, i + 1);
@@ -142,11 +162,19 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
     public void onRowDelete(int pos) {
         NotiItem item;
         item = mData.get(pos);
-        item.setClickOrder(item.getClickOrder() == -9999 ? -1 : -9999);
+        if (sortType == 0) item.setClickOrder(item.getClickOrder() == -9999 ? -1 : -9999);
+        else if (sortType == 1) item.setDisplayOrder(item.getDisplayOrder() == -9999 ? -1 : -9999);
         mData.add(item);
         mData.remove(pos);
         notifyItemRemoved(pos);
         notifyItemInserted(mData.size() - 1);
+        if (sortType == 0) {
+            FragmentAttendBottomSheet fragmentAttendBottomSheet = new FragmentAttendBottomSheet();
+            fragmentAttendBottomSheet.show(((ActivitySurvey) mContext).getSupportFragmentManager(), "");
+        } else if (sortType == 1) {
+            FragmentDisplayBottomSheet fragmentDisplayBottomSheet = new FragmentDisplayBottomSheet();
+            fragmentDisplayBottomSheet.show(((ActivitySurvey) mContext).getSupportFragmentManager(), "");
+        }
     }
 
 }
