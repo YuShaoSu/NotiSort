@@ -35,6 +35,9 @@ public class ActivitySurvey extends AppCompatActivity {
     FragmentScale fragscale = new FragmentScale();
     FragmentESM fragsurvey;
 
+    FragmentSort fragsort;
+    FragmentSort fragsort_display;
+
     public ArrayList<NotiItem> getCurrentData() {
         return mCurrentData;
     }
@@ -71,8 +74,6 @@ public class ActivitySurvey extends AppCompatActivity {
             frag_start.setArguments(sBundle);
             arraylist_fragments.add(frag_start);
         }
-        FragmentSort fragsort = new FragmentSort();
-        FragmentSort fragsort_display = new FragmentSort();
 
         //- FILL -
         for (ESMQuestion mESMQuestion : mESMPojo.getESMQuestions()) {
@@ -144,6 +145,10 @@ public class ActivitySurvey extends AppCompatActivity {
         mPager.setCurrentItem(mPager.getCurrentItem() + 1);
         fragscale.changeActiveData();
     }
+
+    public void refreshAttendSort(boolean info, boolean use, boolean other) { fragsort.refreshAttendAdapter(info, use, other); }
+
+    public void refreshDisplaySort(boolean dup, boolean relate, boolean other) { fragsort.refreshDisplayAdapter(dup, relate, other); }
 
     public void refreshFragsurvey() {
         fragsurvey.refreshAdapter();

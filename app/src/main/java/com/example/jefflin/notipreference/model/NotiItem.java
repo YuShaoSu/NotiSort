@@ -54,13 +54,13 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     @Ignore
     private int display_order = -1;
 
-    private int not_attend_no_info = -1;
-    private int not_attend_no_use = -1;
-    private int not_attend_other = -1;
+    public int not_attend_no_info = -1;
+    public int not_attend_no_use = -1;
+    public int not_attend_other = -1;
 
-    private int not_display_dup = -1;
-    private int not_display_not_relate = -1;
-    private int not_display_other = -1;
+    public int not_display_dup = -1;
+    public int not_display_not_relate = -1;
+    public int not_display_other = -1;
 
     public NotiItem() {
     }

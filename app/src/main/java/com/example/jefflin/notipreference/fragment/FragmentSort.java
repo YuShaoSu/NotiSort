@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.jefflin.notipreference.helper.OnSheetDismissCallBack;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.adapter.NotiItemAdapter;
 import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
@@ -35,6 +36,7 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
     private NotiItemAdapter mAdapter;
     private ItemTouchHelper mItemTouchHelper;
     private NotiItemMoveCallback.OnStartDragListener onStartDragListener = this;
+//    private OnSheetDismissCallBack onSheetDismissCallBack = this;
     private ImageView iv_back;
 
     private int sortType;
@@ -47,6 +49,7 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_sort, container, false);
+
 
         button_continue = (Button) rootView.findViewById(R.id.button_continue);
         textview_q_title = (TextView) rootView.findViewById(R.id.title);
@@ -113,5 +116,13 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
     private void setItemTouchHelper() {
         mItemTouchHelper = new ItemTouchHelper(new NotiItemMoveCallback(mAdapter));
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
+    public void refreshAttendAdapter(boolean info, boolean use, boolean other) {
+        mAdapter.setNotAttend(info, use, other);
+    }
+
+    public void refreshDisplayAdapter(boolean dup, boolean relate, boolean other) {
+        mAdapter.setNotDisplay(dup, relate, other);
     }
 }

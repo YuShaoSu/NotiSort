@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.example.jefflin.notipreference.ActivitySurvey;
 import com.example.jefflin.notipreference.fragment.FragmentAttendBottomSheet;
 import com.example.jefflin.notipreference.fragment.FragmentDisplayBottomSheet;
+import com.example.jefflin.notipreference.helper.OnSheetDismissCallBack;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
@@ -33,18 +35,23 @@ import java.util.List;
     The adaptor of the sorting page recycler view.
  */
 public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHolder> implements
-        NotiItemMoveCallback.ItemTouchHelperContract {
+        NotiItemMoveCallback.ItemTouchHelperContract{
     private Context mContext;
     private List<NotiItem> mData;
     private NotiItemMoveCallback.OnStartDragListener mDragListener;
     private int sortType;
+    private FragmentAttendBottomSheet fragmentAttendBottomSheet;
+    private FragmentDisplayBottomSheet fragmentDisplayBottomSheet;
+
+    private OnSheetDismissCallBack onSheetDismissCallBack;
 
 
-    public NotiItemAdapter(Context context, ArrayList<NotiItem> data, NotiItemMoveCallback.OnStartDragListener dragListener, int sortType) {
+    public NotiItemAdapter(Context context, ArrayList<NotiItem> data, NotiItemMoveCallback.OnStartDragListener dragListener,  int sortType) {
         this.mContext = context;
         this.mData = data;
         this.mDragListener = dragListener;
         this.sortType = sortType;
+//        this.onSheetDismissCallBack = onSheetDismissCallBack;
     }
 
     public NotiItemAdapter(Context context, ArrayList<NotiItem> data, NotiItemMoveCallback.OnStartDragListener dragListener) {
@@ -76,16 +83,37 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         if (sortType == 0) {
             if (notiItem.getClickOrder() == -9999) {
                 holder.linearLayout.setBackgroundColor(Color.parseColor("#DDDDDD"));
+                notiItem.not_attend_no_info = fragmentAttendBottomSheet.not_attend_need_no_info ? 1 : 0;
+                notiItem.not_attend_no_use = fragmentAttendBottomSheet.not_attend_no_use ? 1 : 0;
+                notiItem.not_attend_other = fragmentAttendBottomSheet.not_attend_other ? 1 : 0;
             } else {
                 holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                notiItem.not_attend_no_info = -1;
+                notiItem.not_attend_no_use = -1;
+                notiItem.not_attend_other = -1;
             }
         } else if (sortType == 1) {
             if (notiItem.getDisplayOrder() == -9999) {
                 holder.linearLayout.setBackgroundColor(Color.parseColor("#DDDDDD"));
+                notiItem.not_display_dup = fragmentDisplayBottomSheet.not_display_duplicate ? 1 : 0;
+                notiItem.not_display_not_relate = fragmentDisplayBottomSheet.not_display_not_relate ? 1 : 0;
+                notiItem.not_display_other = fragmentDisplayBottomSheet.not_display_other ? 1 : 0;
             } else {
                 holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                notiItem.not_display_dup = -1;
+                notiItem.not_display_not_relate = -1;
+                notiItem.not_display_other = -1;
             }
         }
+
+        Log.d("not attend", String.valueOf(notiItem.not_attend_no_info));
+        Log.d("not attend", String.valueOf(notiItem.not_attend_no_use));
+        Log.d("not attend", String.valueOf(notiItem.not_attend_other));
+
+        Log.d("not display", String.valueOf(notiItem.not_display_dup));
+        Log.d("not display", String.valueOf(notiItem.not_display_not_relate));
+        Log.d("not display", String.valueOf(notiItem.not_display_other));
+
 
         holder.iv_drag.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -168,12 +196,41 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         notifyItemRemoved(pos);
         notifyItemInserted(mData.size() - 1);
         if (sortType == 0) {
-            FragmentAttendBottomSheet fragmentAttendBottomSheet = new FragmentAttendBottomSheet();
+            fragmentAttendBottomSheet = new FragmentAttendBottomSheet(mContext);
             fragmentAttendBottomSheet.show(((ActivitySurvey) mContext).getSupportFragmentManager(), "");
         } else if (sortType == 1) {
-            FragmentDisplayBottomSheet fragmentDisplayBottomSheet = new FragmentDisplayBottomSheet();
+            fragmentDisplayBottomSheet = new FragmentDisplayBottomSheet(mContext);
             fragmentDisplayBottomSheet.show(((ActivitySurvey) mContext).getSupportFragmentManager(), "");
         }
     }
+
+    public void setNotAttend(boolean need_no_info, boolean no_use, boolean other) {
+        NotiItem item = mData.get(mData.size() - 1);
+        item.not_attend_no_info = need_no_info ? 1 : 0;
+        item.not_attend_no_use = no_use ? 1 : 0;
+        item.not_attend_other = other ? 1 : 0;
+    }
+
+    public void setNotDisplay(boolean duplicate, boolean not_relate, boolean other) {
+        NotiItem item = mData.get(mData.size() - 1);
+        item.not_display_dup = duplicate ? 1 : 0;
+        item.not_display_not_relate = not_relate ? 1 : 0;
+        item.not_display_other = other ? 1 : 0;
+    }
+
+
+//    public void setNotAttend() {
+//        NotiItem item = mData.get(mData.size() - 1);
+//        item.not_attend_no_info = fragmentAttendBottomSheet.not_attend_need_no_info ? 1 : 0;
+//        item.not_attend_no_use = fragmentAttendBottomSheet.not_attend_no_use ? 1 : 0;
+//        item.not_attend_other = fragmentAttendBottomSheet.not_attend_other ? 1 : 0;
+//    }
+//
+//    public void setNotDisplay() {
+//        NotiItem item = mData.get(mData.size() - 1);
+//        item.not_display_dup = fragmentDisplayBottomSheet.not_display_duplicate ? 1 : 0;
+//        item.not_display_not_relate = fragmentDisplayBottomSheet.not_display_not_relate ? 1 : 0;
+//        item.not_display_other = fragmentDisplayBottomSheet.not_display_other ? 1 : 0;
+//    }
 
 }

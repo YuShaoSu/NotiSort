@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "a3b9829577e10b632787119810df06dc",
+    "identityHash": "05c447d64f59f9464dbeae0ae64401f3",
     "entities": [
       {
         "tableName": "noti_model",
@@ -296,7 +296,7 @@
       },
       {
         "tableName": "noti_items",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `app_name` TEXT, `title` TEXT, `content` TEXT, `post_time` INTEGER, `category` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `app_name` TEXT, `title` TEXT, `content` TEXT, `post_time` INTEGER, `category` TEXT, `not_attend_no_info` INTEGER NOT NULL, `not_attend_no_use` INTEGER NOT NULL, `not_attend_other` INTEGER NOT NULL, `not_display_dup` INTEGER NOT NULL, `not_display_not_relate` INTEGER NOT NULL, `not_display_other` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -333,6 +333,42 @@
             "columnName": "category",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "not_attend_no_info",
+            "columnName": "not_attend_no_info",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "not_attend_no_use",
+            "columnName": "not_attend_no_use",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "not_attend_other",
+            "columnName": "not_attend_other",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "not_display_dup",
+            "columnName": "not_display_dup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "not_display_not_relate",
+            "columnName": "not_display_not_relate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "not_display_other",
+            "columnName": "not_display_other",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -498,7 +534,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a3b9829577e10b632787119810df06dc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '05c447d64f59f9464dbeae0ae64401f3')"
     ]
   }
 }

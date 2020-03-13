@@ -162,25 +162,25 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
 
                     switch (group.getCheckedRadioButtonId()) {
                         case R.id.strong_agree0:
-                            mData.get(getAdapterPosition()).factor0 = strong_agree;
+                            mData.get(getAdapterPosition()).sender_attractiveness = strong_agree;
                             Log.d("edit text", reason_box.getText().toString());
                             break;
                         case R.id.agree0:
-                            mData.get(getAdapterPosition()).factor0 = agree;
+                            mData.get(getAdapterPosition()).sender_attractiveness = agree;
                             break;
                         case R.id.neutral0:
-                            mData.get(getAdapterPosition()).factor0 = neutral;
+                            mData.get(getAdapterPosition()).sender_attractiveness = neutral;
                             break;
                         case R.id.disagree0:
-                            mData.get(getAdapterPosition()).factor0 = disagree;
+                            mData.get(getAdapterPosition()).sender_attractiveness = disagree;
                             break;
                         case R.id.strong_disagree0:
-                            mData.get(getAdapterPosition()).factor0 = strong_disagree;
+                            mData.get(getAdapterPosition()).sender_attractiveness = strong_disagree;
                             break;
                         case R.id.not_apply_0:
-                            mData.get(getAdapterPosition()).factor0 = not_apply;
+                            mData.get(getAdapterPosition()).sender_attractiveness = not_apply;
                         default:
-                            mData.get(getAdapterPosition()).factor0 = -1;
+                            mData.get(getAdapterPosition()).sender_attractiveness = -1;
                     }
 
                 }
@@ -193,24 +193,24 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
 
                     switch (group.getCheckedRadioButtonId()) {
                         case R.id.strong_agree1:
-                            mData.get(getAdapterPosition()).factor1 = strong_agree;
+                            mData.get(getAdapterPosition()).content_attractiveness = strong_agree;
                             break;
                         case R.id.agree1:
-                            mData.get(getAdapterPosition()).factor1 = agree;
+                            mData.get(getAdapterPosition()).content_attractiveness = agree;
                             break;
                         case R.id.neutral1:
-                            mData.get(getAdapterPosition()).factor1 = neutral;
+                            mData.get(getAdapterPosition()).content_attractiveness = neutral;
                             break;
                         case R.id.disagree1:
-                            mData.get(getAdapterPosition()).factor1 = disagree;
+                            mData.get(getAdapterPosition()).content_attractiveness = disagree;
                             break;
                         case R.id.strong_disagree1:
-                            mData.get(getAdapterPosition()).factor1 = strong_disagree;
+                            mData.get(getAdapterPosition()).content_attractiveness = strong_disagree;
                             break;
                         case R.id.not_apply_1:
-                            mData.get(getAdapterPosition()).factor1 = not_apply;
+                            mData.get(getAdapterPosition()).content_attractiveness = not_apply;
                         default:
-                            mData.get(getAdapterPosition()).factor1 = -1;
+                            mData.get(getAdapterPosition()).content_attractiveness = -1;
                     }
 
                 }
@@ -224,22 +224,22 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
 
                     switch (group.getCheckedRadioButtonId()) {
                         case R.id.strong_agree2:
-                            mData.get(getAdapterPosition()).factor2 = strong_agree;
+                            mData.get(getAdapterPosition()).importance = strong_agree;
                             break;
                         case R.id.agree2:
-                            mData.get(getAdapterPosition()).factor2 = agree;
+                            mData.get(getAdapterPosition()).importance = agree;
                             break;
                         case R.id.neutral2:
-                            mData.get(getAdapterPosition()).factor2 = neutral;
+                            mData.get(getAdapterPosition()).importance = neutral;
                             break;
                         case R.id.disagree2:
-                            mData.get(getAdapterPosition()).factor2 = disagree;
+                            mData.get(getAdapterPosition()).importance = disagree;
                             break;
                         case R.id.strong_disagree2:
-                            mData.get(getAdapterPosition()).factor2 = strong_disagree;
+                            mData.get(getAdapterPosition()).importance = strong_disagree;
                             break;
                         default:
-                            mData.get(getAdapterPosition()).factor2 = -1;
+                            mData.get(getAdapterPosition()).importance = -1;
                     }
 
                 }
@@ -253,22 +253,22 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
                     switch (group.getCheckedRadioButtonId()) {
                         case R.id.strong_agree3:
-                            mData.get(getAdapterPosition()).factor3 = strong_agree;
+                            mData.get(getAdapterPosition()).urgency = strong_agree;
                             break;
                         case R.id.agree3:
-                            mData.get(getAdapterPosition()).factor3 = agree;
+                            mData.get(getAdapterPosition()).urgency = agree;
                             break;
                         case R.id.neutral3:
-                            mData.get(getAdapterPosition()).factor3 = neutral;
+                            mData.get(getAdapterPosition()).urgency = neutral;
                             break;
                         case R.id.disagree3:
-                            mData.get(getAdapterPosition()).factor3 = disagree;
+                            mData.get(getAdapterPosition()).urgency = disagree;
                             break;
                         case R.id.strong_disagree3:
-                            mData.get(getAdapterPosition()).factor3 = strong_disagree;
+                            mData.get(getAdapterPosition()).urgency = strong_disagree;
                             break;
                         default:
-                            mData.get(getAdapterPosition()).factor3 = -1;
+                            mData.get(getAdapterPosition()).urgency = -1;
                     }
 
                 }

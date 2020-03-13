@@ -1,5 +1,6 @@
 package com.example.jefflin.notipreference.fragment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +12,9 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.jefflin.notipreference.ActivitySurvey;
 import com.example.jefflin.notipreference.R;
+import com.example.jefflin.notipreference.helper.OnSheetDismissCallBack;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
@@ -19,8 +22,11 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
     public boolean not_attend_need_no_info = false;
     public boolean not_attend_no_use = false;
     public boolean not_attend_other = false;
+    private OnSheetDismissCallBack onSheetDismissCallBack;
+    private Context context;
 
-    public FragmentAttendBottomSheet() {
+    public FragmentAttendBottomSheet(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -49,6 +55,8 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
                     info.setTextColor(Color.parseColor("#000000"));
                 }
                 not_attend_need_no_info = !not_attend_need_no_info;
+//                onSheetDismissCallBack.setNotAttend(not_attend_need_no_info, not_attend_no_use, not_attend_other);
+                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_other);
             }
         });
 
@@ -64,6 +72,8 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
                     use.setTextColor(Color.parseColor("#000000"));
                 }
                 not_attend_no_use = !not_attend_no_use;
+//                onSheetDismissCallBack.setNotAttend(not_attend_need_no_info, not_attend_no_use, not_attend_other);
+                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_other);
             }
         });
 
@@ -79,6 +89,8 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
                     other.setTextColor(Color.parseColor("#000000"));
                 }
                 not_attend_other = !not_attend_other;
+//                onSheetDismissCallBack.setNotAttend(not_attend_need_no_info, not_attend_no_use, not_attend_other);
+                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_other);
             }
         });
 

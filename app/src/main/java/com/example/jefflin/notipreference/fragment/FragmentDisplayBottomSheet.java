@@ -1,5 +1,6 @@
 package com.example.jefflin.notipreference.fragment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +12,9 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.jefflin.notipreference.ActivitySurvey;
 import com.example.jefflin.notipreference.R;
+import com.example.jefflin.notipreference.helper.OnSheetDismissCallBack;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
@@ -19,9 +22,11 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
     public boolean not_display_duplicate = false;
     public boolean not_display_not_relate = false;
     public boolean not_display_other = false;
+    private OnSheetDismissCallBack onSheetDismissCallBack;
+    private Context context;
 
-
-    public FragmentDisplayBottomSheet() {
+    public FragmentDisplayBottomSheet(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -50,6 +55,8 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
                     duplicate.setTextColor(Color.parseColor("#000000"));
                 }
                 not_display_duplicate = !not_display_duplicate;
+//                onSheetDismissCallBack.setNotDisplay(not_display_duplicate, not_display_not_relate, not_display_other);
+                ((ActivitySurvey) context).refreshDisplaySort(not_display_duplicate, not_display_not_relate, not_display_other);
             }
         });
 
@@ -65,6 +72,8 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
                     relate.setTextColor(Color.parseColor("#000000"));
                 }
                 not_display_not_relate = !not_display_not_relate;
+//                onSheetDismissCallBack.setNotDisplay(not_display_duplicate, not_display_not_relate, not_display_other);
+                ((ActivitySurvey) context).refreshDisplaySort(not_display_duplicate, not_display_not_relate, not_display_other);
             }
         });
 
@@ -80,6 +89,8 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
                     other.setTextColor(Color.parseColor("#000000"));
                 }
                 not_display_other = !not_display_other;
+//                onSheetDismissCallBack.setNotDisplay(not_display_duplicate, not_display_not_relate, not_display_other);
+                ((ActivitySurvey) context).refreshDisplaySort(not_display_duplicate, not_display_not_relate, not_display_other);
             }
         });
 
