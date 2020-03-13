@@ -3,6 +3,7 @@ package com.example.jefflin.notipreference;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -134,6 +135,20 @@ public class ActivitySurvey extends AppCompatActivity {
         mPager = (ViewPager) findViewById(R.id.pager);
         FragmentAdapter mPagerAdapter = new FragmentAdapter(getSupportFragmentManager(), arraylist_fragments);
         mPager.setAdapter(mPagerAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("ActivitySurvey", "onResume");
+        SurveyManager.getInstance().surveyBlock();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("ActivitySurvey", "onPause");
+        SurveyManager.getInstance().surveyUnblock();
     }
 
     @Override

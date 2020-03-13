@@ -52,6 +52,7 @@ public class SurveyManager {
 
     public void setMap(Map<String, ArrayList<NotiItem>> map) {
         surveyPostTime = Calendar.getInstance().getTimeInMillis();
+        mMap.clear();
         mMap = map;
     }
 
@@ -74,14 +75,18 @@ public class SurveyManager {
         return diff;
     }
 
+    public void surveyBlock() {
+        isSurveyBlock = !isNotiNull();
+    }
+
     public void surveyUnblock() {
         isSurveyBlock = false;
-        mMap.clear();
     }
 
     public void surveyInit() {
         isSurveyBlock = false;
         isSurveyDone = false;
+        mMap.clear();
     }
 
     public void surveyDone() {

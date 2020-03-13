@@ -109,7 +109,7 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d("NotiListenerService", "bind");
+        Log.d(TAG, "bind");
         packageManager = getPackageManager();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -149,8 +149,8 @@ public class NotiListenerService extends NotificationListenerService {
 
         if (getActiveNotis()) {
             // block
-            Timer timer = new Timer();
-            timer.schedule(new BlockTask(), 900000);
+//            Timer timer = new Timer();
+//            timer.schedule(new BlockTask(), 900000);
 
             SurveyManager.getInstance().setMap(itemMap);
             SurveyManager.getInstance().setSurveyBlock(true);

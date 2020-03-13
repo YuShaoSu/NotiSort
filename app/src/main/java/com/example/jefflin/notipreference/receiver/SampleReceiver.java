@@ -43,8 +43,5 @@ public class SampleReceiver extends BroadcastReceiver {
         Log.d("SampleReceiver interval", String.valueOf(c.getTime()));
     }
 
-    public void surveyDone() {
-        SurveyManager.getInstance().surveyDone();
-    }
 
 }

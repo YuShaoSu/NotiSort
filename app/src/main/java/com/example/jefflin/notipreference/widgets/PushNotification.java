@@ -22,8 +22,8 @@ public class PushNotification {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, String.valueOf(R.string.channelID))
                 .setSmallIcon(R.drawable.ic_stat_name)
-                .setContentTitle("Survey Time!")
-                .setContentText("Receive more than ten notifications")
+                .setContentTitle("NotiSort")
+                .setContentText("請填寫問卷！")
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setTimeoutAfter(595000)
