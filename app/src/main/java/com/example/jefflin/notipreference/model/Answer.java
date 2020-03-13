@@ -169,7 +169,12 @@ public class Answer {
         for (int i = 0; i < notiItems.size(); i++) {
             NotiItem item = notiItems.get(i);
             NotiItem itemD = notiItemsD.get(i);
-            item.setDisplayOrder(itemD.getDisplayOrder());
+            if(itemD.isNotDisplay()) {
+                item.setNotDisplay();
+                item.setNotDisplayReason(itemD.not_display_dup, itemD.not_display_not_relate, itemD.not_display_other);
+            } else {
+                item.setDisplayOrder(itemD.getDisplayOrder());
+            }
         }
 
         this.notifications = notiItems;

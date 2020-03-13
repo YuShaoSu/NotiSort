@@ -81,7 +81,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
 
         // check if won't click
         if (sortType == 0) {
-            if (notiItem.getClickOrder() == -9999) {
+            if (notiItem.isNotClick()) {
                 holder.linearLayout.setBackgroundColor(Color.parseColor("#DDDDDD"));
                 notiItem.not_attend_no_info = fragmentAttendBottomSheet.not_attend_need_no_info ? 1 : 0;
                 notiItem.not_attend_no_use = fragmentAttendBottomSheet.not_attend_no_use ? 1 : 0;
@@ -93,7 +93,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
                 notiItem.not_attend_other = -1;
             }
         } else if (sortType == 1) {
-            if (notiItem.getDisplayOrder() == -9999) {
+            if (notiItem.isNotDisplay()) {
                 holder.linearLayout.setBackgroundColor(Color.parseColor("#DDDDDD"));
                 notiItem.not_display_dup = fragmentDisplayBottomSheet.not_display_duplicate ? 1 : 0;
                 notiItem.not_display_not_relate = fragmentDisplayBottomSheet.not_display_not_relate ? 1 : 0;
@@ -189,16 +189,16 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
     public void onRowDelete(int pos) {
         NotiItem item;
         item = mData.get(pos);
-        if (sortType == 0) item.setClickOrder(item.getClickOrder() == -9999 ? -1 : -9999);
-        else if (sortType == 1) item.setDisplayOrder(item.getDisplayOrder() == -9999 ? -1 : -9999);
+        if (sortType == 0) item.setNotClick();
+        else if (sortType == 1) item.setNotDisplay();
         mData.add(item);
         mData.remove(pos);
         notifyItemRemoved(pos);
         notifyItemInserted(mData.size() - 1);
-        if (sortType == 0) {
+        if (sortType == 0 && item.isNotClick()) {
             fragmentAttendBottomSheet = new FragmentAttendBottomSheet(mContext);
             fragmentAttendBottomSheet.show(((ActivitySurvey) mContext).getSupportFragmentManager(), "");
-        } else if (sortType == 1) {
+        } else if (sortType == 1 && item.isNotDisplay()) {
             fragmentDisplayBottomSheet = new FragmentDisplayBottomSheet(mContext);
             fragmentDisplayBottomSheet.show(((ActivitySurvey) mContext).getSupportFragmentManager(), "");
         }

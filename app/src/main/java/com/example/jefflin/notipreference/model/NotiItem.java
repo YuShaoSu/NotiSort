@@ -114,20 +114,36 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
         return value;
     }
 
-    public void setClickOrder(int click_order) {
-        this.click_order = click_order;
+
+    public void setNotClick() {
+        this.click_order = this.isNotClick() ? -1 : -9999;
+    }
+
+    public void setNotDisplay() {
+        this.display_order = this.isNotDisplay() ? -1 : -9999;
+    }
+
+    public void setNotDisplayReason(int dup, int relate, int other) {
+        this.not_display_dup = dup;
+        this.not_display_not_relate = relate;
+        this.not_display_other = other;
     }
 
     public int getClickOrder() {
         return click_order;
     }
 
+    public void setClickOrder(int click_order) {
+        if(!this.isNotClick())   this.click_order = click_order;
+    }
+
+
     public int getDisplayOrder() {
         return display_order;
     }
 
     public void setDisplayOrder(int display_order) {
-        this.display_order = display_order;
+        if(!this.isNotDisplay())    this.display_order = display_order;
     }
 
     public int getOriginOrder() {
@@ -137,6 +153,9 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     public void setSortReason(String reason) {
         this.sortReason = reason;
     }
+
+    public boolean isNotClick() { return click_order == -9999; }
+    public boolean isNotDisplay() { return display_order == -9999; }
 
     //
     // location
