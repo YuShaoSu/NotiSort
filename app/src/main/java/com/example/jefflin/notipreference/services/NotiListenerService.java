@@ -66,6 +66,7 @@ import java.util.Timer;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class NotiListenerService extends NotificationListenerService {
     private static final String TAG = "MyNotificationService";
@@ -235,23 +236,28 @@ public class NotiListenerService extends NotificationListenerService {
 
     public static boolean getActiveNotis() {
         NotiListenerService notiListenerService = NotiListenerService.get();
-        ArrayList<NotiItem> attend = new ArrayList<NotiItem>();
+        ArrayList<NotiItem> click = new ArrayList<NotiItem>();
         ArrayList<NotiItem> display = new ArrayList<NotiItem>();
         int order = 0;
         itemMap = new HashMap();
         for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
-            attend.add(setNotiItem(notification, order));
+            click.add(setNotiItem(notification, order));
             display.add(setNotiItem(notification, order));
             order++;
         }
-        if (order < 5 || getNumberOfCategory(attend) < 3)
+
+        // check for requirement
+        if (order < 5 || getNumberOfPackage(click) < 3)
             return false;
-        attend = getNotisWithoutDuplicateNull(attend);
+        // get without duplicate and null ones
+        click = getNotisWithoutDuplicateNull(click);
         display = getNotisWithoutDuplicateNull(display);
-        if (attend.size() < 5)
+        // check for number again
+        if (click.size() < 5 || getNumberOfPackage(click) < 3)
             return false;
-        itemMap.put("click", getNotificationsWithCategories(attend, 6, 3));
-        itemMap.put("display", getNotificationsWithCategories(display, 6, 3));
+
+        itemMap = getNotificationsWithOrder(click, display,6, 3);
+
         return true;
     }
 
@@ -265,6 +271,56 @@ public class NotiListenerService extends NotificationListenerService {
         Set<String> distinct = new HashSet<>(categories);
         return distinct.size();
     }
+
+    private static int getNumberOfPackage(ArrayList<NotiItem> data) {
+        ArrayList<String> packages = new ArrayList<>();
+
+        for (NotiItem item : data) {
+            packages.add(item.appName);
+        }
+
+        Set<String> distinct = new HashSet<>(packages);
+        return distinct.size();
+    }
+
+    private static Map<String, ArrayList<NotiItem>> getNotificationsWithOrder(ArrayList<NotiItem> click, ArrayList<NotiItem> display, int numNoti, int numPart) {
+        Map<String, ArrayList<NotiItem>> map = new HashMap<>();
+        ArrayList<NotiItem> newClick = new ArrayList<NotiItem>();
+        ArrayList<NotiItem> newDisplay = new ArrayList<NotiItem>();
+        ArrayList<Integer> bound = new ArrayList<>();
+
+        // if   rmd == 0 -> 0 ~ quo-1, quo ~ 2*quo - 1 , 2*quo ~ size - 1
+        // elif rmd == 1 -> 0 ~ quo-1, quo ~ 2*quo, 2*quo+1 ~ size - 1
+        // elif rmd == 2 -> 0 ~ quo-1, quo ~ 2*quo, 2*quo+1 ~ size - 1
+
+        // int head = quo - 1;
+        // int mid = (2 * quo - 1) + rmd;
+        // int tail = data.size() - 1;
+
+        int quo = click.size() / 3;
+        int rmd = (click.size() % 3 == 0 ? 0 : 1);
+        bound.add(0);
+        bound.add(quo);
+        bound.add((2 * quo) + rmd);
+        bound.add(click.size());
+
+
+        for (int i = 0; i < 3; ++i) {
+            int a = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
+            int b = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
+            while(a == b)   b = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
+            newClick.add(click.get(a));
+            newClick.add(click.get(b));
+            newDisplay.add(display.get(a));
+            newDisplay.add(display.get(b));
+        }
+
+        map.put("click", newClick);
+        map.put("display", newDisplay);
+
+        return map;
+    }
+
 
     private static ArrayList<NotiItem> getNotificationsWithCategories(ArrayList<NotiItem> data, int numNoti, int numCategory) {
         ArrayList<NotiItem> subData = new ArrayList<NotiItem>();
