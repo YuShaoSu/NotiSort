@@ -70,7 +70,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ActivityHistory">
+        <activity android:name=".ActivityProfile">
         </activity>
 
     </application>

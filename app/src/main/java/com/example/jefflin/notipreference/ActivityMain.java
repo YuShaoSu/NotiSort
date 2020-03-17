@@ -1,11 +1,9 @@
 package com.example.jefflin.notipreference;
 
 import android.Manifest;
-import android.app.AlarmManager;
 import android.app.AppOpsManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +24,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.jefflin.notipreference.database.AccessibilityDao;
 import com.example.jefflin.notipreference.database.ActivityRecognitionDao;
 import com.example.jefflin.notipreference.database.LocationUpdateDao;
-import com.example.jefflin.notipreference.receiver.SampleReceiver;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.database.NotiDao;
 import com.example.jefflin.notipreference.database.NotiDatabase;
@@ -41,7 +38,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -50,10 +46,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -114,7 +108,7 @@ public class ActivityMain extends AppCompatActivity {
 
     private void setBotNavView() {
         final Intent setting = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-        final Intent intent_history = new Intent(this, ActivityHistory.class);
+        final Intent intent_history = new Intent(this, ActivityProfile.class);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bot_navigation_home);
         bottomNavigationView.setItemIconTintList(null);
