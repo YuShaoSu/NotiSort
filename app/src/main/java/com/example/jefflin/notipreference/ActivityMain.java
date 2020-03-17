@@ -109,16 +109,13 @@ public class ActivityMain extends AppCompatActivity {
 
         setPermission();
         setBotNavView();
-//        setDeviceId();
         Log.d("device id", GlobalClass.getDeviceID());
     }
 
     private void setBotNavView() {
         final Intent setting = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-        final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
         final Intent intent_history = new Intent(this, ActivityHistory.class);
 
-        survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bot_navigation_home);
         bottomNavigationView.setItemIconTintList(null);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -128,12 +125,8 @@ public class ActivityMain extends AppCompatActivity {
                     case R.id.action_help:
                         startActivity(setting);
                         break;
-                    case R.id.action_sort:
-                        startActivityForResult(survey, SURVEY_REQUEST);
-                        break;
                     case R.id.action_profile:
                         startActivity(intent_history);
-                        break;
                 }
                 return true;
             }

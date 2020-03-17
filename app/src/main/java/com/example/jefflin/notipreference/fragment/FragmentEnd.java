@@ -25,7 +25,7 @@ public class FragmentEnd extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_end, container, false);
 
-        Button button_finish = (Button) rootView.findViewById(R.id.button_finish);
+        Button button_finish = (Button) rootView.findViewById(R.id.button_sync_now);
         textView_end = (TextView) rootView.findViewById(R.id.textView_end);
 
 

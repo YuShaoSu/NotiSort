@@ -2,7 +2,7 @@
 {
   "survey_properties": {
     "intro_message": "<strong>Your feedback helps us to build a better mobile product.</strong><br><br><br>   Hello, Feedback from our clients, friends and family is how we make key decisions on what the future holds for XYZ App.<br><br>By combining data and previous feedback we have introduced many new features e.g. x, y, z.<br><br>It will take less than 2 minutes to answer the feedback quiz.",
-    "end_message": "耶耶耶感謝您",
+    "end_message": "感謝您的填寫，請問是否要現在將資料回傳？",
     "skip_intro": true
   },
   "ESMQuestions": [

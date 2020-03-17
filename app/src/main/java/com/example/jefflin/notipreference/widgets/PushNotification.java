@@ -26,10 +26,9 @@ public class PushNotification {
                 .setContentText("請填寫問卷！")
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setTimeoutAfter(595000)
                 .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(GlobalClass.notificationID, builder.build());
+        notificationManager.notify(20, builder.build());
     }
 
 }
