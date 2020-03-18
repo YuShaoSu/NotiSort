@@ -72,6 +72,13 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
         holder.title.setText(notiItem.title);
         holder.content.setText(notiItem.content);
 
+        holder.reason_box.setText(notiItem.sortReason);
+
+        checkRadio(notiItem.sender_attractiveness, holder.scaleGroup0, R.id.strong_disagree0, R.id.disagree0, R.id.neutral0, R.id.agree0, R.id.strong_agree0, R.id.not_apply_0);
+        checkRadio(notiItem.content_attractiveness, holder.scaleGroup1, R.id.strong_disagree1, R.id.disagree1, R.id.neutral1, R.id.agree1, R.id.strong_agree1, R.id.not_apply_1);
+        checkRadio(notiItem.importance, holder.scaleGroup2, R.id.strong_disagree2, R.id.disagree2, R.id.neutral2, R.id.agree2, R.id.strong_agree2, -1);
+        checkRadio(notiItem.urgency, holder.scaleGroup3, R.id.strong_disagree3, R.id.disagree3, R.id.neutral3, R.id.agree3, R.id.strong_agree3, -1);
+
         // check if won't click
         if (notiItem.getClickOrder() == -9999) {
             holder.position.setText("X");
@@ -79,10 +86,33 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
             holder.position.setText(String.valueOf(position + 1));
         }
 
-//        if (!notiItem.category.equals("msg")) {
-//            holder.scaleGroup3.setVisibility(View.GONE);
-//        }
+    }
 
+    private void checkRadio(int factor, RadioGroup radioGroup, int strong_disagree_radio, int disagree_radio,
+                            int neutral_radio, int agree_radio, int strong_agree_radio, int not_apply_radio) {
+
+        if (factor != -1) {
+            switch (factor) {
+                case strong_disagree:
+                    radioGroup.check(strong_disagree_radio);
+                    break;
+                case disagree:
+                    radioGroup.check(disagree_radio);
+                    break;
+                case neutral:
+                    radioGroup.check(neutral_radio);
+                    break;
+                case agree:
+                    radioGroup.check(agree_radio);
+                    break;
+                case strong_agree:
+                    radioGroup.check(strong_agree_radio);
+                    break;
+                case not_apply:
+                    radioGroup.check(not_apply_radio);
+                    break;
+            }
+        }
     }
 
     @Override
