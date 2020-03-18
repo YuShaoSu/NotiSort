@@ -43,15 +43,11 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
     private FragmentAttendBottomSheet fragmentAttendBottomSheet;
     private FragmentDisplayBottomSheet fragmentDisplayBottomSheet;
 
-    private OnSheetDismissCallBack onSheetDismissCallBack;
-
-
     public NotiItemAdapter(Context context, ArrayList<NotiItem> data, NotiItemMoveCallback.OnStartDragListener dragListener,  int sortType) {
         this.mContext = context;
         this.mData = data;
         this.mDragListener = dragListener;
         this.sortType = sortType;
-//        this.onSheetDismissCallBack = onSheetDismissCallBack;
     }
 
     public NotiItemAdapter(Context context, ArrayList<NotiItem> data, NotiItemMoveCallback.OnStartDragListener dragListener) {
@@ -83,9 +79,6 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         if (sortType == 0) {
             if (notiItem.isNotClick()) {
                 holder.linearLayout.setBackgroundColor(Color.parseColor("#DDDDDD"));
-                notiItem.not_attend_no_info = fragmentAttendBottomSheet.not_attend_need_no_info ? 1 : 0;
-                notiItem.not_attend_no_use = fragmentAttendBottomSheet.not_attend_no_use ? 1 : 0;
-                notiItem.not_attend_other = fragmentAttendBottomSheet.not_attend_other ? 1 : 0;
             } else {
                 holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 notiItem.not_attend_no_info = -1;
@@ -95,9 +88,6 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         } else if (sortType == 1) {
             if (notiItem.isNotDisplay()) {
                 holder.linearLayout.setBackgroundColor(Color.parseColor("#DDDDDD"));
-                notiItem.not_display_dup = fragmentDisplayBottomSheet.not_display_duplicate ? 1 : 0;
-                notiItem.not_display_not_relate = fragmentDisplayBottomSheet.not_display_not_relate ? 1 : 0;
-                notiItem.not_display_other = fragmentDisplayBottomSheet.not_display_other ? 1 : 0;
             } else {
                 holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 notiItem.not_display_dup = -1;
@@ -105,15 +95,6 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
                 notiItem.not_display_other = -1;
             }
         }
-
-        Log.d("not attend", String.valueOf(notiItem.not_attend_no_info));
-        Log.d("not attend", String.valueOf(notiItem.not_attend_no_use));
-        Log.d("not attend", String.valueOf(notiItem.not_attend_other));
-
-        Log.d("not display", String.valueOf(notiItem.not_display_dup));
-        Log.d("not display", String.valueOf(notiItem.not_display_not_relate));
-        Log.d("not display", String.valueOf(notiItem.not_display_other));
-
 
         holder.iv_drag.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -217,20 +198,5 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         item.not_display_not_relate = not_relate ? 1 : 0;
         item.not_display_other = other ? 1 : 0;
     }
-
-
-//    public void setNotAttend() {
-//        NotiItem item = mData.get(mData.size() - 1);
-//        item.not_attend_no_info = fragmentAttendBottomSheet.not_attend_need_no_info ? 1 : 0;
-//        item.not_attend_no_use = fragmentAttendBottomSheet.not_attend_no_use ? 1 : 0;
-//        item.not_attend_other = fragmentAttendBottomSheet.not_attend_other ? 1 : 0;
-//    }
-//
-//    public void setNotDisplay() {
-//        NotiItem item = mData.get(mData.size() - 1);
-//        item.not_display_dup = fragmentDisplayBottomSheet.not_display_duplicate ? 1 : 0;
-//        item.not_display_not_relate = fragmentDisplayBottomSheet.not_display_not_relate ? 1 : 0;
-//        item.not_display_other = fragmentDisplayBottomSheet.not_display_other ? 1 : 0;
-//    }
 
 }

@@ -46,7 +46,6 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
         duplicate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("duplicate", "check");
                 if(!not_display_duplicate){
                     duplicate.setBackgroundResource(R.drawable.check_small_round_button);
                     duplicate.setTextColor(Color.parseColor("#FFFFFF"));
@@ -63,7 +62,6 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
         relate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("relate", "check");
                 if(!not_display_not_relate){
                     relate.setBackgroundResource(R.drawable.check_small_round_button);
                     relate.setTextColor(Color.parseColor("#FFFFFF"));
@@ -80,7 +78,6 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
         other.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("other", "check");
                 if(!not_display_other){
                     other.setBackgroundResource(R.drawable.check_small_round_button);
                     other.setTextColor(Color.parseColor("#FFFFFF"));

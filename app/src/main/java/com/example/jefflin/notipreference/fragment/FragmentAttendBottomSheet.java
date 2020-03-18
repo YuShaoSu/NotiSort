@@ -46,7 +46,6 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
         info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("info", "check");
                 if(!not_attend_need_no_info){
                     info.setBackgroundResource(R.drawable.check_small_round_button);
                     info.setTextColor(Color.parseColor("#FFFFFF"));
@@ -63,7 +62,6 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
         use.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("use", "check");
                 if(!not_attend_no_use){
                     use.setBackgroundResource(R.drawable.check_small_round_button);
                     use.setTextColor(Color.parseColor("#FFFFFF"));
@@ -80,7 +78,6 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
         other.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("other", "check");
                 if(!not_attend_other){
                     other.setBackgroundResource(R.drawable.check_small_round_button);
                     other.setTextColor(Color.parseColor("#FFFFFF"));
