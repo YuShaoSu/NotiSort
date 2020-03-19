@@ -3,6 +3,7 @@ package com.example.jefflin.notipreference.fragment;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -322,7 +323,8 @@ public class FragmentESM extends Fragment {
                 }
 
                 // handle the answers of previous
-                Answer answer = new Answer(GlobalClass.getDeviceID(), SurveyManager.getInstance().getSurveyPostTime(), Calendar.getInstance().getTimeInMillis(), SurveyManager.getInstance().getInterval());
+                SharedPreferences pref = mContext.getSharedPreferences("USER", Context.MODE_PRIVATE);
+                Answer answer = new Answer(pref.getString("ID", ""), SurveyManager.getInstance().getSurveyPostTime(), Calendar.getInstance().getTimeInMillis(), SurveyManager.getInstance().getInterval());
                 if (answer.answerHandler(mActiveData, mActiveDataDisplay)) {
                     // scale check passed and done put notifications into answer
                     // now put ESM answer

@@ -178,10 +178,9 @@ public class ActivitySurvey extends AppCompatActivity {
         }
     }
 
-    public void event_survey_completed(SurveyManager instance) {
+    public void event_survey_completed(boolean sync_now) {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("answers", instance.get_json_object());
-        setResult(Activity.RESULT_OK, returnIntent);
+        setResult(sync_now ? Activity.RESULT_OK : Activity.RESULT_CANCELED, returnIntent);
         finish();
     }
 

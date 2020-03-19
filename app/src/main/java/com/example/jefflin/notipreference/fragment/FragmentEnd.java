@@ -25,16 +25,22 @@ public class FragmentEnd extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_end, container, false);
 
-        Button button_finish = (Button) rootView.findViewById(R.id.button_sync_now);
+        Button button_sync_now = (Button) rootView.findViewById(R.id.button_sync_now);
+        Button button_not_sync_now = (Button) rootView.findViewById(R.id.button_not_sync_now);
         textView_end = (TextView) rootView.findViewById(R.id.textView_end);
 
-
-        button_finish.setOnClickListener(new View.OnClickListener() {
+        button_sync_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((ActivitySurvey) mContext).event_survey_completed(true);
 
-                ((ActivitySurvey) mContext).event_survey_completed(SurveyManager.getInstance());
+            }
+        });
 
+        button_not_sync_now.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ActivitySurvey) mContext).event_survey_completed(false);
             }
         });
 

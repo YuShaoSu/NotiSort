@@ -23,10 +23,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.jefflin.notipreference.database.AccessibilityDao;
 import com.example.jefflin.notipreference.database.ActivityRecognitionDao;
+import com.example.jefflin.notipreference.database.AnswerJsonDao;
 import com.example.jefflin.notipreference.database.LocationUpdateDao;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.database.NotiDao;
 import com.example.jefflin.notipreference.database.NotiDatabase;
+import com.example.jefflin.notipreference.model.AnswerJson;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -40,6 +42,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -65,6 +69,7 @@ public class ActivityMain extends AppCompatActivity {
     private ActivityRecognitionDao activityRecognitionDao;
     private LocationUpdateDao locationUpdateDao;
     private AccessibilityDao accessibilityDao;
+    private AnswerJsonDao answerJsonDao;
     final private String SURVEY_POST = "survey";
     final private String ITEM_POST = "notification";
     final private String AR_POST = "activity_recognition";
@@ -100,10 +105,19 @@ public class ActivityMain extends AppCompatActivity {
         activityRecognitionDao = NotiDatabase.getInstance(getApplicationContext()).activityRecognitionDao();
         locationUpdateDao = NotiDatabase.getInstance(getApplicationContext()).locationUpdateDao();
         accessibilityDao = NotiDatabase.getInstance(getApplicationContext()).accessibilityDao();
+        answerJsonDao = NotiDatabase.getInstance(getApplicationContext()).answerJsonDao();
 
         setPermission();
         setBotNavView();
-        Log.d("device id", GlobalClass.getDeviceID());
+
+        Button sync_button = (Button) findViewById(R.id.sync);
+        sync_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sync(false);
+            }
+        });
+
     }
 
     private void setBotNavView() {
@@ -136,32 +150,40 @@ public class ActivityMain extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SURVEY_REQUEST) {
+
             if (resultCode == RESULT_OK) {
-
-                String jsonPost = SurveyManager.getInstance().getPostJson();
-                postRequest(jsonPost, SURVEY_POST);
-                Log.d("****", "****************** WE HAVE ANSWERS ******************");
-                Log.v("ANSWERS JSON", jsonPost);
-                Log.d("****", "*****************************************************");
-
+                sync(true);
+            } else if (resultCode == RESULT_CANCELED) {
                 mExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        String notiPost = SurveyManager.getItemJson(notiDao.getAll());
-                        postRequest(notiPost, ITEM_POST);
-
-                        String ARPost = SurveyManager.getARJson(activityRecognitionDao.getAll());
-                        postRequest(ARPost, AR_POST);
-
-                        String ACPost = SurveyManager.getACJson(accessibilityDao.getAll());
-                        postRequest(ACPost, AC_POST);
+                        AnswerJson answerJson = new AnswerJson(SurveyManager.getInstance().getPostJson());
+                        answerJsonDao.insert(answerJson);
                     }
                 });
-
-
-                Log.d("****", jsonPost);
             }
+
         }
+    }
+
+    private void sync(final boolean now) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                String jsonPost = SurveyManager.getAnswerJson(answerJsonDao.getAll(), now ? SurveyManager.getInstance().getPostJson() : "");
+                postRequest(jsonPost, SURVEY_POST);
+                Log.d("answer json", jsonPost);
+
+                String notiPost = SurveyManager.getItemJson(notiDao.getAll());
+                postRequest(notiPost, ITEM_POST);
+
+                String ARPost = SurveyManager.getARJson(activityRecognitionDao.getAll());
+                postRequest(ARPost, AR_POST);
+
+                String ACPost = SurveyManager.getACJson(accessibilityDao.getAll());
+                postRequest(ACPost, AC_POST);
+            }
+        });
     }
 
     private String loadSurveyJson(String filename) {
@@ -200,20 +222,6 @@ public class ActivityMain extends AppCompatActivity {
         final boolean enabled = flat != null && flat.contains(cn.flattenToString());
         return enabled;
     }
-
-//    private void setDeviceId() {
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-//            String did;
-//            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
-//                did = tm.getDeviceId();
-//            else
-//                did = tm.getImei();
-//            GlobalClass.setDeviceID(did);
-//            Log.d("device id per", did);
-//        }
-//    }
 
     private void setPermission() {
 
@@ -278,9 +286,6 @@ public class ActivityMain extends AppCompatActivity {
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request.
         }
     }
 
@@ -301,6 +306,7 @@ public class ActivityMain extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (url.equals("notifications")) notiDao.deleteAll();
+                            else if (url.equals(SURVEY_POST)) answerJsonDao.deleteAll();
                             else if (url.equals(AR_POST)) activityRecognitionDao.deleteAll();
                             else if (url.equals(LU_POST)) locationUpdateDao.deleteAll();
                             else if (url.equals(AC_POST)) accessibilityDao.deleteAll();

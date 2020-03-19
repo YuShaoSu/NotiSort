@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.jefflin.notipreference.model.Accessibility;
 import com.example.jefflin.notipreference.model.ActivityRecognitionModel;
+import com.example.jefflin.notipreference.model.AnswerJson;
 import com.example.jefflin.notipreference.model.LocationUpdateModel;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.model.Answer;
@@ -42,13 +43,25 @@ public class SurveyManager {
         return uniqueInstance;
     }
 
-    public boolean isSurveyBlock() { return isSurveyBlock; }
-    public void setSurveyBlock(boolean surveyBlock) { isSurveyBlock = surveyBlock; }
+    public boolean isSurveyBlock() {
+        return isSurveyBlock;
+    }
 
-    public boolean isSurveyDone() { return isSurveyDone; }
-    public void setSurveyDone(boolean surveyDone) { isSurveyDone = surveyDone; }
+    public void setSurveyBlock(boolean surveyBlock) {
+        isSurveyBlock = surveyBlock;
+    }
 
-    public long getSurveyPostTime() { return surveyPostTime; }
+    public boolean isSurveyDone() {
+        return isSurveyDone;
+    }
+
+    public void setSurveyDone(boolean surveyDone) {
+        isSurveyDone = surveyDone;
+    }
+
+    public long getSurveyPostTime() {
+        return surveyPostTime;
+    }
 
     public void setMap(Map<String, ArrayList<NotiItem>> map) {
         surveyPostTime = Calendar.getInstance().getTimeInMillis();
@@ -108,15 +121,38 @@ public class SurveyManager {
     private double longtitude;
     private double latitude;
     private float accuracy;
-    public void setCurrentLocation(double mLatitude, double mLongtitude, float mAccuracy) { longtitude = mLongtitude; latitude = mLatitude; accuracy = mAccuracy;}
-    public double[] getLocation() { return new double[] { latitude, longtitude, accuracy }; }
-    public double getLatitude() { return latitude; }
-    public double getLongtitude() { return longtitude; }
-    public float getAccuracy() { return accuracy; }
+
+    public void setCurrentLocation(double mLatitude, double mLongtitude, float mAccuracy) {
+        longtitude = mLongtitude;
+        latitude = mLatitude;
+        accuracy = mAccuracy;
+    }
+
+    public double[] getLocation() {
+        return new double[]{latitude, longtitude, accuracy};
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongtitude() {
+        return longtitude;
+    }
+
+    public float getAccuracy() {
+        return accuracy;
+    }
 
     private int ringerMode;
-    public void setRingerMode(int ringerMode) { this.ringerMode = ringerMode; }
-    public int getRingerMode() { return ringerMode; }
+
+    public void setRingerMode(int ringerMode) {
+        this.ringerMode = ringerMode;
+    }
+
+    public int getRingerMode() {
+        return ringerMode;
+    }
 
     // answer json
     private String postJson;
@@ -127,9 +163,17 @@ public class SurveyManager {
         return postJson;
     }
 
-    public String get_json_object() {
+    public static String getAnswerJson(List<AnswerJson> answerJsons, String now) {
         Gson gson = new Gson();
-        return gson.toJson(answered_hashmap, LinkedHashMap.class);
+        List<String> answer = new ArrayList<>();
+//        if (!answerJsons.isEmpty()) {
+//            for (AnswerJson a : answerJsons) {
+//                answer.add(a.getJsonString());
+////            Log.d("json", a.getJsonString());
+//            }
+//        }
+        if (!now.equals("")) answer.add(now);
+        return gson.toJson(answer);
     }
 
     public static String getItemJson(List<NotiModel> notiModels) {
@@ -137,17 +181,17 @@ public class SurveyManager {
         return gson.toJson(notiModels);
     }
 
-    public static String getARJson(List<ActivityRecognitionModel> activityRecognitionModels){
+    public static String getARJson(List<ActivityRecognitionModel> activityRecognitionModels) {
         Gson gson = new Gson();
         return gson.toJson(activityRecognitionModels);
     }
 
-    public static String getACJson(List<Accessibility> accessibilities){
+    public static String getACJson(List<Accessibility> accessibilities) {
         Gson gson = new Gson();
         return gson.toJson(accessibilities);
     }
 
-    public static String getLUJson(List<LocationUpdateModel> locationUpdateModels){
+    public static String getLUJson(List<LocationUpdateModel> locationUpdateModels) {
         Gson gson = new Gson();
         return gson.toJson(locationUpdateModels);
     }
@@ -157,6 +201,5 @@ public class SurveyManager {
     }
 
 //    public NotiDao getNotiDao() { return notiDao; }
-
 
 }

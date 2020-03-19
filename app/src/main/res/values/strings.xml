@@ -28,6 +28,7 @@
     <string name="id">ID: </string>
 
     <string name="input_id">請輸入編號: </string>
+    <string name="test">測試</string>
 
     <string name="displayOrder">請依<b>想處理</b>順序排名</string>
     <string name="viewOrder">請依<b>想看</b>程度排名</string>

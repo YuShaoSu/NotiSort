@@ -10,13 +10,14 @@ import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.jefflin.notipreference.model.Accessibility;
+import com.example.jefflin.notipreference.model.AnswerJson;
 import com.example.jefflin.notipreference.model.LocationUpdateModel;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.model.ActivityRecognitionModel;
 import com.example.jefflin.notipreference.model.NotiModel;
 
-@Database(entities = {NotiModel.class, NotiItem.class, ActivityRecognitionModel.class, LocationUpdateModel.class, Accessibility.class}, version = 6)
+@Database(entities = {NotiModel.class, NotiItem.class, ActivityRecognitionModel.class, LocationUpdateModel.class, Accessibility.class, AnswerJson.class}, version = 7)
 public abstract class NotiDatabase extends RoomDatabase {
     private static volatile NotiDatabase uniqueInstance;
 
@@ -28,12 +29,15 @@ public abstract class NotiDatabase extends RoomDatabase {
 
     public abstract AccessibilityDao accessibilityDao();
 
+    public abstract AnswerJsonDao answerJsonDao();
+
+
     public static NotiDatabase getInstance(Context context) {
         if (uniqueInstance == null) {
             synchronized (SurveyManager.class) {
                 if (uniqueInstance == null) {
                     uniqueInstance = Room.inMemoryDatabaseBuilder(context, NotiDatabase.class).
-                            addMigrations(MIGRATION1_2, MIGRATION2_3, MIGRATION3_4, MIGRATION4_5, MIGRATION5_6).build();
+                            addMigrations(MIGRATION1_2, MIGRATION2_3, MIGRATION3_4, MIGRATION4_5, MIGRATION5_6, MIGRATION6_7).build();
                 }
             }
         }
@@ -98,6 +102,13 @@ public abstract class NotiDatabase extends RoomDatabase {
             database.execSQL("ALTER TABLE noti_model ADD did TEXT");
             database.execSQL("ALTER TABLE accessbility ADD did TEXT");
             database.execSQL("ALTER TABLE activity_recognition ADD did TEXT");
+        }
+    };
+
+    static final Migration MIGRATION6_7 = new Migration(6, 7) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE `answer` (`id` INTEGER, `json_string` TEXT, PRIMARY KEY(`id`))");
         }
     };
 
