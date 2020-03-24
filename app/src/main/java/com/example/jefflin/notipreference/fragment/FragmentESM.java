@@ -80,27 +80,17 @@ public class FragmentESM extends Fragment {
     private Boolean q5_selected;
     private Boolean q6_selected;
 
-    private RecyclerView recyclerView;
-    private TextView q7_title;
-    private EditText q7;
 
-    private boolean twoList;
+    Answer answer;
 
-    ArrayList<NotiItem> mActiveData;
-    ArrayList<NotiItem> mActiveDataDisplay;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_esm, container, false);
-        
-        setRecyclerView(rootView);
 
         button_continue = (Button) rootView.findViewById(R.id.button_continue);
         textview_q_title = (TextView) rootView.findViewById(R.id.title);
         textview_q_discription = (TextView) rootView.findViewById(R.id.discription);
-
-        q7_title = (TextView) rootView.findViewById(R.id.q7_title);
-        q7 = (EditText) rootView.findViewById(R.id.q7);
 
 
         iv_back = (ImageView) rootView.findViewById(R.id.back);
@@ -313,111 +303,104 @@ public class FragmentESM extends Fragment {
                 String selectedRadioButtonText5 = selectedRadioButton5.getTag().toString();
                 RadioButton selectedRadioButton6 = (RadioButton) rootView.findViewById(radioGroupQ6.getCheckedRadioButtonId());
                 String selectedRadioButtonText6 = selectedRadioButton6.getTag().toString();
-                String q7Text;
 
-                if(twoList) {
-                    q7Text = q7.getText().toString();
-                }
-                else {
-                    q7Text = "null";
-                }
 
                 // handle the answers of previous
+                answer = (Answer) getArguments().getSerializable("answer");
                 SharedPreferences pref = mContext.getSharedPreferences("USER", Context.MODE_PRIVATE);
-                Answer answer = new Answer(pref.getString("ID", ""), SurveyManager.getInstance().getSurveyPostTime(), Calendar.getInstance().getTimeInMillis(), SurveyManager.getInstance().getInterval());
-                if (answer.answerHandler(mActiveData, mActiveDataDisplay)) {
-                    // scale check passed and done put notifications into answer
-                    // now put ESM answer
-
-                    AudioManager audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-                    BatteryManager batteryManager = (BatteryManager) mContext.getSystemService(Context.BATTERY_SERVICE);
-                    PowerManager powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
-                    UsageStatsManager usageStatsManager = (UsageStatsManager) mContext.getSystemService(Context.USAGE_STATS_SERVICE);
-                    ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-                    TelephonyManager telephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-//                    SensorManager sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
-                    ContextManager contextManager = ContextManager.getInstance();
-
+                answer.setId(pref.getString("ID", ""));
+//                if (answer.answerHandler(mActiveData, mActiveDataDisplay)) {
+//                    // scale check passed and done put notifications into answer
+//                    // now put ESM answer
+//
+//                    AudioManager audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+//                    BatteryManager batteryManager = (BatteryManager) mContext.getSystemService(Context.BATTERY_SERVICE);
+//                    PowerManager powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+//                    UsageStatsManager usageStatsManager = (UsageStatsManager) mContext.getSystemService(Context.USAGE_STATS_SERVICE);
+//                    ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+//                    TelephonyManager telephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+////                    SensorManager sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+//                    ContextManager contextManager = ContextManager.getInstance();
+//
                     answer.setEsmQ1(selectedRadioButtonText1);
                     answer.setEsmQ2(selectedRadioButtonText2);
                     answer.setEsmQ3(checkedText3);
                     answer.setEsmQ4(selectedRadioButtonText4);
                     answer.setEsmQ5(selectedRadioButtonText5);
                     answer.setEsmQ6(selectedRadioButtonText6);
-                    answer.setEsmQ7(q7Text);
-
-                    // contextual data
-
-                    // location
-                    answer.setLocation(contextManager.locatoinLongtitude,
-                            contextManager.locatoinLatitude, contextManager.locatoinAccuracy);
-
-                    // status
-                    answer.isCharging = batteryManager.isCharging();
-                    answer.battery = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
-                    answer.isScreenOn = powerManager.isInteractive();
-                    answer.isDeviceIdle = powerManager.isDeviceIdleMode();
-                    answer.isPowerSave = powerManager.isPowerSaveMode();
-                    answer.ringerMode = audioManager.getRingerMode();
-                    answer.callState = telephonyManager.getCallState();
-                    // recent app
-                    StringBuilder rappSB = new StringBuilder();
-                    List<UsageStats> recentApp;
-                    recentApp = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST,
-                            System.currentTimeMillis() - 5000,
-                            System.currentTimeMillis());
-                    for (UsageStats u : recentApp) {
-                        if (u.getLastTimeUsed() == 0) continue;
-                        rappSB.append(u.getPackageName());
-                        rappSB.append(" : ");
-                        rappSB.append(u.getLastTimeUsed() + "; ");
-                    }
-                    answer.recentApp = rappSB.toString();
-
-                    Network[] networks = connectivityManager.getAllNetworks();
-                    StringBuilder ntwSB = new StringBuilder();
-                    for (Network n : networks) {
-                        ntwSB.append(connectivityManager.getNetworkInfo(n));
-                    }
-                    answer.network = ntwSB.toString();
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        SignalStrength signalStrength = telephonyManager.getSignalStrength();
-                        try {
-                            List<CellSignalStrength> ss = signalStrength.getCellSignalStrengths();
-                            for (CellSignalStrength s : ss) {
-                                answer.signalType = s.toString();
-                                answer.signalDbm = s.getDbm();
-                            }
-                        } catch (NullPointerException e) {
-                            Log.e("signal strength", "getCellSignalStrength null pt", e);
-                        }
-                    } else {
-                        answer.signalType = contextManager.phoneSignalType;
-                        answer.signalDbm = contextManager.phoneSignalDbm;
-                    }
-
-                    // Sensors
-//                    answer.setSensor(contextManager.accelerometer,
-//                            contextManager.gyroscope,
-//                            contextManager.gravity,
-//                            contextManager.linearAcceleration,
-//                            contextManager.rotationVector,
-//                            contextManager.proximity,
-//                            contextManager.magneticField,
-//                            contextManager.light,
-//                            contextManager.pressure,
-//                            contextManager.relativeHumidity,
-//                            contextManager.ambientTemperature);
-                    answer.light = contextManager.light;
-
-                    String json = SurveyManager.getInstance().getAnswer(answer);
-
-                    Log.i("ans in json:", json);
-
-                } else {  // scale not done or other err(not set on current)
-                    Log.d("answer handler", "scale not done");
-                }
+//
+//                    // contextual data
+//
+//                    // location
+//                    answer.setLocation(contextManager.locatoinLongtitude,
+//                            contextManager.locatoinLatitude, contextManager.locatoinAccuracy);
+//
+//                    // status
+//                    answer.isCharging = batteryManager.isCharging();
+//                    answer.battery = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+//                    answer.isScreenOn = powerManager.isInteractive();
+//                    answer.isDeviceIdle = powerManager.isDeviceIdleMode();
+//                    answer.isPowerSave = powerManager.isPowerSaveMode();
+//                    answer.ringerMode = audioManager.getRingerMode();
+//                    answer.callState = telephonyManager.getCallState();
+//                    // recent app
+//                    StringBuilder rappSB = new StringBuilder();
+//                    List<UsageStats> recentApp;
+//                    recentApp = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST,
+//                            System.currentTimeMillis() - 5000,
+//                            System.currentTimeMillis());
+//                    for (UsageStats u : recentApp) {
+//                        if (u.getLastTimeUsed() == 0) continue;
+//                        rappSB.append(u.getPackageName());
+//                        rappSB.append(" : ");
+//                        rappSB.append(u.getLastTimeUsed() + "; ");
+//                    }
+//                    answer.recentApp = rappSB.toString();
+//
+//                    Network[] networks = connectivityManager.getAllNetworks();
+//                    StringBuilder ntwSB = new StringBuilder();
+//                    for (Network n : networks) {
+//                        ntwSB.append(connectivityManager.getNetworkInfo(n));
+//                    }
+//                    answer.network = ntwSB.toString();
+//
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                        SignalStrength signalStrength = telephonyManager.getSignalStrength();
+//                        try {
+//                            List<CellSignalStrength> ss = signalStrength.getCellSignalStrengths();
+//                            for (CellSignalStrength s : ss) {
+//                                answer.signalType = s.toString();
+//                                answer.signalDbm = s.getDbm();
+//                            }
+//                        } catch (NullPointerException e) {
+//                            Log.e("signal strength", "getCellSignalStrength null pt", e);
+//                        }
+//                    } else {
+//                        answer.signalType = contextManager.phoneSignalType;
+//                        answer.signalDbm = contextManager.phoneSignalDbm;
+//                    }
+//
+//                    // Sensors
+////                    answer.setSensor(contextManager.accelerometer,
+////                            contextManager.gyroscope,
+////                            contextManager.gravity,
+////                            contextManager.linearAcceleration,
+////                            contextManager.rotationVector,
+////                            contextManager.proximity,
+////                            contextManager.magneticField,
+////                            contextManager.light,
+////                            contextManager.pressure,
+////                            contextManager.relativeHumidity,
+////                            contextManager.ambientTemperature);
+//                    answer.light = contextManager.light;
+//
+//                    String json = SurveyManager.getInstance().getAnswer(answer);
+//
+//                    Log.i("ans in json:", json);
+//
+//                } else {  // scale not done or other err(not set on current)
+//                    Log.d("answer handler", "scale not done");
+//                }
 
 
                 ((ActivitySurvey) mContext).go_to_next();
@@ -442,29 +425,5 @@ public class FragmentESM extends Fragment {
         }
     }
 
-    private void setRecyclerView(ViewGroup rootView) {
-        // for survey answer handle
-        mActiveData = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
-        mActiveDataDisplay = (ArrayList<NotiItem>) getArguments().getSerializable("arrayListDisplay");
-        recyclerView = rootView.findViewById(R.id.recycler_esm_sort);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        twoListItemsAdapter = new TwoListItemsAdapter(getActivity(), mActiveData, mActiveDataDisplay);
-        recyclerView.setAdapter(twoListItemsAdapter);
-    }
-
-    public void refreshAdapter() {
-        twoList = SurveyManager.getInstance().twoListDiff(mActiveData, mActiveDataDisplay);
-        twoListItemsAdapter.notifyDataSetChanged();
-        // whether to add q7
-        if (twoList) {
-            q7_title.setVisibility(View.VISIBLE);
-            q7.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.VISIBLE);
-        } else {
-            q7_title.setVisibility(View.INVISIBLE);
-            q7.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.GONE);
-        }
-    }
 
 }

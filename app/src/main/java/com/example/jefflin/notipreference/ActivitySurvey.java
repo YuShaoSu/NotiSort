@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.jefflin.notipreference.fragment.FragmentCompare;
 import com.example.jefflin.notipreference.fragment.FragmentScale;
 import com.example.jefflin.notipreference.fragment.FragmentESM;
 import com.example.jefflin.notipreference.manager.SurveyManager;
+import com.example.jefflin.notipreference.model.Answer;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.adapter.FragmentAdapter;
 import com.example.jefflin.notipreference.fragment.FragmentEnd;
@@ -22,6 +24,7 @@ import com.example.jefflin.notipreference.model.ESMPojo;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ActivitySurvey extends AppCompatActivity {
 
@@ -32,10 +35,11 @@ public class ActivitySurvey extends AppCompatActivity {
     ArrayList<NotiItem> mActiveData = new ArrayList<NotiItem>();
     ArrayList<NotiItem> mCurrentData = new ArrayList<NotiItem>();
     ArrayList<NotiItem> mActiveDataDisplay = new ArrayList<NotiItem>();
+    Answer answer;
 
     FragmentScale fragscale = new FragmentScale();
     FragmentESM fragsurvey;
-
+    FragmentCompare fragCompare;
     FragmentSort fragsort;
     FragmentSort fragsort_display;
 
@@ -51,6 +55,7 @@ public class ActivitySurvey extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_survey);
+        answer = new Answer(Calendar.getInstance().getTimeInMillis(), SurveyManager.getInstance().getInterval());
 
         if (!SurveyManager.getInstance().isNotiNull()) {
             mActiveData = SurveyManager.getInstance().getMap().get("click");
@@ -115,11 +120,22 @@ public class ActivitySurvey extends AppCompatActivity {
                 fragsurvey = new FragmentESM();
                 Bundle xBundle = new Bundle();
                 xBundle.putSerializable("data", mESMQuestion);
-                xBundle.putSerializable("arrayList", mActiveData);
-                xBundle.putSerializable("arrayListDisplay", mActiveDataDisplay);
+                xBundle.putSerializable("answer", answer);
                 xBundle.putString("style", style_string);
                 fragsurvey.setArguments(xBundle);
                 arraylist_fragments.add(fragsurvey);
+            }
+
+            if (mESMQuestion.getQuestionType().equals("Compare")) {
+                fragCompare = new FragmentCompare();
+                Bundle xBundle = new Bundle();
+                xBundle.putSerializable("data", mESMQuestion);
+                xBundle.putSerializable("arrayList", mActiveData);
+                xBundle.putSerializable("arrayListDisplay", mActiveDataDisplay);
+                xBundle.putSerializable("answer", answer);
+                xBundle.putString("style", style_string);
+                fragCompare.setArguments(xBundle);
+                arraylist_fragments.add(fragCompare);
             }
 
         }
@@ -166,7 +182,7 @@ public class ActivitySurvey extends AppCompatActivity {
     public void refreshDisplaySort(boolean dup, boolean relate, boolean other) { fragsort_display.refreshDisplayAdapter(dup, relate, other); }
 
     public void refreshFragsurvey() {
-        fragsurvey.refreshAdapter();
+        fragCompare.refreshAdapter();
     }
 
     @Override

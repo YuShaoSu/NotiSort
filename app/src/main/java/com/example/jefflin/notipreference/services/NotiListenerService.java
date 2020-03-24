@@ -137,6 +137,7 @@ public class NotiListenerService extends NotificationListenerService {
         final NotiModel noti;
         noti = setNotiModel(sbn);
 
+
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {

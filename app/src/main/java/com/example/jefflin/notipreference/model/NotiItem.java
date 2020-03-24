@@ -36,7 +36,7 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     public String sortReason;
 
     @Ignore
-    public String icon;
+    public transient String icon;
     @Ignore
     public int sender_attractiveness;
     @Ignore

@@ -46,16 +46,15 @@ public class FragmentScale extends Fragment  {
         button_continue = (Button) rootView.findViewById(R.id.button_continue);
         textview_q_title = (TextView) rootView.findViewById(R.id.title);
         textview_q_discription = (TextView) rootView.findViewById(R.id.discription);
-        likert_scale_reason = rootView.findViewById(R.id.likert_scale_reason_box);
-
         iv_back = (ImageView) rootView.findViewById(R.id.back);
-
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((ActivitySurvey) mContext).onBackPressed();
             }
         });
+
+        likert_scale_reason = rootView.findViewById(R.id.likert_scale_reason_box);
 
         button_continue.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,9 +1,10 @@
 package com.example.jefflin.notipreference.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Answer {
+public class Answer implements Serializable {
 
     public String deviceID;
     private String id;
@@ -50,6 +51,11 @@ public class Answer {
 //    public float magneticFieldX, magneticFieldY, magneticFieldZ;
 //    public float light, pressure, relativeHumidity, ambientTemperature;
     public float light;
+
+    public Answer(long surveyPostTime, int interval) {
+        this.surveyPostTime = surveyPostTime;
+        this.interval = interval;
+    }
 
     public Answer(String id, long surveyPostTime, long surveyFinishTime, int interval) {
         this.id = id;
@@ -147,7 +153,9 @@ public class Answer {
         this.esm_q6 = esm_q6;
     }
 
-    public void setEsmQ7(String esm_q7) { this.esm_q7 = esm_q7; }
+    public void setEsmQ7(String esm_q7) {
+        this.esm_q7 = esm_q7;
+    }
 
     // false for scale check fails
     public boolean answerHandler(ArrayList<NotiItem> notiItems, ArrayList<NotiItem> notiItemsD) {
@@ -170,7 +178,7 @@ public class Answer {
         for (int i = 0; i < notiItems.size(); i++) {
             NotiItem item = notiItems.get(i);
             NotiItem itemD = notiItemsD.get(i);
-            if(itemD.isNotDisplay()) {
+            if (itemD.isNotDisplay()) {
                 item.setNotDisplay();
                 item.setNotDisplayReason(itemD.not_display_dup, itemD.not_display_not_relate, itemD.not_display_other);
             } else {

@@ -227,7 +227,7 @@
                         android:gravity="center"
                         android:padding="2dp"
                         android:tag="Strongly disagree"
-                        android:text="Strongly\nDisagree"
+                        android:text="\n非常不同意"
                         android:textSize="10sp" />
 
                     <RadioButton
@@ -275,7 +275,7 @@
                         android:gravity="center"
                         android:padding="2dp"
                         android:tag="Strongly agree"
-                        android:text="Strongly\nAgree"
+                        android:text="\n非常同意"
                         android:textSize="10sp" />
                 </RadioGroup>
             </LinearLayout>
@@ -306,7 +306,7 @@
                         android:gravity="center"
                         android:padding="2dp"
                         android:tag="Strongly disagree"
-                        android:text="Strongly\nDisagree"
+                        android:text="\n非常不同意"
                         android:textSize="10sp" />
 
                     <RadioButton
@@ -354,7 +354,7 @@
                         android:gravity="center"
                         android:padding="2dp"
                         android:tag="Strongly agree"
-                        android:text="Strongly\nAgree"
+                        android:text="\n非常同意"
                         android:textSize="10sp" />
                 </RadioGroup>
             </LinearLayout>
@@ -384,8 +384,8 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Happy"
-                        android:text="@string/very_happy"
+                        android:tag="Cry"
+                        android:text="@string/cry"
                         android:textSize="15sp" />
 
                     <RadioButton
@@ -396,8 +396,8 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Happy"
-                        android:text="@string/happy"
+                        android:tag="Sad"
+                        android:text="@string/sad"
                         android:textSize="15sp" />
 
                     <RadioButton
@@ -420,8 +420,8 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Sad"
-                        android:text="@string/sad"
+                        android:tag="Happy"
+                        android:text="@string/happy"
                         android:textSize="15sp" />
 
                     <RadioButton
@@ -432,45 +432,12 @@
                         android:drawableBottom="@android:drawable/btn_radio"
                         android:gravity="center"
                         android:padding="2dp"
-                        android:tag="Cry"
-                        android:text="@string/cry"
+                        android:tag="Fantastic"
+                        android:text="@string/very_happy"
                         android:textSize="15sp" />
 
                 </RadioGroup>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/q7_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible"
-                    android:text="7. 下列為排序結果，請問造成兩種排列不同的原因為何?" />
-
-
-                <EditText
-                    android:id="@+id/q7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="80"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:visibility="gone"
-                    android:textSize="14dp" />
-
-
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_esm_sort"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:paddingBottom="50dp" />
 
 
         </LinearLayout>

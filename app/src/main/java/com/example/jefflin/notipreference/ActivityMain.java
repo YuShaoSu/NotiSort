@@ -110,14 +110,6 @@ public class ActivityMain extends AppCompatActivity {
         setPermission();
         setBotNavView();
 
-        Button sync_button = (Button) findViewById(R.id.sync);
-        sync_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sync(false);
-            }
-        });
-
     }
 
     private void setBotNavView() {
@@ -139,6 +131,15 @@ public class ActivityMain extends AppCompatActivity {
                 return true;
             }
         });
+
+        Button sync_button = (Button) findViewById(R.id.sync);
+        sync_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sync(false);
+            }
+        });
+
     }
 
     @Override

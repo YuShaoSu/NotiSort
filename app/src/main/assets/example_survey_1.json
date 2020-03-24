@@ -9,25 +9,31 @@
     {
       "question_type": "Survey",
       "question_title": "請回答以下問題\n(請依十分鐘前情境作答)",
-      "description": "1 of 4",
+      "description": "1 of 5",
       "required": false
     },
     {
       "question_type": "Sort",
       "question_title": "請依想先點擊順序排名\n(請十分鐘前情境做排序)",
-      "description": "2 of 4",
+      "description": "2 of 5",
       "required": false
     },
     {
       "question_type": "Scale",
       "question_title": "請回答影響各通知名次之原因",
-      "description": "3 of 4",
+      "description": "3 of 5",
       "required": false
     },
     {
       "question_type": "displaySort",
       "question_title": "請依通知列希望的呈現順序排名\n(請依十分鐘前情境做排序)",
-      "description": "4 of 4",
+      "description": "4 of 5",
+      "required": false
+    },
+    {
+      "question_type": "Compare",
+      "question_title": "下列為兩種排序之結果",
+      "description": "5 of 5",
       "required": false
     }
   ]
