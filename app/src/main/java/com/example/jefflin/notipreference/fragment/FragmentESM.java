@@ -398,17 +398,18 @@ public class FragmentESM extends Fragment {
                     }
 
                     // Sensors
-                    answer.setSensor(contextManager.accelerometer,
-                            contextManager.gyroscope,
-                            contextManager.gravity,
-                            contextManager.linearAcceleration,
-                            contextManager.rotationVector,
-                            contextManager.proximity,
-                            contextManager.magneticField,
-                            contextManager.light,
-                            contextManager.pressure,
-                            contextManager.relativeHumidity,
-                            contextManager.ambientTemperature);
+//                    answer.setSensor(contextManager.accelerometer,
+//                            contextManager.gyroscope,
+//                            contextManager.gravity,
+//                            contextManager.linearAcceleration,
+//                            contextManager.rotationVector,
+//                            contextManager.proximity,
+//                            contextManager.magneticField,
+//                            contextManager.light,
+//                            contextManager.pressure,
+//                            contextManager.relativeHumidity,
+//                            contextManager.ambientTemperature);
+                    answer.light = contextManager.light;
 
                     String json = SurveyManager.getInstance().getAnswer(answer);
 

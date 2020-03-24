@@ -71,7 +71,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1. 你正在與人互動嗎?" />
+                    android:text="1. 你當時正在與人互動嗎?" />
 
                 <RadioGroup
                     android:id="@+id/q1"
@@ -101,7 +101,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2. 你在哪裡?" />
+                    android:text="2. 你當時在哪裡?" />
 
                 <RadioGroup
                     android:id="@+id/q2"
@@ -147,7 +147,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3. 你在進行什麼活動?" />
+                    android:text="3. 你當時在進行什麼活動?" />
 
                 <CheckBox
                     android:id="@+id/q3_1"
@@ -209,7 +209,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4. 你很投入上述活動?" />
+                    android:text="4. 你當時很投入上述活動?" />
 
                 <RadioGroup
                     android:id="@+id/q4"
@@ -288,7 +288,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5. 你很忙碌?" />
+                    android:text="5. 你當時很忙碌?" />
 
                 <RadioGroup
                     android:id="@+id/q5"
@@ -367,7 +367,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="6. 你的心情?" />
+                    android:text="6. 你當時的心情?" />
 
                 <RadioGroup
                     android:id="@+id/q6"

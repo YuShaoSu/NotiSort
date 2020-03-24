@@ -94,7 +94,7 @@ public class ActivityMain extends AppCompatActivity {
             startActivity(setting);
         }
 
-        if (isNotiListenerEnabled()) {
+        if (SurveyManager.getInstance().isSurveyBlock()) {
             final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
             survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
             startActivityForResult(survey, SURVEY_REQUEST);

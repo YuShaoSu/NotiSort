@@ -64,7 +64,7 @@
 
     <string name="factor_not_display">請問不需要顯示的原因為何？(可複選)</string>
     <string name="not_display_0">重複</string>
-    <string name="not_display_1">不相關</string>
+    <string name="not_display_1">與我無關</string>
     <string name="not_display_2">其他</string>
 
     <string name="stronglyDisagree">\n低</string>

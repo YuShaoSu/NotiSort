@@ -209,17 +209,18 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
         // Sensors
-        notiModel.setSensor(contextManager.accelerometer,
-                contextManager.gyroscope,
-                contextManager.gravity,
-                contextManager.linearAcceleration,
-                contextManager.rotationVector,
-                contextManager.proximity,
-                contextManager.magneticField,
-                contextManager.light,
-                contextManager.pressure,
-                contextManager.relativeHumidity,
-                contextManager.ambientTemperature);
+//        notiModel.setSensor(contextManager.accelerometer,
+//                contextManager.gyroscope,
+//                contextManager.gravity,
+//                contextManager.linearAcceleration,
+//                contextManager.rotationVector,
+//                contextManager.proximity,
+//                contextManager.magneticField,
+//                contextManager.light,
+//                contextManager.pressure,
+//                contextManager.relativeHumidity,
+//                contextManager.ambientTemperature);
+        notiModel.light = contextManager.light;
 
 
         return notiModel;
@@ -256,7 +257,7 @@ public class NotiListenerService extends NotificationListenerService {
         if (click.size() < 5 || getNumberOfPackage(click) < 3)
             return false;
 
-        itemMap = getNotificationsWithOrder(click, display,6, 3);
+        itemMap = getNotificationsWithOrder(click, display, 6, 3);
 
         return true;
     }
@@ -308,7 +309,7 @@ public class NotiListenerService extends NotificationListenerService {
         for (int i = 0; i < 3; ++i) {
             int a = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
             int b = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
-            while(a == b)   b = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
+            while (a == b) b = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
             newClick.add(click.get(a));
             newClick.add(click.get(b));
             newDisplay.add(display.get(a));
@@ -487,12 +488,15 @@ public class NotiListenerService extends NotificationListenerService {
     }
 
     void registerSensorUpdates(final Context context) {
-        List<Sensor> sensorList;
-        sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
-        for (Sensor s : sensorList) {
-            sensorManager.registerListener(sensorListener, sensorManager.getDefaultSensor(s.getType()), SensorManager.SENSOR_DELAY_NORMAL);
-            Log.d("sensor regis", s.getName());
-        }
+//        List<Sensor> sensorList;
+//        sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+//        for (Sensor s : sensorList) {
+//            sensorManager.registerListener(sensorListener, sensorManager.getDefaultSensor(s.getType()), SensorManager.SENSOR_DELAY_NORMAL);
+//            Log.d("sensor regis", s.getName());
+//        }
+        Sensor mLight;
+        mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        sensorManager.registerListener(sensorListener, mLight, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     void requestPhoneStateUpdates(final Context context) {

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "e1695ed94718492816ee92bc8fb3da38",
+    "identityHash": "b7b56cbcd3e14223be8b5b8280097d22",
     "entities": [
       {
         "tableName": "noti_model",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `app_name` TEXT, `title` TEXT, `content` TEXT, `post_time` INTEGER, `category` TEXT, `longtitude` REAL NOT NULL, `latitude` REAL NOT NULL, `location_accuracy` REAL NOT NULL, `is_charging` INTEGER NOT NULL, `battery` INTEGER NOT NULL, `ringer_tone` INTEGER NOT NULL, `is_screen_on` INTEGER NOT NULL, `is_device_idle` INTEGER NOT NULL, `is_power_save` INTEGER NOT NULL, `did` TEXT, `network` TEXT, `callState` INTEGER NOT NULL, `recentApp` TEXT, `signalType` TEXT, `signalDbm` INTEGER NOT NULL, `accelerometerX` REAL NOT NULL, `accelerometerY` REAL NOT NULL, `accelerometerZ` REAL NOT NULL, `gyroscopeX` REAL NOT NULL, `gyroscopeY` REAL NOT NULL, `gyroscopeZ` REAL NOT NULL, `gravityX` REAL NOT NULL, `gravityY` REAL NOT NULL, `gravityZ` REAL NOT NULL, `linearAccelerationX` REAL NOT NULL, `linearAccelerationY` REAL NOT NULL, `linearAccelerationZ` REAL NOT NULL, `rotationVectorX` REAL NOT NULL, `rotationVectorY` REAL NOT NULL, `rotationVectorZ` REAL NOT NULL, `rotationVectorCos` REAL NOT NULL, `rotationVectorAccu` REAL NOT NULL, `proximity` REAL NOT NULL, `magneticFieldX` REAL NOT NULL, `magneticFieldY` REAL NOT NULL, `magneticFieldZ` REAL NOT NULL, `light` REAL NOT NULL, `pressure` REAL NOT NULL, `relativeHumidity` REAL NOT NULL, `ambientTemperature` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `app_name` TEXT, `title` TEXT, `content` TEXT, `post_time` INTEGER, `category` TEXT, `longtitude` REAL NOT NULL, `latitude` REAL NOT NULL, `location_accuracy` REAL NOT NULL, `is_charging` INTEGER NOT NULL, `battery` INTEGER NOT NULL, `ringer_tone` INTEGER NOT NULL, `is_screen_on` INTEGER NOT NULL, `is_device_idle` INTEGER NOT NULL, `is_power_save` INTEGER NOT NULL, `did` TEXT, `network` TEXT, `callState` INTEGER NOT NULL, `recentApp` TEXT, `signalType` TEXT, `signalDbm` INTEGER NOT NULL, `light` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -135,152 +135,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "accelerometerX",
-            "columnName": "accelerometerX",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "accelerometerY",
-            "columnName": "accelerometerY",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "accelerometerZ",
-            "columnName": "accelerometerZ",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "gyroscopeX",
-            "columnName": "gyroscopeX",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "gyroscopeY",
-            "columnName": "gyroscopeY",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "gyroscopeZ",
-            "columnName": "gyroscopeZ",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "gravityX",
-            "columnName": "gravityX",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "gravityY",
-            "columnName": "gravityY",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "gravityZ",
-            "columnName": "gravityZ",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "linearAccelerationX",
-            "columnName": "linearAccelerationX",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "linearAccelerationY",
-            "columnName": "linearAccelerationY",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "linearAccelerationZ",
-            "columnName": "linearAccelerationZ",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "rotationVectorX",
-            "columnName": "rotationVectorX",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "rotationVectorY",
-            "columnName": "rotationVectorY",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "rotationVectorZ",
-            "columnName": "rotationVectorZ",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "rotationVectorCos",
-            "columnName": "rotationVectorCos",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "rotationVectorAccu",
-            "columnName": "rotationVectorAccu",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "proximity",
-            "columnName": "proximity",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "magneticFieldX",
-            "columnName": "magneticFieldX",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "magneticFieldY",
-            "columnName": "magneticFieldY",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "magneticFieldZ",
-            "columnName": "magneticFieldZ",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
             "fieldPath": "light",
             "columnName": "light",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "pressure",
-            "columnName": "pressure",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "relativeHumidity",
-            "columnName": "relativeHumidity",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "ambientTemperature",
-            "columnName": "ambientTemperature",
             "affinity": "REAL",
             "notNull": true
           }
@@ -560,7 +416,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e1695ed94718492816ee92bc8fb3da38')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b7b56cbcd3e14223be8b5b8280097d22')"
     ]
   }
 }
