@@ -155,10 +155,12 @@ public class ActivityMain extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 sync(true);
             } else if (resultCode == RESULT_CANCELED) {
+                final String ans = SurveyManager.getInstance().getPostJson();
                 mExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        AnswerJson answerJson = new AnswerJson(SurveyManager.getInstance().getPostJson());
+                        Log.d("ans in exec", ans);
+                        AnswerJson answerJson = new AnswerJson(ans);
                         answerJsonDao.insert(answerJson);
                     }
                 });
@@ -172,17 +174,18 @@ public class ActivityMain extends AppCompatActivity {
             @Override
             public void run() {
                 String jsonPost = SurveyManager.getAnswerJson(answerJsonDao.getAll(), now ? SurveyManager.getInstance().getPostJson() : "");
-                postRequest(jsonPost, SURVEY_POST);
+                postRequest(jsonPost, SURVEY_POST, now);
                 Log.d("answer json", jsonPost);
 
                 String notiPost = SurveyManager.getItemJson(notiDao.getAll());
-                postRequest(notiPost, ITEM_POST);
+                postRequest(notiPost, ITEM_POST, now);
+                Log.d("noti json", notiPost);
 
                 String ARPost = SurveyManager.getARJson(activityRecognitionDao.getAll());
-                postRequest(ARPost, AR_POST);
+                postRequest(ARPost, AR_POST, now);
 
-                String ACPost = SurveyManager.getACJson(accessibilityDao.getAll());
-                postRequest(ACPost, AC_POST);
+//                String ACPost = SurveyManager.getACJson(accessibilityDao.getAll());
+//                postRequest(ACPost, AC_POST, now);
             }
         });
     }
@@ -290,7 +293,7 @@ public class ActivityMain extends AppCompatActivity {
         }
     }
 
-    private void postRequest(String jsonPost, final String url) {
+    private void postRequest(String jsonPost, final String url, final boolean now) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String URL = "http://neighborbob.nctu.me:5000/" + url;
         final String requestBody = jsonPost;
@@ -301,8 +304,7 @@ public class ActivityMain extends AppCompatActivity {
                 Log.i("VOLLEY", response);
                 if (response.equals("200")) {
                     Log.d("post", "succeed");
-                    Toast.makeText(getApplicationContext(), "notisort server received!", Toast.LENGTH_LONG);
-                    SurveyManager.getInstance().surveyDone();
+                    if(now) SurveyManager.getInstance().surveyDone();
                     mExecutor.execute(new Runnable() {
                         @Override
                         public void run() {

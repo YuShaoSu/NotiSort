@@ -157,6 +157,11 @@ public class SurveyManager {
     // answer json
     private String postJson;
 
+    public void setPostJson(Answer answer) {
+        Gson gson = new Gson();
+        this.postJson = gson.toJson(answer);
+    }
+
     public String getAnswer(Answer answer) {
         Gson gson = new Gson();
         postJson = gson.toJson(answer);
@@ -166,12 +171,12 @@ public class SurveyManager {
     public static String getAnswerJson(List<AnswerJson> answerJsons, String now) {
         Gson gson = new Gson();
         List<String> answer = new ArrayList<>();
-//        if (!answerJsons.isEmpty()) {
-//            for (AnswerJson a : answerJsons) {
-//                answer.add(a.getJsonString());
-////            Log.d("json", a.getJsonString());
-//            }
-//        }
+        if (!answerJsons.isEmpty()) {
+            for (AnswerJson a : answerJsons) {
+                answer.add(a.getJsonString());
+//            Log.d("json", a.getJsonString());
+            }
+        }
         if (!now.equals("")) answer.add(now);
         return gson.toJson(answer);
     }
