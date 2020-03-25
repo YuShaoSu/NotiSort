@@ -170,14 +170,13 @@ public class SurveyManager {
 
     public static String getAnswerJson(List<AnswerJson> answerJsons, String now) {
         Gson gson = new Gson();
-        List<String> answer = new ArrayList<>();
+        List<Answer> answer = new ArrayList<>();
         if (!answerJsons.isEmpty()) {
             for (AnswerJson a : answerJsons) {
-                answer.add(a.getJsonString());
-//            Log.d("json", a.getJsonString());
+                answer.add(gson.fromJson(a.getJsonString(), Answer.class));
             }
         }
-        if (!now.equals("")) answer.add(now);
+        if (!now.equals("")) answer.add(gson.fromJson(now, Answer.class));
         return gson.toJson(answer);
     }
 
