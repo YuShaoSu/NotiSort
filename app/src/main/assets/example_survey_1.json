@@ -14,7 +14,7 @@
     },
     {
       "question_type": "Sort",
-      "question_title": "請依想先點擊順序排名\n(請十分鐘前情境做排序)",
+      "question_title": "請依想先點擊順序排名\n(請依十分鐘前情境做排序)",
       "description": "2 of 5",
       "required": false
     },

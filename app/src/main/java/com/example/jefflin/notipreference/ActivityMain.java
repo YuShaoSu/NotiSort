@@ -156,6 +156,7 @@ public class ActivityMain extends AppCompatActivity {
                 sync(true);
             } else if (resultCode == RESULT_CANCELED) {
                 final String ans = SurveyManager.getInstance().getPostJson();
+                SurveyManager.getInstance().surveyDone();
                 mExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -315,6 +316,15 @@ public class ActivityMain extends AppCompatActivity {
                             else if (url.equals(AC_POST)) accessibilityDao.deleteAll();
                         }
                     });
+                } else {
+                    if(now && url.equals(SURVEY_POST)) {
+                        mExecutor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                answerJsonDao.insert(new AnswerJson(SurveyManager.getInstance().getPostJson()));
+                            }
+                        });
+                    }
                 }
             }
         }, new Response.ErrorListener() {
