@@ -36,6 +36,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,14 +45,19 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -75,6 +81,7 @@ public class ActivityMain extends AppCompatActivity {
     final private String AR_POST = "activity_recognition";
     final private String LU_POST = "location_update";
     final private String AC_POST = "accessibility";
+    final private String DATA_FORMAT = "MMMM d, yyyy 'at' h:mm a";
     Executor mExecutor = Executors.newSingleThreadExecutor();
 
     @Override
@@ -109,7 +116,14 @@ public class ActivityMain extends AppCompatActivity {
 
         setPermission();
         setBotNavView();
+        setSyncTime();
 
+    }
+
+    private void setSyncTime() {
+        TextView sync_time = (TextView) findViewById(R.id.sync_time);
+        SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
+        sync_time.setText(sharedPreferences.getString("SYNC_TIME", getString(R.string.sync_time_value)));
     }
 
     private void setBotNavView() {
@@ -304,6 +318,13 @@ public class ActivityMain extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.i("VOLLEY", response);
                 if (response.equals("200")) {
+                    SimpleDateFormat format = new SimpleDateFormat(DATA_FORMAT, Locale.getDefault());
+                    String sync_time_value = format.format(Calendar.getInstance().getTime());
+                    SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
+                    sharedPreferences.edit()
+                            .putString("SYNC_TIME", sync_time_value)
+                            .apply();
+                    setSyncTime();
                     Log.d("post", "succeed");
                     if(now) SurveyManager.getInstance().surveyDone();
                     mExecutor.execute(new Runnable() {
@@ -312,8 +333,8 @@ public class ActivityMain extends AppCompatActivity {
                             if (url.equals("notifications")) notiDao.deleteAll();
                             else if (url.equals(SURVEY_POST)) answerJsonDao.deleteAll();
                             else if (url.equals(AR_POST)) activityRecognitionDao.deleteAll();
-                            else if (url.equals(LU_POST)) locationUpdateDao.deleteAll();
-                            else if (url.equals(AC_POST)) accessibilityDao.deleteAll();
+//                            else if (url.equals(LU_POST)) locationUpdateDao.deleteAll();
+//                            else if (url.equals(AC_POST)) accessibilityDao.deleteAll();
                         }
                     });
                 } else {
