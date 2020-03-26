@@ -196,7 +196,7 @@ public class ActivitySurvey extends AppCompatActivity {
 
     public void event_survey_completed(boolean sync_now) {
         Intent returnIntent = new Intent();
-        setResult(sync_now ? Activity.RESULT_OK : Activity.RESULT_CANCELED, returnIntent);
+        setResult(sync_now ? Activity.RESULT_OK : Activity.RESULT_FIRST_USER, returnIntent);
         finish();
     }
 

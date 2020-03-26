@@ -56,7 +56,7 @@ public class FragmentESM extends Fragment {
     private Button button_continue;
     private TextView textview_q_title;
     private TextView textview_q_discription;
-    private ImageView iv_back;
+//    private ImageView iv_back;
 
     private RadioGroup radioGroupQ1;
     private RadioGroup radioGroupQ2;
@@ -93,14 +93,14 @@ public class FragmentESM extends Fragment {
         textview_q_discription = (TextView) rootView.findViewById(R.id.discription);
 
 
-        iv_back = (ImageView) rootView.findViewById(R.id.back);
-
-        iv_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ActivitySurvey) mContext).onBackPressed();
-            }
-        });
+//        iv_back = (ImageView) rootView.findViewById(R.id.back);
+//
+//        iv_back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ((ActivitySurvey) mContext).onBackPressed();
+//            }
+//        });
 
 
         radioGroupQ1 = rootView.findViewById(R.id.q1);

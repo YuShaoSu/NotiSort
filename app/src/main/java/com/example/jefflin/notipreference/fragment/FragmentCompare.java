@@ -171,11 +171,12 @@ public class FragmentCompare extends Fragment {
 
                     Log.i("ans in json:", json);
 
+                    SurveyManager.getInstance().surveyDone();
+                    ((ActivitySurvey) mContext).go_to_next();
+
                 } else {  // scale not done or other err(not set on current)
                     Log.d("answer handler", "scale not done");
                 }
-
-                ((ActivitySurvey) mContext).go_to_next();
 
             }
         });

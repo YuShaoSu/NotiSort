@@ -45,9 +45,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -164,23 +162,39 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == SURVEY_REQUEST) {
-
-            if (resultCode == RESULT_OK) {
-                sync(true);
-            } else if (resultCode == RESULT_CANCELED) {
-                final String ans = SurveyManager.getInstance().getPostJson();
-                SurveyManager.getInstance().surveyDone();
-                mExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("ans in exec", ans);
-                        AnswerJson answerJson = new AnswerJson(ans);
-                        answerJsonDao.insert(answerJson);
-                    }
-                });
+            Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
+            switch (resultCode) {
+                case RESULT_OK:
+                    sync(true);
+                    break;
+                case RESULT_FIRST_USER:
+                    final String ans = SurveyManager.getInstance().getPostJson();
+                    mExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            AnswerJson answerJson = new AnswerJson(ans);
+                            answerJsonDao.insert(answerJson);
+                        }
+                    });
+                    break;
             }
-
+//            if (resultCode == RESULT_OK) {
+//                sync(true);
+//            } else if (resultCode == RESULT_FIRST_USER) {
+//                final String ans = SurveyManager.getInstance().getPostJson();
+//                mExecutor.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+////                        Log.d("ans in exec", ans);
+//                        AnswerJson answerJson = new AnswerJson(ans);
+//                        answerJsonDao.insert(answerJson);
+//                    }
+//                });
+//            }
+        } else {
+            Log.d("ActivityMainResult", "not SURVEY_REQUEST " + requestCode);
         }
     }
 
@@ -326,7 +340,7 @@ public class ActivityMain extends AppCompatActivity {
                             .apply();
                     setSyncTime();
                     Log.d("post", "succeed");
-                    if(now) SurveyManager.getInstance().surveyDone();
+                    if (now) SurveyManager.getInstance().surveyDone();
                     mExecutor.execute(new Runnable() {
                         @Override
                         public void run() {
@@ -338,7 +352,7 @@ public class ActivityMain extends AppCompatActivity {
                         }
                     });
                 } else {
-                    if(now && url.equals(SURVEY_POST)) {
+                    if (now && url.equals(SURVEY_POST)) {
                         mExecutor.execute(new Runnable() {
                             @Override
                             public void run() {
