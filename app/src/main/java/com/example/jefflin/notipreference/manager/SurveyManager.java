@@ -20,12 +20,26 @@ import java.util.Map;
 
 public class SurveyManager {
     private static volatile SurveyManager uniqueInstance;
+    ArrayList<Answer> answerArrayList = new ArrayList<>();
     Map<String, ArrayList<NotiItem>> mMap = new HashMap<>();
-    private final LinkedHashMap<String, String> answered_hashmap = new LinkedHashMap<>();
     private boolean isSurveyDone;
     private boolean isSurveyBlock;
+    private boolean isSurveyDoing;
     private int interval;
     private Long surveyPostTime;
+
+    public void pushAnswerList(Answer answer) {
+        answerArrayList.add(answer);
+    }
+
+    public Answer getFromAnswerList(int i) {
+        if(i >= answerArrayList.size()) i = answerArrayList.size() - 1;
+        return answerArrayList.get(i);
+    }
+
+    public void clearAnswerList() {
+        answerArrayList.clear();
+    }
 
     private SurveyManager() {
         setSurveyDone(false);
@@ -59,6 +73,14 @@ public class SurveyManager {
         isSurveyDone = surveyDone;
     }
 
+    public boolean isSurveyDoing() {
+        return isSurveyDoing;
+    }
+
+    public void setSurveyDoing(boolean surveyDoing) {
+        isSurveyDoing = surveyDoing;
+    }
+
     public long getSurveyPostTime() {
         return surveyPostTime;
     }
@@ -82,12 +104,17 @@ public class SurveyManager {
     }
 
     public void surveyUnblock() {
+        clearAnswerList();
+        mMap.clear();
         isSurveyBlock = false;
+        isSurveyDoing = false;
     }
 
     public void surveyInit() {
         isSurveyBlock = false;
         isSurveyDone = false;
+        isSurveyDoing = false;
+        clearAnswerList();
         mMap.clear();
     }
 
@@ -95,6 +122,8 @@ public class SurveyManager {
         Log.d("SuveyManager", "survey done");
         isSurveyDone = true;
         isSurveyBlock = false;
+        isSurveyDoing = false;
+        clearAnswerList();
         mMap.clear();
     }
 

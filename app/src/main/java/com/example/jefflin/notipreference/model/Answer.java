@@ -1,8 +1,26 @@
 package com.example.jefflin.notipreference.model;
 
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
+import android.content.Context;
+import android.hardware.SensorManager;
+import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.os.BatteryManager;
+import android.os.Build;
+import android.os.PowerManager;
+import android.telephony.CellSignalStrength;
+import android.telephony.SignalStrength;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+
+import com.example.jefflin.notipreference.manager.ContextManager;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Answer implements Serializable {
 
@@ -55,6 +73,69 @@ public class Answer implements Serializable {
     public Answer(long surveyPostTime, int interval) {
         this.surveyPostTime = surveyPostTime;
         this.interval = interval;
+    }
+
+    public void setContext(Context mContext) {
+        AudioManager audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+        BatteryManager batteryManager = (BatteryManager) mContext.getSystemService(Context.BATTERY_SERVICE);
+        PowerManager powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+        UsageStatsManager usageStatsManager = (UsageStatsManager) mContext.getSystemService(Context.USAGE_STATS_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+        SensorManager sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+        ContextManager contextManager = ContextManager.getInstance();
+
+        // location
+        setLocation(contextManager.locatoinLongtitude,
+                contextManager.locatoinLatitude, contextManager.locatoinAccuracy);
+
+//                    // status
+        isCharging = batteryManager.isCharging();
+        battery = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+        this.isScreenOn = powerManager.isInteractive();
+        this.isDeviceIdle = powerManager.isDeviceIdleMode();
+        this.isPowerSave = powerManager.isPowerSaveMode();
+        this.ringerMode = audioManager.getRingerMode();
+        this.callState = telephonyManager.getCallState();
+//                    // recent app
+        StringBuilder rappSB = new StringBuilder();
+        List<UsageStats> recentApp;
+        recentApp = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST,
+                System.currentTimeMillis() - 5000,
+                System.currentTimeMillis());
+        for (UsageStats u : recentApp) {
+            if (u.getLastTimeUsed() == 0) continue;
+            rappSB.append(u.getPackageName());
+            rappSB.append(" : ");
+            rappSB.append(u.getLastTimeUsed() + "; ");
+        }
+        this.recentApp = rappSB.toString();
+
+        Network[] networks = connectivityManager.getAllNetworks();
+        StringBuilder ntwSB = new StringBuilder();
+        for (Network n : networks) {
+            ntwSB.append(connectivityManager.getNetworkInfo(n));
+        }
+        this.network = ntwSB.toString();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            SignalStrength signalStrength = telephonyManager.getSignalStrength();
+            try {
+                List<CellSignalStrength> ss = signalStrength.getCellSignalStrengths();
+                for (CellSignalStrength s : ss) {
+                    this.signalType = s.toString();
+                    this.signalDbm = s.getDbm();
+                }
+            } catch (NullPointerException e) {
+                Log.e("signal strength", "getCellSignalStrength null pt", e);
+            }
+        } else {
+            this.signalType = contextManager.phoneSignalType;
+            this.signalDbm = contextManager.phoneSignalDbm;
+        }
+
+        // Sensors
+        this.light = contextManager.light;
     }
 
     public Answer(String id, long surveyPostTime, long surveyFinishTime, int interval) {

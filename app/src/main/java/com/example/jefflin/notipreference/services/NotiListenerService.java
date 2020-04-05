@@ -1,12 +1,12 @@
 package com.example.jefflin.notipreference.services;
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -25,13 +25,13 @@ import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.Listener.SensorListener;
 import com.example.jefflin.notipreference.manager.ContextManager;
+import com.example.jefflin.notipreference.model.Answer;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.model.NotiModel;
@@ -41,8 +41,8 @@ import com.example.jefflin.notipreference.receiver.SampleReceiver;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.database.NotiDatabase;
 import com.example.jefflin.notipreference.Listener.TelephonyListener;
-import com.example.jefflin.notipreference.widgets.BlockTask;
-import com.example.jefflin.notipreference.widgets.PushNotification;
+import com.example.jefflin.notipreference.widgets.PushTask;
+import com.example.jefflin.notipreference.widgets.SampleTask;
 import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.gms.location.ActivityTransitionRequest;
@@ -150,13 +150,20 @@ public class NotiListenerService extends NotificationListenerService {
             return;
 
         if (getActiveNotis()) {
+            Log.d("Survey", "五分鐘後發");
             // block
-//            Timer timer = new Timer();
-//            timer.schedule(new BlockTask(), 900000);
+            Timer timer = new Timer();
+            timer.schedule(new PushTask(this), 300000);
+
+            // first answer
+            Answer answer = new Answer(Calendar.getInstance().getTimeInMillis(), SurveyManager.getInstance().getInterval());
+            answer.setContext(this);
+            SurveyManager.getInstance().pushAnswerList(answer);
+            Timer timer1 = new Timer();
+            timer1.schedule(new SampleTask(this, 1, 2), 1 * 60000);
 
             SurveyManager.getInstance().setMap(itemMap);
             SurveyManager.getInstance().setSurveyBlock(true);
-            new PushNotification(this);
         }
     }
 
@@ -210,17 +217,6 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
         // Sensors
-//        notiModel.setSensor(contextManager.accelerometer,
-//                contextManager.gyroscope,
-//                contextManager.gravity,
-//                contextManager.linearAcceleration,
-//                contextManager.rotationVector,
-//                contextManager.proximity,
-//                contextManager.magneticField,
-//                contextManager.light,
-//                contextManager.pressure,
-//                contextManager.relativeHumidity,
-//                contextManager.ambientTemperature);
         notiModel.light = contextManager.light;
 
 
@@ -415,7 +411,8 @@ public class NotiListenerService extends NotificationListenerService {
             Log.e("NotiListenerService", "category failed", e);
         }
 
-        NotiModel notiModel = new NotiModel(appName, title, content, postTime, category, GlobalClass.getDeviceID());
+        SharedPreferences sharedPreferences = this.getSharedPreferences("USER", MODE_PRIVATE);
+        NotiModel notiModel = new NotiModel(appName, title, content, postTime, category, sharedPreferences.getString("ID", "user id fail"));
 
         return setContext(notiModel);
     }
@@ -489,12 +486,6 @@ public class NotiListenerService extends NotificationListenerService {
     }
 
     void registerSensorUpdates(final Context context) {
-//        List<Sensor> sensorList;
-//        sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
-//        for (Sensor s : sensorList) {
-//            sensorManager.registerListener(sensorListener, sensorManager.getDefaultSensor(s.getType()), SensorManager.SENSOR_DELAY_NORMAL);
-//            Log.d("sensor regis", s.getName());
-//        }
         Sensor mLight;
         mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         sensorManager.registerListener(sensorListener, mLight, SensorManager.SENSOR_DELAY_NORMAL);

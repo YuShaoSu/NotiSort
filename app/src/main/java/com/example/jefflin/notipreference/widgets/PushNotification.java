@@ -33,6 +33,7 @@ public class PushNotification {
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setAutoCancel(true)
+                .setTimeoutAfter(600000)
                 .setDeleteIntent(deleteIntent);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(20, builder.build());

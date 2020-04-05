@@ -8,17 +8,22 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 
+import java.util.Timer;
 import java.util.TimerTask;
 
-public class BlockTask extends TimerTask {
+public class PushTask extends TimerTask {
+
+    private Context context;
+
+    public PushTask(Context context) {
+        this.context = context;
+    }
+
     @Override
     public void run() {
-        Log.d("Block Task", "run");
-        if(SurveyManager.getInstance().isSurveyDone())
-            return;
-        else if(SurveyManager.getInstance().isSurveyBlock()) {
-            SurveyManager.getInstance().surveyUnblock();
-        }
+        new PushNotification(context);
+        Timer timer = new Timer();
+        timer.schedule(new UnblockTask(), 600000);
     }
 
 }

@@ -53,9 +53,10 @@ public class ActivitySurvey extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("ActivitySurvey", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_survey);
-        answer = new Answer(Calendar.getInstance().getTimeInMillis(), SurveyManager.getInstance().getInterval());
+        answer = SurveyManager.getInstance().getFromAnswerList(selectAnswer());
 
         if (!SurveyManager.getInstance().isNotiNull()) {
             mActiveData = SurveyManager.getInstance().getMap().get("click");
@@ -157,14 +158,14 @@ public class ActivitySurvey extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d("ActivitySurvey", "onResume");
-        SurveyManager.getInstance().surveyBlock();
+        SurveyManager.getInstance().setSurveyDoing(true);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d("ActivitySurvey", "onPause");
-        SurveyManager.getInstance().surveyUnblock();
+//        SurveyManager.getInstance().surveyUnblock();
     }
 
     @Override
@@ -203,5 +204,10 @@ public class ActivitySurvey extends AppCompatActivity {
     private int hourDifference(Long d1, Long d2) {
         long diff = Math.abs(d1 - d2);
         return (int) (diff / (60 * 60 * 1000));
+    }
+
+    private int selectAnswer() {
+        long diff = Calendar.getInstance().getTimeInMillis() - SurveyManager.getInstance().getSurveyPostTime();
+        return (int) Math.floor(diff / (60 * 1000));
     }
 }
