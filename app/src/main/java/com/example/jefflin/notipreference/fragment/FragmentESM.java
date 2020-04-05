@@ -315,7 +315,7 @@ public class FragmentESM extends Fragment {
                 // handle the answers of previous
                 answer = (Answer) getArguments().getSerializable("answer");
                 SharedPreferences pref = mContext.getSharedPreferences("USER", Context.MODE_PRIVATE);
-                answer.setId(pref.getString("ID", ""));
+                answer.setId(pref.getString("ID", "id failed"));
 //                if (answer.answerHandler(mActiveData, mActiveDataDisplay)) {
 //                    // scale check passed and done put notifications into answer
 //                    // now put ESM answer

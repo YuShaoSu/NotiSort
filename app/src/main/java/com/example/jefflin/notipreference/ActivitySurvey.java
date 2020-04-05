@@ -208,6 +208,7 @@ public class ActivitySurvey extends AppCompatActivity {
 
     private int selectAnswer() {
         long diff = Calendar.getInstance().getTimeInMillis() - SurveyManager.getInstance().getSurveyPostTime();
+        Log.d("answer list", "choose" + Math.floor(diff / (60 * 1000)));
         return (int) Math.floor(diff / (60 * 1000));
     }
 }

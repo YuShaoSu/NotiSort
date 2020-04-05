@@ -345,7 +345,6 @@ public class ActivityMain extends AppCompatActivity {
                             .apply();
                     setSyncTime();
                     Log.d("post", "succeed");
-                    if (now) SurveyManager.getInstance().surveyDone();
                     mExecutor.execute(new Runnable() {
                         @Override
                         public void run() {
@@ -403,7 +402,6 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void setNextSurvey() {
-        // end 0 o'clock
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this, SampleReceiver.class);
         intent.putExtra("interval", 2);
@@ -411,7 +409,7 @@ public class ActivityMain extends AppCompatActivity {
         PendingIntent pii = PendingIntent.getBroadcast(this, 2, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         Calendar c = Calendar.getInstance();
         c.add(Calendar.HOUR_OF_DAY, 3);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pii);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pii);
         Log.d("interval time", String.valueOf(c.getTime()));
     }
 

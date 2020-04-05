@@ -484,29 +484,34 @@ public class NotiListenerService extends NotificationListenerService {
 //            Log.d("interval time", String.valueOf(c.getTime()));
 //        }
 
-        // initial 8 o'clock
-        Intent init = new Intent(this, SampleReceiver.class);
+
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        init.putExtra("interval", 1);
-        init.setAction("com.example.jefflin.notipreference.next_interval");
-        PendingIntent pi = PendingIntent.getBroadcast(this, 1, init, PendingIntent.FLAG_CANCEL_CURRENT);
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 8);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
-        Log.d("interval time", String.valueOf(c.getTime()));
 
         // end 0 o'clock
         Intent finish = new Intent(this, SampleReceiver.class);
         finish.putExtra("interval", 0);
         finish.setAction("com.example.jefflin.notipreference.next_interval");
         PendingIntent pii = PendingIntent.getBroadcast(this, 0, finish, PendingIntent.FLAG_CANCEL_CURRENT);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pii);
-        Log.d("interval time", String.valueOf(c.getTime()));
+        Calendar ci = Calendar.getInstance();
+        ci.set(Calendar.HOUR_OF_DAY, 0);
+        ci.set(Calendar.MINUTE, 0);
+        ci.set(Calendar.SECOND, 0);
+        ci.add(Calendar.HOUR_OF_DAY, 24);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, ci.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pii);
+        Log.d("interval time", String.valueOf(ci.getTime()));
+
+        // initial 8 o'clock
+        Intent init = new Intent(this, SampleReceiver.class);
+        init.putExtra("interval", 1);
+        init.setAction("com.example.jefflin.notipreference.next_interval");
+        PendingIntent pi = PendingIntent.getBroadcast(this, 1, init, PendingIntent.FLAG_CANCEL_CURRENT);
+        Calendar cf = Calendar.getInstance();
+        cf.set(Calendar.HOUR_OF_DAY, 8);
+        cf.set(Calendar.MINUTE, 0);
+        cf.set(Calendar.SECOND, 0);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cf.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
+        Log.d("interval time", String.valueOf(cf.getTime()));
+
 
     }
 

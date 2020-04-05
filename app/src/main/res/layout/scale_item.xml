@@ -106,7 +106,7 @@
 
                 <View
                     style="@style/Space"
-                    android:layout_width="31dp" />
+                    android:layout_width="3dp" />
 
                 <RadioButton
                     android:id="@+id/strong_disagree0"
@@ -198,7 +198,7 @@
 
                 <View
                     style="@style/Space"
-                    android:layout_width="48dp" />
+                    android:layout_width="17dp" />
 
                 <RadioButton
                     android:id="@+id/strong_disagree1"
@@ -279,7 +279,7 @@
 
                 <View
                     style="@style/Space"
-                    android:layout_width="26dp"
+                    android:layout_width="1dp"
                     android:layout_height="match_parent" />
 
                 <RadioButton
@@ -344,7 +344,7 @@
 
                 <View
                     style="@style/Space"
-                    android:layout_width="33dp" />
+                    android:layout_width="5dp" />
 
                 <RadioButton
                     android:id="@+id/strong_disagree3"
