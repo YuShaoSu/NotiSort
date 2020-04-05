@@ -38,6 +38,7 @@ import com.example.jefflin.notipreference.model.ESMQuestion;
 import com.example.jefflin.notipreference.model.NotiItem;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class FragmentCompare extends Fragment {
@@ -102,6 +103,7 @@ public class FragmentCompare extends Fragment {
                     // scale check passed and done put notifications into answer
                     // now put ESM answer
 
+                    answer.setSurveyFinishTime(Calendar.getInstance().getTimeInMillis());
                     AudioManager audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
                     BatteryManager batteryManager = (BatteryManager) mContext.getSystemService(Context.BATTERY_SERVICE);
                     PowerManager powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
@@ -199,7 +201,7 @@ public class FragmentCompare extends Fragment {
     }
 
     public void refreshAdapter() {
-        twoList = SurveyManager.getInstance().twoListDiff(mActiveData, mActiveDataDisplay);
+        twoList = twoListDiff();
         twoListItemsAdapter.notifyDataSetChanged();
         // whether to add q7
         if (twoList) {
@@ -209,6 +211,17 @@ public class FragmentCompare extends Fragment {
             compare_title.setVisibility(View.GONE);
             compare_text.setVisibility(View.GONE);
         }
+    }
+
+    public boolean twoListDiff() {
+        boolean diff = false;
+        for (int i = 0; i < mActiveData.size(); i++) {
+            if (mActiveData.get(i).origin_order != mActiveDataDisplay.get(i).origin_order) {
+                diff = true;
+                break;
+            }
+        }
+        return diff;
     }
 
 }

@@ -123,6 +123,7 @@ public class Answer implements Serializable {
         this.id = id;
     }
 
+    public void setSurveyFinishTime(long t) {this.surveyFinishTime = t;}
 
     public void setInterval(int interval) {
         this.interval = interval;
@@ -164,11 +165,11 @@ public class Answer implements Serializable {
         for (int i = 0; i < notiItems.size(); i++) {
             NotiItem item = notiItems.get(i);
             NotiItem itemD = notiItemsD.get(i);
-//            if(item.checkScale()) {
-            item.setClickOrder(i);
-            itemD.setDisplayOrder(i);
-//            }
-//            else return false;
+            if(item.checkScale()) {
+                item.setClickOrder(i);
+                itemD.setDisplayOrder(i);
+            }
+            else return false;
         }
 
         Collections.sort(notiItems);

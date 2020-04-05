@@ -77,17 +77,6 @@ public class SurveyManager {
         return mMap.isEmpty();
     }
 
-    public boolean twoListDiff(ArrayList<NotiItem> attend, ArrayList<NotiItem> display) {
-        boolean diff = false;
-        for (int i = 0; i < attend.size(); i++) {
-            if (attend.get(i).origin_order != display.get(i).origin_order) {
-                diff = true;
-                break;
-            }
-        }
-        return diff;
-    }
-
     public void surveyBlock() {
         isSurveyBlock = !isNotiNull();
     }

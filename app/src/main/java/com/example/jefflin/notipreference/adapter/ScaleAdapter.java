@@ -209,6 +209,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                             break;
                         case R.id.not_apply_0:
                             mData.get(getAdapterPosition()).sender_attractiveness = not_apply;
+                            break;
                         default:
                             mData.get(getAdapterPosition()).sender_attractiveness = -1;
                     }
@@ -239,6 +240,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                             break;
                         case R.id.not_apply_1:
                             mData.get(getAdapterPosition()).content_attractiveness = not_apply;
+                            break;
                         default:
                             mData.get(getAdapterPosition()).content_attractiveness = -1;
                     }

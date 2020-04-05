@@ -110,10 +110,17 @@
                         android:id="@+id/q2_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="工作場所" />
+                        android:text="工作場所/學校" />
+
 
                     <RadioButton
-                        android:id="@+id/q2_3"
+                        android:id="@+id/q2_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="餐廳/咖啡廳" />
+
+                    <RadioButton
+                        android:id="@+id/q2_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="其他" />
@@ -150,7 +157,7 @@
                     android:id="@+id/q3_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="工作/讀書" />
+                    android:text="工作" />
 
                 <CheckBox
                     android:id="@+id/q3_3"
@@ -178,6 +185,12 @@
 
                 <CheckBox
                     android:id="@+id/q3_7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="讀書" />
+
+                <CheckBox
+                    android:id="@+id/q3_8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="其他" />
@@ -377,7 +390,7 @@
                         android:padding="2dp"
                         android:tag="Cry"
                         android:text="@string/cry"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
                     <RadioButton
                         android:id="@+id/q6_2"
@@ -389,7 +402,7 @@
                         android:padding="2dp"
                         android:tag="Sad"
                         android:text="@string/sad"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
                     <RadioButton
                         android:id="@+id/q6_3"
@@ -401,7 +414,7 @@
                         android:padding="2dp"
                         android:tag="Neutral"
                         android:text="@string/neutral"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
                     <RadioButton
                         android:id="@+id/q6_4"
@@ -413,7 +426,7 @@
                         android:padding="2dp"
                         android:tag="Happy"
                         android:text="@string/happy"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
                     <RadioButton
                         android:id="@+id/q6_5"
@@ -425,7 +438,7 @@
                         android:padding="2dp"
                         android:tag="Fantastic"
                         android:text="@string/very_happy"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
                 </RadioGroup>
             </LinearLayout>

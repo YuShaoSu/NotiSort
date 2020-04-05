@@ -68,6 +68,7 @@ public class FragmentESM extends Fragment {
     private CheckBox checkBoxQ3_5;
     private CheckBox checkBoxQ3_6;
     private CheckBox checkBoxQ3_7;
+    private CheckBox checkBoxQ3_8;
     private EditText editTextQ3;
     private RadioGroup radioGroupQ4;
     private RadioGroup radioGroupQ5;
@@ -113,6 +114,7 @@ public class FragmentESM extends Fragment {
         checkBoxQ3_5 = rootView.findViewById(R.id.q3_5);
         checkBoxQ3_6 = rootView.findViewById(R.id.q3_6);
         checkBoxQ3_7 = rootView.findViewById(R.id.q3_7);
+        checkBoxQ3_8 = rootView.findViewById(R.id.q3_8);
         editTextQ3 = rootView.findViewById(R.id.q3_other);
         radioGroupQ4 = rootView.findViewById(R.id.q4);
         radioGroupQ5 = rootView.findViewById(R.id.q5);
@@ -266,6 +268,7 @@ public class FragmentESM extends Fragment {
                 String checkedText3_5 = "";
                 String checkedText3_6 = "";
                 String checkedText3_7 = "";
+                String checkedText3_8 = "";
                 String checkedText3 = "";
                 if (checkBoxQ3_1.isChecked()) {
                     checkedText3_1 = checkBoxQ3_1.getText().toString();
@@ -293,7 +296,11 @@ public class FragmentESM extends Fragment {
                 }
                 if (checkBoxQ3_7.isChecked()) {
                     checkedText3_7 = checkBoxQ3_7.getText().toString();
-                    checkedText3 = checkedText3 + checkedText3_7 + ":" + editTextQ3.getText().toString() + ", ";
+                    checkedText3 = checkedText3 + checkedText3_7 + ", ";
+                }
+                if (checkBoxQ3_8.isChecked()) {
+                    checkedText3_8 = checkBoxQ3_8.getText().toString();
+                    checkedText3 = checkedText3 + checkedText3_8 + ":" + editTextQ3.getText().toString() + ", ";
                 }
                 checkedText3 = checkedText3.substring(0, checkedText3.length() - 2);
 
