@@ -25,8 +25,17 @@ public class SurveyManager {
     private boolean isSurveyDone;
     private boolean isSurveyBlock;
     private boolean isSurveyDoing;
+    private boolean dontDisturb;
     private int interval;
     private Long surveyPostTime;
+
+    public boolean isDontDisturb() {
+        return dontDisturb;
+    }
+
+    public void setDontDisturb(boolean dontDisturb) {
+        this.dontDisturb = dontDisturb;
+    }
 
     public void pushAnswerList(Answer answer) {
         answerArrayList.add(answer);

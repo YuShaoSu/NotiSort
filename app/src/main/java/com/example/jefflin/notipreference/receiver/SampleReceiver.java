@@ -16,7 +16,8 @@ import static android.content.Context.ALARM_SERVICE;
 
 public class SampleReceiver extends BroadcastReceiver {
 
-    public SampleReceiver() {}
+    public SampleReceiver() {
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -24,23 +25,32 @@ public class SampleReceiver extends BroadcastReceiver {
         Log.d("SampleReceiver", "broadcast received");
         Log.d("SampleReceiver", String.valueOf(interval));
 
-        SurveyManager.getInstance().setInterval(interval);
-        SurveyManager.getInstance().surveyInit();
+//        SurveyManager.getInstance().setInterval(interval);
+        if (interval == 1) {
+            SurveyManager.getInstance().surveyInit();
+            SurveyManager.getInstance().setDontDisturb(false);
+        } else if (interval == 0) {
+            SurveyManager.getInstance().setSurveyDone(true);
+            SurveyManager.getInstance().setDontDisturb(true);
+        } else if (interval == 2) {
+            if (!SurveyManager.getInstance().isDontDisturb())
+                SurveyManager.getInstance().surveyInit();
+        }
 
-        Intent myIntent = new Intent(context , SampleReceiver.class);
-        AlarmManager alarmManager = (AlarmManager)context.getSystemService(ALARM_SERVICE);
-        myIntent.putExtra("interval", interval);
-        myIntent.setAction("com.example.jefflin.notipreference.next_interval");
-
-
-        PendingIntent pi = PendingIntent.getBroadcast(context, interval + 10, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[interval]);
-        c.add(Calendar.DAY_OF_YEAR, 1);
-        c.set(Calendar.MINUTE, GlobalClass.getIntervalMinute());
-        c.set(Calendar.SECOND, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
-        Log.d("SampleReceiver interval", String.valueOf(c.getTime()));
+//        Intent myIntent = new Intent(context , SampleReceiver.class);
+//        AlarmManager alarmManager = (AlarmManager)context.getSystemService(ALARM_SERVICE);
+//        myIntent.putExtra("interval", interval);
+//        myIntent.setAction("com.example.jefflin.notipreference.next_interval");
+//
+//
+//        PendingIntent pi = PendingIntent.getBroadcast(context, interval + 10, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+//        Calendar c = Calendar.getInstance();
+//        c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[interval]);
+//        c.add(Calendar.DAY_OF_YEAR, 1);
+//        c.set(Calendar.MINUTE, GlobalClass.getIntervalMinute());
+//        c.set(Calendar.SECOND, 0);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
+//        Log.d("SampleReceiver interval", String.valueOf(c.getTime()));
     }
 
 

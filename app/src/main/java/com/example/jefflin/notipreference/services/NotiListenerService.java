@@ -469,20 +469,45 @@ public class NotiListenerService extends NotificationListenerService {
     }
 
     private void setSchedule() {
-        for (int i = 0; i < 5; ++i) {
-            Intent myIntent = new Intent(this, SampleReceiver.class);
-            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            myIntent.putExtra("interval", i);
-            myIntent.setAction("com.example.jefflin.notipreference.next_interval");
+//        for (int i = 0; i < 5; ++i) {
+//            Intent myIntent = new Intent(this, SampleReceiver.class);
+//            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//            myIntent.putExtra("interval", i);
+//            myIntent.setAction("com.example.jefflin.notipreference.next_interval");
+//
+//            PendingIntent pi = PendingIntent.getBroadcast(this, i, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+//            Calendar c = Calendar.getInstance();
+//            c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[i]);
+//            c.set(Calendar.MINUTE, GlobalClass.getIntervalMinute());
+//            c.set(Calendar.SECOND, 0);
+//            alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
+//            Log.d("interval time", String.valueOf(c.getTime()));
+//        }
 
-            PendingIntent pi = PendingIntent.getBroadcast(this, i, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[i]);
-            c.set(Calendar.MINUTE, GlobalClass.getIntervalMinute());
-            c.set(Calendar.SECOND, 0);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
-            Log.d("interval time", String.valueOf(c.getTime()));
-        }
+        // initial 8 o'clock
+        Intent init = new Intent(this, SampleReceiver.class);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        init.putExtra("interval", 1);
+        init.setAction("com.example.jefflin.notipreference.next_interval");
+        PendingIntent pi = PendingIntent.getBroadcast(this, 1, init, PendingIntent.FLAG_CANCEL_CURRENT);
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 8);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
+        Log.d("interval time", String.valueOf(c.getTime()));
+
+        // end 0 o'clock
+        Intent finish = new Intent(this, SampleReceiver.class);
+        finish.putExtra("interval", 0);
+        finish.setAction("com.example.jefflin.notipreference.next_interval");
+        PendingIntent pii = PendingIntent.getBroadcast(this, 0, finish, PendingIntent.FLAG_CANCEL_CURRENT);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pii);
+        Log.d("interval time", String.valueOf(c.getTime()));
+
     }
 
     void registerSensorUpdates(final Context context) {

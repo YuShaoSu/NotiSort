@@ -1,9 +1,11 @@
 package com.example.jefflin.notipreference;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AppOpsManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +31,7 @@ import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.database.NotiDao;
 import com.example.jefflin.notipreference.database.NotiDatabase;
 import com.example.jefflin.notipreference.model.AnswerJson;
+import com.example.jefflin.notipreference.receiver.SampleReceiver;
 import com.example.jefflin.notipreference.services.NotiListenerService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -168,8 +171,9 @@ public class ActivityMain extends AppCompatActivity {
             switch (resultCode) {
                 case RESULT_OK:
                     sync(true);
+                    setNextSurvey();
                     break;
-                case RESULT_FIRST_USER:
+                case RESULT_FIRST_USER: // not sync now
                     final String ans = SurveyManager.getInstance().getPostJson();
                     mExecutor.execute(new Runnable() {
                         @Override
@@ -178,6 +182,7 @@ public class ActivityMain extends AppCompatActivity {
                             answerJsonDao.insert(answerJson);
                         }
                     });
+                    setNextSurvey();
                     break;
             }
 //            if (resultCode == RESULT_OK) {
@@ -395,6 +400,19 @@ public class ActivityMain extends AppCompatActivity {
         };
 
         requestQueue.add(stringRequest);
+    }
+
+    private void setNextSurvey() {
+        // end 0 o'clock
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, SampleReceiver.class);
+        intent.putExtra("interval", 2);
+        intent.setAction("com.example.jefflin.notipreference.next_interval");
+        PendingIntent pii = PendingIntent.getBroadcast(this, 2, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.HOUR_OF_DAY, 3);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pii);
+        Log.d("interval time", String.valueOf(c.getTime()));
     }
 
 }
