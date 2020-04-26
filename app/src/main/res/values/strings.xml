@@ -82,4 +82,6 @@
     <string name="cry">非常不開心</string>
     <string name="angry">   生氣   </string>
     <string name="wtf">&#128565;生氣</string>
+
+    <string name="textHint1">人數</string>
 </resources>
