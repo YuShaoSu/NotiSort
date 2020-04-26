@@ -58,7 +58,8 @@ public class FragmentESM extends Fragment {
     private TextView textview_q_discription;
 //    private ImageView iv_back;
 
-    private RadioGroup radioGroupQ1;
+    //private RadioGroup radioGroupQ1;
+    private EditText editTextQ1;
     private RadioGroup radioGroupQ2;
     private EditText editTextQ2;
     private CheckBox checkBoxQ3_1;
@@ -68,7 +69,7 @@ public class FragmentESM extends Fragment {
     private CheckBox checkBoxQ3_5;
     private CheckBox checkBoxQ3_6;
     private CheckBox checkBoxQ3_7;
-    private CheckBox checkBoxQ3_8;
+    //private CheckBox checkBoxQ3_8;
     private EditText editTextQ3;
     private RadioGroup radioGroupQ4;
     private RadioGroup radioGroupQ5;
@@ -104,7 +105,8 @@ public class FragmentESM extends Fragment {
 //        });
 
 
-        radioGroupQ1 = rootView.findViewById(R.id.q1);
+        //radioGroupQ1 = rootView.findViewById(R.id.q1);
+        editTextQ1 = rootView.findViewById(R.id.q2_other);
         radioGroupQ2 = rootView.findViewById(R.id.q2);
         editTextQ2 = rootView.findViewById(R.id.q2_other);
         checkBoxQ3_1 = rootView.findViewById(R.id.q3_1);
@@ -114,19 +116,20 @@ public class FragmentESM extends Fragment {
         checkBoxQ3_5 = rootView.findViewById(R.id.q3_5);
         checkBoxQ3_6 = rootView.findViewById(R.id.q3_6);
         checkBoxQ3_7 = rootView.findViewById(R.id.q3_7);
-        checkBoxQ3_8 = rootView.findViewById(R.id.q3_8);
+        //checkBoxQ3_8 = rootView.findViewById(R.id.q3_8);
         editTextQ3 = rootView.findViewById(R.id.q3_other);
         radioGroupQ4 = rootView.findViewById(R.id.q4);
         radioGroupQ5 = rootView.findViewById(R.id.q5);
         radioGroupQ6 = rootView.findViewById(R.id.q6);
 
-        q1_selected = false;
+        q1_selected = true;
         q2_selected = false;
         q3_selected = false;
         q4_selected = false;
         q5_selected = false;
         q6_selected = false;
 
+        /*
         radioGroupQ1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -137,6 +140,7 @@ public class FragmentESM extends Fragment {
                 }
             }
         });
+        */
         radioGroupQ2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -254,8 +258,9 @@ public class FragmentESM extends Fragment {
             @Override
             public void onClick(View v) {
 
-                RadioButton selectedRadioButton1 = (RadioButton) rootView.findViewById(radioGroupQ1.getCheckedRadioButtonId());
-                String selectedRadioButtonText1 = selectedRadioButton1.getText().toString();
+                //RadioButton selectedRadioButton1 = (RadioButton) rootView.findViewById(radioGroupQ1.getCheckedRadioButtonId());
+                //String selectedRadioButtonText1 = selectedRadioButton1.getText().toString();
+                String selectedRadioButtonText1 = editTextQ1.getText().toString();
                 RadioButton selectedRadioButton2 = (RadioButton) rootView.findViewById(radioGroupQ2.getCheckedRadioButtonId());
                 String selectedRadioButtonText2 = selectedRadioButton2.getText().toString();
                 if (selectedRadioButtonText2.equals("其他")) {
@@ -296,12 +301,14 @@ public class FragmentESM extends Fragment {
                 }
                 if (checkBoxQ3_7.isChecked()) {
                     checkedText3_7 = checkBoxQ3_7.getText().toString();
-                    checkedText3 = checkedText3 + checkedText3_7 + ", ";
+                    checkedText3 = checkedText3 + checkedText3_7 +":" + editTextQ3.getText().toString() + ", ";
                 }
+                /*
                 if (checkBoxQ3_8.isChecked()) {
                     checkedText3_8 = checkBoxQ3_8.getText().toString();
                     checkedText3 = checkedText3 + checkedText3_8 + ":" + editTextQ3.getText().toString() + ", ";
                 }
+                */
                 checkedText3 = checkedText3.substring(0, checkedText3.length() - 2);
 
                 RadioButton selectedRadioButton4 = (RadioButton) rootView.findViewById(radioGroupQ4.getCheckedRadioButtonId());
