@@ -14,7 +14,7 @@
     },
     {
       "question_type": "Sort",
-      "question_title": "若您五分鐘前在通知列裡看到以下這些通知\n您會點擊的順序為何？",
+      "question_title": "若您五分鐘前在通知列裡看到以下這些通知\n您會點擊的順序為何？(左滑: 不用點擊)",
       "description": "2 of 5",
       "required": false
     },
