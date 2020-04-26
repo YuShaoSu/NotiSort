@@ -62,9 +62,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1. 你當時正在與多少人互動?" />
+                    android:text="1. 你當時是否正在與人互動?" />
 
-                <!--
                 <RadioGroup
                     android:id="@+id/q1"
                     android:layout_width="match_parent"
@@ -83,16 +82,7 @@
                         android:layout_height="wrap_content"
                         android:text="否" />
                 </RadioGroup>
-                -->
-                <EditText
-                    android:id="@+id/q1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="phone"
-                    android:textSize="12sp"
-                    android:layout_marginStart="5pt"
-                    android:windowSoftInputMode="stateHidden"
-                    android:imeOptions="actionDone"/>
+
             </LinearLayout>
 
             <LinearLayout
