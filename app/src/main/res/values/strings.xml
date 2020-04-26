@@ -18,6 +18,11 @@
     <string name="channelDescription">Time to do survey!</string>
     <string name="channelID">20</string>
 
+    <string name="channelNameOngoing">serviceForeground</string>
+    <string name="channelDescriptionOngoing">NotiSort is running!</string>
+    <string name="channelOngoingID">22</string>
+
+
 
     <string name="back">返回</string>
     <string name="go">go</string>

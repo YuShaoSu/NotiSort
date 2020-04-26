@@ -72,7 +72,7 @@ public class ActivityProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setExample();
-                new PushNotification(ActivityProfile.this);
+                new PushNotification(ActivityProfile.this).push(false);
             }
         });
 

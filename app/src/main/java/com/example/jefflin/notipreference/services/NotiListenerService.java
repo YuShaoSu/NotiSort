@@ -47,6 +47,7 @@ import com.example.jefflin.notipreference.receiver.SampleReceiver;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.database.NotiDatabase;
 import com.example.jefflin.notipreference.Listener.TelephonyListener;
+import com.example.jefflin.notipreference.widgets.PushNotification;
 import com.example.jefflin.notipreference.widgets.PushTask;
 import com.example.jefflin.notipreference.widgets.SampleTask;
 import com.google.android.gms.location.ActivityRecognition;
@@ -90,6 +91,7 @@ public class NotiListenerService extends NotificationListenerService {
     private SensorManager sensorManager;
     private SensorListener sensorListener = new SensorListener();
     static ContextManager contextManager = ContextManager.getInstance();
+    private PushNotification pushNotification;
 
     private static Map<String, ArrayList<NotiItem>> itemMap;
 
@@ -107,7 +109,9 @@ public class NotiListenerService extends NotificationListenerService {
         sem.release();
 
         // startForeground
-        startForeground();
+//        startForeground();
+        pushNotification = new PushNotification(this);
+        pushNotification.push(true);
     }
 
     @Override
@@ -115,19 +119,27 @@ public class NotiListenerService extends NotificationListenerService {
         Log.i(TAG, "Disconnected");
         sem.acquireUninterruptibly();
         _this = null;
+        pushNotification.cancel(true);
     }
 
     private void startForeground() {
         Intent intent = new Intent(this, ActivityMain.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 55, intent, 0);
 
-        startForeground(1, new NotificationCompat.Builder(this, String.valueOf(R.string.channelID))
+        Notification onGoing = new NotificationCompat.Builder(this, String.valueOf(R.string.channelOngoingID))
                 .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentTitle("NotiSort")
                 .setContentText("Notisort 正在運行中")
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
-                .build());
+                .setPriority(NotificationCompat.PRIORITY_MIN)
+                .setDefaults(0)
+                .setSound(null)
+                .build();
+
+
+
+//        startForeground(1, onGoing);
     }
 
     @Override
