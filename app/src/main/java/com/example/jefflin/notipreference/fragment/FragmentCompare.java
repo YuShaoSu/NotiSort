@@ -53,6 +53,8 @@ public class FragmentCompare extends Fragment {
 
     private TextView compare_title;
     private EditText compare_text;
+    private TextView additional_title;
+    private EditText additional_text;
     private boolean twoList;
 
     ArrayList<NotiItem> mActiveData;
@@ -86,6 +88,8 @@ public class FragmentCompare extends Fragment {
 
         compare_title = rootView.findViewById(R.id.comapre_title);
         compare_text = rootView.findViewById(R.id.comapre_text);
+        additional_title = rootView.findViewById(R.id.additional_title);
+        additional_text = rootView.findViewById(R.id.additional_text);
 
         button_continue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +103,9 @@ public class FragmentCompare extends Fragment {
                     text = "null";
                 }
 
+                String additionalText = "null";
+                additionalText = additional_text.getText().toString();
+
                 if (answer.answerHandler(mActiveData, mActiveDataDisplay)) {
                     // scale check passed and done put notifications into answer
                     // now put ESM answer
@@ -106,6 +113,7 @@ public class FragmentCompare extends Fragment {
                     answer.setSurveyFinishTime(Calendar.getInstance().getTimeInMillis());
 
                     answer.setEsmQ7(text);
+                    answer.setEsmQ8(additionalText);
 
                     // contextual data
 

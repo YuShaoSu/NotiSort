@@ -32,7 +32,7 @@
     },
     {
       "question_type": "Compare",
-      "question_title": "下列為兩種排序之結果",
+      "question_title": "下列為兩種排序之結果\n(左：點擊順序, 右：實際呈現順序)",
       "description": "5 of 5",
       "required": false
     }

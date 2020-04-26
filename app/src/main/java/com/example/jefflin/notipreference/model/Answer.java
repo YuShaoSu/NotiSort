@@ -37,6 +37,7 @@ public class Answer implements Serializable {
     private String esm_q5;
     private String esm_q6;
     private String esm_q7;
+    private String esm_q8;
 
     // location
     public double longitude;
@@ -237,6 +238,10 @@ public class Answer implements Serializable {
 
     public void setEsmQ7(String esm_q7) {
         this.esm_q7 = esm_q7;
+    }
+
+    public void setEsmQ8(String esm_q8) {
+        this.esm_q7 = esm_q8;
     }
 
     // false for scale check fails
