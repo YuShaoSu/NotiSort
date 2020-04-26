@@ -184,20 +184,9 @@ public class ActivityMain extends AppCompatActivity {
                     });
                     setNextSurvey();
                     break;
+                case 0:
+                    break;
             }
-//            if (resultCode == RESULT_OK) {
-//                sync(true);
-//            } else if (resultCode == RESULT_FIRST_USER) {
-//                final String ans = SurveyManager.getInstance().getPostJson();
-//                mExecutor.execute(new Runnable() {
-//                    @Override
-//                    public void run() {
-////                        Log.d("ans in exec", ans);
-//                        AnswerJson answerJson = new AnswerJson(ans);
-//                        answerJsonDao.insert(answerJson);
-//                    }
-//                });
-//            }
         } else {
             Log.d("ActivityMainResult", "not SURVEY_REQUEST " + requestCode);
         }
@@ -218,8 +207,6 @@ public class ActivityMain extends AppCompatActivity {
                 String ARPost = SurveyManager.getARJson(activityRecognitionDao.getAll());
                 postRequest(ARPost, AR_POST, now);
 
-//                String ACPost = SurveyManager.getACJson(accessibilityDao.getAll());
-//                postRequest(ACPost, AC_POST, now);
             }
         });
     }
@@ -244,7 +231,7 @@ public class ActivityMain extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.channelName);
             String description = getString(R.string.channelDescription);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(String.valueOf(R.string.channelID), name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance

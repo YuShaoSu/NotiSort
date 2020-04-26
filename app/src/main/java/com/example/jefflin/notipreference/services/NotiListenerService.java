@@ -1,6 +1,7 @@
 package com.example.jefflin.notipreference.services;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -27,9 +28,13 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import com.example.jefflin.notipreference.ActivityMain;
 import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.Listener.SensorListener;
+import com.example.jefflin.notipreference.R;
 import com.example.jefflin.notipreference.manager.ContextManager;
 import com.example.jefflin.notipreference.model.Answer;
 import com.example.jefflin.notipreference.model.NotiItem;
@@ -37,6 +42,7 @@ import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.model.NotiModel;
 import com.example.jefflin.notipreference.receiver.ActivityRecognitionReceiver;
 import com.example.jefflin.notipreference.receiver.LocationUpdateReceiver;
+import com.example.jefflin.notipreference.receiver.NotificationDisMissReceiver;
 import com.example.jefflin.notipreference.receiver.SampleReceiver;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.database.NotiDatabase;
@@ -99,6 +105,9 @@ public class NotiListenerService extends NotificationListenerService {
         Log.i(TAG, "Connected");
         _this = this;
         sem.release();
+
+        // startForeground
+        startForeground();
     }
 
     @Override
@@ -106,6 +115,19 @@ public class NotiListenerService extends NotificationListenerService {
         Log.i(TAG, "Disconnected");
         sem.acquireUninterruptibly();
         _this = null;
+    }
+
+    private void startForeground() {
+        Intent intent = new Intent(this, ActivityMain.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 55, intent, 0);
+
+        startForeground(1, new NotificationCompat.Builder(this, String.valueOf(R.string.channelID))
+                .setSmallIcon(R.drawable.ic_stat_name)
+                .setContentTitle("NotiSort")
+                .setContentText("Notisort 正在運行中")
+                .setContentIntent(pendingIntent)
+                .setOngoing(true)
+                .build());
     }
 
     @Override
@@ -150,10 +172,10 @@ public class NotiListenerService extends NotificationListenerService {
             return;
 
         if (getActiveNotis()) {
-            Log.d("Survey", "五分鐘後發");
+            Log.d("Survey", "10分鐘後發");
             // block
             Timer timer = new Timer();
-            timer.schedule(new PushTask(this), 300000);
+            timer.schedule(new PushTask(this), 600000);
 
             // first answer
             Answer answer = new Answer(Calendar.getInstance().getTimeInMillis(), SurveyManager.getInstance().getInterval());

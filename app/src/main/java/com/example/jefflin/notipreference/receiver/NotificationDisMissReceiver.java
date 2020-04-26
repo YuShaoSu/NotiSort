@@ -14,6 +14,6 @@ public class NotificationDisMissReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("survey noti", "dismiss receive");
-        SurveyManager.getInstance().surveyUnblock();
+//        SurveyManager.getInstance().surveyUnblock();
     }
 }

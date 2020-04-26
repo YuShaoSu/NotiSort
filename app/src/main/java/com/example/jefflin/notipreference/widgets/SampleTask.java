@@ -29,7 +29,7 @@ public class SampleTask extends TimerTask {
         answer.setContext(context);
         SurveyManager.getInstance().pushAnswerList(answer);
 
-        if(i == 10)  return;
+        if(i == 15)  return;
         Timer timer = new Timer();
         timer.schedule(new SampleTask(context, min, i+1), min * 60000);
     }

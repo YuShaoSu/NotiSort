@@ -1,9 +1,12 @@
 package com.example.jefflin.notipreference.widgets;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -26,6 +29,7 @@ public class PushNotification {
         dIntent.setAction("com.example.jefflin.notipreference.dismiss");
         PendingIntent deleteIntent = PendingIntent.getBroadcast(context, 20, dIntent, 0);
 
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, String.valueOf(R.string.channelID))
                 .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentTitle("NotiSort")
@@ -34,6 +38,7 @@ public class PushNotification {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setAutoCancel(true)
                 .setTimeoutAfter(600000)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setDeleteIntent(deleteIntent);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(20, builder.build());

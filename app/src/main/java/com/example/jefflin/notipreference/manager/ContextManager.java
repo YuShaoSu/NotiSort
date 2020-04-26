@@ -48,13 +48,5 @@ public class ContextManager {
     }
 
     // Sensor data
-//    public float[] accelerometer = {-9999, -9999, -9999};
-//    public float[] gyroscope = {-9999, -9999, -9999};
-//    public float[] gravity = {-9999, -9999, -9999};
-//    public float[] linearAcceleration = {-9999, -9999, -9999};
-//    public float[] rotationVector = {-9999, -9999, -9999, -9999, -9999};
-//    public float proximity = -9999;
-//    public float[] magneticField = {-9999, -9999, -9999};
-//    public float light = -9999, pressure = -9999, relativeHumidity = -9999, ambientTemperature = -9999;
     public float light = -9999;
 }

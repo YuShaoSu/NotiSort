@@ -217,20 +217,9 @@ public class SurveyManager {
         return gson.toJson(activityRecognitionModels);
     }
 
-    public static String getACJson(List<Accessibility> accessibilities) {
-        Gson gson = new Gson();
-        return gson.toJson(accessibilities);
-    }
-
-    public static String getLUJson(List<LocationUpdateModel> locationUpdateModels) {
-        Gson gson = new Gson();
-        return gson.toJson(locationUpdateModels);
-    }
-
     public String getPostJson() {
         return postJson;
     }
 
-//    public NotiDao getNotiDao() { return notiDao; }
 
 }
