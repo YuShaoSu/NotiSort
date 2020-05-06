@@ -23,7 +23,7 @@ public class PushTask extends TimerTask {
     public void run() {
         new PushNotification(context).push(false);
         Timer timer = new Timer();
-        timer.schedule(new UnblockTask(), 900000);
+        timer.schedule(new UnblockTask(context), 900000);
     }
 
 }

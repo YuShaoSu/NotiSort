@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.jefflin.notipreference.GlobalClass;
@@ -24,17 +25,26 @@ public class SampleReceiver extends BroadcastReceiver {
         int interval = intent.getIntExtra("interval", 0);
         Log.d("SampleReceiver", "broadcast received");
         Log.d("SampleReceiver", String.valueOf(interval));
+        SharedPreferences sharedPreferences = context.getSharedPreferences("survey", Context.MODE_PRIVATE);
 
 //        SurveyManager.getInstance().setInterval(interval);
         if (interval == 1) {
             SurveyManager.getInstance().surveyInit();
-            SurveyManager.getInstance().setDontDisturb(false);
+            sharedPreferences.edit().putBoolean("dontDisturb", false).apply();
         } else if (interval == 0) {
-            SurveyManager.getInstance().setSurveyDone(true);
-            SurveyManager.getInstance().setDontDisturb(true);
+            sharedPreferences.edit().putBoolean("done", true)
+                    .putBoolean("block", false)
+                    .putBoolean("dontDisturb", true)
+                    .apply();
+            SurveyManager.getInstance().surveyDone();
         } else if (interval == 2) {
-            if (!SurveyManager.getInstance().isDontDisturb())
+            if (!sharedPreferences.getBoolean("dontDisturb", false)) {
                 SurveyManager.getInstance().surveyInit();
+                sharedPreferences.edit().putBoolean("done", false)
+                        .putBoolean("block", false)
+                        .putBoolean("doing", false)
+                        .apply();
+            }
         }
 
 //        Intent myIntent = new Intent(context , SampleReceiver.class);

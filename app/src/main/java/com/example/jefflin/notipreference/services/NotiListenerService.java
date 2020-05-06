@@ -92,6 +92,7 @@ public class NotiListenerService extends NotificationListenerService {
     private SensorListener sensorListener = new SensorListener();
     static ContextManager contextManager = ContextManager.getInstance();
     private PushNotification pushNotification;
+    private SharedPreferences sharedPreferences;
 
     private static Map<String, ArrayList<NotiItem>> itemMap;
 
@@ -108,8 +109,6 @@ public class NotiListenerService extends NotificationListenerService {
         _this = this;
         sem.release();
 
-        // startForeground
-//        startForeground();
         pushNotification = new PushNotification(this);
         pushNotification.push(true);
     }
@@ -138,7 +137,6 @@ public class NotiListenerService extends NotificationListenerService {
                 .build();
 
 
-
 //        startForeground(1, onGoing);
     }
 
@@ -162,6 +160,15 @@ public class NotiListenerService extends NotificationListenerService {
         requestPhoneStateUpdates(this);
         registerSensorUpdates(this);
 
+        sharedPreferences = this.getSharedPreferences("survey", MODE_PRIVATE);
+        // sharePref init
+        sharedPreferences.edit().putBoolean("done", false)
+                .putBoolean("block", false)
+                .putBoolean("dontDisturb", false)
+                .putBoolean("doing", false)
+                .apply();
+
+
         return super.onBind(intent);
     }
 
@@ -179,8 +186,7 @@ public class NotiListenerService extends NotificationListenerService {
             }
         });
 
-
-        if (SurveyManager.getInstance().isSurveyBlock() || SurveyManager.getInstance().isSurveyDone())
+        if (sharedPreferences.getBoolean("block", false) || sharedPreferences.getBoolean("done", false))
             return;
 
         if (getActiveNotis()) {
@@ -197,7 +203,7 @@ public class NotiListenerService extends NotificationListenerService {
             timer1.schedule(new SampleTask(this, 1, 2), 1 * 60000);
 
             SurveyManager.getInstance().setMap(itemMap);
-            SurveyManager.getInstance().setSurveyBlock(true);
+            sharedPreferences.edit().putBoolean("block", true).apply();
         }
     }
 
@@ -489,12 +495,12 @@ public class NotiListenerService extends NotificationListenerService {
         } catch (Exception e) {
             Log.e("NotiListenerService", "category failed", e);
         }
-        try {
-            IconHandler iconHandler = new IconHandler();
-            icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
-        } catch (Exception e) {
-            Log.e("NotiListenerService", "icon failed", e);
-        }
+//        try {
+//            IconHandler iconHandler = new IconHandler();
+//            icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
+//        } catch (Exception e) {
+//            Log.e("NotiListenerService", "icon failed", e);
+//        }
 
         NotiItem notiItem = new NotiItem(appName, title, content, postTime, category, order);
         notiItem.setIcon(icon);
@@ -531,7 +537,7 @@ public class NotiListenerService extends NotificationListenerService {
         ci.set(Calendar.MINUTE, 0);
         ci.set(Calendar.SECOND, 0);
         ci.add(Calendar.HOUR_OF_DAY, 24);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, ci.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pii);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, ci.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pii);
         Log.d("interval time", String.valueOf(ci.getTime()));
 
         // initial 8 o'clock
@@ -543,7 +549,7 @@ public class NotiListenerService extends NotificationListenerService {
         cf.set(Calendar.HOUR_OF_DAY, 8);
         cf.set(Calendar.MINUTE, 0);
         cf.set(Calendar.SECOND, 0);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cf.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cf.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
         Log.d("interval time", String.valueOf(cf.getTime()));
 
 

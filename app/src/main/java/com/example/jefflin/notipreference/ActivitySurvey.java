@@ -2,6 +2,7 @@ package com.example.jefflin.notipreference;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -158,14 +159,14 @@ public class ActivitySurvey extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d("ActivitySurvey", "onResume");
-        SurveyManager.getInstance().setSurveyDoing(true);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("survey", MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean("doing", true).apply();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d("ActivitySurvey", "onPause");
-//        SurveyManager.getInstance().surveyUnblock();
     }
 
     @Override

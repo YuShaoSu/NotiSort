@@ -84,6 +84,7 @@ public class ActivityMain extends AppCompatActivity {
     final private String AC_POST = "accessibility";
     final private String DATA_FORMAT = "MMMM d, yyyy 'at' h:mm a";
     Executor mExecutor = Executors.newSingleThreadExecutor();
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,8 @@ public class ActivityMain extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NotiListenerService.Arrival");
 
+        sharedPreferences = this.getSharedPreferences("survey", MODE_PRIVATE);
+
         Log.d("activity main", "on create");
 
         if (!isNotiListenerEnabled()) {
@@ -102,11 +105,12 @@ public class ActivityMain extends AppCompatActivity {
             startActivity(setting);
         }
 
-        if (SurveyManager.getInstance().isSurveyBlock()) {
-            final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
-            survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
-            startActivityForResult(survey, SURVEY_REQUEST);
-        }
+
+//        if (sharedPreferences.getBoolean("block", false)) {
+//            final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
+//            survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
+//            startActivityForResult(survey, SURVEY_REQUEST);
+//        }
 
         GlobalClass.setDirPath(getApplicationContext(), "iconDir");
         notiDao = NotiDatabase.getInstance(getApplicationContext()).notiDao();
@@ -118,13 +122,25 @@ public class ActivityMain extends AppCompatActivity {
         setPermission();
         setBotNavView();
         setSyncTime();
-
+        setDoneBool();
     }
 
     private void setSyncTime() {
         TextView sync_time = (TextView) findViewById(R.id.sync_time);
         SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
         sync_time.setText(sharedPreferences.getString("SYNC_TIME", getString(R.string.sync_time_value)));
+    }
+
+    private void setDoneBool() {
+        TextView done_bool = (TextView) findViewById(R.id.done_bool);
+        StringBuilder sb = new StringBuilder();
+        sb.append("done: ");
+        sb.append(sharedPreferences.getBoolean("done", true) ? "是; " : "否; ");
+        sb.append("block: ");
+        sb.append(sharedPreferences.getBoolean("block", true) ? "是; " : "否; ");
+        sb.append("dont disturb: ");
+        sb.append(sharedPreferences.getBoolean("dontDisturb", true) ? "是; " : "否; ");
+        done_bool.setText(sb.toString());
     }
 
     private void setBotNavView() {
@@ -140,6 +156,9 @@ public class ActivityMain extends AppCompatActivity {
                     case R.id.action_help:
                         startActivity(setting);
                         break;
+                    case R.id.action_sync:
+                        sync(false);
+                        break;
                     case R.id.action_profile:
                         startActivity(intent_history);
                 }
@@ -147,11 +166,22 @@ public class ActivityMain extends AppCompatActivity {
             }
         });
 
-        Button sync_button = (Button) findViewById(R.id.sync);
-        sync_button.setOnClickListener(new View.OnClickListener() {
+        Button survey_button = (Button) findViewById(R.id.survey);
+        if (!sharedPreferences.getBoolean("done", false) &&
+                !sharedPreferences.getBoolean("dontDisturb", false) &&
+                sharedPreferences.getBoolean("block", false)) {
+            survey_button.setVisibility(View.VISIBLE);
+        } else {
+            survey_button.setVisibility(View.GONE);
+        }
+
+        survey_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sync(false);
+                final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
+                survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
+                startActivityForResult(survey, SURVEY_REQUEST);
             }
         });
 
@@ -167,6 +197,11 @@ public class ActivityMain extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == SURVEY_REQUEST) {
+            sharedPreferences.edit().putBoolean("done", true)
+                    .putBoolean("block", false)
+                    .putBoolean("done", false)
+                    .apply();
+
             Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
             switch (resultCode) {
                 case RESULT_OK:
@@ -317,7 +352,7 @@ public class ActivityMain extends AppCompatActivity {
 
     private void postRequest(String jsonPost, final String url, final boolean now) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String URL = "http://neighborbob.nctu.me:5000/" + url;
+        String URL = "https://neighborbob.ninja/" + url;
         final String requestBody = jsonPost;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {

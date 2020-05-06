@@ -46,7 +46,7 @@ public class IconHandler {
 
         Bitmap stitchBmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
-        if(bmpByte != null)  stitchBmp.copyPixelsFromBuffer(ByteBuffer.wrap(bmpByte));
+        if (bmpByte != null) stitchBmp.copyPixelsFromBuffer(ByteBuffer.wrap(bmpByte));
 
         return stitchBmp;
 
@@ -63,12 +63,12 @@ public class IconHandler {
         return bmp;
     }
 
-    public String saveToInternalStorage(Drawable drawable, File dir, String iconName){
+    public String saveToInternalStorage(Drawable drawable, File dir, String iconName) {
         Bitmap bitmapImage = getBitmapFromDrawable(drawable);
 
         File mypath = new File(dir, iconName);
 
-        if(mypath.exists())
+        if (mypath.exists())
             return dir.getAbsolutePath();
 
         FileOutputStream fos = null;
@@ -80,32 +80,34 @@ public class IconHandler {
             e.printStackTrace();
         } finally {
             try {
-                fos.close();
+                if (fos != null)
+                    fos.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return dir.getAbsolutePath();
+        if(dir != null)
+            return dir.getAbsolutePath();
+        return null;
     }
 
-    public Bitmap loadImageFromStorage(String path ,String iconName)
-    {
+    public Bitmap loadImageFromStorage(String path, String iconName) {
+
+        if(path == null)
+            return null;
 
         Bitmap icon = null;
 
         try {
-            File f=new File(path, iconName);
+            File f = new File(path, iconName);
             icon = BitmapFactory.decodeStream(new FileInputStream(f));
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
         return icon;
 
     }
-
 
 
 }

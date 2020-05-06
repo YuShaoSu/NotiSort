@@ -5,6 +5,10 @@
         android:icon="@drawable/icon_help_selector"
         android:title="@string/help" />
     <item
+        android:id="@+id/action_sync"
+        android:icon="@drawable/ic_backup_black_24dp"
+        android:title="@string/sync" />
+    <item
         android:id="@+id/action_profile"
         android:icon="@drawable/icon_profile_selector"
         android:title="@string/profile"/>

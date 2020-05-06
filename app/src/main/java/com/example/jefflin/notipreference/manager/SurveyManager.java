@@ -2,10 +2,8 @@ package com.example.jefflin.notipreference.manager;
 
 import android.util.Log;
 
-import com.example.jefflin.notipreference.model.Accessibility;
 import com.example.jefflin.notipreference.model.ActivityRecognitionModel;
 import com.example.jefflin.notipreference.model.AnswerJson;
-import com.example.jefflin.notipreference.model.LocationUpdateModel;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.model.Answer;
 import com.example.jefflin.notipreference.model.NotiModel;
@@ -14,7 +12,6 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,12 +19,12 @@ public class SurveyManager {
     private static volatile SurveyManager uniqueInstance;
     ArrayList<Answer> answerArrayList = new ArrayList<>();
     Map<String, ArrayList<NotiItem>> mMap = new HashMap<>();
-    private boolean isSurveyDone;
-    private boolean isSurveyBlock;
-    private boolean isSurveyDoing;
-    private boolean dontDisturb;
-    private int interval;
-    private Long surveyPostTime;
+    private static boolean isSurveyDone = false;
+    private static boolean isSurveyBlock = false;
+    private static boolean isSurveyDoing = false;
+    private static boolean dontDisturb = false;
+    private  int interval;
+    private  Long surveyPostTime;
 
     public boolean isDontDisturb() {
         return dontDisturb;
@@ -120,18 +117,18 @@ public class SurveyManager {
     }
 
     public void surveyInit() {
-        isSurveyBlock = false;
-        isSurveyDone = false;
-        isSurveyDoing = false;
+//        isSurveyBlock = false;
+//        isSurveyDone = false;
+//        isSurveyDoing = false;
         clearAnswerList();
         mMap.clear();
     }
 
     public void surveyDone() {
         Log.d("SuveyManager", "survey done");
-        isSurveyDone = true;
-        isSurveyBlock = false;
-        isSurveyDoing = false;
+//        isSurveyDone = true;
+//        isSurveyBlock = false;
+//        isSurveyDoing = false;
         clearAnswerList();
         mMap.clear();
     }

@@ -6,12 +6,19 @@
     <string name="profile">資料設定</string>
     <string name="history">全部通知</string>
     <string name="sync">回傳資料</string>
+    <string name="survey">點此開始填寫問卷</string>
+
 
     <string name="comapre_diff">請問造成兩種排列不同的原因為何?</string>
     <string name="additional">其他補充說明 (若有任何填寫上的困難，也請在此說明) </string>
 
     <string name="sync_time">上次回傳時間</string>
     <string name="sync_time_value">2020&#8211;00&#8211;00 00:00</string>
+
+    <string name="done_title">三小時內是否完成問卷</string>
+    <string name="done_bool">否</string>
+
+
 
     <string name="accessibility_service_description">Collect screen event</string>
 
