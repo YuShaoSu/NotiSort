@@ -171,7 +171,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         NotiItem item;
         item = mData.get(pos);
         if (sortType == 0) item.setNotClick();
-        //else if (sortType == 1) item.setNotDisplay();
+        else if (sortType == 1) item.setNotDisplay();
         mData.add(item);
         mData.remove(pos);
         notifyItemRemoved(pos);
