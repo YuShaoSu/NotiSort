@@ -145,10 +145,8 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/q3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5pt"
                 android:orientation="vertical">
 
                 <TextView
@@ -156,47 +154,61 @@
                     android:layout_height="wrap_content"
                     android:text="3. 你當時在進行什麼活動?" />
 
-                <CheckBox
-                    android:id="@+id/q3_1"
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/q3"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="放鬆/娛樂" />
+                    android:orientation="vertical">
 
-                <CheckBox
-                    android:id="@+id/q3_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="工作" />
+                    <RadioButton
+                        android:id="@+id/q3_0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="打發時間" />
 
-                <CheckBox
-                    android:id="@+id/q3_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="讀書" />
+                    <RadioButton
+                        android:id="@+id/q3_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="休閒娛樂" />
 
-                <CheckBox
-                    android:id="@+id/q3_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="運動" />
+                    <RadioButton
+                        android:id="@+id/q3_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="工作" />
 
-                <CheckBox
-                    android:id="@+id/q3_5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="用餐" />
+                    <RadioButton
+                        android:id="@+id/q3_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="讀書" />
 
-                <CheckBox
-                    android:id="@+id/q3_6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="通勤" />
+                    <RadioButton
+                        android:id="@+id/q3_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="運動" />
 
-                <CheckBox
-                    android:id="@+id/q3_7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="其他" />
+                    <RadioButton
+                        android:id="@+id/q3_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="用餐" />
+
+                    <RadioButton
+                        android:id="@+id/q3_6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="搭乘交通工具" />
+
+                    <RadioButton
+                        android:id="@+id/q3_7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="其他" />
+
+                </RadioGroup>
 
                 <EditText
                     android:id="@+id/q3_other"
@@ -207,8 +219,8 @@
                     android:textSize="12sp"
                     android:windowSoftInputMode="stateHidden"
                     android:imeOptions="actionDone" />
-
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
