@@ -197,10 +197,13 @@ public class ActivityMain extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == SURVEY_REQUEST) {
+
             sharedPreferences.edit().putBoolean("done", true)
                     .putBoolean("block", false)
-                    .putBoolean("done", false)
+                    .putBoolean("doing", false)
                     .apply();
+
+            setDoneBool();
 
             Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
             switch (resultCode) {

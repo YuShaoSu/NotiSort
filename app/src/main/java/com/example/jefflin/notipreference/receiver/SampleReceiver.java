@@ -30,7 +30,10 @@ public class SampleReceiver extends BroadcastReceiver {
 //        SurveyManager.getInstance().setInterval(interval);
         if (interval == 1) {
             SurveyManager.getInstance().surveyInit();
-            sharedPreferences.edit().putBoolean("dontDisturb", false).apply();
+            sharedPreferences.edit().putBoolean("dontDisturb", false)
+                    .putBoolean("block", false)
+                    .putBoolean("done", false)
+                    .apply();
         } else if (interval == 0) {
             sharedPreferences.edit().putBoolean("done", true)
                     .putBoolean("block", false)
