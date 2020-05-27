@@ -96,18 +96,11 @@ public class NotiListenerService extends NotificationListenerService {
 
     private static Map<String, ArrayList<NotiItem>> itemMap;
 
-    public static NotiListenerService get() {
-        sem.acquireUninterruptibly();
-        NotiListenerService ret = _this;
-        sem.release();
-        return ret;
-    }
-
     @Override
     public void onListenerConnected() {
         Log.i(TAG, "Connected");
-        _this = this;
-        sem.release();
+        //_this = this;
+        //sem.release();
 
         pushNotification = new PushNotification(this);
         pushNotification.push(true);
@@ -116,8 +109,8 @@ public class NotiListenerService extends NotificationListenerService {
     @Override
     public void onListenerDisconnected() {
         Log.i(TAG, "Disconnected");
-        sem.acquireUninterruptibly();
-        _this = null;
+        //sem.acquireUninterruptibly();
+        //_this = null;
         pushNotification.cancel(true);
     }
 
@@ -272,13 +265,13 @@ public class NotiListenerService extends NotificationListenerService {
         return super.onUnbind(intent);
     }
 
-    public static boolean getActiveNotis() {
-        NotiListenerService notiListenerService = NotiListenerService.get();
+    private boolean getActiveNotis() {
+        //NotiListenerService notiListenerService = NotiListenerService.get();
         ArrayList<NotiItem> click = new ArrayList<NotiItem>();
         ArrayList<NotiItem> display = new ArrayList<NotiItem>();
         int order = 0;
         itemMap = new HashMap();
-        for (StatusBarNotification notification : notiListenerService.getActiveNotifications()) {
+        for (StatusBarNotification notification : getActiveNotifications()) {
             click.add(setNotiItem(notification, order));
             display.add(setNotiItem(notification, order));
             order++;
