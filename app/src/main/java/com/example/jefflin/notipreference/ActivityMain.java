@@ -49,6 +49,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -158,6 +159,8 @@ public class ActivityMain extends AppCompatActivity {
                         break;
                     case R.id.action_sync:
                         sync(false);
+                        Toast toast = Toast.makeText(ActivityMain.this,"成功回傳！", Toast.LENGTH_SHORT);
+                        toast.show();
                         break;
                     case R.id.action_profile:
                         startActivity(intent_history);
