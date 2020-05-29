@@ -122,7 +122,7 @@ public class ActivityMain extends AppCompatActivity {
         setPermission();
         setBotNavView();
         setSyncTime();
-        setDoneBool();
+        //setDoneBool();
     }
 
     private void setSyncTime() {
@@ -203,7 +203,7 @@ public class ActivityMain extends AppCompatActivity {
                     .putBoolean("doing", false)
                     .apply();
 
-            setDoneBool();
+            //setDoneBool();
 
             Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
             switch (resultCode) {
