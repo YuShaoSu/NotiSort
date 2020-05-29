@@ -207,6 +207,7 @@ public class ActivityMain extends AppCompatActivity {
                     .apply();
 
             //setDoneBool();
+            setBotNavView();
 
             Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
             switch (resultCode) {
