@@ -202,7 +202,7 @@ public class Answer implements Serializable {
 //    }
 
     public void setId(String id) {
-        this.id = id;
+        this.deviceID = id;
     }
 
     public void setSurveyFinishTime(long t) {this.surveyFinishTime = t;}
