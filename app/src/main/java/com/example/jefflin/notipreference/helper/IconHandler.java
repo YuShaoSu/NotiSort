@@ -76,24 +76,20 @@ public class IconHandler {
             fos = new FileOutputStream(mypath);
             // Use the compress method on the BitMap object to write image to the OutputStream
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fos != null)
-                    fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.d("ICON handler save", "Error accessing file: " + e.getMessage());
+        } catch (IOException e) {
+            Log.d("ICON handler save", "File not found: " + e.getMessage());
         }
         if(dir != null)
             return dir.getAbsolutePath();
-        return null;
+        return "fail";
     }
 
     public Bitmap loadImageFromStorage(String path, String iconName) {
 
-        if(path == null)
+        if(path.equals("fail"))
             return null;
 
         Bitmap icon = null;

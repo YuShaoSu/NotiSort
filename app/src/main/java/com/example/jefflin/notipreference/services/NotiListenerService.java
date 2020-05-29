@@ -488,12 +488,12 @@ public class NotiListenerService extends NotificationListenerService {
         } catch (Exception e) {
             Log.e("NotiListenerService", "category failed", e);
         }
-//        try {
-//            IconHandler iconHandler = new IconHandler();
-//            icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
-//        } catch (Exception e) {
-//            Log.e("NotiListenerService", "icon failed", e);
-//        }
+        try {
+            IconHandler iconHandler = new IconHandler();
+            icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "icon failed", e);
+        }
 
         NotiItem notiItem = new NotiItem(appName, title, content, postTime, category, order);
         notiItem.setIcon(icon);
