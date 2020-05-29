@@ -42,6 +42,7 @@
             android:background="@drawable/not_check_small_round_button"
             android:text="@string/not_attend_2"
             android:layout_margin="5dp"
+            android:visibility="gone"
             android:textSize="12sp" />
 
     </LinearLayout>

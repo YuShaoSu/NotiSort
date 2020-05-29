@@ -8,13 +8,13 @@
   "ESMQuestions": [
     {
       "question_type": "Survey",
-      "question_title": "請回答以下問題\n(請依五分鐘前情境作答)",
+      "question_title": "請回答以下問題\n(請依十分鐘前情境作答)",
       "description": "1 of 5",
       "required": false
     },
     {
       "question_type": "Sort",
-      "question_title": "若您五分鐘前在通知列裡看到以下這些通知\n您會點擊的順序為何？(若不用點擊請左滑)",
+      "question_title": "若您十分鐘前在通知列裡看到以下這些通知\n您會點擊的順序為何？(若不用點擊請左滑)",
       "description": "2 of 5",
       "required": false
     },
@@ -26,7 +26,7 @@
     },
     {
       "question_type": "displaySort",
-      "question_title": "若您五分鐘前在通知列裡看到以下這些通知\n您希望的實際呈現順序為何？(若不希望呈現請左滑)",
+      "question_title": "若您十分鐘前在通知列裡看到以下這些通知\n您希望的實際呈現順序為何？(若不希望呈現請左滑)",
       "description": "4 of 5",
       "required": false
     },
