@@ -68,9 +68,11 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
 
         IconHandler iconHandler = new IconHandler();
         Bitmap icon_ = iconHandler.loadImageFromStorage(notiItem.icon, notiItem.appName);
-        Drawable icon = new BitmapDrawable(mContext.getResources(), icon_);
+        if(icon_ != null) {
+            Drawable icon = new BitmapDrawable(mContext.getResources(), icon_);
+            holder.iv_icon.setImageDrawable(icon);
+        }
 
-        holder.iv_icon.setImageDrawable(icon);
         holder.tv_appname.setText(notiItem.appName);
         holder.tv_title.setText(notiItem.title);
         holder.tv_content.setText(notiItem.content);
