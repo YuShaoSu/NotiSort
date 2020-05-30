@@ -65,26 +65,29 @@ public class IconHandler {
 
     public String saveToInternalStorage(Drawable drawable, File dir, String iconName) {
         Bitmap bitmapImage = getBitmapFromDrawable(drawable);
+        String path_name;
 
-        File mypath = new File(dir, iconName);
+        File icon = new File(dir, iconName);
 
-        if (mypath.exists())
+        if (icon.exists())
             return dir.getAbsolutePath();
 
-        FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(mypath);
+            FileOutputStream fos = new FileOutputStream(icon);
             // Use the compress method on the BitMap object to write image to the OutputStream
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
             fos.close();
+            path_name = dir.getAbsolutePath();
         } catch (FileNotFoundException e) {
             Log.d("ICON handler save", "Error accessing file: " + e.getMessage());
+            path_name = "fail";
         } catch (IOException e) {
             Log.d("ICON handler save", "File not found: " + e.getMessage());
+            path_name = "fail";
         }
-        if(dir != null)
-            return dir.getAbsolutePath();
-        return "fail";
+
+        return path_name;
     }
 
     public Bitmap loadImageFromStorage(String path, String iconName) {

@@ -113,7 +113,7 @@ public class ActivityMain extends AppCompatActivity {
 //            startActivityForResult(survey, SURVEY_REQUEST);
 //        }
 
-        GlobalClass.setDirPath(getApplicationContext(), "iconDir");
+        GlobalClass.setDirPath(getApplicationContext().getDir("iconDir", Context.MODE_PRIVATE));
         notiDao = NotiDatabase.getInstance(getApplicationContext()).notiDao();
         activityRecognitionDao = NotiDatabase.getInstance(getApplicationContext()).activityRecognitionDao();
         locationUpdateDao = NotiDatabase.getInstance(getApplicationContext()).locationUpdateDao();

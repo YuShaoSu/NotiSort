@@ -19,8 +19,12 @@ public class GlobalClass extends Application {
     public static File getDirPath() {
         return dirPath;
     }
-    public static void setDirPath(Context context, String dirName) {
-        dirPath = context.getDir(dirName, Context.MODE_PRIVATE);
+//    public static void setDirPath(Context context, String dirName) {
+//        dirPath = context.getDir(dirName, Context.MODE_PRIVATE);
+//    }
+
+    public static void setDirPath(File path) {
+        dirPath = path;
     }
 
     public static String getDeviceID() {

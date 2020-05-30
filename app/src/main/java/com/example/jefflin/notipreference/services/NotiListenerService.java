@@ -152,6 +152,8 @@ public class NotiListenerService extends NotificationListenerService {
         requestLocationUpdates(this);
         requestPhoneStateUpdates(this);
         registerSensorUpdates(this);
+        GlobalClass.setDirPath(getApplicationContext().getDir("iconDir", Context.MODE_PRIVATE));
+
 
         sharedPreferences = this.getSharedPreferences("survey", MODE_PRIVATE);
         // sharePref init
