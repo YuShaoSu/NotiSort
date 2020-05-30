@@ -79,7 +79,7 @@ public class TwoListItemsAdapter extends RecyclerView.Adapter<TwoListItemsAdapte
         holder.tv_title.setText(notiItem.title);
         holder.tv_content.setText(notiItem.content);
 
-        if(notiItem.getClickOrder() == -9999) {
+        if(notiItem.getClickOrder() == -9999 || notiItem.getDisplayOrder() == -9999) {
             holder.linearLayout.setBackgroundColor(Color.parseColor("#DDDDDD"));
         }
         else {

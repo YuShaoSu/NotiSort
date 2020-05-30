@@ -165,7 +165,14 @@ public class FragmentCompare extends Fragment {
     public boolean twoListDiff() {
         boolean diff = false;
         for (int i = 0; i < mActiveData.size(); i++) {
+            if(mActiveDataDisplay.get(i).getDisplayOrder() == -9999 && mActiveData.get(i).getClickOrder() == -9999) {
+                break;
+            }
             if (mActiveData.get(i).origin_order != mActiveDataDisplay.get(i).origin_order) {
+                diff = true;
+                break;
+            }
+            if (mActiveData.get(i).getClickOrder() == -9999 || mActiveDataDisplay.get(i).getDisplayOrder() == -9999) {
                 diff = true;
                 break;
             }

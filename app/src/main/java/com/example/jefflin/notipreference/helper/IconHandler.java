@@ -56,10 +56,22 @@ public class IconHandler {
     public Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
         final Bitmap bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 10, out);      // compress to save memory
-        final Canvas canvas = new Canvas(bmp);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
+        try {
+            bmp.compress(Bitmap.CompressFormat.JPEG, 10, out);      // compress to save memory
+            final Canvas canvas = new Canvas(bmp);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
         return bmp;
     }
 
@@ -72,12 +84,12 @@ public class IconHandler {
         if (icon.exists())
             return dir.getAbsolutePath();
 
+        FileOutputStream fos = null;
         try {
-            FileOutputStream fos = new FileOutputStream(icon);
+            fos = new FileOutputStream(icon);
             // Use the compress method on the BitMap object to write image to the OutputStream
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.flush();
-            fos.close();
             path_name = dir.getAbsolutePath();
         } catch (FileNotFoundException e) {
             Log.d("ICON handler save", "Error accessing file: " + e.getMessage());
@@ -85,6 +97,12 @@ public class IconHandler {
         } catch (IOException e) {
             Log.d("ICON handler save", "File not found: " + e.getMessage());
             path_name = "fail";
+        } finally {
+            try {
+                fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return path_name;
@@ -92,7 +110,7 @@ public class IconHandler {
 
     public Bitmap loadImageFromStorage(String path, String iconName) {
 
-        if(path.equals("fail"))
+        if (path.equals("fail"))
             return null;
 
         Bitmap icon = null;
