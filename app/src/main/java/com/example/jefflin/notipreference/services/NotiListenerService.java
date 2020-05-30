@@ -173,13 +173,14 @@ public class NotiListenerService extends NotificationListenerService {
         final NotiModel noti;
         noti = setNotiModel(sbn);
 
-
-        mExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                db.notiDao().insertNoti(noti);
-            }
-        });
+        if(!noti.appName.equals("notiSort")){
+            mExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    db.notiDao().insertNoti(noti);
+                }
+            });
+        }
 
         if (sharedPreferences.getBoolean("block", false) || sharedPreferences.getBoolean("done", false))
             return;

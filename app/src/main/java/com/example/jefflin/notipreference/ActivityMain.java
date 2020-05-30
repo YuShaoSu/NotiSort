@@ -123,6 +123,7 @@ public class ActivityMain extends AppCompatActivity {
         setPermission();
         setBotNavView();
         setSyncTime();
+        setSurveyButton();
         //setDoneBool();
     }
 
@@ -142,6 +143,27 @@ public class ActivityMain extends AppCompatActivity {
         sb.append("dont disturb: ");
         sb.append(sharedPreferences.getBoolean("dontDisturb", true) ? "是; " : "否; ");
         done_bool.setText(sb.toString());
+    }
+
+    private void setSurveyButton() {
+        Button survey_button = (Button) findViewById(R.id.survey);
+        if (!sharedPreferences.getBoolean("done", false) &&
+                !sharedPreferences.getBoolean("dontDisturb", false) &&
+                sharedPreferences.getBoolean("block", false)) {
+            survey_button.setVisibility(View.VISIBLE);
+        } else {
+            survey_button.setVisibility(View.GONE);
+        }
+
+        survey_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                sync(false);
+                final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
+                survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
+                startActivityForResult(survey, SURVEY_REQUEST);
+            }
+        });
     }
 
     private void setBotNavView() {
@@ -169,25 +191,6 @@ public class ActivityMain extends AppCompatActivity {
             }
         });
 
-        Button survey_button = (Button) findViewById(R.id.survey);
-        if (!sharedPreferences.getBoolean("done", false) &&
-                !sharedPreferences.getBoolean("dontDisturb", false) &&
-                sharedPreferences.getBoolean("block", false)) {
-            survey_button.setVisibility(View.VISIBLE);
-        } else {
-            survey_button.setVisibility(View.GONE);
-        }
-
-        survey_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sync(false);
-                final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
-                survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
-                startActivityForResult(survey, SURVEY_REQUEST);
-            }
-        });
-
     }
 
     @Override
@@ -204,10 +207,11 @@ public class ActivityMain extends AppCompatActivity {
             sharedPreferences.edit().putBoolean("done", true)
                     .putBoolean("block", false)
                     .putBoolean("doing", false)
-                    .apply();
+                    .commit();
 
             //setDoneBool();
             setBotNavView();
+
 
             Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
             switch (resultCode) {
@@ -232,6 +236,7 @@ public class ActivityMain extends AppCompatActivity {
         } else {
             Log.d("ActivityMainResult", "not SURVEY_REQUEST " + requestCode);
         }
+
     }
 
     private void sync(final boolean now) {
@@ -276,7 +281,11 @@ public class ActivityMain extends AppCompatActivity {
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            try {
+                notificationManager.createNotificationChannel(channel);
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
 
             NotificationChannel channelOngoing = new NotificationChannel(String.valueOf(R.string.channelOngoingID), getString(R.string.channelNameOngoing), NotificationManager.IMPORTANCE_MIN);
             channelOngoing.setDescription(getString(R.string.channelDescriptionOngoing));
