@@ -19,20 +19,20 @@ public class SurveyManager {
     private static volatile SurveyManager uniqueInstance;
     ArrayList<Answer> answerArrayList = new ArrayList<>();
     Map<String, ArrayList<NotiItem>> mMap = new HashMap<>();
-    private static boolean isSurveyDone = false;
-    private static boolean isSurveyBlock = false;
-    private static boolean isSurveyDoing = false;
-    private static boolean dontDisturb = false;
+//    private static boolean isSurveyDone = false;
+//    private static boolean isSurveyBlock = false;
+//    private static boolean isSurveyDoing = false;
+//    private static boolean dontDisturb = false;
     private  int interval;
     private  Long surveyPostTime;
 
-    public boolean isDontDisturb() {
-        return dontDisturb;
-    }
-
-    public void setDontDisturb(boolean dontDisturb) {
-        this.dontDisturb = dontDisturb;
-    }
+//    public boolean isDontDisturb() {
+//        return dontDisturb;
+//    }
+//
+//    public void setDontDisturb(boolean dontDisturb) {
+//        this.dontDisturb = dontDisturb;
+//    }
 
     public void pushAnswerList(Answer answer) {
         answerArrayList.add(answer);
@@ -48,8 +48,8 @@ public class SurveyManager {
     }
 
     private SurveyManager() {
-        setSurveyDone(false);
-        setSurveyBlock(false);
+//        setSurveyDone(false);
+//        setSurveyBlock(false);
     }
 
     public static SurveyManager getInstance() {
@@ -63,29 +63,29 @@ public class SurveyManager {
         return uniqueInstance;
     }
 
-    public boolean isSurveyBlock() {
-        return isSurveyBlock;
-    }
-
-    public void setSurveyBlock(boolean surveyBlock) {
-        isSurveyBlock = surveyBlock;
-    }
-
-    public boolean isSurveyDone() {
-        return isSurveyDone;
-    }
-
-    public void setSurveyDone(boolean surveyDone) {
-        isSurveyDone = surveyDone;
-    }
-
-    public boolean isSurveyDoing() {
-        return isSurveyDoing;
-    }
-
-    public void setSurveyDoing(boolean surveyDoing) {
-        isSurveyDoing = surveyDoing;
-    }
+//    public boolean isSurveyBlock() {
+//        return isSurveyBlock;
+//    }
+//
+//    public void setSurveyBlock(boolean surveyBlock) {
+//        isSurveyBlock = surveyBlock;
+//    }
+//
+//    public boolean isSurveyDone() {
+//        return isSurveyDone;
+//    }
+//
+//    public void setSurveyDone(boolean surveyDone) {
+//        isSurveyDone = surveyDone;
+//    }
+//
+//    public boolean isSurveyDoing() {
+//        return isSurveyDoing;
+//    }
+//
+//    public void setSurveyDoing(boolean surveyDoing) {
+//        isSurveyDoing = surveyDoing;
+//    }
 
     public long getSurveyPostTime() {
         return surveyPostTime;
@@ -105,15 +105,15 @@ public class SurveyManager {
         return mMap.isEmpty();
     }
 
-    public void surveyBlock() {
-        isSurveyBlock = !isNotiNull();
-    }
+//    public void surveyBlock() {
+//        isSurveyBlock = !isNotiNull();
+//    }
 
     public void surveyUnblock() {
         clearAnswerList();
         mMap.clear();
-        isSurveyBlock = false;
-        isSurveyDoing = false;
+//        isSurveyBlock = false;
+//        isSurveyDoing = false;
     }
 
     public void surveyInit() {

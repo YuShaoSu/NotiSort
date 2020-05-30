@@ -20,6 +20,7 @@ public class UnblockTask extends TimerTask {
         sharedPreferences.edit().putBoolean("block", false)
                             .putBoolean("doing", false)
                             .apply();
+        SurveyManager.getInstance().surveyInit();
     }
 
 }

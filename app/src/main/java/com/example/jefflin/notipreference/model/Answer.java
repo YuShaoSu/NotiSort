@@ -241,7 +241,7 @@ public class Answer implements Serializable {
     }
 
     public void setEsmQ8(String esm_q8) {
-        this.esm_q7 = esm_q8;
+        this.esm_q8 = esm_q8;
     }
 
     // false for scale check fails

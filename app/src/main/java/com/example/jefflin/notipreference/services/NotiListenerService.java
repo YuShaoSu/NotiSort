@@ -188,6 +188,8 @@ public class NotiListenerService extends NotificationListenerService {
         if (getActiveNotis()) {
             Log.d("Survey", "10分鐘後發");
             // block
+            sharedPreferences.edit().putBoolean("block", true).apply();
+
             Timer timer = new Timer();
             timer.schedule(new PushTask(this), 600000);
 
@@ -199,7 +201,6 @@ public class NotiListenerService extends NotificationListenerService {
             timer1.schedule(new SampleTask(this, 1, 2), 1 * 60000);
 
             SurveyManager.getInstance().setMap(itemMap);
-            sharedPreferences.edit().putBoolean("block", true).apply();
         }
     }
 

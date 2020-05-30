@@ -29,7 +29,7 @@ public class SampleReceiver extends BroadcastReceiver {
 
 //        SurveyManager.getInstance().setInterval(interval);
         if (interval == 1) {
-            SurveyManager.getInstance().surveyInit();
+//            SurveyManager.getInstance().surveyInit();
             sharedPreferences.edit().putBoolean("dontDisturb", false)
                     .putBoolean("block", false)
                     .putBoolean("done", false)
@@ -39,10 +39,10 @@ public class SampleReceiver extends BroadcastReceiver {
                     .putBoolean("block", false)
                     .putBoolean("dontDisturb", true)
                     .apply();
-            SurveyManager.getInstance().surveyDone();
+//            SurveyManager.getInstance().surveyDone();
         } else if (interval == 2) {
             if (!sharedPreferences.getBoolean("dontDisturb", false)) {
-                SurveyManager.getInstance().surveyInit();
+//                SurveyManager.getInstance().surveyInit();
                 sharedPreferences.edit().putBoolean("done", false)
                         .putBoolean("block", false)
                         .putBoolean("doing", false)

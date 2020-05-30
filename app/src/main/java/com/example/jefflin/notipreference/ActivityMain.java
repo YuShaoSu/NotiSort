@@ -204,6 +204,7 @@ public class ActivityMain extends AppCompatActivity {
 
         if (requestCode == SURVEY_REQUEST) {
 
+            SurveyManager.getInstance().surveyDone();
             sharedPreferences.edit().putBoolean("done", true)
                     .putBoolean("block", false)
                     .putBoolean("doing", false)
