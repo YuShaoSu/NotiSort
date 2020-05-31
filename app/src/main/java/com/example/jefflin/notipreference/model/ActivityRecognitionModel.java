@@ -28,12 +28,11 @@ public class ActivityRecognitionModel {
 
     public ActivityRecognitionModel() {}
 
-    public ActivityRecognitionModel(int mA, int mT, long time) {
+    public ActivityRecognitionModel(int mA, int mT, long time, String dID) {
         this.activityType = mA;
         this.transitionType = mT;
-//        this.eventString = event;
         this.timestamp = time;
-        this.deviceID = GlobalClass.getDeviceID();
+        this.deviceID = dID;
     }
 
     public int getId() { return id; }

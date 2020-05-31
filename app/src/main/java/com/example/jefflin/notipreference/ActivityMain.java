@@ -84,7 +84,8 @@ public class ActivityMain extends AppCompatActivity {
     final private String LU_POST = "location_update";
     final private String AC_POST = "accessibility";
     final private String DATA_FORMAT = "MMMM d, yyyy 'at' h:mm a";
-    Executor mExecutor = Executors.newSingleThreadExecutor();
+//    Executor mExecutor = Executors.newSingleThreadExecutor();
+    Executor mExecutor = Executors.newCachedThreadPool();
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -94,8 +95,8 @@ public class ActivityMain extends AppCompatActivity {
 
         createNotificationChannel();
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("NotiListenerService.Arrival");
+//        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction("NotiListenerService.Arrival");
 
         sharedPreferences = this.getSharedPreferences("survey", MODE_PRIVATE);
 
@@ -195,8 +196,23 @@ public class ActivityMain extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        Log.d("Activity Main", "onDestroy");
         super.onDestroy();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setSurveyButton();
+        Log.d("Activity Main", "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d("Activity Main", "onPause");
+        super.onPause();
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -208,7 +224,7 @@ public class ActivityMain extends AppCompatActivity {
             sharedPreferences.edit().putBoolean("done", true)
                     .putBoolean("block", false)
                     .putBoolean("doing", false)
-                    .commit();
+                    .apply();
 
             //setDoneBool();
             setBotNavView();
@@ -441,6 +457,8 @@ public class ActivityMain extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+
+
     private void setNextSurvey() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this, SampleReceiver.class);
@@ -450,7 +468,7 @@ public class ActivityMain extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.HOUR_OF_DAY, 3);
         alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pii);
-        Log.d("interval time", String.valueOf(c.getTime()));
+        Log.d("next survey time", String.valueOf(c.getTime()));
     }
 
 }

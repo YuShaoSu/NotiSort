@@ -80,7 +80,8 @@ public class NotiListenerService extends NotificationListenerService {
     static PackageManager packageManager;
     static NotiListenerService _this;
     static Semaphore sem = new Semaphore(0);
-    Executor mExecutor = Executors.newSingleThreadExecutor();
+//    Executor mExecutor = Executors.newSingleThreadExecutor();
+    Executor mExecutor = Executors.newCachedThreadPool();
     private FusedLocationProviderClient fusedLocationClient;
     private AudioManager audioManager;
     private BatteryManager batteryManager;
@@ -173,6 +174,8 @@ public class NotiListenerService extends NotificationListenerService {
         final NotiModel noti;
         noti = setNotiModel(sbn);
 
+        Log.d("notilistener", "onPosted");
+
         if(!noti.appName.equals("notiSort")){
             mExecutor.execute(new Runnable() {
                 @Override
@@ -182,8 +185,12 @@ public class NotiListenerService extends NotificationListenerService {
             });
         }
 
+        Log.d("notilistener", "sharedPreference");
+
         if (sharedPreferences.getBoolean("block", false) || sharedPreferences.getBoolean("done", false))
             return;
+
+        Log.d("notilistener", "before get activity");
 
         if (getActiveNotis()) {
             Log.d("Survey", "10分鐘後發");
@@ -194,6 +201,7 @@ public class NotiListenerService extends NotificationListenerService {
             timer.schedule(new PushTask(this), 600000);
 
             // first answer
+            SurveyManager.getInstance().surveyInit();
             Answer answer = new Answer(Calendar.getInstance().getTimeInMillis(), SurveyManager.getInstance().getInterval());
             answer.setContext(this);
             SurveyManager.getInstance().pushAnswerList(answer);
@@ -202,6 +210,8 @@ public class NotiListenerService extends NotificationListenerService {
 
             SurveyManager.getInstance().setMap(itemMap);
         }
+
+        Log.d("notilistener", "onPost bottom");
     }
 
 
@@ -264,6 +274,7 @@ public class NotiListenerService extends NotificationListenerService {
     public void onNotificationRemoved(StatusBarNotification sbn) {
     }
 
+    // TODO
     @Override
     public boolean onUnbind(Intent intent) {
         return super.onUnbind(intent);
@@ -281,17 +292,23 @@ public class NotiListenerService extends NotificationListenerService {
             order++;
         }
 
+
         // check for requirement
-        if (order < 5 || getNumberOfPackage(click) < 3)
+        if (order < 6 || getNumberOfPackage(click) < 3)
             return false;
         // get without duplicate and null ones
         click = getNotisWithoutDuplicateNull(click);
         display = getNotisWithoutDuplicateNull(display);
         // check for number again
-        if (click.size() < 5 || getNumberOfPackage(click) < 3)
+        if (click.size() < 6 || getNumberOfPackage(click) < 3)
             return false;
 
+        Log.d("notilistener", "before getActiveNotisWithOrder");
+
         itemMap = getNotificationsWithOrder(click, display, 6, 3);
+
+        Log.d("notilistener", "getActiveNotis bottom");
+
 
         return true;
     }
@@ -339,11 +356,19 @@ public class NotiListenerService extends NotificationListenerService {
         bound.add((2 * quo) + rmd);
         bound.add(click.size());
 
+        Log.d("notilistener", "inside getWithOrder");
+
+        for (int i = 0; i <= 3; ++i) {
+            Log.d("bound ", i + " :" + bound.get(i));
+        }
 
         for (int i = 0; i < 3; ++i) {
             int a = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
             int b = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
-            while (a == b) b = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
+            while (a == b) {
+                b = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
+                Log.d("notilistener", "inside getWithOrder random a,b same");
+            }
             newClick.add(click.get(a));
             newClick.add(click.get(b));
             newDisplay.add(display.get(a));
@@ -352,6 +377,8 @@ public class NotiListenerService extends NotificationListenerService {
 
         map.put("click", newClick);
         map.put("display", newDisplay);
+
+        Log.d("notilistener", "getWithOrder bottom");
 
         return map;
     }
@@ -546,6 +573,7 @@ public class NotiListenerService extends NotificationListenerService {
         cf.set(Calendar.HOUR_OF_DAY, 8);
         cf.set(Calendar.MINUTE, 0);
         cf.set(Calendar.SECOND, 0);
+        cf.add(Calendar.HOUR_OF_DAY, 24);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cf.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
         Log.d("interval time", String.valueOf(cf.getTime()));
 

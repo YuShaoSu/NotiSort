@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.jefflin.notipreference.database.ActivityRecognitionDao;
@@ -20,7 +21,8 @@ public class ActivityRecognitionReceiver extends BroadcastReceiver {
     public ActivityRecognitionReceiver() {
     }
 
-    Executor mExecutor = Executors.newSingleThreadExecutor();
+//    Executor mExecutor = Executors.newSingleThreadExecutor();
+    Executor mExecutor = Executors.newCachedThreadPool();
 
 
     @Override
@@ -29,9 +31,10 @@ public class ActivityRecognitionReceiver extends BroadcastReceiver {
             ActivityTransitionResult result = ActivityTransitionResult.extractResult(intent);
             for (ActivityTransitionEvent event : result.getTransitionEvents()) {
                 Log.d("ActivityTransitionEvent", event.toString());
+                SharedPreferences sharedPreferences =  context.getSharedPreferences("USER", Context.MODE_PRIVATE);
                 final ActivityRecognitionModel activityRecognitionModel = new ActivityRecognitionModel(
                         event.getActivityType(), event.getTransitionType(),
-                        System.currentTimeMillis());
+                        System.currentTimeMillis(), sharedPreferences.getString("ID", "user id fail"));
                 final ActivityRecognitionDao mDao = NotiDatabase.getInstance(context).activityRecognitionDao();
                 mExecutor.execute(new Runnable() {
                     @Override

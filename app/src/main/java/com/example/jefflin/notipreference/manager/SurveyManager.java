@@ -19,12 +19,12 @@ public class SurveyManager {
     private static volatile SurveyManager uniqueInstance;
     ArrayList<Answer> answerArrayList = new ArrayList<>();
     Map<String, ArrayList<NotiItem>> mMap = new HashMap<>();
-//    private static boolean isSurveyDone = false;
-//    private static boolean isSurveyBlock = false;
-//    private static boolean isSurveyDoing = false;
-//    private static boolean dontDisturb = false;
-    private  int interval;
-    private  Long surveyPostTime;
+    private boolean isSurveyDone = false;
+    private boolean isSurveyBlock = false;
+    private boolean isSurveyDoing = false;
+    private boolean dontDisturb = false;
+    private int interval = 0;
+    private Long surveyPostTime;
 
 //    public boolean isDontDisturb() {
 //        return dontDisturb;
