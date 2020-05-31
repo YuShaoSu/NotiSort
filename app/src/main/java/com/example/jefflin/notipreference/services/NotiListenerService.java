@@ -365,7 +365,7 @@ public class NotiListenerService extends NotificationListenerService {
         for (int i = 0; i < 3; ++i) {
             int a = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
             int b = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
-            while (a == b) {
+            while (a == b && (bound.get(i) + 1) != bound.get(i + 1)) {
                 b = ThreadLocalRandom.current().nextInt(bound.get(i), bound.get(i + 1));
                 Log.d("notilistener", "inside getWithOrder random a,b same");
             }
