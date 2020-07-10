@@ -66,7 +66,8 @@
         </activity>
 
 
-        <activity android:name=".ActivitySurvey">
+        <activity android:name=".ActivitySurvey"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>

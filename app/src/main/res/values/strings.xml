@@ -98,4 +98,9 @@
     <string name="wtf">&#128565;生氣</string>
 
     <string name="textHint1">人數</string>
+
+
+    <string name="sendCount">已收到問卷：</string>
+    <string name="respondedCount">已回覆問卷：</string>
+    <string name="finishedCount">已完成問卷：</string>
 </resources>

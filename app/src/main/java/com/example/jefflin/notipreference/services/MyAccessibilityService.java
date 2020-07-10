@@ -63,7 +63,6 @@ public class MyAccessibilityService extends AccessibilityService {
 
         if (accessibilityEvent.getText() != null) {
 //            text += ":" + accessibilityEvent.getText().toString();
-            //TODO testing the attribute.
             Log.d(TAG, "text : " + text);
         }
 

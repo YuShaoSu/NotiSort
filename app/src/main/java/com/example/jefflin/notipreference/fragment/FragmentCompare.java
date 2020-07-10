@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -127,6 +128,8 @@ public class FragmentCompare extends Fragment {
 
                 } else {  // scale not done or other err(not set on current)
                     Log.d("answer handler", "scale not done");
+                    Toast toast = Toast.makeText(mContext, "問卷尚未完成", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
 
             }

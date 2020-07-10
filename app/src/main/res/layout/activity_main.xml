@@ -62,6 +62,40 @@
         android:gravity="bottom"
         android:text="@string/sync_time_value"
         android:textAlignment="center" />
+    <TextView
+        android:id="@+id/sendCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/sync_time"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="-22dp"
+        android:gravity="bottom"
+        android:text="@string/sendCount"
+        android:textAlignment="center" />
+    <TextView
+        android:id="@+id/respondedCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/sendCount"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="-22dp"
+        android:gravity="bottom"
+        android:text="@string/respondedCount"
+        android:textAlignment="center"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/finishedCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/respondedCount"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="-22dp"
+        android:gravity="bottom"
+        android:text="@string/finishedCount"
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/done_title"

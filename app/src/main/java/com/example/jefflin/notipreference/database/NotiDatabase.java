@@ -16,8 +16,11 @@ import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.model.ActivityRecognitionModel;
 import com.example.jefflin.notipreference.model.NotiModel;
+import com.example.jefflin.notipreference.model.SampleCombination;
+import com.example.jefflin.notipreference.model.SampleRecord;
 
-@Database(entities = {NotiModel.class, NotiItem.class, ActivityRecognitionModel.class, LocationUpdateModel.class, Accessibility.class, AnswerJson.class}, version = 7)
+@Database(entities = {NotiModel.class, NotiItem.class, ActivityRecognitionModel.class, LocationUpdateModel.class,
+        Accessibility.class, AnswerJson.class, SampleRecord.class, SampleCombination.class}, version = 9)
 public abstract class NotiDatabase extends RoomDatabase {
     private static volatile NotiDatabase uniqueInstance;
 
@@ -31,13 +34,18 @@ public abstract class NotiDatabase extends RoomDatabase {
 
     public abstract AnswerJsonDao answerJsonDao();
 
+    public abstract SampleRecordDao sampleRecordDao();
+
+    public abstract  SampleCombinationDao sampleCombinationDao();
+
 
     public static NotiDatabase getInstance(Context context) {
         if (uniqueInstance == null) {
             synchronized (SurveyManager.class) {
                 if (uniqueInstance == null) {
-                    uniqueInstance = Room.inMemoryDatabaseBuilder(context, NotiDatabase.class).
-                            addMigrations(MIGRATION1_2, MIGRATION2_3, MIGRATION3_4, MIGRATION4_5, MIGRATION5_6, MIGRATION6_7).build();
+                    uniqueInstance = Room.databaseBuilder(context, NotiDatabase.class, "NotiSort.db").
+                            addMigrations(MIGRATION1_2, MIGRATION2_3, MIGRATION3_4, MIGRATION4_5,
+                                    MIGRATION5_6, MIGRATION6_7, MIGRATION7_8, MIGRATION8_9).build();
                 }
             }
         }
@@ -109,6 +117,23 @@ public abstract class NotiDatabase extends RoomDatabase {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE `answer` (`id` INTEGER, `json_string` TEXT, PRIMARY KEY(`id`))");
+        }
+    };
+
+    static final Migration MIGRATION7_8 = new Migration(7, 8) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE `sample_record` (`id` INTEGER, `app_name` TEXT, `title` TEXT, `content` TEXT, " +
+                    " `post_time` LONG, PRIMARY KEY(`id`))");
+        }
+    };
+
+    static final Migration MIGRATION8_9 = new Migration(8, 9) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE `sample_combination` (`id` INTEGER NOT NULL, `app_name_comb` TEXT unique NOT NULL, " +
+                    "`count` INTEGER NOT NULL, PRIMARY KEY(`id`))");
+            database.execSQL("CREATE UNIQUE INDEX index_sample_combination_app_name_comb ON sample_combination(app_name_comb)");
         }
     };
 
