@@ -16,27 +16,25 @@ import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.model.ActivityRecognitionModel;
 import com.example.jefflin.notipreference.model.NotiModel;
+import com.example.jefflin.notipreference.model.NotiModelRemove;
+import com.example.jefflin.notipreference.model.NotiPool;
 import com.example.jefflin.notipreference.model.SampleCombination;
 import com.example.jefflin.notipreference.model.SampleRecord;
 
 @Database(entities = {NotiModel.class, NotiItem.class, ActivityRecognitionModel.class, LocationUpdateModel.class,
-        Accessibility.class, AnswerJson.class, SampleRecord.class, SampleCombination.class}, version = 9)
+        Accessibility.class, AnswerJson.class, SampleRecord.class, SampleCombination.class,
+        NotiModelRemove.class, NotiPool.class}, version = 11)
 public abstract class NotiDatabase extends RoomDatabase {
     private static volatile NotiDatabase uniqueInstance;
 
     public abstract NotiDao notiDao();
-
     public abstract ActivityRecognitionDao activityRecognitionDao();
-
-    public abstract LocationUpdateDao locationUpdateDao();
-
     public abstract AccessibilityDao accessibilityDao();
-
     public abstract AnswerJsonDao answerJsonDao();
-
     public abstract SampleRecordDao sampleRecordDao();
-
-    public abstract  SampleCombinationDao sampleCombinationDao();
+    public abstract SampleCombinationDao sampleCombinationDao();
+    public abstract NotiModelRemoveDao notiModelRemoveDao();
+    public abstract NotiPoolDao notiPoolDao();
 
 
     public static NotiDatabase getInstance(Context context) {
@@ -45,7 +43,8 @@ public abstract class NotiDatabase extends RoomDatabase {
                 if (uniqueInstance == null) {
                     uniqueInstance = Room.databaseBuilder(context, NotiDatabase.class, "NotiSort.db").
                             addMigrations(MIGRATION1_2, MIGRATION2_3, MIGRATION3_4, MIGRATION4_5,
-                                    MIGRATION5_6, MIGRATION6_7, MIGRATION7_8, MIGRATION8_9).build();
+                                    MIGRATION5_6, MIGRATION6_7, MIGRATION7_8, MIGRATION8_9, MIGRATION9_10,
+                                    MIGRATION10_11).build();
                 }
             }
         }
@@ -134,6 +133,24 @@ public abstract class NotiDatabase extends RoomDatabase {
             database.execSQL("CREATE TABLE `sample_combination` (`id` INTEGER NOT NULL, `app_name_comb` TEXT unique NOT NULL, " +
                     "`count` INTEGER NOT NULL, PRIMARY KEY(`id`))");
             database.execSQL("CREATE UNIQUE INDEX index_sample_combination_app_name_comb ON sample_combination(app_name_comb)");
+        }
+    };
+
+    static final Migration MIGRATION9_10 = new Migration(9, 10) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE `noti_model_remove` (`id` INTEGER NOT NULL, `app_name` TEXT, " +
+                    "`title` TEXT, `content` TEXT, `post_time` INTEGER NOT NULL, `remove_time` INTEGER NOT NULL, " +
+                    "`reason` INTEGER NOT NULL, `did` TEXT NOT NULL, PRIMARY KEY(`id`))");
+        }
+    };
+
+    static final Migration MIGRATION10_11 = new Migration(10, 11) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE `noti_pool` (`id` INTEGER NOT NULL, `app_name` TEXT, " +
+                    "`title` TEXT, `content` TEXT, `post_time` INTEGER, " +
+                    "`category` TEXT, `icon` TEXT, PRIMARY KEY(`id`))");
         }
     };
 

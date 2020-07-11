@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -21,6 +22,7 @@ public class SampleCombination {
     @ColumnInfo(name = "count")
     private int count;
 
+    @Ignore
     public SampleCombination(){
         appNameComb = "";
     }

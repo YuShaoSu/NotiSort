@@ -36,6 +36,7 @@ import com.example.jefflin.notipreference.ActivityMain;
 import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.Listener.SensorListener;
 import com.example.jefflin.notipreference.R;
+import com.example.jefflin.notipreference.database.NotiPoolDao;
 import com.example.jefflin.notipreference.database.SampleCombinationDao;
 import com.example.jefflin.notipreference.database.SampleRecordDao;
 import com.example.jefflin.notipreference.manager.ContextManager;
@@ -43,6 +44,8 @@ import com.example.jefflin.notipreference.model.Answer;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.model.NotiModel;
+import com.example.jefflin.notipreference.model.NotiModelRemove;
+import com.example.jefflin.notipreference.model.NotiPool;
 import com.example.jefflin.notipreference.model.SampleCombination;
 import com.example.jefflin.notipreference.model.SampleRecord;
 import com.example.jefflin.notipreference.receiver.ActivityRecognitionReceiver;
@@ -111,6 +114,9 @@ public class NotiListenerService extends NotificationListenerService {
     static ContextManager contextManager = ContextManager.getInstance();
     private PushNotification pushNotification;
     private SharedPreferences sharedPreferences;
+
+    private static int sizeLimit = 6;
+    private static int appLimit = 4;
 
     private static Map<String, ArrayList<NotiItem>> itemMap;
 
@@ -188,8 +194,19 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn, NotificationListenerService.RankingMap rankingMap, int reason) {
+        Log.d("re onRemoved ", sbn.getPackageName() + " " + sbn.getNotification().extras.get("android.title") + " " + sbn.getId() + " " + sbn.getPostTime() + " " + reason);
         if (sbn.isClearable()) {
-            Log.d("re onRemoved ", sbn.getPackageName() + " " + sbn.getNotification().extras.get("android.title") + " " + sbn.getId() + " " + sbn.getPostTime() + " " + reason);
+            final NotiDatabase db = NotiDatabase.getInstance(this);
+            Notification notification = sbn.getNotification();
+            final NotiModelRemove notiModelRemove = setNotiModelRemove(sbn, Calendar.getInstance().getTimeInMillis(), reason);
+            if (!notiModelRemove.appName.equals("NotiSort")) {
+                mExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        db.notiModelRemoveDao().insertNotiRemove(notiModelRemove);
+                    }
+                });
+            }
         }
     }
 
@@ -199,9 +216,9 @@ public class NotiListenerService extends NotificationListenerService {
         final NotiModel noti;
         noti = setNotiModel(sbn);
 
-        if (sbn.isClearable()) {
+//        if (sbn.isClearable()) {
             Log.d("re onPosted ", sbn.getPackageName() + " " + sbn.getNotification().extras.get("android.title") + " " + sbn.getId() + " " + sbn.getPostTime());
-        }
+//        }
 
         if (!noti.appName.equals("NotiSort")) {
             mExecutor.execute(new Runnable() {
@@ -308,33 +325,63 @@ public class NotiListenerService extends NotificationListenerService {
         return super.onUnbind(intent);
     }
 
+
+    private boolean itemRequirement(ArrayList<NotiItem> items) {
+        return  !(items.size() < sizeLimit || getNumberOfPackage(items) < appLimit);
+    }
+
+    private boolean poolRequirement(List<NotiPool> pools) {
+        return  !(pools.size() < sizeLimit || getNumberOfPoolPackage(pools) < appLimit);
+    }
+
     private boolean getActiveNotis() {
         //NotiListenerService notiListenerService = NotiListenerService.get();
         ArrayList<NotiItem> click = new ArrayList<NotiItem>();
         ArrayList<NotiItem> display = new ArrayList<NotiItem>();
         int order = 0;
         itemMap = new HashMap();
-        for (StatusBarNotification notification : getActiveNotifications()) {
-            click.add(setNotiItem(notification, order));
-            display.add(setNotiItem(notification, order));
+//        for (StatusBarNotification notification : getActiveNotifications()) {
+//            click.add(setNotiItem(notification, order));
+//            display.add(setNotiItem(notification, order));
+//            order++;
+//        }
+
+        // the synthesis pool
+        final List<NotiPool> notiPools = getSynNotiPools();
+
+        // deleteAll in notipool db, then insertAll
+        final NotiPoolDao notiPoolDao = NotiDatabase.getInstance(this).notiPoolDao();
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                notiPoolDao.deleteAll();
+                notiPoolDao.insertAll(notiPools);
+            }
+        });
+
+        // use notipool to check requirement
+        if (!poolRequirement(notiPools))
+            return false;
+
+        // sort by postTime and create NotiItem List
+        Collections.sort(notiPools);
+        for (NotiPool notiPool: notiPools) {
+            Log.d("NotiPool", notiPool.appName + " " + notiPool.title + " " + notiPool.content);
+            click.add(new NotiItem(notiPool, order));
+            display.add(new NotiItem(notiPool, order));
             order++;
         }
 
-
-        // check for requirement
-        if (order < 6 || getNumberOfPackage(click) < 3)
-            return false;
 
         // get without duplicate and null ones
         click = getNotisWithoutDuplicateNull(click);
         display = getNotisWithoutDuplicateNull(display);
 
         // check for requirement
-        if (click.size() < 6 || getNumberOfPackage(click) < 3)
+        if (!itemRequirement(click))
             return false;
 
         List<SampleRecord> sampleRecords = getSampleRecord();
-
         // delete those that are same with SampleRecord
         if (sharedPreferences.getInt("notSendCount", 0) < 5) {
             click = getNonRepeatNotification(click, sampleRecords, 0);
@@ -355,9 +402,9 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
         // check for number again
-        if (click.size() < 6 || getNumberOfPackage(click) < 3) {
+        if (!itemRequirement(click)) {
             // increase notSendCount here
-            Integer i = sharedPreferences.getInt("notSendCount", 0);
+            int i = sharedPreferences.getInt("notSendCount", 0);
             sharedPreferences.edit().putInt("notSendCount", i + 1).apply();
             return false;
         }
@@ -580,21 +627,6 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
 
-//        for (NotiItem notiItem: drawer) {
-//            if (tmpClick.contains(notiItem)) {
-//                Log.d("notilistener_new", "re-order ->" + notiItem.content);
-//                newClick.add(notiItem);
-//                newDisplay.add(notiItem);
-//            }
-//        }
-//        for (NotiItem notiItem: drawerD) {
-//            Log.d("notilistener_new", "drawerD ->" + notiItem.content);
-//            if (tmpClick.contains(notiItem)) {
-//                Log.d("notilistener_new", "re-orderD ->" + notiItem.content);
-//                newDisplay.add(notiItem);
-//            }
-//        }
-
         // return
         newMap.put("click", newClick);
         newMap.put("display", newDisplay);
@@ -665,6 +697,44 @@ public class NotiListenerService extends NotificationListenerService {
         return newList;
     }
 
+    private List<NotiPool> getSynNotiPools() {
+        List<NotiPool> newNotiPools = new ArrayList<>();
+        HashSet<String> appTable = new HashSet<>();
+        for (StatusBarNotification notification : getActiveNotifications()) {
+            NotiPool np = setNotiPool(notification);
+            newNotiPools.add(np);
+            appTable.add(np.appName);
+        }
+        List<NotiPool> notiPools = getNotiPools();
+
+        // TODO add time restriction
+        for (NotiPool n: notiPools) {
+            if (!appTable.contains(n.appName)) {
+                newNotiPools.add(n);
+            }
+        }
+        return newNotiPools;
+    }
+
+    private List<NotiPool> getNotiPools() {
+        final NotiPoolDao notiPoolDao = NotiDatabase.getInstance(this).notiPoolDao();
+        List<NotiPool> l = new ArrayList<>();
+        FutureTask<List<NotiPool>> mFuture = new FutureTask<List<NotiPool>>(new Callable<List<NotiPool>>() {
+            @Override
+            public List<NotiPool> call() throws Exception {
+                return notiPoolDao.getAll();
+            }
+        });
+        ExecutorService sExecutor = Executors.newSingleThreadExecutor();
+        sExecutor.execute(mFuture);
+        try {
+            l = mFuture.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return l;
+    }
+
     private Map<String, Integer> getSampleRecordMap() {
         final SampleRecordDao sampleRecordDao = NotiDatabase.getInstance(this).sampleRecordDao();
         Map<String, Integer> appNameMap = new LinkedHashMap<>();
@@ -710,16 +780,6 @@ public class NotiListenerService extends NotificationListenerService {
         return l;
     }
 
-    private static int getNumberOfPackage(ArrayList<NotiItem> data) {
-        ArrayList<String> packages = new ArrayList<>();
-
-        for (NotiItem item : data) {
-            packages.add(item.appName);
-        }
-
-        Set<String> distinct = new HashSet<>(packages);
-        return distinct.size();
-    }
 
     private static Map<String, ArrayList<NotiItem>> getNotificationsWithOrder(ArrayList<NotiItem> click, ArrayList<NotiItem> display, int numNoti, int numPart) {
         Map<String, ArrayList<NotiItem>> map = new HashMap<>();
@@ -823,6 +883,67 @@ public class NotiListenerService extends NotificationListenerService {
         return item.content.equals("null") || item.title.equals("null");
     }
 
+    private static int getNumberOfPackage(ArrayList<NotiItem> data) {
+        ArrayList<String> packages = new ArrayList<>();
+
+        for (NotiItem item : data) {
+            packages.add(item.appName);
+        }
+
+        Set<String> distinct = new HashSet<>(packages);
+        return distinct.size();
+    }
+
+    private static int getNumberOfPoolPackage(List<NotiPool> data) {
+        ArrayList<String> packages = new ArrayList<>();
+
+        for (NotiPool item : data) {
+            packages.add(item.appName);
+        }
+
+        Set<String> distinct = new HashSet<>(packages);
+        return distinct.size();
+    }
+
+    private NotiModelRemove setNotiModelRemove(StatusBarNotification notification, Long removeTime, int reason) {
+        String packageName = "null";
+        String title = "";
+        String content = "null";
+        String appName = "null";
+
+        Long postTime = notification.getPostTime();
+
+        try {
+            packageName = notification.getPackageName();
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "package name failed", e);
+        }
+        try {
+            title = notification.getNotification().extras.get("android.title").toString();
+
+        } catch (Exception e) {
+            Log.d("NotiListenerService", "title failed");
+        }
+        try {
+            content = notification.getNotification().extras.get("android.text").toString();
+        } catch (Exception e) {
+            Log.d("NotiListenerService", "content failed");
+        }
+        try {
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+            appName = (String) (applicationInfo != null ?
+                    packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "appName failed", e);
+        }
+
+        SharedPreferences sharedPreferences = this.getSharedPreferences("USER", MODE_PRIVATE);
+        NotiModelRemove notiModelRemove = new NotiModelRemove(appName, title, content, postTime, removeTime, reason, sharedPreferences.getString("ID", "user id fail"));
+
+        return notiModelRemove;
+    }
+
+
     private NotiModel setNotiModel(StatusBarNotification notification) {
         String packageName = "null";
         String title = "";
@@ -865,6 +986,57 @@ public class NotiListenerService extends NotificationListenerService {
         NotiModel notiModel = new NotiModel(appName, title, content, postTime, category, sharedPreferences.getString("ID", "user id fail"));
 
         return setContext(notiModel);
+    }
+
+    public static NotiPool setNotiPool(StatusBarNotification notification) {
+        String icon = "null";
+        String packageName = "null";
+        String title = "null";
+        String content = "null";
+        String appName = "null";
+        String category = "null";
+
+        Long postTime = notification.getPostTime();
+
+        try {
+            packageName = notification.getPackageName();
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "package name failed", e);
+        }
+        try {
+            title = notification.getNotification().extras.get("android.title").toString();
+
+        } catch (Exception e) {
+            Log.d("NotiListenerService", "title failed");
+        }
+        try {
+            content = notification.getNotification().extras.get("android.text").toString();
+        } catch (Exception e) {
+            Log.d("NotiListenerService", "content failed");
+        }
+        try {
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+            appName = (String) (applicationInfo != null ?
+                    packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "appName failed", e);
+        }
+        try {
+            category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "category failed", e);
+        }
+        try {
+            IconHandler iconHandler = new IconHandler();
+            icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
+        } catch (Exception e) {
+            Log.e("NotiListenerService", "icon failed", e);
+        }
+
+        NotiPool notiPool = new NotiPool(appName, title, content, postTime, category);
+        notiPool.setIcon(icon);
+
+        return notiPool;
     }
 
     public static NotiItem setNotiItem(StatusBarNotification notification, int order) {

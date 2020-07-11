@@ -7,6 +7,7 @@ import com.example.jefflin.notipreference.model.AnswerJson;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.model.Answer;
 import com.example.jefflin.notipreference.model.NotiModel;
+import com.example.jefflin.notipreference.model.NotiModelRemove;
 import com.example.jefflin.notipreference.model.SurveyInfo;
 import com.google.gson.Gson;
 
@@ -220,6 +221,10 @@ public class SurveyManager {
         return gson.toJson(surveyInfo);
     }
 
+    public static String getRemoveJson(List<NotiModelRemove> notiModelRemoves){
+        Gson gson = new Gson();
+        return gson.toJson(notiModelRemoves);
+    }
 
 
     public String getPostJson() {

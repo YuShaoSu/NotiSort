@@ -79,6 +79,22 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
         this.sortReason = "";
     }
 
+    public NotiItem(NotiPool notiPool, int origin_order) {
+        this.appName = notiPool.appName;
+        this.title = notiPool.title;
+        this.content = notiPool.content;
+        this.postTime = notiPool.postTime;
+        this.category = notiPool.category;
+        this.icon = notiPool.icon;
+        this.sender_attractiveness = -1;
+        this.content_attractiveness = -1;
+        this.importance = -1;
+        this.urgency = -1;
+        this.origin_order = origin_order;
+        this.sortReason = "";
+    }
+
+
     @Override
     public int compareTo(NotiItem compare) {
         int compare_order = compare.getOriginOrder();

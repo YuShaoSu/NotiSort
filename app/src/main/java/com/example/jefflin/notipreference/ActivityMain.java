@@ -27,6 +27,8 @@ import com.example.jefflin.notipreference.database.AccessibilityDao;
 import com.example.jefflin.notipreference.database.ActivityRecognitionDao;
 import com.example.jefflin.notipreference.database.AnswerJsonDao;
 import com.example.jefflin.notipreference.database.LocationUpdateDao;
+import com.example.jefflin.notipreference.database.NotiModelRemoveDao;
+import com.example.jefflin.notipreference.database.NotiPoolDao;
 import com.example.jefflin.notipreference.database.SampleCombinationDao;
 import com.example.jefflin.notipreference.database.SampleRecordDao;
 import com.example.jefflin.notipreference.manager.SurveyManager;
@@ -34,6 +36,7 @@ import com.example.jefflin.notipreference.database.NotiDao;
 import com.example.jefflin.notipreference.database.NotiDatabase;
 import com.example.jefflin.notipreference.model.AnswerJson;
 import com.example.jefflin.notipreference.model.NotiItem;
+import com.example.jefflin.notipreference.model.NotiModelRemove;
 import com.example.jefflin.notipreference.model.SampleCombination;
 import com.example.jefflin.notipreference.model.SampleRecord;
 import com.example.jefflin.notipreference.model.SurveyInfo;
@@ -85,12 +88,14 @@ public class ActivityMain extends AppCompatActivity {
     private AnswerJsonDao answerJsonDao;
     private SampleRecordDao sampleRecordDao;
     private SampleCombinationDao sampleCombinationDao;
+    private NotiModelRemoveDao notiModelRemoveDao;
     final private String SURVEY_POST = "survey";
     final private String ITEM_POST = "notification";
     final private String AR_POST = "activity_recognition";
     final private String LU_POST = "location_update";
     final private String AC_POST = "accessibility";
     final private String INFO_POST = "survey_info";
+    final private String REMOVE_POST = "notification_remove";
     final private String DATA_FORMAT = "MMMM d, yyyy 'at' h:mm a";
 
     //    Executor mExecutor = Executors.newSingleThreadExecutor();
@@ -131,6 +136,7 @@ public class ActivityMain extends AppCompatActivity {
         sampleRecordDao = NotiDatabase.getInstance(getApplicationContext()).sampleRecordDao();
         sampleCombinationDao = NotiDatabase.getInstance(getApplicationContext()).sampleCombinationDao();
         answerJsonDao = NotiDatabase.getInstance(getApplicationContext()).answerJsonDao();
+        notiModelRemoveDao = NotiDatabase.getInstance(getApplicationContext()).notiModelRemoveDao();
 
         setPermission();
         setBotNavView();
@@ -249,11 +255,13 @@ public class ActivityMain extends AppCompatActivity {
         final ArrayList<SampleRecord> sampleRecords = getSurveyRecord();
         final ArrayList<SampleCombination> sampleCombinations = getSampleCombination();
 
+        final NotiPoolDao notiPoolDao = NotiDatabase.getInstance(this).notiPoolDao();
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 sampleRecordDao.insertAll(sampleRecords);
                 sampleCombinationDao.upsert(sampleCombinations);
+                notiPoolDao.deleteAll();
             }
         });
 
@@ -333,6 +341,9 @@ public class ActivityMain extends AppCompatActivity {
 
                 String infoPost = SurveyManager.getInfoJson(surveyInfo);
                 postRequest(infoPost, INFO_POST, now);
+
+                String removePost = SurveyManager.getRemoveJson(notiModelRemoveDao.getAll());
+                postRequest(removePost, REMOVE_POST, now);
 
 
             }
@@ -493,6 +504,7 @@ public class ActivityMain extends AppCompatActivity {
                             if (url.equals(ITEM_POST)) notiDao.deleteAll();
                             else if (url.equals(SURVEY_POST)) answerJsonDao.deleteAll();
                             else if (url.equals(AR_POST)) activityRecognitionDao.deleteAll();
+                            else if (url.equals(REMOVE_POST)) notiModelRemoveDao.deleteAll();
                         }
                     });
                 } else {
