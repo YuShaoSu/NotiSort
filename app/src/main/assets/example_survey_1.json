@@ -20,7 +20,7 @@
     },
     {
       "question_type": "Scale",
-      "question_title": "請回答影響各通知名次之原因",
+      "question_title": "請填寫您認為下列通知的特質為何？",
       "description": "3 of 5",
       "required": false
     },
