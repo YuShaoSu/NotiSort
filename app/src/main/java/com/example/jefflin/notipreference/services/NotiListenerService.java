@@ -334,6 +334,15 @@ public class NotiListenerService extends NotificationListenerService {
         return  !(pools.size() < sizeLimit || getNumberOfPoolPackage(pools) < appLimit);
     }
 
+    private boolean twoAppRequirement(List<Map.Entry<String,Integer>> sortedDrawerTwoAppMap, List<Map.Entry<String,Integer>> sortedDbTwoAppMap ) {
+        Map.Entry<String,Integer> first = sortedDrawerTwoAppMap.get(0);
+        Map.Entry<String,Integer> second = sortedDrawerTwoAppMap.get(1);
+        int dbSize = sortedDbTwoAppMap.size();
+        Log.d("Final機制", ""+ dbSize + ","+sortedDbTwoAppMap.indexOf(first) + ","+ sortedDbTwoAppMap.indexOf(second));
+        return (!sortedDbTwoAppMap.contains(first) || !sortedDbTwoAppMap.contains(second)
+                || sortedDbTwoAppMap.indexOf(first) * 3 <= dbSize || sortedDbTwoAppMap.indexOf(second) * 2 <= dbSize);
+    }
+
     private boolean getActiveNotis() {
         //NotiListenerService notiListenerService = NotiListenerService.get();
         ArrayList<NotiItem> click = new ArrayList<NotiItem>();
@@ -414,11 +423,42 @@ public class NotiListenerService extends NotificationListenerService {
         //itemMap = getNotificationsWithOrder(click, display, 6, 3);
 
         // new 機制 by jj
+        /*
         if (click.size() == 6)
             itemMap = getNotificationsWithOrder(click, display, 6, 3);
         else
             //itemMap = getBalancedNotificationsWithOrder(click, display);
             itemMap = getBalancedNotificationsWithOrderV2(click, display);
+         */
+
+        // final 機制 by jj
+        HashMap<String, Integer> dbTwoAppMap = getSampleCombination(click);
+        List<Map.Entry<String,Integer>> sortedDrawerTwoAppMap = getSortedDrawerTwoAppMap(click, display);
+        List<Map.Entry<String,Integer>> sortedDbTwoAppMap = new ArrayList<>(dbTwoAppMap.entrySet());
+        Collections.sort(sortedDbTwoAppMap,
+                new Comparator<Map.Entry<String,Integer>>() {
+                    public int compare(Map.Entry<String,Integer> a, Map.Entry<String,Integer> b) {
+                        return Integer.compare(b.getValue(), a.getValue());
+                    }
+                }
+        );
+
+        // check for two app requirement here
+        if (!twoAppRequirement(sortedDrawerTwoAppMap, sortedDbTwoAppMap)) {
+            // increase notSendCount here
+            int i = sharedPreferences.getInt("notSendCount", 0);
+            sharedPreferences.edit().putInt("notSendCount", i + 1).apply();
+            return false;
+        }
+
+        // TODO: 加保險，ex: notSendCount
+
+        // final final final
+        if (click.size() == 6)
+            itemMap = getNotificationsWithOrder(click, display, 6, 3);
+        else
+            itemMap = getBalancedNotificationsWithOrderV3(click, display, sortedDrawerTwoAppMap);
+
 
         Log.d("notilistener", "getActiveNotis bottom");
 
@@ -426,7 +466,7 @@ public class NotiListenerService extends NotificationListenerService {
         return true;
     }
 
-    private Map<String, ArrayList<NotiItem>> getBalancedNotificationsWithOrderV2(ArrayList<NotiItem> drawerNotiItems, ArrayList<NotiItem> drawerNotiItems2) {
+    private List<Map.Entry<String,Integer>>  getSortedDrawerTwoAppMap(ArrayList<NotiItem> drawerNotiItems, ArrayList<NotiItem> drawerNotiItems2) {
         ArrayList<NotiItem> tmpClick = new ArrayList<>();
         ArrayList<NotiItem> newClick = new ArrayList<>();
         ArrayList<NotiItem> newDisplay = new ArrayList<>();
@@ -469,6 +509,77 @@ public class NotiListenerService extends NotificationListenerService {
                     }
                 }
         );
+
+        // final 機制 by jj
+        return sortedDrawerTwoAppMap;
+
+        /*
+        // pick 2-app notification into tmpClick
+        Set<String> addedAppSet = new HashSet<>();
+        for (Map.Entry<String,Integer> twoApp : sortedDrawerTwoAppMap) {
+            if (tmpClick.size() == 6) break;
+            String[] twoAppList = twoApp.getKey().split(";");
+            if (!addedAppSet.contains(twoAppList[0]) && !addedAppSet.contains(twoAppList[1])) {
+                int i = ThreadLocalRandom.current().nextInt(0, drawerAppNameMap.get(twoAppList[0]).size());
+                int j = ThreadLocalRandom.current().nextInt(0, drawerAppNameMap.get(twoAppList[1]).size());
+                NotiItem notiItemToAdd1 = drawerAppNameMap.get(twoAppList[0]).get(i);
+                NotiItem notiItemToAdd2 = drawerAppNameMap.get(twoAppList[1]).get(j);
+                tmpClick.add(notiItemToAdd1);
+                tmpClick.add(notiItemToAdd2);
+                drawerNotiItems.remove(notiItemToAdd1);
+                drawerNotiItems.remove(notiItemToAdd2);
+                addedAppSet.add(twoAppList[0]);
+                addedAppSet.add(twoAppList[1]);
+            }
+        }
+
+        // if size < 6, fill
+        int stillNeed = 6 - tmpClick.size();
+        while(tmpClick.size() < 6) {
+            if (drawerNotiItems.isEmpty()) break; // 會不滿6個
+            int i = ThreadLocalRandom.current().nextInt(0, drawerNotiItems.size());
+            tmpClick.add(drawerNotiItems.get(i));
+        }
+
+        // reorder
+        Set<Integer> originOrder = new HashSet<>();
+        for (NotiItem notiItem: tmpClick) {
+            originOrder.add(notiItem.getOriginOrder());
+            Log.d("notilistener_new", "originOrder " + notiItem.getOriginOrder());
+        }
+        for (int i = 0; i < drawer.size(); ++i) {
+            if (originOrder.contains(drawer.get(i).getOriginOrder())) {
+                Log.d("notilistener_new", "re-order index " + i);
+                Log.d("notilistener_new", "re-order ->" + drawer.get(i) + drawer.get(i).content);
+                Log.d("notilistener_new", "re-orderD ->" + drawer2.get(i) + drawer2.get(i).content);
+                newClick.add(drawer.get(i));
+                newDisplay.add(drawer2.get(i));
+            }
+        }
+
+        // return
+        newMap.put("click", newClick);
+        newMap.put("display", newDisplay);
+        return newMap;
+         */
+    }
+
+    private Map<String, ArrayList<NotiItem>> getBalancedNotificationsWithOrderV3(ArrayList<NotiItem> drawerNotiItems, ArrayList<NotiItem> drawerNotiItems2, List<Map.Entry<String,Integer>> sortedDrawerTwoAppMap) {
+        ArrayList<NotiItem> tmpClick = new ArrayList<>();
+        ArrayList<NotiItem> newClick = new ArrayList<>();
+        ArrayList<NotiItem> newDisplay = new ArrayList<>();
+        Map<String, ArrayList<NotiItem>> newMap = new HashMap<>();
+        ArrayList<NotiItem> drawer = new ArrayList<>(drawerNotiItems);
+        ArrayList<NotiItem> drawer2 = new ArrayList<>(drawerNotiItems2);
+
+        // create drawer map: appName -> ArrayList<NotiItem>
+        HashMap<String, List<NotiItem>> drawerAppNameMap = new HashMap<>();
+        for (NotiItem drawerNotiItem: drawerNotiItems) {
+            if (!drawerAppNameMap.containsKey(drawerNotiItem.appName)) {
+                drawerAppNameMap.put(drawerNotiItem.appName, new ArrayList<NotiItem>());
+            }
+            drawerAppNameMap.get(drawerNotiItem.appName).add(drawerNotiItem);
+        }
 
         // pick 2-app notification into tmpClick
         Set<String> addedAppSet = new HashSet<>();
