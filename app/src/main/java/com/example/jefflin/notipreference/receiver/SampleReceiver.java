@@ -12,6 +12,7 @@ import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -27,42 +28,61 @@ public class SampleReceiver extends BroadcastReceiver {
         Log.d("SampleReceiver", String.valueOf(interval));
         SharedPreferences sharedPreferences = context.getSharedPreferences("survey", Context.MODE_PRIVATE);
 
-//        SurveyManager.getInstance().setInterval(interval);
-        if (interval == 1) {
-//            SurveyManager.getInstance().surveyInit();
-            sharedPreferences.edit().putBoolean("dontDisturb", false)
-                    .putBoolean("block", false)
-                    .putBoolean("done", false)
-                    .apply();
-        } else if (interval == 0) {
+
+        // 0:00
+        if (interval == 0) {
             sharedPreferences.edit().putBoolean("done", true)
                     .putBoolean("block", false)
                     .putBoolean("dontDisturb", true)
                     .apply();
-//            SurveyManager.getInstance().surveyDone();
+        // 8:00
+        } else if (interval == 1) {
+//            SurveyManager.getInstance().surveyInit();
+            sharedPreferences.edit().putBoolean("dontDisturb", false)
+                    .putBoolean("block", false)
+                    .putBoolean("done", false)
+                    .putInt("stage", 1)
+                    .apply();
+            stageDescent(context);
+        // new interval
         } else if (interval == 2) {
             if (!sharedPreferences.getBoolean("dontDisturb", false)) {
 //                SurveyManager.getInstance().surveyInit();
                 sharedPreferences.edit().putBoolean("done", false)
                         .putBoolean("block", false)
                         .putBoolean("doing", false)
+                        .putInt("stage", 1)
                         .apply();
+                stageDescent(context);
+            }
+        // loosen the condition
+        } else if (interval == 3) {
+            if (!sharedPreferences.getBoolean("dontDisturb", true) && !sharedPreferences.getBoolean("done", true)) {
+                sharedPreferences.edit().putInt("stage", sharedPreferences.getInt("stage", 1) + 1).apply();
+                stageDescent(context);
             }
         }
 
-//        Intent myIntent = new Intent(context , SampleReceiver.class);
-//        AlarmManager alarmManager = (AlarmManager)context.getSystemService(ALARM_SERVICE);
-//        myIntent.putExtra("interval", interval);
-//        myIntent.setAction("com.example.jefflin.notipreference.next_interval");
-//
-//
-//        PendingIntent pi = PendingIntent.getBroadcast(context, interval + 10, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-//        Calendar c = Calendar.getInstance();
+    }
+
+    private void stageDescent(Context context) {
+        Intent myIntent = new Intent(context , SampleReceiver.class);
+        AlarmManager alarmManager = (AlarmManager)context.getSystemService(ALARM_SERVICE);
+        myIntent.putExtra("interval", 3);
+        myIntent.setAction("com.example.jefflin.notipreference.next_interval");
+
+        PendingIntent pi = PendingIntent.getBroadcast(context, 3 + 10, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Calendar c = Calendar.getInstance();
+        Date date = new Date();
+        date.setTime(System.currentTimeMillis() + (60 * 60 * 1000));
+        c.setTime(date);
+
 //        c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[interval]);
 //        c.add(Calendar.DAY_OF_YEAR, 1);
 //        c.set(Calendar.MINUTE, GlobalClass.getIntervalMinute());
 //        c.set(Calendar.SECOND, 0);
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
 //        Log.d("SampleReceiver interval", String.valueOf(c.getTime()));
     }
 

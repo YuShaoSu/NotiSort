@@ -43,7 +43,14 @@ public class NotiPool implements Comparable<NotiPool>{
 
     @Override
     public int compareTo(NotiPool compare) {
-        return (int) (this.postTime - compare.postTime);
+//        if (this.postTime > compare.postTime) {
+//            return 1;
+//        } else if (this.postTime == compare.postTime) {
+//            return 0;
+//        } else {
+//            return -1;
+//        }
+        return Long.compare(this.postTime, compare.postTime);
     }
 
 }
