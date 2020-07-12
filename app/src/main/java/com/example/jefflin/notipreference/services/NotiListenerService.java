@@ -216,10 +216,6 @@ public class NotiListenerService extends NotificationListenerService {
         final NotiModel noti;
         noti = setNotiModel(sbn);
 
-//        if (sbn.isClearable()) {
-            Log.d("re onPosted ", sbn.getPackageName() + " " + sbn.getNotification().extras.get("android.title") + " " + sbn.getId() + " " + sbn.getPostTime());
-//        }
-
         if (!noti.appName.equals("NotiSort")) {
             mExecutor.execute(new Runnable() {
                 @Override
@@ -364,14 +360,13 @@ public class NotiListenerService extends NotificationListenerService {
             return false;
 
         // sort by postTime and create NotiItem List
-        Collections.sort(notiPools);
+        Collections.reverse(notiPools);
         for (NotiPool notiPool: notiPools) {
             Log.d("NotiPool", notiPool.appName + " " + notiPool.title + " " + notiPool.content);
             click.add(new NotiItem(notiPool, order));
             display.add(new NotiItem(notiPool, order));
             order++;
         }
-
 
         // get without duplicate and null ones
         click = getNotisWithoutDuplicateNull(click);
@@ -412,7 +407,6 @@ public class NotiListenerService extends NotificationListenerService {
         Log.d("notilistener", "before getActiveNotisWithOrder");
 
         //itemMap = getNotificationsWithOrder(click, display, 6, 3);
-
         // new 機制 by jj
         if (click.size() == 6)
             itemMap = getNotificationsWithOrder(click, display, 6, 3);
