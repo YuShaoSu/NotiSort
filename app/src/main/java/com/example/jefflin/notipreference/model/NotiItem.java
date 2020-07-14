@@ -57,10 +57,17 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
     public int not_attend_no_info = -1;
     public int not_attend_no_use = -1;
     public int not_attend_other = -1;
+    @Ignore
+    public String not_attend_other_reason = "";
 
     public int not_display_dup = -1;
     public int not_display_not_relate = -1;
+    @Ignore
+    public int not_display_known = -1;
     public int not_display_other = -1;
+    @Ignore
+    public String not_display_other_reason = "";
+
 
     public NotiItem() {
     }
@@ -139,10 +146,12 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
         this.display_order = this.isNotDisplay() ? -1 : -9999;
     }
 
-    public void setNotDisplayReason(int dup, int relate, int other) {
+    public void setNotDisplayReason(int dup, int relate, int known, int other, String reason) {
         this.not_display_dup = dup;
         this.not_display_not_relate = relate;
+        this.not_display_known = known;
         this.not_display_other = other;
+        this.not_display_other_reason = reason;
     }
 
     public int getClickOrder() {

@@ -12,6 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.jefflin.notipreference.model.Accessibility;
 import com.example.jefflin.notipreference.model.AnswerJson;
 import com.example.jefflin.notipreference.model.LocationUpdateModel;
+import com.example.jefflin.notipreference.model.LogModel;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.model.ActivityRecognitionModel;
@@ -23,7 +24,7 @@ import com.example.jefflin.notipreference.model.SampleRecord;
 
 @Database(entities = {NotiModel.class, NotiItem.class, ActivityRecognitionModel.class, LocationUpdateModel.class,
         Accessibility.class, AnswerJson.class, SampleRecord.class, SampleCombination.class,
-        NotiModelRemove.class, NotiPool.class}, version = 11)
+        NotiModelRemove.class, NotiPool.class, LogModel.class}, version = 12)
 public abstract class NotiDatabase extends RoomDatabase {
     private static volatile NotiDatabase uniqueInstance;
 
@@ -35,6 +36,7 @@ public abstract class NotiDatabase extends RoomDatabase {
     public abstract SampleCombinationDao sampleCombinationDao();
     public abstract NotiModelRemoveDao notiModelRemoveDao();
     public abstract NotiPoolDao notiPoolDao();
+    public abstract LogModelDao logModelDao();
 
 
     public static NotiDatabase getInstance(Context context) {
@@ -44,14 +46,14 @@ public abstract class NotiDatabase extends RoomDatabase {
                     uniqueInstance = Room.databaseBuilder(context, NotiDatabase.class, "NotiSort.db").
                             addMigrations(MIGRATION1_2, MIGRATION2_3, MIGRATION3_4, MIGRATION4_5,
                                     MIGRATION5_6, MIGRATION6_7, MIGRATION7_8, MIGRATION8_9, MIGRATION9_10,
-                                    MIGRATION10_11).build();
+                                    MIGRATION10_11, MIGRATION11_12).build();
                 }
             }
         }
         return uniqueInstance;
     }
 
-    static final Migration MIGRATION1_2 = new Migration(1, 2) {
+    private static final Migration MIGRATION1_2 = new Migration(1, 2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE `activity_recognition` (`id` INTEGER, "
@@ -60,7 +62,7 @@ public abstract class NotiDatabase extends RoomDatabase {
         }
     };
 
-    static final Migration MIGRATION2_3 = new Migration(2, 3) {
+    private static final Migration MIGRATION2_3 = new Migration(2, 3) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE activity_recognition "
@@ -72,7 +74,7 @@ public abstract class NotiDatabase extends RoomDatabase {
         }
     };
 
-    static final Migration MIGRATION3_4 = new Migration(3, 4) {
+    private static final Migration MIGRATION3_4 = new Migration(3, 4) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE `accessbility` (`id` INTEGER, "
@@ -91,7 +93,7 @@ public abstract class NotiDatabase extends RoomDatabase {
         }
     };
 
-    static final Migration MIGRATION4_5 = new Migration(4, 5) {
+    private static final Migration MIGRATION4_5 = new Migration(4, 5) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE `noti_model` (`id` INTEGER, `app_name` TEXT, "
@@ -102,7 +104,7 @@ public abstract class NotiDatabase extends RoomDatabase {
         }
     };
 
-    static final Migration MIGRATION5_6 = new Migration(5, 6) {
+    private static final Migration MIGRATION5_6 = new Migration(5, 6) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("DROP TABLE `noti_items`");
@@ -112,14 +114,14 @@ public abstract class NotiDatabase extends RoomDatabase {
         }
     };
 
-    static final Migration MIGRATION6_7 = new Migration(6, 7) {
+    private static final Migration MIGRATION6_7 = new Migration(6, 7) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE `answer` (`id` INTEGER, `json_string` TEXT, PRIMARY KEY(`id`))");
         }
     };
 
-    static final Migration MIGRATION7_8 = new Migration(7, 8) {
+    private static final Migration MIGRATION7_8 = new Migration(7, 8) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE `sample_record` (`id` INTEGER, `app_name` TEXT, `title` TEXT, `content` TEXT, " +
@@ -127,7 +129,7 @@ public abstract class NotiDatabase extends RoomDatabase {
         }
     };
 
-    static final Migration MIGRATION8_9 = new Migration(8, 9) {
+    private static final Migration MIGRATION8_9 = new Migration(8, 9) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE `sample_combination` (`id` INTEGER NOT NULL, `app_name_comb` TEXT unique NOT NULL, " +
@@ -136,7 +138,7 @@ public abstract class NotiDatabase extends RoomDatabase {
         }
     };
 
-    static final Migration MIGRATION9_10 = new Migration(9, 10) {
+    private static final Migration MIGRATION9_10 = new Migration(9, 10) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE `noti_model_remove` (`id` INTEGER NOT NULL, `app_name` TEXT, " +
@@ -145,12 +147,20 @@ public abstract class NotiDatabase extends RoomDatabase {
         }
     };
 
-    static final Migration MIGRATION10_11 = new Migration(10, 11) {
+    private static final Migration MIGRATION10_11 = new Migration(10, 11) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE `noti_pool` (`id` INTEGER NOT NULL, `app_name` TEXT, " +
                     "`title` TEXT, `content` TEXT, `post_time` INTEGER, " +
                     "`category` TEXT, `icon` TEXT, PRIMARY KEY(`id`))");
+        }
+    };
+
+    private static final Migration MIGRATION11_12 = new Migration(11, 12) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE `log` (`id` INTEGER NOT NULL, " +
+                    "`event` TEXT, `timestamp` INTEGER, PRIMARY KEY(`id`))");
         }
     };
 

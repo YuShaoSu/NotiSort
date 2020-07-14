@@ -19,6 +19,7 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.provider.CalendarContract;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.telephony.CellSignalStrength;
@@ -36,11 +37,13 @@ import com.example.jefflin.notipreference.ActivityMain;
 import com.example.jefflin.notipreference.GlobalClass;
 import com.example.jefflin.notipreference.Listener.SensorListener;
 import com.example.jefflin.notipreference.R;
+import com.example.jefflin.notipreference.database.LogModelDao;
 import com.example.jefflin.notipreference.database.NotiPoolDao;
 import com.example.jefflin.notipreference.database.SampleCombinationDao;
 import com.example.jefflin.notipreference.database.SampleRecordDao;
 import com.example.jefflin.notipreference.manager.ContextManager;
 import com.example.jefflin.notipreference.model.Answer;
+import com.example.jefflin.notipreference.model.LogModel;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.helper.IconHandler;
 import com.example.jefflin.notipreference.model.NotiModel;
@@ -117,6 +120,9 @@ public class NotiListenerService extends NotificationListenerService {
 
     private static int sizeLimit = 6;
     private static int appLimit = 4;
+    // convert to sec
+    private static int hourLimit = 2 * 60 * 60;
+
 
     private static Map<String, ArrayList<NotiItem>> itemMap;
 
@@ -346,24 +352,44 @@ public class NotiListenerService extends NotificationListenerService {
                 secondLimitDe = 2;
                 break;
         }
-//        Log.d("Final機制 data", "" + dbSize + "," + first.getValue() + "," + second.getValue());
+        boolean meet = (!sortedDbTwoAppMap.contains(first) || sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe <= dbSize
+                || sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe <= dbSize);
+
+        // create log
+        StringBuilder logEvent = new StringBuilder("sample組成/ 是否發出問卷 ");
+        logEvent.append(meet);
+        logEvent.append(" ; size ");
+        logEvent.append(dbSize);
+        logEvent.append(" ; stage ");
+        logEvent.append(stage);
+        logEvent.append(";\n");
+        for(Map.Entry<String, Integer> m: sortedDrawerTwoAppMap) {
+            logEvent.append(m.getKey());
+            logEvent.append(" fre: ");
+            logEvent.append(m.getValue());
+            logEvent.append(" rank: ");
+            logEvent.append(sortedDbTwoAppMap.contains(m) ? sortedDbTwoAppMap.indexOf(m) : "never");
+            logEvent.append("\n");
+        }
         Log.d("Final機制", "" + dbSize + "," + sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe
                 + "," + sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe);
-        return (!sortedDbTwoAppMap.contains(first) || sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe <= dbSize
-                || sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe <= dbSize);
+        final LogModel logModel = new LogModel(Calendar.getInstance().getTime(), logEvent.toString());
+        final LogModelDao logModelDao = NotiDatabase.getInstance(this).logModelDao();
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                logModelDao.insert(logModel);
+            }
+        });
+
+        return meet;
     }
 
     private boolean getActiveNotis() {
-        //NotiListenerService notiListenerService = NotiListenerService.get();
         ArrayList<NotiItem> click = new ArrayList<NotiItem>();
         ArrayList<NotiItem> display = new ArrayList<NotiItem>();
         int order = 0;
         itemMap = new HashMap();
-//        for (StatusBarNotification notification : getActiveNotifications()) {
-//            click.add(setNotiItem(notification, order));
-//            display.add(setNotiItem(notification, order));
-//            order++;
-//        }
 
         // the synthesis pool
         final List<NotiPool> notiPools = getNotiPoolWithoutDuplicateNull(getSynNotiPools());
@@ -393,13 +419,6 @@ public class NotiListenerService extends NotificationListenerService {
             order++;
         }
 
-        // get without duplicate and null ones
-//        click = getNotisWithoutDuplicateNull(click);
-//        display = getNotisWithoutDuplicateNull(display);
-
-        // check for requirement
-//        if (!itemRequirement(click))
-//            return false;
 
         List<SampleRecord> sampleRecords = getSampleRecord();
         // delete those that are same with SampleRecord
@@ -421,17 +440,7 @@ public class NotiListenerService extends NotificationListenerService {
 
         Log.d("notilistener", "before getActiveNotisWithOrder");
 
-        //itemMap = getNotificationsWithOrder(click, display, 6, 3);
-        // new 機制 by jj
-        /*
-        if (click.size() == 6)
-            itemMap = getNotificationsWithOrder(click, display, 6, 3);
-        else
-            //itemMap = getBalancedNotificationsWithOrder(click, display);
-            itemMap = getBalancedNotificationsWithOrderV2(click, display);
-         */
 
-        // final 機制 by jj
         HashMap<String, Integer> dbTwoAppMap = getSampleCombination(click);
         List<Map.Entry<String, Integer>> sortedDrawerTwoAppMap = getSortedDrawerTwoAppMap(click, display);
         List<Map.Entry<String, Integer>> sortedDbTwoAppMap = new ArrayList<>(dbTwoAppMap.entrySet());
@@ -446,9 +455,6 @@ public class NotiListenerService extends NotificationListenerService {
         // check for two app requirement here
         int stage = sharedPreferences.getInt("stage", 1);
         if (!twoAppRequirement(sortedDrawerTwoAppMap, sortedDbTwoAppMap, stage)) {
-            // increase notSendCount here
-            // int i = sharedPreferences.getInt("notSendCount", 0);
-            // sharedPreferences.edit().putInt("notSendCount", i + 1).apply();
             return false;
         }
 
@@ -535,55 +541,6 @@ public class NotiListenerService extends NotificationListenerService {
         // final 機制 by jj
         return sortedDrawerTwoAppMap;
 
-        /*
-        // pick 2-app notification into tmpClick
-        Set<String> addedAppSet = new HashSet<>();
-        for (Map.Entry<String,Integer> twoApp : sortedDrawerTwoAppMap) {
-            if (tmpClick.size() == 6) break;
-            String[] twoAppList = twoApp.getKey().split(";");
-            if (!addedAppSet.contains(twoAppList[0]) && !addedAppSet.contains(twoAppList[1])) {
-                int i = ThreadLocalRandom.current().nextInt(0, drawerAppNameMap.get(twoAppList[0]).size());
-                int j = ThreadLocalRandom.current().nextInt(0, drawerAppNameMap.get(twoAppList[1]).size());
-                NotiItem notiItemToAdd1 = drawerAppNameMap.get(twoAppList[0]).get(i);
-                NotiItem notiItemToAdd2 = drawerAppNameMap.get(twoAppList[1]).get(j);
-                tmpClick.add(notiItemToAdd1);
-                tmpClick.add(notiItemToAdd2);
-                drawerNotiItems.remove(notiItemToAdd1);
-                drawerNotiItems.remove(notiItemToAdd2);
-                addedAppSet.add(twoAppList[0]);
-                addedAppSet.add(twoAppList[1]);
-            }
-        }
-
-        // if size < 6, fill
-        int stillNeed = 6 - tmpClick.size();
-        while(tmpClick.size() < 6) {
-            if (drawerNotiItems.isEmpty()) break; // 會不滿6個
-            int i = ThreadLocalRandom.current().nextInt(0, drawerNotiItems.size());
-            tmpClick.add(drawerNotiItems.get(i));
-        }
-
-        // reorder
-        Set<Integer> originOrder = new HashSet<>();
-        for (NotiItem notiItem: tmpClick) {
-            originOrder.add(notiItem.getOriginOrder());
-            Log.d("notilistener_new", "originOrder " + notiItem.getOriginOrder());
-        }
-        for (int i = 0; i < drawer.size(); ++i) {
-            if (originOrder.contains(drawer.get(i).getOriginOrder())) {
-                Log.d("notilistener_new", "re-order index " + i);
-                Log.d("notilistener_new", "re-order ->" + drawer.get(i) + drawer.get(i).content);
-                Log.d("notilistener_new", "re-orderD ->" + drawer2.get(i) + drawer2.get(i).content);
-                newClick.add(drawer.get(i));
-                newDisplay.add(drawer2.get(i));
-            }
-        }
-
-        // return
-        newMap.put("click", newClick);
-        newMap.put("display", newDisplay);
-        return newMap;
-         */
     }
 
     private Map<String, ArrayList<NotiItem>> getBalancedNotificationsWithOrderV3(ArrayList<NotiItem> drawerNotiItems, ArrayList<NotiItem> drawerNotiItems2, List<Map.Entry<String, Integer>> sortedDrawerTwoAppMap) {
@@ -634,13 +591,9 @@ public class NotiListenerService extends NotificationListenerService {
         Set<Integer> originOrder = new HashSet<>();
         for (NotiItem notiItem : tmpClick) {
             originOrder.add(notiItem.getOriginOrder());
-            Log.d("notilistener_new", "originOrder " + notiItem.getOriginOrder());
         }
         for (int i = 0; i < drawer.size(); ++i) {
             if (originOrder.contains(drawer.get(i).getOriginOrder())) {
-                Log.d("notilistener_new", "re-order index " + i);
-                Log.d("notilistener_new", "re-order ->" + drawer.get(i) + drawer.get(i).content);
-                Log.d("notilistener_new", "re-orderD ->" + drawer2.get(i) + drawer2.get(i).content);
                 newClick.add(drawer.get(i));
                 newDisplay.add(drawer2.get(i));
             }
@@ -675,97 +628,12 @@ public class NotiListenerService extends NotificationListenerService {
         HashMap<String, Integer> resultMap = new HashMap<>();
         if (!results.isEmpty()) {
             for (SampleCombination s : results) {
-                Log.d("get SampleCombination", s.getAppNameComb() + " count: " + s.getCount());
+                // Log.d("get SampleCombination", s.getAppNameComb() + " count: " + s.getCount());
                 resultMap.put(s.getAppNameComb(), s.getCount());
             }
         }
 
         return resultMap;
-    }
-
-    private Map<String, ArrayList<NotiItem>> getBalancedNotificationsWithOrder(ArrayList<NotiItem> click, ArrayList<NotiItem> display) {
-        ArrayList<NotiItem> newClick = new ArrayList<>();
-        ArrayList<NotiItem> newDisplay = new ArrayList<>();
-        Map<String, ArrayList<NotiItem>> newMap = new HashMap<>();
-        ArrayList<NotiItem> drawer = new ArrayList<>(click);
-        ArrayList<NotiItem> drawerD = new ArrayList<>(display);
-
-        Log.d("notilistener_new", "drawer size" + drawer.size() + " drawerD size " + drawerD.size());
-
-        Map<String, Integer> appNameMap = getSampleRecordMap();
-        for (Map.Entry entry : appNameMap.entrySet())
-            Log.d("notilistener_new", "key: " + entry.getKey() + ", value: " + entry.getValue());
-
-
-        // get least common in drawer
-        NotiItem rarestClick = getLeastCommonNotiItem(click, appNameMap);
-
-        // remove least common from drawer
-        click.remove(rarestClick);
-        display = (ArrayList<NotiItem>) click.clone();
-        Log.d("notilistener_new", "least common ->" + rarestClick.content);
-
-        // 舊機制
-        Map<String, ArrayList<NotiItem>> tmpItemMap = getNotificationsWithOrder(click, display, 6, 3);
-
-        // get most common in list
-        NotiItem mostCommonClick = getMostCommonNotiItem(tmpItemMap.get("click"), appNameMap);
-        Log.d("notilistener_new", "most common ->" + mostCommonClick.content);
-
-        // 新 or 舊
-        ArrayList<NotiItem> tmpClick = tmpItemMap.get("click");
-
-        Log.d("notilistener_new", "size after with order: " + tmpClick.size());
-
-        int max = 1;
-        if (appNameMap.containsKey(mostCommonClick.appName))
-            max = appNameMap.get(mostCommonClick.appName);
-        int min = 1;
-        if (appNameMap.containsKey(rarestClick.appName)) min = appNameMap.get(rarestClick.appName);
-        if (max >= 3 && (float) max / min >= 1.5) {
-            // remove from list
-            tmpClick.remove(mostCommonClick);
-            Log.d("notilistener_new", "remove");
-
-            // if 新機制反而 app 變少
-            Set<String> tmpSet = new HashSet<>();
-            for (NotiItem notiItem : tmpClick) tmpSet.add(notiItem.appName);
-            if (tmpSet.contains(rarestClick.appName) && tmpSet.contains(mostCommonClick.appName)) {
-                // 舊機制
-                tmpClick.add(mostCommonClick);
-            } else {
-                // 新機制
-                tmpClick.add(rarestClick);
-            }
-            Log.d("notilistener_new", "replace");
-        }
-
-
-        Log.d("notilistener_new", "drawer size" + drawer.size() + " drawerD size " + drawerD.size());
-
-        Set<Integer> originOrder = new HashSet<>();
-        for (NotiItem notiItem : tmpClick) {
-            originOrder.add(notiItem.getOriginOrder());
-            Log.d("notilistener_new", "originOrder " + notiItem.getOriginOrder());
-        }
-        // re-order
-        for (int i = 0; i < drawer.size(); ++i) {
-            if (originOrder.contains(drawer.get(i).getOriginOrder())) {
-                Log.d("notilistener_new", "re-order index " + i);
-                Log.d("notilistener_new", "re-order ->" + drawer.get(i) + drawer.get(i).content);
-                Log.d("notilistener_new", "re-orderD ->" + drawerD.get(i) + drawerD.get(i).content);
-
-                newClick.add(drawer.get(i));
-                newDisplay.add(drawerD.get(i));
-            }
-        }
-
-
-        // return
-        newMap.put("click", newClick);
-        newMap.put("display", newDisplay);
-        Log.d("notilistener_new", "new ->" + newClick.size());
-        return newMap;
     }
 
     private NotiItem getMostCommonNotiItem(ArrayList<NotiItem> notiItems, Map<String, Integer> appNameMap) {
@@ -802,16 +670,16 @@ public class NotiListenerService extends NotificationListenerService {
         return rareNotiItem.get(i);
     }
 
-    private static int getNumberOfCategory(ArrayList<NotiItem> data) {
-        ArrayList<String> categories = new ArrayList<String>();
-
-        for (NotiItem element : data) {
-            categories.add(element.category);
-        }
-
-        Set<String> distinct = new HashSet<>(categories);
-        return distinct.size();
-    }
+//    private static int getNumberOfCategory(ArrayList<NotiItem> data) {
+//        ArrayList<String> categories = new ArrayList<String>();
+//
+//        for (NotiItem element : data) {
+//            categories.add(element.category);
+//        }
+//
+//        Set<String> distinct = new HashSet<>(categories);
+//        return distinct.size();
+//    }
 
     private ArrayList<NotiItem> getNonRepeatNotification(ArrayList<NotiItem> notiItems, List<SampleRecord> sampleRecords, int maxRepeat) {
         // if maxRepeat = 0 => if repeat once than delete that notification
@@ -841,8 +709,13 @@ public class NotiListenerService extends NotificationListenerService {
         }
         List<NotiPool> notiPools = getNotiPools();
 
-        // TODO add time restriction
+        long now = System.currentTimeMillis();
         for (NotiPool n : notiPools) {
+            int timeDiff = (int) (now - n.postTime) / 1000;
+            if (timeDiff > hourLimit) {
+                Log.d("notipool", "delete the noti one hr ago " + n.appName + " " + n.title);
+                continue;
+            }
             if (!appTable.contains(n.appName)) {
                 newNotiPools.add(n);
             }
@@ -964,49 +837,49 @@ public class NotiListenerService extends NotificationListenerService {
     }
 
 
-    private static ArrayList<NotiItem> getNotificationsWithCategories(ArrayList<NotiItem> data, int numNoti, int numCategory) {
-        ArrayList<NotiItem> subData = new ArrayList<NotiItem>();
-        ArrayList<String> categories = new ArrayList<String>();
+//    private static ArrayList<NotiItem> getNotificationsWithCategories(ArrayList<NotiItem> data, int numNoti, int numCategory) {
+//        ArrayList<NotiItem> subData = new ArrayList<NotiItem>();
+//        ArrayList<String> categories = new ArrayList<String>();
+//
+//        // Example
+//        // numNoti = 6, numCategory = 4
+//        // input = [a,a,a,a,a,a,b,b,b,c,c,c,d,d,d]
+//        // output = [a,a,a,b,c,d]
+//
+//        for (NotiItem element : data) {
+//            // add to categories if its a new category
+//            if (!categories.contains(element.category)) {
+//                categories.add(element.category);
+//            }
+//            // add to subData if space is enough
+//            if (subData.size() - categories.size() < numNoti - numCategory) {
+//                subData.add(element);
+//            }
+//            if (subData.size() == numNoti) {
+//                break;
+//            }
+//        }
+//
+//        return subData;
+//    }
 
-        // Example
-        // numNoti = 6, numCategory = 4
-        // input = [a,a,a,a,a,a,b,b,b,c,c,c,d,d,d]
-        // output = [a,a,a,b,c,d]
-
-        for (NotiItem element : data) {
-            // add to categories if its a new category
-            if (!categories.contains(element.category)) {
-                categories.add(element.category);
-            }
-            // add to subData if space is enough
-            if (subData.size() - categories.size() < numNoti - numCategory) {
-                subData.add(element);
-            }
-            if (subData.size() == numNoti) {
-                break;
-            }
-        }
-
-        return subData;
-    }
-
-    private static ArrayList<NotiItem> getNotisWithoutDuplicateNull(ArrayList<NotiItem> activeData) {
-        ArrayList<NotiItem> newList = new ArrayList<NotiItem>();
-
-        for (NotiItem element : activeData) {
-            boolean shouldAdd = true;
-            for (NotiItem newElement : newList) {
-                if (element.content.equals(newElement.content) && element.title.equals(newElement.title)) {
-                    shouldAdd = false;
-                }
-            }
-            if (shouldAdd && !isNull(element) && !isNotiSort(element)) {
-                newList.add(element);
-            }
-        }
-
-        return newList;
-    }
+//    private static ArrayList<NotiItem> getNotisWithoutDuplicateNull(ArrayList<NotiItem> activeData) {
+//        ArrayList<NotiItem> newList = new ArrayList<NotiItem>();
+//
+//        for (NotiItem element : activeData) {
+//            boolean shouldAdd = true;
+//            for (NotiItem newElement : newList) {
+//                if (element.content.equals(newElement.content) && element.title.equals(newElement.title)) {
+//                    shouldAdd = false;
+//                }
+//            }
+//            if (shouldAdd && !isNull(element) && !isNotiSort(element)) {
+//                newList.add(element);
+//            }
+//        }
+//
+//        return newList;
+//    }
 
     private static boolean isNotiSort(NotiItem item) {
         return item.appName.equals("NotiSort");
@@ -1172,56 +1045,56 @@ public class NotiListenerService extends NotificationListenerService {
         return notiPool;
     }
 
-    public static NotiItem setNotiItem(StatusBarNotification notification, int order) {
-        String icon = "null";
-        String packageName = "null";
-        String title = "null";
-        String content = "null";
-        String appName = "null";
-        String category = "null";
-
-        Long postTime = notification.getPostTime();
-
-        try {
-            packageName = notification.getPackageName();
-        } catch (Exception e) {
-            Log.e("NotiListenerService", "package name failed", e);
-        }
-        try {
-            title = notification.getNotification().extras.get("android.title").toString();
-
-        } catch (Exception e) {
-            Log.d("NotiListenerService", "title failed");
-        }
-        try {
-            content = notification.getNotification().extras.get("android.text").toString();
-        } catch (Exception e) {
-            Log.d("NotiListenerService", "content failed");
-        }
-        try {
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
-            appName = (String) (applicationInfo != null ?
-                    packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
-        } catch (Exception e) {
-            Log.e("NotiListenerService", "appName failed", e);
-        }
-        try {
-            category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
-        } catch (Exception e) {
-            Log.e("NotiListenerService", "category failed", e);
-        }
-        try {
-            IconHandler iconHandler = new IconHandler();
-            icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
-        } catch (Exception e) {
-            Log.e("NotiListenerService", "icon failed", e);
-        }
-
-        NotiItem notiItem = new NotiItem(appName, title, content, postTime, category, order);
-        notiItem.setIcon(icon);
-
-        return notiItem;
-    }
+//    public static NotiItem setNotiItem(StatusBarNotification notification, int order) {
+//        String icon = "null";
+//        String packageName = "null";
+//        String title = "null";
+//        String content = "null";
+//        String appName = "null";
+//        String category = "null";
+//
+//        Long postTime = notification.getPostTime();
+//
+//        try {
+//            packageName = notification.getPackageName();
+//        } catch (Exception e) {
+//            Log.e("NotiListenerService", "package name failed", e);
+//        }
+//        try {
+//            title = notification.getNotification().extras.get("android.title").toString();
+//
+//        } catch (Exception e) {
+//            Log.d("NotiListenerService", "title failed");
+//        }
+//        try {
+//            content = notification.getNotification().extras.get("android.text").toString();
+//        } catch (Exception e) {
+//            Log.d("NotiListenerService", "content failed");
+//        }
+//        try {
+//            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+//            appName = (String) (applicationInfo != null ?
+//                    packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
+//        } catch (Exception e) {
+//            Log.e("NotiListenerService", "appName failed", e);
+//        }
+//        try {
+//            category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
+//        } catch (Exception e) {
+//            Log.e("NotiListenerService", "category failed", e);
+//        }
+//        try {
+//            IconHandler iconHandler = new IconHandler();
+//            icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
+//        } catch (Exception e) {
+//            Log.e("NotiListenerService", "icon failed", e);
+//        }
+//
+//        NotiItem notiItem = new NotiItem(appName, title, content, postTime, category, order);
+//        notiItem.setIcon(icon);
+//
+//        return notiItem;
+//    }
 
     private void setSchedule() {
 //        for (int i = 0; i < 5; ++i) {

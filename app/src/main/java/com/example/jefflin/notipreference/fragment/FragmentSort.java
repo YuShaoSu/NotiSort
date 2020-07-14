@@ -121,8 +121,13 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
     public void refreshAttendAdapter(boolean info, boolean use, boolean other) {
         mAdapter.setNotAttend(info, use, other);
     }
-
-    public void refreshDisplayAdapter(boolean dup, boolean relate, boolean other) {
-        mAdapter.setNotDisplay(dup, relate, other);
+    public void refreshAttendAdapterReason(String reason) {
+        mAdapter.setNotAttendReason(reason);
+    }
+    public void refreshDisplayAdapter(boolean dup, boolean relate, boolean known, boolean other) {
+        mAdapter.setNotDisplay(dup, relate, known, other);
+    }
+    public void refreshDisplayAdapterReason(String reason) {
+        mAdapter.setNotDisplayReason(reason);
     }
 }

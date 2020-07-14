@@ -1,12 +1,16 @@
 package com.example.jefflin.notipreference;
 
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.View;
 import android.widget.Button;
@@ -14,11 +18,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.jefflin.notipreference.adapter.FragmentAdapter;
+import com.example.jefflin.notipreference.fragment.FragmentLog;
+import com.example.jefflin.notipreference.fragment.FragmentStart;
 import com.example.jefflin.notipreference.manager.SurveyManager;
+import com.example.jefflin.notipreference.model.ESMPojo;
 import com.example.jefflin.notipreference.model.NotiItem;
 import com.example.jefflin.notipreference.adapter.NotiItemAdapter;
 import com.example.jefflin.notipreference.helper.NotiItemMoveCallback;
 import com.example.jefflin.notipreference.widgets.PushNotification;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,6 +41,7 @@ public class ActivityProfile extends AppCompatActivity {
     private EditText edit_id;
     private Button done;
     private Button test;
+    private Button log;
     private SharedPreferences sharedPreferences;
 
 
@@ -47,6 +57,29 @@ public class ActivityProfile extends AppCompatActivity {
         edit_id = (EditText) findViewById(R.id.profile_edit_id);
         done = (Button) findViewById(R.id.profile_id_button);
         test = (Button) findViewById(R.id.profile_test);
+        log = (Button) findViewById(R.id.log);
+
+        log.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //- START -
+
+//                FragmentStart frag_start = new FragmentStart();
+//                Bundle sBundle = new Bundle();
+//                sBundle.putSerializable("survery_properties", mESMPojo.getESMProperties());
+//                sBundle.putString("style", style_string);
+//                frag_start.setArguments(sBundle);
+//                arraylist_fragments.add(frag_start);
+                setContentView(R.layout.activity_main_survey);
+                ArrayList<Fragment> fragments = new ArrayList<>();
+                FragmentLog fragmentLog = new FragmentLog();
+                fragments.add(fragmentLog);
+                ViewPager mPager = (ViewPager) findViewById(R.id.pager);
+                FragmentAdapter mPagerAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments);
+                mPager.setAdapter(mPagerAdapter);
+            }
+        });
 
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override

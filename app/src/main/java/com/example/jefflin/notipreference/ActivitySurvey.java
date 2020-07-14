@@ -181,7 +181,11 @@ public class ActivitySurvey extends AppCompatActivity {
 
     public void refreshAttendSort(boolean info, boolean use, boolean other) { fragsort.refreshAttendAdapter(info, use, other); }
 
-    public void refreshDisplaySort(boolean dup, boolean relate, boolean other) { fragsort_display.refreshDisplayAdapter(dup, relate, other); }
+    public void refreshAttendSortReason(String reason) { fragsort.refreshAttendAdapterReason(reason); }
+
+    public void refreshDisplaySort(boolean dup, boolean relate, boolean known, boolean other) { fragsort_display.refreshDisplayAdapter(dup, relate, known, other); }
+
+    public void refreshDisplaySortReason(String reason) { fragsort_display.refreshDisplayAdapterReason(reason); }
 
     public void refreshFragsurvey() {
         fragCompare.refreshAdapter();

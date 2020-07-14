@@ -3,11 +3,14 @@ package com.example.jefflin.notipreference.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +45,7 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
         final Button info = view.findViewById(R.id.not_attend_0);
         final Button use = view.findViewById(R.id.not_attend_1);
         final Button other = view.findViewById(R.id.not_attend_2);
+        final EditText other_reason = view.findViewById(R.id.not_attend_2_other);
 
         info.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,13 +85,34 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
                 if(!not_attend_other){
                     other.setBackgroundResource(R.drawable.check_small_round_button);
                     other.setTextColor(Color.parseColor("#FFFFFF"));
+                    other_reason.setVisibility(View.VISIBLE);
                 } else {
                     other.setBackgroundResource(R.drawable.not_check_small_round_button);
                     other.setTextColor(Color.parseColor("#000000"));
+                    other_reason.setVisibility(View.INVISIBLE);
                 }
                 not_attend_other = !not_attend_other;
 //                onSheetDismissCallBack.setNotAttend(not_attend_need_no_info, not_attend_no_use, not_attend_other);
                 ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_other);
+            }
+        });
+
+        other_reason.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString().trim().length() > 0) {
+                    ((ActivitySurvey) context).refreshAttendSortReason(editable.toString());
+                }
             }
         });
 

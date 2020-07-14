@@ -266,8 +266,9 @@ public class Answer implements Serializable {
             NotiItem item = notiItems.get(i);
             NotiItem itemD = notiItemsD.get(i);
             item.setDisplayOrder(itemD.getDisplayOrder());
+            // set display value to attend item
             if (itemD.isNotDisplay()) {
-                item.setNotDisplayReason(itemD.not_display_dup, itemD.not_display_not_relate, itemD.not_display_other);
+                item.setNotDisplayReason(itemD.not_display_dup, itemD.not_display_not_relate, itemD.not_display_known, itemD.not_display_other, itemD.not_display_other_reason);
             }
         }
 

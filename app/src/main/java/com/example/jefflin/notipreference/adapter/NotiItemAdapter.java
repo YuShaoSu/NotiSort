@@ -94,6 +94,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
                 holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 notiItem.not_display_dup = -1;
                 notiItem.not_display_not_relate = -1;
+                notiItem.not_display_known = -1;
                 notiItem.not_display_other = -1;
             }
         }
@@ -189,16 +190,31 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
 
     public void setNotAttend(boolean need_no_info, boolean no_use, boolean other) {
         NotiItem item = mData.get(mData.size() - 1);
+//        Log.d("not attend", "factor " + " " + item.appName);
         item.not_attend_no_info = need_no_info ? 1 : 0;
         item.not_attend_no_use = no_use ? 1 : 0;
         item.not_attend_other = other ? 1 : 0;
     }
 
-    public void setNotDisplay(boolean duplicate, boolean not_relate, boolean other) {
+    public void setNotAttendReason(String reason) {
         NotiItem item = mData.get(mData.size() - 1);
+//        Log.d("not attend", "other reason " + reason + " " + item.appName);
+        item.not_attend_other_reason = reason;
+    }
+
+    public void setNotDisplay(boolean duplicate, boolean not_relate, boolean known, boolean other) {
+        NotiItem item = mData.get(mData.size() - 1);
+//        Log.d("not display", "factor " + " " + item.appName);
         item.not_display_dup = duplicate ? 1 : 0;
         item.not_display_not_relate = not_relate ? 1 : 0;
+        item.not_display_known = known ? 1 : 0;
         item.not_display_other = other ? 1 : 0;
+    }
+
+    public void setNotDisplayReason(String reason) {
+        NotiItem item = mData.get(mData.size() - 1);
+//        Log.d("not display", "other reason " + reason + " " + item.appName + " size " + mData.size());
+        item.not_display_other_reason = reason;
     }
 
 }
