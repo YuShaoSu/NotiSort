@@ -400,8 +400,7 @@ public class NotiListenerService extends NotificationListenerService {
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                notiPoolDao.deleteAll();
-                notiPoolDao.insertAll(notiPools);
+                notiPoolDao.updateWhole(notiPools);
             }
         });
 

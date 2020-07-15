@@ -5,26 +5,33 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import com.example.jefflin.notipreference.model.NotiPool;
 
 import java.util.List;
 
 @Dao
-public interface NotiPoolDao {
+public abstract class NotiPoolDao {
     @Query("SELECT * FROM noti_pool")
-    List<NotiPool> getAll();
+    public abstract List<NotiPool> getAll();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertNotiPool(NotiPool notiPool);
+    public abstract void insertNotiPool(NotiPool notiPool);
 
     @Delete
-    void deleteNotiPool(NotiPool... notiPools);
+    public abstract void deleteNotiPool(NotiPool... notiPools);
 
     @Query("DELETE FROM noti_pool")
-    void deleteAll();
+    public abstract void deleteAll();
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertAll(List<NotiPool> notiPools);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract void insertAll(List<NotiPool> notiPools);
+
+    @Transaction
+    public void updateWhole(List<NotiPool> notiPools) {
+        deleteAll();
+        insertAll(notiPools);
+    }
 
 }
