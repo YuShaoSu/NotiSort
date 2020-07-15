@@ -85,6 +85,7 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
                 holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 notiItem.not_attend_no_info = -1;
                 notiItem.not_attend_no_use = -1;
+                notiItem.not_attend_not_relate = -1;
                 notiItem.not_attend_other = -1;
             }
         } else if (sortType == 1) {
@@ -188,12 +189,13 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         }
     }
 
-    public void setNotAttend(boolean need_no_info, boolean no_use, boolean other) {
+    public void setNotAttend(boolean need_no_info, boolean no_use, boolean not_relate, boolean other) {
         NotiItem item = mData.get(mData.size() - 1);
 //        Log.d("not attend", "factor " + " " + item.appName);
         item.not_attend_no_info = need_no_info ? 1 : 0;
         item.not_attend_no_use = no_use ? 1 : 0;
         item.not_attend_other = other ? 1 : 0;
+        item.not_attend_not_relate = not_relate ? 1 : 0;
     }
 
     public void setNotAttendReason(String reason) {

@@ -118,8 +118,8 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
-    public void refreshAttendAdapter(boolean info, boolean use, boolean other) {
-        mAdapter.setNotAttend(info, use, other);
+    public void refreshAttendAdapter(boolean info, boolean use, boolean relate, boolean other) {
+        mAdapter.setNotAttend(info, use, relate, other);
     }
     public void refreshAttendAdapterReason(String reason) {
         mAdapter.setNotAttendReason(reason);

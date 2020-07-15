@@ -56,6 +56,8 @@ public class NotiItem implements Serializable, Comparable<NotiItem> {
 
     public int not_attend_no_info = -1;
     public int not_attend_no_use = -1;
+    @Ignore
+    public int not_attend_not_relate = -1;
     public int not_attend_other = -1;
     @Ignore
     public String not_attend_other_reason = "";

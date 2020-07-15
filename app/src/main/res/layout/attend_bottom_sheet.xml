@@ -35,6 +35,15 @@
             android:layout_margin="5dp"
             android:textSize="12sp" />
 
+        <Button
+            android:id="@+id/not_attend_3"
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:background="@drawable/not_check_small_round_button"
+            android:text="@string/not_attend_3"
+            android:layout_margin="5dp"
+            android:textSize="12sp" />
+
 
 
     </LinearLayout>

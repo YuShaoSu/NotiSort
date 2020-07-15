@@ -179,7 +179,7 @@ public class ActivitySurvey extends AppCompatActivity {
         fragscale.changeActiveData();
     }
 
-    public void refreshAttendSort(boolean info, boolean use, boolean other) { fragsort.refreshAttendAdapter(info, use, other); }
+    public void refreshAttendSort(boolean info, boolean use, boolean relate, boolean other) { fragsort.refreshAttendAdapter(info, use, relate, other); }
 
     public void refreshAttendSortReason(String reason) { fragsort.refreshAttendAdapterReason(reason); }
 

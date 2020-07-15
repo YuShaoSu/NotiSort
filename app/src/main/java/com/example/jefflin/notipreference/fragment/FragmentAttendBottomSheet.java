@@ -24,6 +24,7 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
 
     public boolean not_attend_need_no_info = false;
     public boolean not_attend_no_use = false;
+    public boolean not_attend_not_relate = false;
     public boolean not_attend_other = false;
     private OnSheetDismissCallBack onSheetDismissCallBack;
     private Context context;
@@ -45,6 +46,7 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
         final Button info = view.findViewById(R.id.not_attend_0);
         final Button use = view.findViewById(R.id.not_attend_1);
         final Button other = view.findViewById(R.id.not_attend_2);
+        final Button relate = view.findViewById(R.id.not_attend_3);
         final EditText other_reason = view.findViewById(R.id.not_attend_2_other);
 
         info.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +61,7 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
                 }
                 not_attend_need_no_info = !not_attend_need_no_info;
 //                onSheetDismissCallBack.setNotAttend(not_attend_need_no_info, not_attend_no_use, not_attend_other);
-                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_other);
+                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_not_relate, not_attend_other);
             }
         });
 
@@ -75,7 +77,23 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
                 }
                 not_attend_no_use = !not_attend_no_use;
 //                onSheetDismissCallBack.setNotAttend(not_attend_need_no_info, not_attend_no_use, not_attend_other);
-                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_other);
+                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_not_relate, not_attend_other);
+            }
+        });
+
+        relate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!not_attend_not_relate){
+                    relate.setBackgroundResource(R.drawable.check_small_round_button);
+                    relate.setTextColor(Color.parseColor("#FFFFFF"));
+                } else {
+                    relate.setBackgroundResource(R.drawable.not_check_small_round_button);
+                    relate.setTextColor(Color.parseColor("#000000"));
+                }
+                not_attend_not_relate = !not_attend_not_relate;
+//                onSheetDismissCallBack.setNotAttend(not_attend_need_no_info, not_attend_no_use, not_attend_other);
+                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_not_relate, not_attend_other);
             }
         });
 
@@ -93,7 +111,7 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
                 }
                 not_attend_other = !not_attend_other;
 //                onSheetDismissCallBack.setNotAttend(not_attend_need_no_info, not_attend_no_use, not_attend_other);
-                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_other);
+                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_not_relate, not_attend_other);
             }
         });
 

@@ -154,14 +154,14 @@ public class ActivityMain extends AppCompatActivity {
 
     private void setSurveyCount() {
         SharedPreferences sharedPreferences = getSharedPreferences("survey", MODE_PRIVATE);
-        TextView sendCount = (TextView) findViewById(R.id.sendCount);
-        TextView respondedCount = (TextView) findViewById(R.id.respondedCount);
+//        TextView sendCount = (TextView) findViewById(R.id.sendCount);
+//        TextView respondedCount = (TextView) findViewById(R.id.respondedCount);
         TextView finishedCount = (TextView) findViewById(R.id.finishedCount);
-        String sendString = getResources().getString(R.string.sendCount) + sharedPreferences.getInt("surveySendCount", 0);
-        String respondedString = getResources().getString(R.string.respondedCount) + sharedPreferences.getInt("surveyRespondedCount", 0);
+//        String sendString = getResources().getString(R.string.sendCount) + sharedPreferences.getInt("surveySendCount", 0);
+//        String respondedString = getResources().getString(R.string.respondedCount) + sharedPreferences.getInt("surveyRespondedCount", 0);
         String finishedString = getResources().getString(R.string.finishedCount) + sharedPreferences.getInt("surveyFinishedCount", 0);
-        sendCount.setText(sendString);
-        respondedCount.setText(respondedString);
+//        sendCount.setText(sendString);
+//        respondedCount.setText(respondedString);
         finishedCount.setText(finishedString);
     }
 
