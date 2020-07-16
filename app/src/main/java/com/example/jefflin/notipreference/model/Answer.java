@@ -30,14 +30,14 @@ public class Answer implements Serializable {
     private long surveyFinishTime;
     private int interval;
     private ArrayList<NotiItem> notifications;
-    private String esm_q1;
-    private String esm_q2;
-    private String esm_q3;
-    private String esm_q4;
-    private String esm_q5;
-    private String esm_q6;
-    private String esm_q7;
-    private String esm_q8;
+    private String q1_interacting;
+    private String q2_where;
+    private String q3_activity;
+    private String q4_devote;
+    private String q5_busy;
+    private String q6_mood;
+    private String q7_compare;
+    private String q8_additional;
 
     // location
     public double longitude;
@@ -213,35 +213,35 @@ public class Answer implements Serializable {
 
 
     public void setEsmQ1(String esm_q1) {
-        this.esm_q1 = esm_q1;
+        this.q1_interacting = esm_q1;
     }
 
     public void setEsmQ2(String esm_q2) {
-        this.esm_q2 = esm_q2;
+        this.q2_where = esm_q2;
     }
 
     public void setEsmQ3(String esm_q3) {
-        this.esm_q3 = esm_q3;
+        this.q3_activity = esm_q3;
     }
 
     public void setEsmQ4(String esm_q4) {
-        this.esm_q4 = esm_q4;
+        this.q4_devote = esm_q4;
     }
 
     public void setEsmQ5(String esm_q5) {
-        this.esm_q5 = esm_q5;
+        this.q5_busy = esm_q5;
     }
 
     public void setEsmQ6(String esm_q6) {
-        this.esm_q6 = esm_q6;
+        this.q6_mood = esm_q6;
     }
 
     public void setEsmQ7(String esm_q7) {
-        this.esm_q7 = esm_q7;
+        this.q7_compare = esm_q7;
     }
 
     public void setEsmQ8(String esm_q8) {
-        this.esm_q8 = esm_q8;
+        this.q8_additional = esm_q8;
     }
 
     // false for scale check fails
