@@ -164,19 +164,19 @@
                         android:id="@+id/q3_0"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="打發時間" />
+                        android:text="運動" />
 
                     <RadioButton
                         android:id="@+id/q3_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="休閒娛樂" />
+                        android:text="吃飯" />
 
                     <RadioButton
                         android:id="@+id/q3_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="工作" />
+                        android:text="玩遊戲" />
 
                     <RadioButton
                         android:id="@+id/q3_3"
@@ -194,13 +194,96 @@
                         android:id="@+id/q3_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="用餐" />
+                        android:text="無聊放空" />
 
                     <RadioButton
                         android:id="@+id/q3_6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="搭乘交通工具" />
+                        android:text="睡覺、休息" />
+
+
+                    <RadioButton
+                        android:id="@+id/q3_8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="上廁所" />
+
+
+                    <RadioButton
+                        android:id="@+id/q3_9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="洗澡" />
+
+
+                    <RadioButton
+                        android:id="@+id/q3_10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="看電視、影片" />
+
+
+                    <RadioButton
+                        android:id="@+id/q3_11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="上網" />
+
+
+                    <RadioButton
+                        android:id="@+id/q3_12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="開會" />
+
+                    <RadioButton
+                        android:id="@+id/q3_19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="工作、做正事" />
+
+                    <RadioButton
+                        android:id="@+id/q3_13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="上課" />
+
+
+                    <RadioButton
+                        android:id="@+id/q3_14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="開車、騎機車" />
+
+
+                    <RadioButton
+                        android:id="@+id/q3_15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="通勤、移動中" />
+
+
+                    <RadioButton
+                        android:id="@+id/q3_16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="談話" />
+
+
+                    <RadioButton
+                        android:id="@+id/q3_17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="打電話" />
+
+
+                    <RadioButton
+                        android:id="@+id/q3_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="忘記了" />
+
 
                     <RadioButton
                         android:id="@+id/q3_7"
@@ -230,74 +313,56 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4. 你當時很投入上述活動?" />
+                    android:text="4. 請問你當時做這件事的專注（投入）程度？" />
 
                 <RadioGroup
                     android:id="@+id/q4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <RadioButton
                         android:id="@+id/q4_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:drawableBottom="@android:drawable/btn_radio"
-                        android:gravity="center"
-                        android:padding="2dp"
                         android:tag="Strongly disagree"
-                        android:text="\n非常不同意"
-                        android:textSize="10sp" />
+                        android:text="沒有心在當下的事情上，隨時可以離開" />
 
                     <RadioButton
                         android:id="@+id/q4_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:drawableBottom="@android:drawable/btn_radio"
-                        android:gravity="center"
-                        android:padding="2dp"
                         android:tag="Disagree"
-                        android:text="\n"
-                        android:textSize="10sp" />
+                        android:text="有點不投入當下的活動，有點想離開" />
 
                     <RadioButton
                         android:id="@+id/q4_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:drawableBottom="@android:drawable/btn_radio"
-                        android:gravity="center"
-                        android:padding="2dp"
                         android:tag="Neutral"
-                        android:text="\n"
-                        android:textSize="10sp" />
+                        android:text="有點投入當下的活動，如果有外來事情會打擾到我，但影響不大" />
 
                     <RadioButton
                         android:id="@+id/q4_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:drawableBottom="@android:drawable/btn_radio"
-                        android:gravity="center"
-                        android:padding="2dp"
                         android:tag="Agree"
-                        android:text="\n"
-                        android:textSize="10sp" />
+                        android:text="有點投入當下的活動，不太想被打擾" />
 
                     <RadioButton
                         android:id="@+id/q4_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:button="@null"
-                        android:drawableBottom="@android:drawable/btn_radio"
-                        android:gravity="center"
-                        android:padding="2dp"
                         android:tag="Strongly agree"
-                        android:text="\n非常同意"
-                        android:textSize="10sp" />
+                        android:text="非常投入當下活動，完全不能被打擾" />
+
+                    <RadioButton
+                        android:id="@+id/q4_6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="Forget"
+                        android:text="忘記了" />
+
                 </RadioGroup>
             </LinearLayout>
 

@@ -329,11 +329,43 @@ public class NotiListenerService extends NotificationListenerService {
 
 
     private boolean itemRequirement(ArrayList<NotiItem> items) {
-        return !(items.size() < sizeLimit || getNumberOfPackage(items) < appLimit);
+        int notiSize = items.size();
+        int uniqueApp = getNumberOfPackage(items);
+        boolean meet = !(notiSize < sizeLimit || uniqueApp < appLimit);
+        if (!meet) {
+            basic_requirement_logging(notiSize, uniqueApp);
+        }
+        return meet;
     }
 
     private boolean poolRequirement(List<NotiPool> pools) {
-        return !(pools.size() < sizeLimit || getNumberOfPoolPackage(pools) < appLimit);
+        int notiSize = pools.size();
+        int uniqueApp = getNumberOfPoolPackage(pools);
+        boolean meet = !(notiSize < sizeLimit || uniqueApp < appLimit);
+        if (!meet) {
+            basic_requirement_logging(notiSize, uniqueApp);
+        }
+        return meet;
+    }
+
+    private void basic_requirement_logging(int notiSize, int uniqueApp) {
+        StringBuilder logEvent = new StringBuilder("basic requirement/ 是否發出問卷 false\n");
+        logEvent.append("notification pool size: ");
+        logEvent.append(notiSize);
+        logEvent.append("\n");
+        logEvent.append("unique app num: ");
+        logEvent.append(uniqueApp);
+    }
+
+    private void logging(String logEvent) {
+        final LogModel logModel = new LogModel(Calendar.getInstance().getTime(), logEvent);
+        final LogModelDao logModelDao = NotiDatabase.getInstance(this).logModelDao();
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                logModelDao.insert(logModel);
+            }
+        });
     }
 
     private boolean twoAppRequirement(List<Map.Entry<String, Integer>> sortedDrawerTwoAppMap, List<Map.Entry<String, Integer>> sortedDbTwoAppMap, int stage) {
@@ -373,14 +405,7 @@ public class NotiListenerService extends NotificationListenerService {
         }
         Log.d("Final機制", "" + dbSize + "," + sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe
                 + "," + sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe);
-        final LogModel logModel = new LogModel(Calendar.getInstance().getTime(), logEvent.toString());
-        final LogModelDao logModelDao = NotiDatabase.getInstance(this).logModelDao();
-        mExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                logModelDao.insert(logModel);
-            }
-        });
+        logging(logEvent.toString());
 
         return meet;
     }
