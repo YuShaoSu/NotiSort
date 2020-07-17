@@ -261,7 +261,6 @@ public class ActivityMain extends AppCompatActivity {
             public void run() {
                 sampleRecordDao.insertAll(sampleRecords);
                 sampleCombinationDao.upsert(sampleCombinations);
-                notiPoolDao.deleteAll();
             }
         });
 

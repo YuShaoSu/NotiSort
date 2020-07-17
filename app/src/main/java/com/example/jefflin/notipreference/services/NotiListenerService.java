@@ -384,8 +384,8 @@ public class NotiListenerService extends NotificationListenerService {
                 secondLimitDe = 2;
                 break;
         }
-        boolean meet = (!sortedDbTwoAppMap.contains(first) || sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe <= dbSize
-                || sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe <= dbSize);
+        boolean meet = (!sortedDbTwoAppMap.contains(first) || sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe <= dbSize);
+                //|| sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe <= dbSize);
 
         // create log
         StringBuilder logEvent = new StringBuilder("sample組成/ 是否發出問卷 ");

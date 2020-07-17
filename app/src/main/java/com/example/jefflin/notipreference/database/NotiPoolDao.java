@@ -22,6 +22,7 @@ public abstract class NotiPoolDao {
     @Delete
     public abstract void deleteNotiPool(NotiPool... notiPools);
 
+    @Transaction
     @Query("DELETE FROM noti_pool")
     public abstract void deleteAll();
 
