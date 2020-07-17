@@ -247,9 +247,9 @@ public class NotiListenerService extends NotificationListenerService {
             Timer timer = new Timer();
             timer.schedule(new PushTask(this), 600000);
 
-            // 2020.06.14  add count by jj
-            int count = sharedPreferences.getInt("surveySendCount", 0);
-            sharedPreferences.edit().putInt("surveySendCount", count + 1).apply();
+//            // 2020.06.14  add count by jj
+//            int count = sharedPreferences.getInt("surveySendCount", 0);
+//            sharedPreferences.edit().putInt("surveySendCount", count + 1).apply();
 
             // first answer
             SurveyManager.getInstance().surveyInit();
@@ -444,23 +444,20 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
 
-        List<SampleRecord> sampleRecords = getSampleRecord();
-        // delete those that are same with SampleRecord
-        if (sharedPreferences.getInt("notSendCount", 0) < 5) {
-            click = getNonRepeatNotification(click, sampleRecords, 0);
-            display = getNonRepeatNotification(display, sampleRecords, 0);
-        } else {
-            // 若notSendCount達到5次，就不判斷是否重複
-            sharedPreferences.edit().putInt("notSendCount", 0).apply();
-        }
+//        List<SampleRecord> sampleRecords = getSampleRecord();
+//        // delete those that are same with SampleRecord
+//        if (sharedPreferences.getInt("notSendCount", 0) < 5) {
+//            click = getNonRepeatNotification(click, sampleRecords, 0);
+//            display = getNonRepeatNotification(display, sampleRecords, 0);
+//        } else {
+//            // 若notSendCount達到5次，就不判斷是否重複
+//            sharedPreferences.edit().putInt("notSendCount", 0).apply();
+//        }
 
         // check for number again
-        if (!itemRequirement(click)) {
-            // increase notSendCount here
-            int i = sharedPreferences.getInt("notSendCount", 0);
-            sharedPreferences.edit().putInt("notSendCount", i + 1).apply();
-            return false;
-        }
+//        if (!itemRequirement(click)) {
+//            return false;
+//        }
 
         Log.d("notilistener", "before getActiveNotisWithOrder");
 
@@ -482,8 +479,6 @@ public class NotiListenerService extends NotificationListenerService {
             return false;
         }
 
-        // TODO: 加保險，ex: notSendCount
-
         // final final final
         if (click.size() == 6) {
             itemMap.put("click", click);
@@ -494,9 +489,6 @@ public class NotiListenerService extends NotificationListenerService {
 
         // check for number final check (因為找不到為何還會<6)
         if (!itemRequirement(click)) {
-            // increase notSendCount here
-            int i = sharedPreferences.getInt("notSendCount", 0);
-            sharedPreferences.edit().putInt("notSendCount", i + 1).apply();
             return false;
         }
 

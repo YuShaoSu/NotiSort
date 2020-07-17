@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class ActivitySurvey extends AppCompatActivity {
 
@@ -146,6 +147,7 @@ public class ActivitySurvey extends AppCompatActivity {
         FragmentEnd frag_end = new FragmentEnd();
         Bundle eBundle = new Bundle();
         eBundle.putSerializable("survery_properties", mESMPojo.getESMProperties());
+        eBundle.putSerializable("arrayList", mActiveData);
         eBundle.putString("style", style_string);
         frag_end.setArguments(eBundle);
         arraylist_fragments.add(frag_end);
@@ -200,8 +202,11 @@ public class ActivitySurvey extends AppCompatActivity {
         }
     }
 
-    public void event_survey_completed(boolean sync_now) {
+    public void event_survey_completed(boolean sync_now, List<NotiItem> notiItems) {
         Intent returnIntent = new Intent();
+        Bundle eBundle = new Bundle();
+        eBundle.putSerializable("arrayList", mActiveData);
+        returnIntent.putExtras(eBundle);
         setResult(sync_now ? Activity.RESULT_OK : Activity.RESULT_FIRST_USER, returnIntent);
         finish();
     }

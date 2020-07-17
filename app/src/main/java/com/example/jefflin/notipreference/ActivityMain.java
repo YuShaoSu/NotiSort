@@ -251,22 +251,22 @@ public class ActivityMain extends AppCompatActivity {
         super.onPause();
     }
 
-    private void surveyDoneSuccess() {
-        final ArrayList<SampleRecord> sampleRecords = getSurveyRecord();
-        final ArrayList<SampleCombination> sampleCombinations = getSampleCombination();
+    private void surveyDoneSuccess(List<NotiItem> notiItems) {
+//        final ArrayList<SampleRecord> sampleRecords = getSurveyRecord();
+        final ArrayList<SampleCombination> sampleCombinations = getSampleCombination(notiItems);
 
         final NotiPoolDao notiPoolDao = NotiDatabase.getInstance(this).notiPoolDao();
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                sampleRecordDao.insertAll(sampleRecords);
+//                sampleRecordDao.insertAll(sampleRecords);
                 sampleCombinationDao.upsert(sampleCombinations);
             }
         });
 
         // 2020.06.14  add count by jj
-        int count = sharedPreferences.getInt("surveyFinishedCount", 0);
-        sharedPreferences.edit().putInt("surveyFinishedCount", count + 1).apply();
+//        int count = sharedPreferences.getInt("surveyFinishedCount", 0);
+//        sharedPreferences.edit().putInt("surveyFinishedCount", count + 1).apply();
 
 
         SurveyManager.getInstance().surveyDone();
@@ -282,20 +282,19 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        List<NotiItem> arrayList = (List<NotiItem>) data.getExtras().getSerializable("arrayList");
 
         if (requestCode == SURVEY_REQUEST) {
-
-            //setDoneBool();
 
             Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
             switch (resultCode) {
                 case RESULT_OK:
-                    surveyDoneSuccess();
+                    surveyDoneSuccess(arrayList);
                     sync(true);
                     setNextSurvey();
                     break;
                 case RESULT_FIRST_USER: // not sync now
-                    surveyDoneSuccess();
+                    surveyDoneSuccess(arrayList);
                     final String ans = SurveyManager.getInstance().getPostJson();
                     mExecutor.execute(new Runnable() {
                         @Override
@@ -562,9 +561,9 @@ public class ActivityMain extends AppCompatActivity {
         return l;
     }
 
-    private ArrayList<SampleCombination> getSampleCombination() {
+    private ArrayList<SampleCombination> getSampleCombination(List<NotiItem> notiItems) {
         ArrayList<SampleCombination> l = new ArrayList<>();
-        ArrayList<NotiItem> notiItems = SurveyManager.getInstance().getMap().get("click");
+//        ArrayList<NotiItem> notiItems = SurveyManager.getInstance().getMap().get("click");
         List<String> appCombs = new Utils().getTwoAppList(notiItems);
         for (String s: appCombs) {
             l.add(new SampleCombination(s));

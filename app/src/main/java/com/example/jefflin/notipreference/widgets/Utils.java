@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Utils {
-    public List<String> getTwoAppList(ArrayList<NotiItem> notiItems) {
+    public List<String> getTwoAppList(List<NotiItem> notiItems) {
         // create drawer map: appName -> ArrayList<NotiItem>
         HashMap<String, List<NotiItem>> drawerAppNameMap = new HashMap<>();
         for (NotiItem drawerNotiItem: notiItems) {
