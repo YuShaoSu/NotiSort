@@ -492,6 +492,14 @@ public class NotiListenerService extends NotificationListenerService {
             itemMap = getBalancedNotificationsWithOrderV3(click, display, sortedDrawerTwoAppMap);
         }
 
+        // check for number final check (因為找不到為何還會<6)
+        if (!itemRequirement(click)) {
+            // increase notSendCount here
+            int i = sharedPreferences.getInt("notSendCount", 0);
+            sharedPreferences.edit().putInt("notSendCount", i + 1).apply();
+            return false;
+        }
+
         Log.d("notilistener", "getActiveNotis bottom");
 
 
