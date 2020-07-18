@@ -27,11 +27,7 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
     public boolean not_attend_not_relate = false;
     public boolean not_attend_other = false;
     private OnSheetDismissCallBack onSheetDismissCallBack;
-    private Context context;
 
-    public FragmentAttendBottomSheet(Context context) {
-        this.context = context;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,11 +44,12 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
         final Button other = view.findViewById(R.id.not_attend_2);
         final Button relate = view.findViewById(R.id.not_attend_3);
         final EditText other_reason = view.findViewById(R.id.not_attend_2_other);
+        final Button finish = view.findViewById(R.id.not_attend_complete);
 
         info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!not_attend_need_no_info){
+                if (!not_attend_need_no_info) {
                     info.setBackgroundResource(R.drawable.check_small_round_button);
                     info.setTextColor(Color.parseColor("#FFFFFF"));
                 } else {
@@ -61,14 +58,14 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
                 }
                 not_attend_need_no_info = !not_attend_need_no_info;
 //                onSheetDismissCallBack.setNotAttend(not_attend_need_no_info, not_attend_no_use, not_attend_other);
-                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_not_relate, not_attend_other);
+                refreshAnswer();
             }
         });
 
         use.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!not_attend_no_use){
+                if (!not_attend_no_use) {
                     use.setBackgroundResource(R.drawable.check_small_round_button);
                     use.setTextColor(Color.parseColor("#FFFFFF"));
                 } else {
@@ -77,14 +74,14 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
                 }
                 not_attend_no_use = !not_attend_no_use;
 //                onSheetDismissCallBack.setNotAttend(not_attend_need_no_info, not_attend_no_use, not_attend_other);
-                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_not_relate, not_attend_other);
+                refreshAnswer();
             }
         });
 
         relate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!not_attend_not_relate){
+                if (!not_attend_not_relate) {
                     relate.setBackgroundResource(R.drawable.check_small_round_button);
                     relate.setTextColor(Color.parseColor("#FFFFFF"));
                 } else {
@@ -93,14 +90,14 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
                 }
                 not_attend_not_relate = !not_attend_not_relate;
 //                onSheetDismissCallBack.setNotAttend(not_attend_need_no_info, not_attend_no_use, not_attend_other);
-                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_not_relate, not_attend_other);
+                refreshAnswer();
             }
         });
 
         other.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!not_attend_other){
+                if (!not_attend_other) {
                     other.setBackgroundResource(R.drawable.check_small_round_button);
                     other.setTextColor(Color.parseColor("#FFFFFF"));
                     other_reason.setVisibility(View.VISIBLE);
@@ -110,8 +107,7 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
                     other_reason.setVisibility(View.INVISIBLE);
                 }
                 not_attend_other = !not_attend_other;
-//                onSheetDismissCallBack.setNotAttend(not_attend_need_no_info, not_attend_no_use, not_attend_other);
-                ((ActivitySurvey) context).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_not_relate, not_attend_other);
+                refreshAnswer();
             }
         });
 
@@ -129,11 +125,26 @@ public class FragmentAttendBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().trim().length() > 0) {
-                    ((ActivitySurvey) context).refreshAttendSortReason(editable.toString());
+                    if(isAdded()) {
+                        ((ActivitySurvey) getActivity()).refreshAttendSortReason(editable.toString());
+                    }
                 }
             }
         });
 
+        finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+
         return view;
+    }
+
+    private void refreshAnswer() {
+        if (isAdded()) {
+            ((ActivitySurvey) getActivity()).refreshAttendSort(not_attend_need_no_info, not_attend_no_use, not_attend_not_relate, not_attend_other);
+        }
     }
 }

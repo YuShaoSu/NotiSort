@@ -181,10 +181,10 @@ public class NotiItemAdapter extends RecyclerView.Adapter<NotiItemAdapter.ViewHo
         notifyItemRemoved(pos);
         notifyItemInserted(mData.size() - 1);
         if (sortType == 0 && item.isNotClick()) {
-            fragmentAttendBottomSheet = new FragmentAttendBottomSheet(mContext);
+            fragmentAttendBottomSheet = new FragmentAttendBottomSheet();
             fragmentAttendBottomSheet.show(((ActivitySurvey) mContext).getSupportFragmentManager(), "");
         } else if (sortType == 1 && item.isNotDisplay()) {
-            fragmentDisplayBottomSheet = new FragmentDisplayBottomSheet(mContext);
+            fragmentDisplayBottomSheet = new FragmentDisplayBottomSheet();
             fragmentDisplayBottomSheet.show(((ActivitySurvey) mContext).getSupportFragmentManager(), "");
         }
     }

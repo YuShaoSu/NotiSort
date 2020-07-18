@@ -27,11 +27,6 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
     public boolean not_display_known = false;
     public boolean not_display_other = false;
     private OnSheetDismissCallBack onSheetDismissCallBack;
-    private Context context;
-
-    public FragmentDisplayBottomSheet(Context context) {
-        this.context = context;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,11 +43,12 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
         final Button relate = view.findViewById(R.id.not_display_2);
         final Button other = view.findViewById(R.id.not_display_3);
         final EditText other_reason = view.findViewById(R.id.not_display_3_other);
+        final Button finish = view.findViewById(R.id.not_display_complete);
 
         duplicate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!not_display_duplicate){
+                if (!not_display_duplicate) {
                     duplicate.setBackgroundResource(R.drawable.check_small_round_button);
                     duplicate.setTextColor(Color.parseColor("#FFFFFF"));
                 } else {
@@ -60,15 +56,14 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
                     duplicate.setTextColor(Color.parseColor("#000000"));
                 }
                 not_display_duplicate = !not_display_duplicate;
-//                onSheetDismissCallBack.setNotDisplay(not_display_duplicate, not_display_not_relate, not_display_other);
-                ((ActivitySurvey) context).refreshDisplaySort(not_display_duplicate, not_display_not_relate, not_display_known, not_display_other);
+                refreshAnswer();
             }
         });
 
         relate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!not_display_not_relate){
+                if (!not_display_not_relate) {
                     relate.setBackgroundResource(R.drawable.check_small_round_button);
                     relate.setTextColor(Color.parseColor("#FFFFFF"));
                 } else {
@@ -77,14 +72,14 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
                 }
                 not_display_not_relate = !not_display_not_relate;
 //                onSheetDismissCallBack.setNotDisplay(not_display_duplicate, not_display_not_relate, not_display_other);
-                ((ActivitySurvey) context).refreshDisplaySort(not_display_duplicate, not_display_not_relate, not_display_known, not_display_other);
+                refreshAnswer();
             }
         });
 
         known.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!not_display_known){
+                if (!not_display_known) {
                     known.setBackgroundResource(R.drawable.check_small_round_button);
                     known.setTextColor(Color.parseColor("#FFFFFF"));
                 } else {
@@ -92,15 +87,14 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
                     known.setTextColor(Color.parseColor("#000000"));
                 }
                 not_display_known = !not_display_known;
-//                onSheetDismissCallBack.setNotDisplay(not_display_duplicate, not_display_not_relate, not_display_other);
-                ((ActivitySurvey) context).refreshDisplaySort(not_display_duplicate, not_display_not_relate, not_display_known, not_display_other);
+                refreshAnswer();
             }
         });
 
         other.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!not_display_other){
+                if (!not_display_other) {
                     other.setBackgroundResource(R.drawable.check_small_round_button);
                     other.setTextColor(Color.parseColor("#FFFFFF"));
                     other_reason.setVisibility(View.VISIBLE);
@@ -110,8 +104,7 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
                     other_reason.setVisibility(View.INVISIBLE);
                 }
                 not_display_other = !not_display_other;
-//                onSheetDismissCallBack.setNotDisplay(not_display_duplicate, not_display_not_relate, not_display_other);
-                ((ActivitySurvey) context).refreshDisplaySort(not_display_duplicate, not_display_not_relate, not_display_known, not_display_other);
+                refreshAnswer();
             }
         });
 
@@ -129,11 +122,26 @@ public class FragmentDisplayBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().trim().length() > 0) {
-                    ((ActivitySurvey) context).refreshDisplaySortReason(editable.toString());
+                    if (isAdded()) {
+                        ((ActivitySurvey) getActivity()).refreshDisplaySortReason(editable.toString());
+                    }
                 }
             }
         });
 
+        finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+
         return view;
+    }
+
+    private void refreshAnswer() {
+        if (isAdded()) {
+            ((ActivitySurvey) getActivity()).refreshDisplaySort(not_display_duplicate, not_display_not_relate, not_display_known, not_display_other);
+        }
     }
 }

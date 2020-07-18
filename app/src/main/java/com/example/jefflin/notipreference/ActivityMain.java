@@ -282,18 +282,20 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        List<NotiItem> arrayList = (List<NotiItem>) data.getExtras().getSerializable("arrayList");
+        List<NotiItem> arrayList;
 
         if (requestCode == SURVEY_REQUEST) {
 
             Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
             switch (resultCode) {
                 case RESULT_OK:
+                    arrayList = (List<NotiItem>) data.getExtras().getSerializable("arrayList");
                     surveyDoneSuccess(arrayList);
                     sync(true);
                     setNextSurvey();
                     break;
                 case RESULT_FIRST_USER: // not sync now
+                    arrayList = (List<NotiItem>) data.getExtras().getSerializable("arrayList");
                     surveyDoneSuccess(arrayList);
                     final String ans = SurveyManager.getInstance().getPostJson();
                     mExecutor.execute(new Runnable() {
@@ -565,7 +567,7 @@ public class ActivityMain extends AppCompatActivity {
         ArrayList<SampleCombination> l = new ArrayList<>();
 //        ArrayList<NotiItem> notiItems = SurveyManager.getInstance().getMap().get("click");
         List<String> appCombs = new Utils().getTwoAppList(notiItems);
-        for (String s: appCombs) {
+        for (String s : appCombs) {
             l.add(new SampleCombination(s));
         }
 
