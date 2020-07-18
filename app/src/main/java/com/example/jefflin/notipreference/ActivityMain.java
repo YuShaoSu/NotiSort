@@ -83,6 +83,8 @@ import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
 public class ActivityMain extends AppCompatActivity {
     final private int SURVEY_REQUEST = 1337;
     final private int MY_PERMISSION_REQUEST_CODE = 55;
+    final private int RESULT_SYNC_NOW = 1338;
+    final private int RESULT_NOT_SYNC_NOW = 1340;
     private NotiDao notiDao;
     private ActivityRecognitionDao activityRecognitionDao;
     private AnswerJsonDao answerJsonDao;
@@ -288,13 +290,13 @@ public class ActivityMain extends AppCompatActivity {
 
             Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
             switch (resultCode) {
-                case RESULT_OK:
+                case RESULT_SYNC_NOW:
                     arrayList = (List<NotiItem>) data.getExtras().getSerializable("arrayList");
                     surveyDoneSuccess(arrayList);
                     sync(true);
                     setNextSurvey();
                     break;
-                case RESULT_FIRST_USER: // not sync now
+                case RESULT_NOT_SYNC_NOW: // not sync now
                     arrayList = (List<NotiItem>) data.getExtras().getSerializable("arrayList");
                     surveyDoneSuccess(arrayList);
                     final String ans = SurveyManager.getInstance().getPostJson();

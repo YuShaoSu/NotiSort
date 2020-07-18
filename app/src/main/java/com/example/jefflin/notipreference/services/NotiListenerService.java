@@ -1013,7 +1013,7 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
         SharedPreferences sharedPreferences = this.getSharedPreferences("USER", MODE_PRIVATE);
-        NotiModel notiModel = new NotiModel(appName, title, content, postTime, category, sharedPreferences.getString("ID", "user id fail"));
+        NotiModel notiModel = new NotiModel(appName, title, content, postTime, category, sharedPreferences.getString("ID", "user id fail"), notification.isOngoing(), notification.isClearable());
 
         return setContext(notiModel);
     }

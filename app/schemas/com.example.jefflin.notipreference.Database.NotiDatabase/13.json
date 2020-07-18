@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 12,
-    "identityHash": "2fce30dd3da390812428b3397804d373",
+    "version": 13,
+    "identityHash": "b6e207f7af9f738a39bf74875b2f9214",
     "entities": [
       {
         "tableName": "noti_model",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `app_name` TEXT, `title` TEXT, `content` TEXT, `post_time` INTEGER, `category` TEXT, `longtitude` REAL NOT NULL, `latitude` REAL NOT NULL, `location_accuracy` REAL NOT NULL, `is_charging` INTEGER NOT NULL, `battery` INTEGER NOT NULL, `ringer_tone` INTEGER NOT NULL, `is_screen_on` INTEGER NOT NULL, `is_device_idle` INTEGER NOT NULL, `is_power_save` INTEGER NOT NULL, `did` TEXT, `network` TEXT, `callState` INTEGER NOT NULL, `recentApp` TEXT, `signalType` TEXT, `signalDbm` INTEGER NOT NULL, `is_ongoing` INTEGER NOT NULL, `is_clearable` INTEGER NOT NULL, `is_group` INTEGER NOT NULL, `light` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `app_name` TEXT, `title` TEXT, `content` TEXT, `post_time` INTEGER, `category` TEXT, `longtitude` REAL NOT NULL, `latitude` REAL NOT NULL, `location_accuracy` REAL NOT NULL, `is_charging` INTEGER NOT NULL, `battery` INTEGER NOT NULL, `ringer_tone` INTEGER NOT NULL, `is_screen_on` INTEGER NOT NULL, `is_device_idle` INTEGER NOT NULL, `is_power_save` INTEGER NOT NULL, `did` TEXT, `network` TEXT, `callState` INTEGER NOT NULL, `recentApp` TEXT, `signalType` TEXT, `signalDbm` INTEGER NOT NULL, `is_ongoing` INTEGER NOT NULL DEFAULT 0, `is_clearable` INTEGER NOT NULL DEFAULT 0, `is_group` INTEGER NOT NULL DEFAULT 0, `light` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -138,19 +138,22 @@
             "fieldPath": "isOngoing",
             "columnName": "is_ongoing",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "isClearable",
             "columnName": "is_clearable",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "isGroup",
             "columnName": "is_group",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "light",
@@ -669,7 +672,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2fce30dd3da390812428b3397804d373')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b6e207f7af9f738a39bf74875b2f9214')"
     ]
   }
 }

@@ -24,7 +24,7 @@ import com.example.jefflin.notipreference.model.SampleRecord;
 
 @Database(entities = {NotiModel.class, NotiItem.class, ActivityRecognitionModel.class, LocationUpdateModel.class,
         Accessibility.class, AnswerJson.class, SampleRecord.class, SampleCombination.class,
-        NotiModelRemove.class, NotiPool.class, LogModel.class}, version = 12)
+        NotiModelRemove.class, NotiPool.class, LogModel.class}, version = 13)
 public abstract class NotiDatabase extends RoomDatabase {
     private static volatile NotiDatabase uniqueInstance;
 
@@ -46,7 +46,7 @@ public abstract class NotiDatabase extends RoomDatabase {
                     uniqueInstance = Room.databaseBuilder(context, NotiDatabase.class, "NotiSort.db").
                             addMigrations(MIGRATION1_2, MIGRATION2_3, MIGRATION3_4, MIGRATION4_5,
                                     MIGRATION5_6, MIGRATION6_7, MIGRATION7_8, MIGRATION8_9, MIGRATION9_10,
-                                    MIGRATION10_11, MIGRATION11_12).build();
+                                    MIGRATION10_11, MIGRATION11_12, MIGRATION12_13).build();
                 }
             }
         }
@@ -161,6 +161,15 @@ public abstract class NotiDatabase extends RoomDatabase {
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE `log` (`id` INTEGER NOT NULL, " +
                     "`event` TEXT, `timestamp` INTEGER, PRIMARY KEY(`id`))");
+        }
+    };
+
+    private static final Migration MIGRATION12_13 = new Migration(12, 13) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE `noti_model` ADD is_ongoing INTEGER not null DEFAULT 0");
+            database.execSQL("ALTER TABLE `noti_model` ADD is_clearable INTEGER not null DEFAULT 0");
+            database.execSQL("ALTER TABLE `noti_model` ADD is_group INTEGER not null DEFAULT 0");
         }
     };
 

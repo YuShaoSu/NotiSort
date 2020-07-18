@@ -62,6 +62,14 @@ public class NotiModel {
     public String signalType;
     public int signalDbm;
 
+    @ColumnInfo(name = "is_ongoing", defaultValue = "0")
+    public int isOngoing = -1;
+    @ColumnInfo(name = "is_clearable", defaultValue = "0")
+    public int isClearable;
+    @ColumnInfo(name = "is_group", defaultValue = "0")
+    public int isGroup;
+
+
     // sensor
 //    public float accelerometerX, accelerometerY, accelerometerZ;
 //    public float gyroscopeX, gyroscopeY, gyroscopeZ;
@@ -139,13 +147,17 @@ public class NotiModel {
     }
 
 
-    public NotiModel(String appName, String title, String content, Long postTime, String category, String deviceID) {
+    public NotiModel() {}
+
+    public NotiModel(String appName, String title, String content, Long postTime, String category, String deviceID, boolean isOngoing, boolean isClearable) {
         this.appName = appName;
         this.title = title;
         this.content = content;
         this.postTime = postTime;
         this.category = category;
         this.deviceID = deviceID;
+        this.isOngoing = isOngoing ? 1 : 0;
+        this.isClearable = isClearable ? 1 : 0;
     }
 
 }

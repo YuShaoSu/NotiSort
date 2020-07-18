@@ -208,7 +208,7 @@ public class ActivitySurvey extends AppCompatActivity {
         Bundle eBundle = new Bundle();
         eBundle.putSerializable("arrayList", mActiveData);
         returnIntent.putExtras(eBundle);
-        setResult(sync_now ? Activity.RESULT_OK : Activity.RESULT_FIRST_USER, returnIntent);
+        setResult(sync_now ? 1338 : 1340, returnIntent);
         finish();
     }
 
