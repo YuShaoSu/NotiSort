@@ -27,6 +27,7 @@ public class Answer implements Serializable {
     public String deviceID;
     private String id;
     private long surveyPostTime;
+    private long surveyStartTime;
     private long surveyFinishTime;
     private int interval;
     private ArrayList<NotiItem> notifications;
@@ -74,6 +75,10 @@ public class Answer implements Serializable {
     public Answer(long surveyPostTime, int interval) {
         this.surveyPostTime = surveyPostTime;
         this.interval = interval;
+    }
+
+    public void setSurveyStartTime(long t) {
+        this.surveyStartTime = t;
     }
 
     public void setContext(Context mContext) {

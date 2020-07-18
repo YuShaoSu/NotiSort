@@ -388,8 +388,7 @@ public class ActivityMain extends AppCompatActivity {
     private boolean isNotiListenerEnabled() {
         ComponentName cn = new ComponentName(this, NotiListenerService.class);
         String flat = Settings.Secure.getString(this.getContentResolver(), "enabled_notification_listeners");
-        final boolean enabled = flat != null && flat.contains(cn.flattenToString());
-        return enabled;
+        return flat != null && flat.contains(cn.flattenToString());
     }
 
     private void setPermission() {
@@ -453,7 +452,6 @@ public class ActivityMain extends AppCompatActivity {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
-                return;
             }
         }
     }

@@ -59,6 +59,7 @@ public class ActivitySurvey extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_survey);
         answer = SurveyManager.getInstance().getFromAnswerList(selectAnswer());
+        answer.setSurveyStartTime(Calendar.getInstance().getTimeInMillis());
 
         if (!SurveyManager.getInstance().isNotiNull()) {
             mActiveData = SurveyManager.getInstance().getMap().get("click");
