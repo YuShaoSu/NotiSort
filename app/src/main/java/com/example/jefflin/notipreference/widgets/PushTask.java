@@ -27,8 +27,6 @@ public class PushTask extends TimerTask {
         if (!sharedPreferences.getBoolean("block", true))
             return;
         new PushNotification(context).push(false);
-        Timer timer = new Timer();
-        timer.schedule(new UnblockTask(context), 900000);
     }
 
 }

@@ -158,7 +158,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        Log.d("text", "done");
+//                        Log.d("text", "done");
                         return false;   // return false to hide the keyboard
                     } else return true;
                 }
@@ -178,7 +178,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    Log.d("text afterChange", getAdapterPosition() + " " + s.toString());
+//                    Log.d("text afterChange", getAdapterPosition() + " " + s.toString());
                     if (s.toString().trim().length() > 0) {
                         mData.get(getAdapterPosition()).setSortReason(s.toString());
                     }
@@ -193,7 +193,7 @@ public class ScaleAdapter extends RecyclerView.Adapter<ScaleAdapter.ViewHolder> 
                     switch (group.getCheckedRadioButtonId()) {
                         case R.id.strong_agree0:
                             mData.get(getAdapterPosition()).sender_attractiveness = strong_agree;
-                            Log.d("edit text", reason_box.getText().toString());
+//                            Log.d("edit text", reason_box.getText().toString());
                             break;
                         case R.id.agree0:
                             mData.get(getAdapterPosition()).sender_attractiveness = agree;

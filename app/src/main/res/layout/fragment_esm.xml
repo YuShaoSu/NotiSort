@@ -307,55 +307,68 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4. 請問你當時做這件事的專注（投入）程度？" />
+                    android:text="4. 請問你當時做這件事的投入程度？" />
 
                 <RadioGroup
                     android:id="@+id/q4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginStart="15dp"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/q4_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:gravity="center"
+                        android:padding="2dp"
                         android:tag="Strongly disagree"
-                        android:text="沒有心在當下的事情上，隨時可以離開" />
+                        android:textSize="10dp"
+                        android:text="非常不投入" />
 
                     <RadioButton
                         android:id="@+id/q4_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:tag="Disagree"
-                        android:text="有點不投入當下的活動，有點想離開" />
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:gravity="center"
+                        android:padding="2dp"/>
 
                     <RadioButton
                         android:id="@+id/q4_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:tag="Neutral"
-                        android:text="有點投入當下的活動，如果有外來事情會打擾到我，但影響不大" />
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:gravity="center"
+                        android:padding="2dp"/>
 
                     <RadioButton
                         android:id="@+id/q4_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:tag="Agree"
-                        android:text="有點投入當下的活動，不太想被打擾" />
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:gravity="center"
+                        android:padding="2dp"/>
 
                     <RadioButton
                         android:id="@+id/q4_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:tag="Strongly agree"
-                        android:text="非常投入當下活動，完全不能被打擾" />
-
-                    <RadioButton
-                        android:id="@+id/q4_6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:tag="Forget"
-                        android:text="忘記了" />
+                        android:text="非常投入"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:gravity="center"
+                        android:textSize="10dp"
+                        android:padding="2dp"/>
 
                 </RadioGroup>
             </LinearLayout>

@@ -61,6 +61,7 @@ import com.example.jefflin.notipreference.Listener.TelephonyListener;
 import com.example.jefflin.notipreference.widgets.PushNotification;
 import com.example.jefflin.notipreference.widgets.PushTask;
 import com.example.jefflin.notipreference.widgets.SampleTask;
+import com.example.jefflin.notipreference.widgets.UnblockTask;
 import com.example.jefflin.notipreference.widgets.Utils;
 import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.ActivityTransition;
@@ -144,24 +145,6 @@ public class NotiListenerService extends NotificationListenerService {
         pushNotification.cancel(true);
     }
 
-    private void startForeground() {
-        Intent intent = new Intent(this, ActivityMain.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 55, intent, 0);
-
-        Notification onGoing = new NotificationCompat.Builder(this, String.valueOf(R.string.channelOngoingID))
-                .setSmallIcon(R.drawable.ic_stat_name)
-                .setContentTitle("NotiSort")
-                .setContentText("Notisort 正在運行中")
-                .setContentIntent(pendingIntent)
-                .setOngoing(true)
-                .setPriority(NotificationCompat.PRIORITY_MIN)
-                .setDefaults(0)
-                .setSound(null)
-                .build();
-
-
-//        startForeground(1, onGoing);
-    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -191,7 +174,6 @@ public class NotiListenerService extends NotificationListenerService {
                 .putBoolean("block", false)
                 .putBoolean("dontDisturb", false)
                 .putBoolean("doing", false)
-                .putInt("notSendCount", 0)
                 .apply();
 
 
@@ -200,7 +182,7 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn, NotificationListenerService.RankingMap rankingMap, int reason) {
-        Log.d("re onRemoved ", sbn.getPackageName() + " " + sbn.getNotification().extras.get("android.title") + " " + sbn.getId() + " " + sbn.getPostTime() + " " + reason);
+//        Log.d("re onRemoved ", sbn.getPackageName() + " " + sbn.getNotification().extras.get("android.title") + " " + sbn.getId() + " " + sbn.getPostTime() + " " + reason);
         if (sbn.isClearable()) {
             final NotiDatabase db = NotiDatabase.getInstance(this);
             Notification notification = sbn.getNotification();
@@ -246,6 +228,9 @@ public class NotiListenerService extends NotificationListenerService {
 
             Timer timer = new Timer();
             timer.schedule(new PushTask(this), 600000);
+
+            Timer timer2 = new Timer();
+            timer2.schedule(new UnblockTask(this), 1500000);
 
 //            // 2020.06.14  add count by jj
 //            int count = sharedPreferences.getInt("surveySendCount", 0);
@@ -355,6 +340,7 @@ public class NotiListenerService extends NotificationListenerService {
         logEvent.append("\n");
         logEvent.append("unique app num: ");
         logEvent.append(uniqueApp);
+        logging(logEvent.toString());
     }
 
     private void logging(String logEvent) {
@@ -373,17 +359,15 @@ public class NotiListenerService extends NotificationListenerService {
         Map.Entry<String, Integer> second = sortedDrawerTwoAppMap.get(1);
         int dbSize = sortedDbTwoAppMap.size();
         int firstLimitNu = 0, firstLimitDe = 1, secondLimitNu = 0, secondLimitDe = 1;
-        switch (stage) {
-            case 1:
-                firstLimitNu = 3;
-                secondLimitNu = 2;
-                break;
-            case 2:
-                firstLimitNu = 2;
-                secondLimitNu = 3;
-                secondLimitDe = 2;
-                break;
+        if (stage == 1) {
+            firstLimitNu = 3;
+            secondLimitNu = 2;
+        } else if (stage == 2) {
+            firstLimitNu = 2;
+            secondLimitNu = 3;
+            secondLimitDe = 2;
         }
+
         boolean meet = (!sortedDbTwoAppMap.contains(first) || sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe <= dbSize);
                 //|| sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe <= dbSize);
 
@@ -437,29 +421,14 @@ public class NotiListenerService extends NotificationListenerService {
         Collections.sort(notiPools);
         Collections.reverse(notiPools);
         for (NotiPool notiPool : notiPools) {
-            Log.d("NotiPool", notiPool.appName + " " + notiPool.title + " " + notiPool.content + " " + notiPool.postTime);
+//            Log.d("NotiPool", notiPool.appName + " " + notiPool.title + " " + notiPool.content + " " + notiPool.postTime);
             click.add(new NotiItem(notiPool, order));
             display.add(new NotiItem(notiPool, order));
             order++;
         }
 
 
-//        List<SampleRecord> sampleRecords = getSampleRecord();
-//        // delete those that are same with SampleRecord
-//        if (sharedPreferences.getInt("notSendCount", 0) < 5) {
-//            click = getNonRepeatNotification(click, sampleRecords, 0);
-//            display = getNonRepeatNotification(display, sampleRecords, 0);
-//        } else {
-//            // 若notSendCount達到5次，就不判斷是否重複
-//            sharedPreferences.edit().putInt("notSendCount", 0).apply();
-//        }
-
-        // check for number again
-//        if (!itemRequirement(click)) {
-//            return false;
-//        }
-
-        Log.d("notilistener", "before getActiveNotisWithOrder");
+        Log.d("notilistener", "before getActiveNotisWithOrder " + click.size());
 
 
         HashMap<String, Integer> dbTwoAppMap = getSampleCombination(click);
@@ -487,8 +456,10 @@ public class NotiListenerService extends NotificationListenerService {
             itemMap = getBalancedNotificationsWithOrderV3(click, display, sortedDrawerTwoAppMap);
         }
 
+        Log.d("notilistener", "getActiveNotis after itemMap");
+
         // check for number final check (因為找不到為何還會<6)
-        if (!itemRequirement(click)) {
+        if (!itemRequirement(itemMap.get("click"))) {
             return false;
         }
 
@@ -519,13 +490,6 @@ public class NotiListenerService extends NotificationListenerService {
     }
 
     private List<Map.Entry<String, Integer>> getSortedDrawerTwoAppMap(ArrayList<NotiItem> drawerNotiItems, ArrayList<NotiItem> drawerNotiItems2) {
-        ArrayList<NotiItem> tmpClick = new ArrayList<>();
-        ArrayList<NotiItem> newClick = new ArrayList<>();
-        ArrayList<NotiItem> newDisplay = new ArrayList<>();
-        Map<String, ArrayList<NotiItem>> newMap = new HashMap<>();
-        ArrayList<NotiItem> drawer = new ArrayList<>(drawerNotiItems);
-        ArrayList<NotiItem> drawer2 = new ArrayList<>(drawerNotiItems2);
-
         // create drawer map: appName -> ArrayList<NotiItem>
         HashMap<String, List<NotiItem>> drawerAppNameMap = new HashMap<>();
         for (NotiItem drawerNotiItem : drawerNotiItems) {
@@ -589,22 +553,23 @@ public class NotiListenerService extends NotificationListenerService {
         for (Map.Entry<String, Integer> twoApp : sortedDrawerTwoAppMap) {
             if (tmpClick.size() == 6) break;
             String[] twoAppList = twoApp.getKey().split(";");
-            if (!addedAppSet.contains(twoAppList[0]) && !addedAppSet.contains(twoAppList[1])) {
+            if (!addedAppSet.contains(twoAppList[0])) {
                 int i = ThreadLocalRandom.current().nextInt(0, drawerAppNameMap.get(twoAppList[0]).size());
-                int j = ThreadLocalRandom.current().nextInt(0, drawerAppNameMap.get(twoAppList[1]).size());
                 NotiItem notiItemToAdd1 = drawerAppNameMap.get(twoAppList[0]).get(i);
-                NotiItem notiItemToAdd2 = drawerAppNameMap.get(twoAppList[1]).get(j);
                 tmpClick.add(notiItemToAdd1);
-                tmpClick.add(notiItemToAdd2);
                 drawerNotiItems.remove(notiItemToAdd1);
-                drawerNotiItems.remove(notiItemToAdd2);
                 addedAppSet.add(twoAppList[0]);
+            }
+            if (!addedAppSet.contains(twoAppList[1])) {
+                int j = ThreadLocalRandom.current().nextInt(0, drawerAppNameMap.get(twoAppList[1]).size());
+                NotiItem notiItemToAdd2 = drawerAppNameMap.get(twoAppList[1]).get(j);
+                tmpClick.add(notiItemToAdd2);
+                drawerNotiItems.remove(notiItemToAdd2);
                 addedAppSet.add(twoAppList[1]);
             }
         }
 
         // if size < 6, fill
-        int stillNeed = 6 - tmpClick.size();
         while (tmpClick.size() < 6) {
             if (drawerNotiItems.isEmpty()) break; // 會不滿6個
             int i = ThreadLocalRandom.current().nextInt(0, drawerNotiItems.size());
@@ -694,16 +659,6 @@ public class NotiListenerService extends NotificationListenerService {
         return rareNotiItem.get(i);
     }
 
-//    private static int getNumberOfCategory(ArrayList<NotiItem> data) {
-//        ArrayList<String> categories = new ArrayList<String>();
-//
-//        for (NotiItem element : data) {
-//            categories.add(element.category);
-//        }
-//
-//        Set<String> distinct = new HashSet<>(categories);
-//        return distinct.size();
-//    }
 
     private ArrayList<NotiItem> getNonRepeatNotification(ArrayList<NotiItem> notiItems, List<SampleRecord> sampleRecords, int maxRepeat) {
         // if maxRepeat = 0 => if repeat once than delete that notification
@@ -737,7 +692,7 @@ public class NotiListenerService extends NotificationListenerService {
         for (NotiPool n : notiPools) {
             int timeDiff = (int) (now - n.postTime) / 1000;
             if (timeDiff > hourLimit) {
-                Log.d("notipool", "delete the noti one hr ago " + n.appName + " " + n.title);
+//                Log.d("notipool", "delete the noti one hr ago " + n.appName + " " + n.title);
                 continue;
             }
             if (!appTable.contains(n.appName)) {

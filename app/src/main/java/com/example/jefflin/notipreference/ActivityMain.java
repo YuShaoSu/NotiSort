@@ -254,21 +254,18 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void surveyDoneSuccess(List<NotiItem> notiItems) {
-//        final ArrayList<SampleRecord> sampleRecords = getSurveyRecord();
         final ArrayList<SampleCombination> sampleCombinations = getSampleCombination(notiItems);
 
-        final NotiPoolDao notiPoolDao = NotiDatabase.getInstance(this).notiPoolDao();
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
-//                sampleRecordDao.insertAll(sampleRecords);
                 sampleCombinationDao.upsert(sampleCombinations);
             }
         });
 
         // 2020.06.14  add count by jj
-//        int count = sharedPreferences.getInt("surveyFinishedCount", 0);
-//        sharedPreferences.edit().putInt("surveyFinishedCount", count + 1).apply();
+        int count = sharedPreferences.getInt("surveyFinishedCount", 0);
+        sharedPreferences.edit().putInt("surveyFinishedCount", count + 1).apply();
 
 
         SurveyManager.getInstance().surveyDone();

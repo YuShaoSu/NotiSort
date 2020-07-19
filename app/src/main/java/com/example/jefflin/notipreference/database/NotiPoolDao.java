@@ -26,6 +26,7 @@ public abstract class NotiPoolDao {
     @Query("DELETE FROM noti_pool")
     public abstract void deleteAll();
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insertAll(List<NotiPool> notiPools);
 

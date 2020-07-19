@@ -76,12 +76,6 @@ public class SampleReceiver extends BroadcastReceiver {
         Date date = new Date();
         date.setTime(System.currentTimeMillis() + (60 * 60 * 1000));
         c.setTime(date);
-
-//        c.set(Calendar.HOUR_OF_DAY, GlobalClass.getIntervalTime()[interval]);
-//        c.add(Calendar.DAY_OF_YEAR, 1);
-//        c.set(Calendar.MINUTE, GlobalClass.getIntervalMinute());
-//        c.set(Calendar.SECOND, 0);
-
         alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
 //        Log.d("SampleReceiver interval", String.valueOf(c.getTime()));
     }
