@@ -174,6 +174,7 @@ public class NotiListenerService extends NotificationListenerService {
                 .putBoolean("block", false)
                 .putBoolean("dontDisturb", false)
                 .putBoolean("doing", false)
+                .putInt("stage", 1)
                 .apply();
 
 
@@ -388,7 +389,7 @@ public class NotiListenerService extends NotificationListenerService {
             logEvent.append("\n");
         }
         Log.d("Final機制", "" + dbSize + "," + sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe
-                + "," + sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe);
+                + "," + sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe + " " + first.getKey() + " : " + first.getValue());
         logging(logEvent.toString());
 
         return meet;
@@ -431,8 +432,7 @@ public class NotiListenerService extends NotificationListenerService {
         Log.d("notilistener", "before getActiveNotisWithOrder " + click.size());
 
 
-        HashMap<String, Integer> dbTwoAppMap = getSampleCombination(click);
-        List<Map.Entry<String, Integer>> sortedDrawerTwoAppMap = getSortedDrawerTwoAppMap(click, display);
+        HashMap<String, Integer> dbTwoAppMap = getSampleCombination();
         List<Map.Entry<String, Integer>> sortedDbTwoAppMap = new ArrayList<>(dbTwoAppMap.entrySet());
         Collections.sort(sortedDbTwoAppMap,
                 new Comparator<Map.Entry<String, Integer>>() {
@@ -441,6 +441,9 @@ public class NotiListenerService extends NotificationListenerService {
                     }
                 }
         );
+        Collections.reverse(sortedDbTwoAppMap);
+
+        List<Map.Entry<String, Integer>> sortedDrawerTwoAppMap = getSortedDrawerTwoAppMap(click, display, dbTwoAppMap);
 
         // check for two app requirement here
         int stage = sharedPreferences.getInt("stage", 1);
@@ -489,7 +492,7 @@ public class NotiListenerService extends NotificationListenerService {
         return newList;
     }
 
-    private List<Map.Entry<String, Integer>> getSortedDrawerTwoAppMap(ArrayList<NotiItem> drawerNotiItems, ArrayList<NotiItem> drawerNotiItems2) {
+    private List<Map.Entry<String, Integer>> getSortedDrawerTwoAppMap(ArrayList<NotiItem> drawerNotiItems, ArrayList<NotiItem> drawerNotiItems2, HashMap<String, Integer> dbTwoAppMap) {
         // create drawer map: appName -> ArrayList<NotiItem>
         HashMap<String, List<NotiItem>> drawerAppNameMap = new HashMap<>();
         for (NotiItem drawerNotiItem : drawerNotiItems) {
@@ -504,7 +507,6 @@ public class NotiListenerService extends NotificationListenerService {
         Collections.sort(drawerAppNameList);
 
         // form 2-app map: app1;app2 -> frequency
-        HashMap<String, Integer> dbTwoAppMap = getSampleCombination(drawerNotiItems);
         HashMap<String, Integer> drawerTwoAppMap = new HashMap<>();
         for (int i = 0; i < drawerAppNameList.size() - 1; i++) {
             for (int j = i + 1; j < drawerAppNameList.size(); j++) {
@@ -525,6 +527,7 @@ public class NotiListenerService extends NotificationListenerService {
                     }
                 }
         );
+        Collections.reverse(sortedDrawerTwoAppMap);
 
         // final 機制 by jj
         return sortedDrawerTwoAppMap;
@@ -594,16 +597,14 @@ public class NotiListenerService extends NotificationListenerService {
         return newMap;
     }
 
-    private HashMap<String, Integer> getSampleCombination(ArrayList<NotiItem> drawerNotiItems) {
-//        Utils utils = new Utils();
-//        final List<String> appNames = utils.getTwoAppList(drawerNotiItems);
+    private HashMap<String, Integer> getSampleCombination() {
 
         final SampleCombinationDao sampleCombinationDao = NotiDatabase.getInstance(this).sampleCombinationDao();
         List<SampleCombination> results = new ArrayList<>();
         FutureTask<List<SampleCombination>> mFuture = new FutureTask<List<SampleCombination>>(new Callable<List<SampleCombination>>() {
             @Override
             public List<SampleCombination> call() throws Exception {
-                return sampleCombinationDao.getAll();//.getAppComb(appNames.toArray(new String[0]));
+                return sampleCombinationDao.getAll();
             }
         });
         ExecutorService sExecutor = Executors.newSingleThreadExecutor();
@@ -617,7 +618,6 @@ public class NotiListenerService extends NotificationListenerService {
         HashMap<String, Integer> resultMap = new HashMap<>();
         if (!results.isEmpty()) {
             for (SampleCombination s : results) {
-                // Log.d("get SampleCombination", s.getAppNameComb() + " count: " + s.getCount());
                 resultMap.put(s.getAppNameComb(), s.getCount());
             }
         }
