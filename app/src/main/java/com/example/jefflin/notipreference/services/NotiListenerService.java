@@ -562,6 +562,7 @@ public class NotiListenerService extends NotificationListenerService {
                 drawerNotiItems.remove(notiItemToAdd1);
                 addedAppSet.add(twoAppList[0]);
             }
+            if (tmpClick.size() == 6) break;
             if (!addedAppSet.contains(twoAppList[1])) {
                 int j = ThreadLocalRandom.current().nextInt(0, drawerAppNameMap.get(twoAppList[1]).size());
                 NotiItem notiItemToAdd2 = drawerAppNameMap.get(twoAppList[1]).get(j);
