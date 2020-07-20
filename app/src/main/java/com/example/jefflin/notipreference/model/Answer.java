@@ -133,7 +133,7 @@ public class Answer implements Serializable {
                     this.signalDbm = s.getDbm();
                 }
             } catch (NullPointerException e) {
-                Log.e("signal strength", "getCellSignalStrength null pt", e);
+//                Log.e("signal strength", "getCellSignalStrength null pt", e);
             }
         } else {
             this.signalType = contextManager.phoneSignalType;

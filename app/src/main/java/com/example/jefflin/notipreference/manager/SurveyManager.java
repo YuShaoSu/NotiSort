@@ -127,7 +127,7 @@ public class SurveyManager {
     }
 
     public void surveyDone() {
-        Log.d("SuveyManager", "survey done");
+//        Log.d("SuveyManager", "survey done");
 //        isSurveyDone = true;
 //        isSurveyBlock = false;
 //        isSurveyDoing = false;

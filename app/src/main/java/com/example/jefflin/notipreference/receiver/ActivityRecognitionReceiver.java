@@ -30,7 +30,7 @@ public class ActivityRecognitionReceiver extends BroadcastReceiver {
         if (ActivityTransitionResult.hasResult(intent)) {
             ActivityTransitionResult result = ActivityTransitionResult.extractResult(intent);
             for (ActivityTransitionEvent event : result.getTransitionEvents()) {
-                Log.d("ActivityTransitionEvent", event.toString());
+//                Log.d("ActivityTransitionEvent", event.toString());
                 SharedPreferences sharedPreferences =  context.getSharedPreferences("USER", Context.MODE_PRIVATE);
                 final ActivityRecognitionModel activityRecognitionModel = new ActivityRecognitionModel(
                         event.getActivityType(), event.getTransitionType(),

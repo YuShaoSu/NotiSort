@@ -230,7 +230,7 @@ public class FragmentESM extends Fragment {
                     answer.setEsmQ4(selectedRadioButtonText4);
                     answer.setEsmQ5(selectedRadioButtonText5);
                     answer.setEsmQ6(selectedRadioButtonText6);
-                    Log.d("d",selectedRadioButtonText3);
+//                    Log.d("d",selectedRadioButtonText3);
 //
 //                    // contextual data
 //

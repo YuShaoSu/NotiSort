@@ -55,7 +55,7 @@ public class ActivitySurvey extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("ActivitySurvey", "onCreate");
+//        Log.d("ActivitySurvey", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_survey);
         answer = SurveyManager.getInstance().getFromAnswerList(selectAnswer());
@@ -161,7 +161,7 @@ public class ActivitySurvey extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("ActivitySurvey", "onResume");
+//        Log.d("ActivitySurvey", "onResume");
         SharedPreferences sharedPreferences = this.getSharedPreferences("survey", MODE_PRIVATE);
         sharedPreferences.edit().putBoolean("doing", true).apply();
     }
@@ -169,7 +169,7 @@ public class ActivitySurvey extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("ActivitySurvey", "onPause");
+//        Log.d("ActivitySurvey", "onPause");
     }
 
     @Override
@@ -219,7 +219,7 @@ public class ActivitySurvey extends AppCompatActivity {
 
     private int selectAnswer() {
         long diff = Calendar.getInstance().getTimeInMillis() - SurveyManager.getInstance().getSurveyPostTime();
-        Log.d("answer list", "choose" + Math.floor(diff / (60 * 1000)));
+//        Log.d("answer list", "choose" + Math.floor(diff / (60 * 1000)));
         return (int) Math.floor(diff / (60 * 1000));
     }
 }

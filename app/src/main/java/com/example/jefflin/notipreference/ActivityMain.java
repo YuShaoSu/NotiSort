@@ -116,7 +116,7 @@ public class ActivityMain extends AppCompatActivity {
 
         sharedPreferences = this.getSharedPreferences("survey", MODE_PRIVATE);
 
-        Log.d("activity main", "on create");
+//        Log.d("activity main", "on create");
 
         if (!isNotiListenerEnabled()) {
             final Intent setting = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
@@ -197,7 +197,7 @@ public class ActivityMain extends AppCompatActivity {
                 // 2020.06.14  add count by jj
                 int count = sharedPreferences.getInt("surveyRespondedCount", 0);
                 sharedPreferences.edit().putInt("surveyRespondedCount", count + 1).apply();
-                Log.d("Count", String.valueOf(count));
+//                Log.d("Count", String.valueOf(count));
 
                 final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
                 survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
@@ -235,7 +235,7 @@ public class ActivityMain extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        Log.d("Activity Main", "onDestroy");
+//        Log.d("Activity Main", "onDestroy");
         super.onDestroy();
     }
 
@@ -244,12 +244,12 @@ public class ActivityMain extends AppCompatActivity {
         super.onResume();
         setSurveyButton();
         setSurveyCount();
-        Log.d("Activity Main", "onResume");
+//        Log.d("Activity Main", "onResume");
     }
 
     @Override
     protected void onPause() {
-        Log.d("Activity Main", "onPause");
+//        Log.d("Activity Main", "onPause");
         super.onPause();
     }
 
@@ -285,7 +285,7 @@ public class ActivityMain extends AppCompatActivity {
 
         if (requestCode == SURVEY_REQUEST) {
 
-            Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
+//            Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
             switch (resultCode) {
                 case RESULT_SYNC_NOW:
                     arrayList = (List<NotiItem>) data.getExtras().getSerializable("arrayList");
@@ -311,7 +311,7 @@ public class ActivityMain extends AppCompatActivity {
             }
 
         } else {
-            Log.d("ActivityMainResult", "not SURVEY_REQUEST " + requestCode);
+//            Log.d("ActivityMainResult", "not SURVEY_REQUEST " + requestCode);
         }
 
     }
@@ -328,15 +328,15 @@ public class ActivityMain extends AppCompatActivity {
             public void run() {
                 String jsonPost = SurveyManager.getAnswerJson(answerJsonDao.getAll(), now ? SurveyManager.getInstance().getPostJson() : "");
                 postRequest(jsonPost, SURVEY_POST, now);
-                Log.d("answer json", jsonPost);
+//                Log.d("answer json", jsonPost);
 
                 String notiPost = SurveyManager.getItemJson(notiDao.getAll());
                 postRequest(notiPost, ITEM_POST, now);
-                Log.d("noti json", notiPost);
+//                Log.d("noti json", notiPost);
 
                 String ARPost = SurveyManager.getARJson(activityRecognitionDao.getAll());
                 postRequest(ARPost, AR_POST, now);
-                Log.d("activity recog json", ARPost);
+//                Log.d("activity recog json", ARPost);
 
                 String infoPost = SurveyManager.getInfoJson(surveyInfo);
                 postRequest(infoPost, INFO_POST, now);
@@ -408,7 +408,7 @@ public class ActivityMain extends AppCompatActivity {
         }
 
         if (chkPermissionOps(OPSTR_GET_USAGE_STATS, Manifest.permission.PACKAGE_USAGE_STATS)) {
-            Log.d("Permission", "usage stats granted");
+//            Log.d("Permission", "usage stats granted");
         } else {
             startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         }
@@ -478,8 +478,9 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void postRequest(String jsonPost, final String url, final boolean now) {
+        final SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String URL = "https://notisort.neighborbob.me/" + url;
+        String URL = "https://notisort.neighborbob.me/" + url + "?did=" + sharedPreferences.getString("ID", "user id fail");
         final String requestBody = jsonPost;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
@@ -489,12 +490,11 @@ public class ActivityMain extends AppCompatActivity {
                 if (response.equals("200")) {
                     SimpleDateFormat format = new SimpleDateFormat(DATA_FORMAT, Locale.getDefault());
                     String sync_time_value = format.format(Calendar.getInstance().getTime());
-                    SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
                     sharedPreferences.edit()
                             .putString("SYNC_TIME", sync_time_value)
                             .apply();
                     setSyncTime();
-                    Log.d("post", "succeed");
+//                    Log.d("post", "succeed");
                     mExecutor.execute(new Runnable() {
                         @Override
                         public void run() {
@@ -580,7 +580,7 @@ public class ActivityMain extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.HOUR_OF_DAY, 3);
         alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pii);
-        Log.d("next survey time", String.valueOf(c.getTime()));
+//        Log.d("next survey time", String.valueOf(c.getTime()));
     }
 
 }

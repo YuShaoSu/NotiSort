@@ -127,7 +127,7 @@ public class FragmentCompare extends Fragment {
                     ((ActivitySurvey) mContext).go_to_next();
 
                 } else {  // scale not done or other err(not set on current)
-                    Log.d("answer handler", "scale not done");
+//                    Log.d("answer handler", "scale not done");
                     Toast toast = Toast.makeText(mContext, "問卷尚未完成", Toast.LENGTH_SHORT);
                     toast.show();
                 }

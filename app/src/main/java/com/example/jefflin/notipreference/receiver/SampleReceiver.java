@@ -24,8 +24,8 @@ public class SampleReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         int interval = intent.getIntExtra("interval", 0);
-        Log.d("SampleReceiver", "broadcast received");
-        Log.d("SampleReceiver", String.valueOf(interval));
+//        Log.d("SampleReceiver", "broadcast received");
+//        Log.d("SampleReceiver", String.valueOf(interval));
         SharedPreferences sharedPreferences = context.getSharedPreferences("survey", Context.MODE_PRIVATE);
 
 

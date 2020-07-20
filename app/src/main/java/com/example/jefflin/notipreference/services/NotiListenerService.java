@@ -129,7 +129,7 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public void onListenerConnected() {
-        Log.i(TAG, "Connected");
+//        Log.i(TAG, "Connected");
         //_this = this;
         //sem.release();
 
@@ -139,7 +139,7 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public void onListenerDisconnected() {
-        Log.i(TAG, "Disconnected");
+//        Log.i(TAG, "Disconnected");
         //sem.acquireUninterruptibly();
         //_this = null;
         pushNotification.cancel(true);
@@ -148,7 +148,7 @@ public class NotiListenerService extends NotificationListenerService {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "bind");
+//        Log.d(TAG, "bind");
         packageManager = getPackageManager();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -223,7 +223,7 @@ public class NotiListenerService extends NotificationListenerService {
         Log.d("notilistener", "before get activity");
 
         if (getActiveNotis()) {
-            Log.d("Survey", "10分鐘後發");
+//            Log.d("Survey", "10分鐘後發");
             // block
             sharedPreferences.edit().putBoolean("block", true).apply();
 
@@ -248,7 +248,7 @@ public class NotiListenerService extends NotificationListenerService {
             SurveyManager.getInstance().setMap(itemMap);
         }
 
-        Log.d("notilistener", "onPost bottom");
+//        Log.d("notilistener", "onPost bottom");
     }
 
 
@@ -293,7 +293,7 @@ public class NotiListenerService extends NotificationListenerService {
                     notiModel.signalDbm = s.getDbm();
                 }
             } catch (NullPointerException e) {
-                Log.e("signal strength", "getCellSignalStrength null pt", e);
+//                Log.e("signal strength", "getCellSignalStrength null pt", e);
             }
         } else {
             notiModel.signalType = contextManager.phoneSignalType;
@@ -317,21 +317,21 @@ public class NotiListenerService extends NotificationListenerService {
     private boolean itemRequirement(ArrayList<NotiItem> items) {
         int notiSize = items.size();
         int uniqueApp = getNumberOfPackage(items);
-        boolean meet = !(notiSize < sizeLimit || uniqueApp < appLimit);
-        if (!meet) {
-            basic_requirement_logging(notiSize, uniqueApp);
-        }
-        return meet;
+        return !(notiSize < sizeLimit || uniqueApp < appLimit);
+//        if (!meet) {
+//            basic_requirement_logging(notiSize, uniqueApp);
+//        }
+//        return meet;
     }
 
     private boolean poolRequirement(List<NotiPool> pools) {
         int notiSize = pools.size();
         int uniqueApp = getNumberOfPoolPackage(pools);
-        boolean meet = !(notiSize < sizeLimit || uniqueApp < appLimit);
-        if (!meet) {
-            basic_requirement_logging(notiSize, uniqueApp);
-        }
-        return meet;
+        return !(notiSize < sizeLimit || uniqueApp < appLimit);
+//        if (!meet) {
+//            basic_requirement_logging(notiSize, uniqueApp);
+//        }
+//        return meet;
     }
 
     private void basic_requirement_logging(int notiSize, int uniqueApp) {
@@ -369,30 +369,30 @@ public class NotiListenerService extends NotificationListenerService {
             secondLimitDe = 2;
         }
 
-        boolean meet = (!sortedDbTwoAppMap.contains(first) || sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe <= dbSize);
+        return (!sortedDbTwoAppMap.contains(first) || sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe <= dbSize);
                 //|| sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe <= dbSize);
 
         // create log
-        StringBuilder logEvent = new StringBuilder("sample組成/ 是否發出問卷 ");
-        logEvent.append(meet);
-        logEvent.append(" ; size ");
-        logEvent.append(dbSize);
-        logEvent.append(" ; stage ");
-        logEvent.append(stage);
-        logEvent.append(";\n");
-        for(Map.Entry<String, Integer> m: sortedDrawerTwoAppMap) {
-            logEvent.append(m.getKey());
-            logEvent.append(" fre: ");
-            logEvent.append(m.getValue());
-            logEvent.append(" rank: ");
-            logEvent.append(sortedDbTwoAppMap.contains(m) ? sortedDbTwoAppMap.indexOf(m) : "never");
-            logEvent.append("\n");
-        }
-        Log.d("Final機制", "" + dbSize + "," + sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe
-                + "," + sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe + " " + first.getKey() + " : " + first.getValue());
-        logging(logEvent.toString());
+//        StringBuilder logEvent = new StringBuilder("sample組成/ 是否發出問卷 ");
+//        logEvent.append(meet);
+//        logEvent.append(" ; size ");
+//        logEvent.append(dbSize);
+//        logEvent.append(" ; stage ");
+//        logEvent.append(stage);
+//        logEvent.append(";\n");
+//        for(Map.Entry<String, Integer> m: sortedDrawerTwoAppMap) {
+//            logEvent.append(m.getKey());
+//            logEvent.append(" fre: ");
+//            logEvent.append(m.getValue());
+//            logEvent.append(" rank: ");
+//            logEvent.append(sortedDbTwoAppMap.contains(m) ? sortedDbTwoAppMap.indexOf(m) : "never");
+//            logEvent.append("\n");
+//        }
+//        Log.d("Final機制", "" + dbSize + "," + sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe
+//                + "," + sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe + " " + first.getKey() + " : " + first.getValue());
+//        logging(logEvent.toString());
 
-        return meet;
+//        return meet;
     }
 
     private boolean getActiveNotis() {
@@ -429,7 +429,7 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
 
-        Log.d("notilistener", "before getActiveNotisWithOrder " + click.size());
+//        Log.d("notilistener", "before getActiveNotisWithOrder " + click.size());
 
 
         HashMap<String, Integer> dbTwoAppMap = getSampleCombination();
@@ -459,14 +459,13 @@ public class NotiListenerService extends NotificationListenerService {
             itemMap = getBalancedNotificationsWithOrderV3(click, display, sortedDrawerTwoAppMap);
         }
 
-        Log.d("notilistener", "getActiveNotis after itemMap");
+//        Log.d("notilistener", "getActiveNotis after itemMap");
 
-        // check for number final check (因為找不到為何還會<6)
         if (!itemRequirement(itemMap.get("click"))) {
             return false;
         }
 
-        Log.d("notilistener", "getActiveNotis bottom");
+//        Log.d("notilistener", "getActiveNotis bottom");
 
 
         return true;
@@ -788,7 +787,7 @@ public class NotiListenerService extends NotificationListenerService {
         bound.add((2 * quo) + rmd);
         bound.add(click.size());
 
-        Log.d("notilistener", "inside getWithOrder");
+//        Log.d("notilistener", "inside getWithOrder");
 
         for (int i = 0; i <= 3; ++i) {
             Log.d("bound ", i + " :" + bound.get(i));
@@ -901,25 +900,25 @@ public class NotiListenerService extends NotificationListenerService {
         try {
             packageName = notification.getPackageName();
         } catch (Exception e) {
-            Log.e("NotiListenerService", "package name failed", e);
+//            Log.e("NotiListenerService", "package name failed", e);
         }
         try {
             title = notification.getNotification().extras.get("android.title").toString();
 
         } catch (Exception e) {
-            Log.d("NotiListenerService", "title failed");
+//            Log.d("NotiListenerService", "title failed");
         }
         try {
             content = notification.getNotification().extras.get("android.text").toString();
         } catch (Exception e) {
-            Log.d("NotiListenerService", "content failed");
+//            Log.d("NotiListenerService", "content failed");
         }
         try {
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
             appName = (String) (applicationInfo != null ?
                     packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
         } catch (Exception e) {
-            Log.e("NotiListenerService", "appName failed", e);
+//            Log.e("NotiListenerService", "appName failed", e);
         }
 
         SharedPreferences sharedPreferences = this.getSharedPreferences("USER", MODE_PRIVATE);
@@ -941,30 +940,30 @@ public class NotiListenerService extends NotificationListenerService {
         try {
             packageName = notification.getPackageName();
         } catch (Exception e) {
-            Log.e("NotiListenerService", "package name failed", e);
+//            Log.e("NotiListenerService", "package name failed", e);
         }
         try {
             title = notification.getNotification().extras.get("android.title").toString();
 
         } catch (Exception e) {
-            Log.d("NotiListenerService", "title failed");
+//            Log.d("NotiListenerService", "title failed");
         }
         try {
             content = notification.getNotification().extras.get("android.text").toString();
         } catch (Exception e) {
-            Log.d("NotiListenerService", "content failed");
+//            Log.d("NotiListenerService", "content failed");
         }
         try {
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
             appName = (String) (applicationInfo != null ?
                     packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
         } catch (Exception e) {
-            Log.e("NotiListenerService", "appName failed", e);
+//            Log.e("NotiListenerService", "appName failed", e);
         }
         try {
             category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
         } catch (Exception e) {
-            Log.e("NotiListenerService", "category failed", e);
+//            Log.e("NotiListenerService", "category failed", e);
         }
 
         SharedPreferences sharedPreferences = this.getSharedPreferences("USER", MODE_PRIVATE);
@@ -986,36 +985,36 @@ public class NotiListenerService extends NotificationListenerService {
         try {
             packageName = notification.getPackageName();
         } catch (Exception e) {
-            Log.e("NotiListenerService", "package name failed", e);
+//            Log.e("NotiListenerService", "package name failed", e);
         }
         try {
             title = notification.getNotification().extras.get("android.title").toString();
 
         } catch (Exception e) {
-            Log.d("NotiListenerService", "title failed");
+//            Log.d("NotiListenerService", "title failed");
         }
         try {
             content = notification.getNotification().extras.get("android.text").toString();
         } catch (Exception e) {
-            Log.d("NotiListenerService", "content failed");
+//            Log.d("NotiListenerService", "content failed");
         }
         try {
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
             appName = (String) (applicationInfo != null ?
                     packageManager.getApplicationLabel(applicationInfo) : "(unknown)");
         } catch (Exception e) {
-            Log.e("NotiListenerService", "appName failed", e);
+//            Log.e("NotiListenerService", "appName failed", e);
         }
         try {
             category = (notification.getNotification().category == null) ? " " : notification.getNotification().category;
         } catch (Exception e) {
-            Log.e("NotiListenerService", "category failed", e);
+//            Log.e("NotiListenerService", "category failed", e);
         }
         try {
             IconHandler iconHandler = new IconHandler();
             icon = iconHandler.saveToInternalStorage(packageManager.getApplicationIcon(packageName), GlobalClass.getDirPath(), appName);
         } catch (Exception e) {
-            Log.e("NotiListenerService", "icon failed", e);
+//            Log.e("NotiListenerService", "icon failed", e);
         }
 
         NotiPool notiPool = new NotiPool(appName, title, content, postTime, category);
@@ -1105,7 +1104,7 @@ public class NotiListenerService extends NotificationListenerService {
         ci.set(Calendar.SECOND, 0);
         ci.add(Calendar.HOUR_OF_DAY, 24);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, ci.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pii);
-        Log.d("interval time", String.valueOf(ci.getTime()));
+//        Log.d("interval time", String.valueOf(ci.getTime()));
 
         // initial 8 o'clock
         Intent init = new Intent(this, SampleReceiver.class);
@@ -1118,7 +1117,7 @@ public class NotiListenerService extends NotificationListenerService {
         cf.set(Calendar.SECOND, 0);
         cf.add(Calendar.HOUR_OF_DAY, 24);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cf.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
-        Log.d("interval time", String.valueOf(cf.getTime()));
+//        Log.d("interval time", String.valueOf(cf.getTime()));
 
 
     }
@@ -1150,11 +1149,11 @@ public class NotiListenerService extends NotificationListenerService {
                 new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            Log.d("request Location task", "success");
-                        } else {
-                            Log.d("request Location task", "fail");
-                        }
+//                        if (task.isSuccessful()) {
+//                            Log.d("request Location task", "success");
+//                        } else {
+//                            Log.d("request Location task", "fail");
+//                        }
                     }
                 }
         );
@@ -1172,14 +1171,14 @@ public class NotiListenerService extends NotificationListenerService {
                 new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void result) {
-                        Log.d("request AR task", "success");
+//                        Log.d("request AR task", "success");
                     }
                 });
         task.addOnFailureListener(
                 new OnFailureListener() {
                     @Override
                     public void onFailure(Exception e) {
-                        Log.d("request AR task", "fail");
+//                        Log.d("request AR task", "fail");
                     }
                 });
     }
