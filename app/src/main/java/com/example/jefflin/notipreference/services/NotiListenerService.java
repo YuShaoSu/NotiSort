@@ -214,13 +214,13 @@ public class NotiListenerService extends NotificationListenerService {
             });
         }
 
-        Log.d("notilistener", "sharedPreference");
+//        Log.d("notilistener", "sharedPreference");
 
         // TODO 先不看 done 以方便 debug
         if (sharedPreferences.getBoolean("block", false) || sharedPreferences.getBoolean("done", false))
             return;
 
-        Log.d("notilistener", "before get activity");
+//        Log.d("notilistener", "before get activity");
 
         if (getActiveNotis()) {
 //            Log.d("Survey", "10分鐘後發");

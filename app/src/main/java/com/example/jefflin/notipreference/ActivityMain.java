@@ -14,6 +14,7 @@ import android.content.IntentFilter;
 import androidx.annotation.NonNull;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -546,6 +547,12 @@ public class ActivityMain extends AppCompatActivity {
                 return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
             }
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 4,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+//        Log.d("retry policy ", stringRequest.getRetryPolicy().getCurrentTimeout() + " max_retry " + stringRequest.getRetryPolicy().getCurrentRetryCount());
 
         requestQueue.add(stringRequest);
     }
