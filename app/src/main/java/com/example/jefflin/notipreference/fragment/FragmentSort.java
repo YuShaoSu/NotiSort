@@ -50,6 +50,9 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_sort, container, false);
 
+        if (isAdded()) {
+            mContext = getActivity();
+        }
 
         button_continue = (Button) rootView.findViewById(R.id.button_continue);
         textview_q_title = (TextView) rootView.findViewById(R.id.title);
@@ -84,7 +87,10 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mContext = getActivity();
+        if(isAdded()){
+            mContext = getActivity();
+        }
+
         ESMQuestion q_data = (ESMQuestion) getArguments().getSerializable("data");
         textview_q_title.setText(q_data.getQuestionTitle());
         textview_q_discription.setText(q_data.getDescription());
@@ -107,9 +113,9 @@ public class FragmentSort extends Fragment implements NotiItemMoveCallback.OnSta
     private void setRecyclerView(ViewGroup rootView) {
         sortType = getArguments().getInt("sortType");
         mActiveData = (ArrayList<NotiItem>) getArguments().getSerializable("arrayList");
-        mAdapter = new NotiItemAdapter(getActivity(), mActiveData, onStartDragListener, sortType);
+        mAdapter = new NotiItemAdapter(mContext, mActiveData, onStartDragListener, sortType);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_rank);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(mAdapter);
     }
 

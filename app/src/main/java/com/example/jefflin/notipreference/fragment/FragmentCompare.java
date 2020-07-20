@@ -67,6 +67,10 @@ public class FragmentCompare extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_compare, container, false);
 
+        if (isAdded()) {
+            mContext = getActivity();
+        }
+
         // fragment init
         button_continue = (Button) rootView.findViewById(R.id.button_continue);
         textview_q_title = (TextView) rootView.findViewById(R.id.title);
@@ -83,8 +87,8 @@ public class FragmentCompare extends Fragment {
         mActiveDataDisplay = (ArrayList<NotiItem>) getArguments().getSerializable("arrayListDisplay");
         answer = (Answer) getArguments().getSerializable("answer");
         recyclerView = rootView.findViewById(R.id.recycler_compare);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        twoListItemsAdapter = new TwoListItemsAdapter(getActivity(), mActiveData, mActiveDataDisplay);
+        recyclerView.setLayoutManager(new GridLayoutManager(mContext, 2));
+        twoListItemsAdapter = new TwoListItemsAdapter(mContext, mActiveData, mActiveDataDisplay);
         recyclerView.setAdapter(twoListItemsAdapter);
 
         compare_title = rootView.findViewById(R.id.comapre_title);
@@ -142,7 +146,10 @@ public class FragmentCompare extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mContext = getActivity();
+        if(isAdded()){
+            mContext = getActivity();
+        }
+
         ESMQuestion q_data = (ESMQuestion) getArguments().getSerializable("data");
         textview_q_title.setText(q_data.getQuestionTitle());
         textview_q_discription.setText(q_data.getDescription());

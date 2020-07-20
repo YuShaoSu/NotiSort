@@ -29,6 +29,8 @@ public class FragmentEnd extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_end, container, false);
 
+
+
         Button button_sync_now = (Button) rootView.findViewById(R.id.button_sync_now);
         Button button_not_sync_now = (Button) rootView.findViewById(R.id.button_not_sync_now);
         textView_end = (TextView) rootView.findViewById(R.id.textView_end);
@@ -55,7 +57,9 @@ public class FragmentEnd extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mContext = getActivity();
+        if(isAdded()){
+            mContext = getActivity();
+        }
         ESMProperties survery_properties = (ESMProperties) getArguments().getSerializable("survery_properties");
 
         notiItems = (List<NotiItem>) getArguments().getSerializable("arrayList");

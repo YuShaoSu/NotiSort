@@ -1,8 +1,10 @@
 package com.example.jefflin.notipreference.fragment;
 
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +43,10 @@ public class FragmentStart extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mContext = getActivity();
+        if (isAdded()) {
+            mContext = getActivity();
+        }
+
         ESMProperties survery_properties = (ESMProperties) getArguments().getSerializable("survery_properties");
 
         assert survery_properties != null;

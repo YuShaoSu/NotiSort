@@ -48,7 +48,7 @@ public class FragmentLog extends Fragment {
             }
         });
 
-        logAdapter = new LogAdapter(getActivity(), new ArrayList<LogModel>());
+        logAdapter = new LogAdapter(mContext, new ArrayList<LogModel>());
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_log_event);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(logAdapter);
@@ -77,7 +77,10 @@ public class FragmentLog extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mContext = getActivity();
+        if(isAdded()) {
+            mContext = getActivity();
+        }
+
 //        ESMProperties survery_properties = (ESMProperties) getArguments().getSerializable("survery_properties");
 //
 //        assert survery_properties != null;

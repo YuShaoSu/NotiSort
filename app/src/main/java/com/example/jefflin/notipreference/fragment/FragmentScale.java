@@ -43,6 +43,10 @@ public class FragmentScale extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_scale, container, false);
 
+        if (isAdded()) {
+            mContext = getActivity();
+        }
+
         button_continue = (Button) rootView.findViewById(R.id.button_continue);
         textview_q_title = (TextView) rootView.findViewById(R.id.title);
         textview_q_discription = (TextView) rootView.findViewById(R.id.discription);
@@ -72,7 +76,9 @@ public class FragmentScale extends Fragment  {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mContext = getActivity();
+        if (isAdded()) {
+            mContext = getActivity();
+        }
         ESMQuestion q_data = (ESMQuestion) getArguments().getSerializable("data");
         textview_q_title.setText(q_data.getQuestionTitle());
         textview_q_discription.setText(q_data.getDescription());
@@ -96,7 +102,7 @@ public class FragmentScale extends Fragment  {
                         recyclerLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        mAdapter = new ScaleAdapter(getActivity(), mActiveData);
+        mAdapter = new ScaleAdapter(mContext, mActiveData);
         mRecyclerView.setAdapter(mAdapter);
     }
 

@@ -83,6 +83,10 @@ public class FragmentESM extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_esm, container, false);
 
+        if (isAdded()) {
+            mContext = getActivity();
+        }
+
         button_continue = (Button) rootView.findViewById(R.id.button_continue);
         textview_q_title = (TextView) rootView.findViewById(R.id.title);
         textview_q_discription = (TextView) rootView.findViewById(R.id.discription);
@@ -224,12 +228,12 @@ public class FragmentESM extends Fragment {
 ////                    SensorManager sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
 //                    ContextManager contextManager = ContextManager.getInstance();
 //
-                    answer.setEsmQ1(selectedRadioButtonText1);
-                    answer.setEsmQ2(selectedRadioButtonText2);
-                    answer.setEsmQ3(selectedRadioButtonText3);
-                    answer.setEsmQ4(selectedRadioButtonText4);
-                    answer.setEsmQ5(selectedRadioButtonText5);
-                    answer.setEsmQ6(selectedRadioButtonText6);
+                answer.setEsmQ1(selectedRadioButtonText1);
+                answer.setEsmQ2(selectedRadioButtonText2);
+                answer.setEsmQ3(selectedRadioButtonText3);
+                answer.setEsmQ4(selectedRadioButtonText4);
+                answer.setEsmQ5(selectedRadioButtonText5);
+                answer.setEsmQ6(selectedRadioButtonText6);
 //                    Log.d("d",selectedRadioButtonText3);
 //
 //                    // contextual data
@@ -317,7 +321,10 @@ public class FragmentESM extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mContext = getActivity();
+        if (isAdded()) {
+            mContext = getActivity();
+        }
+
         ESMQuestion q_data = (ESMQuestion) getArguments().getSerializable("data");
         textview_q_title.setText(q_data.getQuestionTitle());
         textview_q_discription.setText(q_data.getDescription());
