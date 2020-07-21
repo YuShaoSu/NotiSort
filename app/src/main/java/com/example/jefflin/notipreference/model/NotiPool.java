@@ -35,7 +35,6 @@ public class NotiPool implements Comparable<NotiPool>{
         this.category = category;
     }
 
-
     public void setIcon(String mIcon) {
         this.icon = mIcon;
     }

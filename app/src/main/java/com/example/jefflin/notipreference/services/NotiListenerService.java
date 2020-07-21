@@ -370,7 +370,7 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
         return (!sortedDbTwoAppMap.contains(first) || sortedDbTwoAppMap.indexOf(first) * firstLimitNu / firstLimitDe <= dbSize);
-                //|| sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe <= dbSize);
+        //|| sortedDbTwoAppMap.indexOf(second) * secondLimitNu / secondLimitDe <= dbSize);
 
         // create log
 //        StringBuilder logEvent = new StringBuilder("sample組成/ 是否發出問卷 ");
@@ -395,6 +395,16 @@ public class NotiListenerService extends NotificationListenerService {
 //        return meet;
     }
 
+    private List<NotiPool> copyNotiPools(List<NotiPool> notiPools) {
+        List<NotiPool> notiPoolsRoom = new ArrayList<>();
+        for (NotiPool notiPool : notiPools) {
+            NotiPool n = new NotiPool(notiPool.appName, notiPool.title, notiPool.content, notiPool.postTime, notiPool.category);
+            n.setIcon(notiPool.icon);
+            notiPoolsRoom.add(n);
+        }
+        return notiPoolsRoom;
+    }
+
     private boolean getActiveNotis() {
         ArrayList<NotiItem> click = new ArrayList<NotiItem>();
         ArrayList<NotiItem> display = new ArrayList<NotiItem>();
@@ -402,15 +412,17 @@ public class NotiListenerService extends NotificationListenerService {
         itemMap = new HashMap();
 
         // the synthesis pool
-        final List<NotiPool> notiPools = getNotiPoolWithoutDuplicateNull(getSynNotiPools());
+        List<NotiPool> notiPools = getNotiPoolWithoutDuplicateNull(getSynNotiPools());
+        final List<NotiPool> notiPoolsRoom = copyNotiPools(notiPools);
 //        notiPools = getNotiPoolWithoutDuplicateNull(notiPools);
+
 
         // deleteAll in notipool db, then insertAll
         final NotiPoolDao notiPoolDao = NotiDatabase.getInstance(this).notiPoolDao();
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                notiPoolDao.updateWhole(notiPools);
+                notiPoolDao.updateWhole(notiPoolsRoom);
             }
         });
 
@@ -430,7 +442,6 @@ public class NotiListenerService extends NotificationListenerService {
 
 
 //        Log.d("notilistener", "before getActiveNotisWithOrder " + click.size());
-
 
         HashMap<String, Integer> dbTwoAppMap = getSampleCombination();
         List<Map.Entry<String, Integer>> sortedDbTwoAppMap = new ArrayList<>(dbTwoAppMap.entrySet());
