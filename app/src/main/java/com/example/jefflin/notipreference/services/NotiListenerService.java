@@ -234,8 +234,8 @@ public class NotiListenerService extends NotificationListenerService {
             timer2.schedule(new UnblockTask(this), 1500000);
 
 //            // 2020.06.14  add count by jj
-//            int count = sharedPreferences.getInt("surveySendCount", 0);
-//            sharedPreferences.edit().putInt("surveySendCount", count + 1).apply();
+            int count = sharedPreferences.getInt("surveySendCount", 0);
+            sharedPreferences.edit().putInt("surveySendCount", count + 1).apply();
 
             // first answer
             SurveyManager.getInstance().surveyInit();

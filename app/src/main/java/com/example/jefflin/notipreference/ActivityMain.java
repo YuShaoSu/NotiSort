@@ -481,7 +481,7 @@ public class ActivityMain extends AppCompatActivity {
     private void postRequest(String jsonPost, final String url, final boolean now) {
         final SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String URL = "https://notisort.neighborbob.me/" + url + "?did=" + sharedPreferences.getString("ID", "user id fail") + "&ver=2";
+        String URL = "https://notisort.neighborbob.me/" + url + "?did=" + sharedPreferences.getString("ID", "user id fail") + "&ver=3";
         final String requestBody = jsonPost;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {

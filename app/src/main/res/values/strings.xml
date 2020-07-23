@@ -108,4 +108,6 @@
     <string name="sendCount">已收到問卷：</string>
     <string name="respondedCount">已回覆問卷：</string>
     <string name="finishedCount">已完成問卷：</string>
+
+    <string name="version">版本：3</string>
 </resources>
