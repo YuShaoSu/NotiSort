@@ -61,6 +61,12 @@ public class SampleReceiver extends BroadcastReceiver {
                 sharedPreferences.edit().putInt("stage", sharedPreferences.getInt("stage", 1) + 1).apply();
                 stageDescent(context);
             }
+        // unblock
+        } else if (interval == 4) {
+            sharedPreferences.edit().putBoolean("block", false)
+                    .putBoolean("doing", false)
+                    .apply();
+            SurveyManager.getInstance().surveyInit();
         }
 
     }

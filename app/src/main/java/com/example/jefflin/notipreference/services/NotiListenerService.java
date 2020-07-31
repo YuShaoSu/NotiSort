@@ -79,6 +79,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -168,15 +169,20 @@ public class NotiListenerService extends NotificationListenerService {
         GlobalClass.setDirPath(getApplicationContext().getDir("iconDir", Context.MODE_PRIVATE));
 
 
+        long now = Calendar.getInstance().getTimeInMillis();
         sharedPreferences = this.getSharedPreferences("survey", MODE_PRIVATE);
         // sharePref init
-        sharedPreferences.edit().putBoolean("done", false)
-                .putBoolean("block", false)
-                .putBoolean("dontDisturb", false)
-                .putBoolean("doing", false)
-                .putInt("stage", 1)
-                .apply();
-
+        long lastFinishTime = sharedPreferences.getLong("lastFinishTime", 0);
+        Log.d("lastFinishTime", String.valueOf(lastFinishTime) + ' ' + String.valueOf(now - lastFinishTime));
+        if (lastFinishTime == 0 || now - lastFinishTime > 3 * 60 * 60 * 1000) {
+            Log.d("lastFinishTime", "not pass");
+            sharedPreferences.edit().putBoolean("done", false)
+                    .putBoolean("block", false)
+                    .putBoolean("dontDisturb", false)
+                    .putBoolean("doing", false)
+                    .putInt("stage", 1)
+                    .apply();
+        }
 
         return super.onBind(intent);
     }
@@ -220,10 +226,10 @@ public class NotiListenerService extends NotificationListenerService {
         if (sharedPreferences.getBoolean("block", false) || sharedPreferences.getBoolean("done", false))
             return;
 
-//        Log.d("notilistener", "before get activity");
+        Log.d("notilistener", "before get activity");
 
         if (getActiveNotis()) {
-//            Log.d("Survey", "10分鐘後發");
+            Log.d("Survey", "10分鐘後發");
             // block
             sharedPreferences.edit().putBoolean("block", true).apply();
 
@@ -232,6 +238,7 @@ public class NotiListenerService extends NotificationListenerService {
 
             Timer timer2 = new Timer();
             timer2.schedule(new UnblockTask(this), 1500000);
+//            setUbblock();
 
 //            // 2020.06.14  add count by jj
             int count = sharedPreferences.getInt("surveySendCount", 0);
@@ -249,6 +256,22 @@ public class NotiListenerService extends NotificationListenerService {
         }
 
 //        Log.d("notilistener", "onPost bottom");
+    }
+
+    private void setUbblock() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        // end 0 o'clock
+        Intent finish = new Intent(this, SampleReceiver.class);
+        finish.putExtra("interval", 4);
+        finish.setAction("com.example.jefflin.notipreference.next_interval");
+        PendingIntent pii = PendingIntent.getBroadcast(this, 4, finish, PendingIntent.FLAG_CANCEL_CURRENT);
+        Calendar c = Calendar.getInstance();
+        Date date = new Date();
+        date.setTime(System.currentTimeMillis() + (15 * 60 * 1000));
+        c.setTime(date);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pii);
+//
     }
 
 

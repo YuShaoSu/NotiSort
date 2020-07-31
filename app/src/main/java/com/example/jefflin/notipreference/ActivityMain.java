@@ -268,11 +268,13 @@ public class ActivityMain extends AppCompatActivity {
         int count = sharedPreferences.getInt("surveyFinishedCount", 0);
         sharedPreferences.edit().putInt("surveyFinishedCount", count + 1).apply();
 
+        long lastFinish = Calendar.getInstance().getTimeInMillis();
 
         SurveyManager.getInstance().surveyDone();
         sharedPreferences.edit().putBoolean("done", true)
                 .putBoolean("block", false)
                 .putBoolean("doing", false)
+                .putLong("lastFinishTime", lastFinish)
                 .apply();
 
         setBotNavView();
@@ -481,7 +483,7 @@ public class ActivityMain extends AppCompatActivity {
     private void postRequest(String jsonPost, final String url, final boolean now) {
         final SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String URL = "https://notisort.neighborbob.me/" + url + "?did=" + sharedPreferences.getString("ID", "user id fail") + "&ver=3";
+        String URL = "https://notisort.neighborbob.me/" + url + "?did=" + sharedPreferences.getString("ID", "user id fail") + "&ver=4";
         final String requestBody = jsonPost;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {

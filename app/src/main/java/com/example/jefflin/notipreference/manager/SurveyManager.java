@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class SurveyManager {
     private static volatile SurveyManager uniqueInstance;
-    ArrayList<Answer> answerArrayList = new ArrayList<>();
+    private List<Answer> answerArrayList = new ArrayList<>();
     Map<String, ArrayList<NotiItem>> mMap = new HashMap<>();
     private boolean isSurveyDone = false;
     private boolean isSurveyBlock = false;
@@ -65,29 +65,6 @@ public class SurveyManager {
         return uniqueInstance;
     }
 
-//    public boolean isSurveyBlock() {
-//        return isSurveyBlock;
-//    }
-//
-//    public void setSurveyBlock(boolean surveyBlock) {
-//        isSurveyBlock = surveyBlock;
-//    }
-//
-//    public boolean isSurveyDone() {
-//        return isSurveyDone;
-//    }
-//
-//    public void setSurveyDone(boolean surveyDone) {
-//        isSurveyDone = surveyDone;
-//    }
-//
-//    public boolean isSurveyDoing() {
-//        return isSurveyDoing;
-//    }
-//
-//    public void setSurveyDoing(boolean surveyDoing) {
-//        isSurveyDoing = surveyDoing;
-//    }
 
     public long getSurveyPostTime() {
         return surveyPostTime;
