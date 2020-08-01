@@ -174,11 +174,10 @@ public class NotiListenerService extends NotificationListenerService {
         // sharePref init
         long lastFinishTime = sharedPreferences.getLong("lastFinishTime", 0);
         Log.d("lastFinishTime", String.valueOf(lastFinishTime) + ' ' + String.valueOf(now - lastFinishTime));
-        if (lastFinishTime == 0 || now - lastFinishTime > 3 * 60 * 60 * 1000) {
+        if (lastFinishTime == 0 || now - lastFinishTime > 4 * 60 * 60 * 1000) {
             Log.d("lastFinishTime", "not pass");
             sharedPreferences.edit().putBoolean("done", false)
                     .putBoolean("block", false)
-                    .putBoolean("dontDisturb", false)
                     .putBoolean("doing", false)
                     .putInt("stage", 1)
                     .apply();
@@ -223,7 +222,7 @@ public class NotiListenerService extends NotificationListenerService {
 //        Log.d("notilistener", "sharedPreference");
 
         // TODO 先不看 done 以方便 debug
-        if (sharedPreferences.getBoolean("block", false) || sharedPreferences.getBoolean("done", false))
+        if (sharedPreferences.getBoolean("block", false) || sharedPreferences.getBoolean("done", false) || sharedPreferences.getBoolean("dontDisturb", false))
             return;
 
         Log.d("notilistener", "before get activity");
