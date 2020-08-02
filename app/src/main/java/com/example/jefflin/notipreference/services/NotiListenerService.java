@@ -179,6 +179,7 @@ public class NotiListenerService extends NotificationListenerService {
             sharedPreferences.edit().putBoolean("done", false)
                     .putBoolean("block", false)
                     .putBoolean("doing", false)
+                    .putBoolean("dontDisturb", false)
                     .putInt("stage", 1)
                     .apply();
         }
