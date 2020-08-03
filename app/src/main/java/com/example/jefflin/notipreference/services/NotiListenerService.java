@@ -173,9 +173,9 @@ public class NotiListenerService extends NotificationListenerService {
         sharedPreferences = this.getSharedPreferences("survey", MODE_PRIVATE);
         // sharePref init
         long lastFinishTime = sharedPreferences.getLong("lastFinishTime", 0);
-        Log.d("lastFinishTime", String.valueOf(lastFinishTime) + ' ' + String.valueOf(now - lastFinishTime));
-        if (lastFinishTime == 0 || now - lastFinishTime > 4 * 60 * 60 * 1000) {
-            Log.d("lastFinishTime", "not pass");
+//        Log.d("lastFinishTime", String.valueOf(lastFinishTime) + ' ' + String.valueOf(now - lastFinishTime));
+        if (lastFinishTime == 0 || now - lastFinishTime >  60 * 60 * 1000) {
+//            Log.d("lastFinishTime", "not pass");
             sharedPreferences.edit().putBoolean("done", false)
                     .putBoolean("block", false)
                     .putBoolean("doing", false)
@@ -187,6 +187,7 @@ public class NotiListenerService extends NotificationListenerService {
         return super.onBind(intent);
     }
 
+    // android 6+
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn, NotificationListenerService.RankingMap rankingMap, int reason) {
 //        Log.d("re onRemoved ", sbn.getPackageName() + " " + sbn.getNotification().extras.get("android.title") + " " + sbn.getId() + " " + sbn.getPostTime() + " " + reason);
@@ -204,6 +205,25 @@ public class NotiListenerService extends NotificationListenerService {
             }
         }
     }
+
+    // android 6
+//    @Override
+//    public void onNotificationRemoved(StatusBarNotification sbn) {
+////        Log.d("re onRemoved ", sbn.getPackageName() + " " + sbn.getNotification().extras.get("android.title") + " " + sbn.getId() + " " + sbn.getPostTime() + " " + reason);
+//        if (sbn.isClearable()) {
+//            final NotiDatabase db = NotiDatabase.getInstance(this);
+//            Notification notification = sbn.getNotification();
+//            final NotiModelRemove notiModelRemove = setNotiModelRemove(sbn, Calendar.getInstance().getTimeInMillis(), -1);
+//            if (!notiModelRemove.appName.equals("NotiSort")) {
+//                mExecutor.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        db.notiModelRemoveDao().insertNotiRemove(notiModelRemove);
+//                    }
+//                });
+//            }
+//        }
+//    }
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
@@ -223,13 +243,13 @@ public class NotiListenerService extends NotificationListenerService {
 //        Log.d("notilistener", "sharedPreference");
 
         // TODO 先不看 done 以方便 debug
-        if (sharedPreferences.getBoolean("block", false) || sharedPreferences.getBoolean("done", false) || sharedPreferences.getBoolean("dontDisturb", false))
+        if (sharedPreferences.getBoolean("block", false) || sharedPreferences.getBoolean("done", false))
             return;
 
-        Log.d("notilistener", "before get activity");
+//        Log.d("notilistener", "before get activity");
 
         if (getActiveNotis()) {
-            Log.d("Survey", "10分鐘後發");
+//            Log.d("Survey", "10分鐘後發");
             // block
             sharedPreferences.edit().putBoolean("block", true).apply();
 
@@ -384,10 +404,11 @@ public class NotiListenerService extends NotificationListenerService {
         int dbSize = sortedDbTwoAppMap.size();
         int firstLimitNu = 0, firstLimitDe = 1, secondLimitNu = 0, secondLimitDe = 1;
         if (stage == 1) {
-            firstLimitNu = 3;
+            firstLimitNu = 2;
             secondLimitNu = 2;
         } else if (stage == 2) {
-            firstLimitNu = 2;
+            firstLimitNu = 3;
+            firstLimitDe = 2;
             secondLimitNu = 3;
             secondLimitDe = 2;
         }

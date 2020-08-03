@@ -270,13 +270,13 @@ public class ActivityMain extends AppCompatActivity {
 
         long lastFinish = Calendar.getInstance().getTimeInMillis();
 
-        SurveyManager.getInstance().surveyDone();
         sharedPreferences.edit().putBoolean("done", true)
                 .putBoolean("block", false)
                 .putBoolean("doing", false)
                 .putLong("lastFinishTime", lastFinish)
                 .apply();
 
+        SurveyManager.getInstance().surveyDone();
         setBotNavView();
 
     }
@@ -291,12 +291,14 @@ public class ActivityMain extends AppCompatActivity {
 //            Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
             switch (resultCode) {
                 case RESULT_SYNC_NOW:
+                    setNextSurvey();
                     arrayList = (List<NotiItem>) data.getExtras().getSerializable("arrayList");
                     surveyDoneSuccess(arrayList);
                     sync(true);
-                    setNextSurvey();
+
                     break;
                 case RESULT_NOT_SYNC_NOW: // not sync now
+                    setNextSurvey();
                     arrayList = (List<NotiItem>) data.getExtras().getSerializable("arrayList");
                     surveyDoneSuccess(arrayList);
                     final String ans = SurveyManager.getInstance().getPostJson();
@@ -307,7 +309,6 @@ public class ActivityMain extends AppCompatActivity {
                             answerJsonDao.insert(answerJson);
                         }
                     });
-                    setNextSurvey();
                     break;
                 case 0:
                     break;
@@ -483,7 +484,7 @@ public class ActivityMain extends AppCompatActivity {
     private void postRequest(String jsonPost, final String url, final boolean now) {
         final SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String URL = "https://notisort.neighborbob.me/" + url + "?did=" + sharedPreferences.getString("ID", "user id fail") + "&ver=4";
+        String URL = "https://notisort.neighborbob.me/" + url + "?did=" + sharedPreferences.getString("ID", "user id fail") + "&ver=5";
         final String requestBody = jsonPost;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
