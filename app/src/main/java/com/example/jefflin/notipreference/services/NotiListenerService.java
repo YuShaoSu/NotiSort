@@ -174,7 +174,7 @@ public class NotiListenerService extends NotificationListenerService {
         // sharePref init
         long lastFinishTime = sharedPreferences.getLong("lastFinishTime", 0);
 //        Log.d("lastFinishTime", String.valueOf(lastFinishTime) + ' ' + String.valueOf(now - lastFinishTime));
-        if (lastFinishTime == 0 || now - lastFinishTime >  60 * 60 * 1000) {
+        if (lastFinishTime == 0 || now - lastFinishTime > 2 * 60 * 60 * 1000) {
 //            Log.d("lastFinishTime", "not pass");
             sharedPreferences.edit().putBoolean("done", false)
                     .putBoolean("block", false)
