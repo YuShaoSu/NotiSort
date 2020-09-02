@@ -109,5 +109,14 @@
     <string name="respondedCount">已回覆問卷：</string>
     <string name="finishedCount">已完成問卷：</string>
 
-    <string name="version">版本：3</string>
+    <string name="notification_db">Notifications in database: </string>
+    <string name="notification_lid">Largest ID: </string>
+    <string name="notification_sid">Smallest ID: </string>
+
+    <string name="notification_sync_limit">回傳數量限制 </string>
+    <string name="ar_sync_limit">ARecog </string>
+    <string name="nr_sync_limit">NRemove </string>
+    <string name="refresh">Refresh</string>
+
+    <string name="version">版本：notification sync</string>
 </resources>

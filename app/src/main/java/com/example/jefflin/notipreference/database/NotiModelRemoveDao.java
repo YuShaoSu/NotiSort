@@ -25,4 +25,20 @@ public interface NotiModelRemoveDao {
     @Query("DELETE FROM noti_model_remove")
     void deleteAll();
 
+    @Query("SELECT * FROM noti_model_remove ORDER BY id LIMIT :limit")
+    List<NotiModelRemove> getPartial(int limit);
+
+    @Query("SELECT count(id) FROM noti_model_remove")
+    int getCount();
+
+    @Query("SELECT id FROM noti_model_remove ORDER BY id DESC LIMIT 1")
+    int getLargestID();
+
+    @Query("SELECT id FROM noti_model_remove ORDER BY id LIMIT 1")
+    int getSmallestID();
+
+    @Delete
+    void deleteNotiRemoveList(List<NotiModelRemove> notiModelRemoves);
+
+
 }
