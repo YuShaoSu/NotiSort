@@ -18,7 +18,7 @@
         <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/factor_not_attend"
+        android:text="Why do you label this notification as no need to attend? (multi-choice)"
         android:textSize="15dp" />
 
         <View
@@ -31,7 +31,7 @@
             android:layout_width="40dp"
             android:layout_height="25dp"
             android:background="@drawable/not_finish_button"
-            android:text="@string/finish"
+            android:text="finish"
             android:textColor="@color/white"
             android:layout_gravity="end"
             android:textSize="12sp" />
@@ -45,10 +45,10 @@
 
         <Button
             android:id="@+id/not_attend_0"
-            android:layout_width="110dp"
+            android:layout_width="wrap_content"
             android:layout_height="31dp"
             android:background="@drawable/not_check_small_round_button"
-            android:text="@string/not_attend_0"
+            android:text="  No further information needed  "
             android:layout_margin="5dp"
             android:textSize="12sp" />
 
@@ -57,19 +57,9 @@
             android:layout_width="wrap_content"
             android:layout_height="31dp"
             android:background="@drawable/not_check_small_round_button"
-            android:text="@string/not_attend_1"
+            android:text="  No further action needed  "
             android:layout_margin="5dp"
             android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/not_attend_3"
-            android:layout_width="wrap_content"
-            android:layout_height="31dp"
-            android:background="@drawable/not_check_small_round_button"
-            android:text="@string/not_attend_3"
-            android:layout_margin="5dp"
-            android:textSize="12sp" />
-
 
 
     </LinearLayout>
@@ -81,11 +71,20 @@
         android:paddingBottom="10dp">
 
         <Button
+            android:id="@+id/not_attend_3"
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/not_check_small_round_button"
+            android:text="  Not interested  "
+            android:textSize="12sp" />
+
+        <Button
             android:id="@+id/not_attend_2"
             android:layout_width="wrap_content"
             android:layout_height="31dp"
             android:background="@drawable/not_check_small_round_button"
-            android:text="@string/not_attend_2"
+            android:text="Other"
             android:layout_margin="5dp"
             android:textSize="12sp" />
 
@@ -93,7 +92,7 @@
             android:id="@+id/not_attend_2_other"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/other_reason"
+            android:hint=""
             android:textSize="12sp"
             android:ems="80"
             android:paddingLeft="5dp"

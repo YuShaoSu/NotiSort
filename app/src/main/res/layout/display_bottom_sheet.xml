@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/factor_not_display"
+            android:text="Why do you label this notification as no need to display? (multi-choice)"
             android:textSize="15dp" />
 
         <View
@@ -31,7 +31,7 @@
             android:layout_width="40dp"
             android:layout_height="25dp"
             android:background="@drawable/not_finish_button"
-            android:text="@string/finish"
+            android:text="finish"
             android:textColor="@color/white"
             android:layout_gravity="end"
             android:textSize="12sp" />
@@ -48,7 +48,7 @@
             android:layout_height="31dp"
             android:background="@drawable/not_check_small_round_button"
             android:layout_margin="5dp"
-            android:text="@string/not_display_0"
+            android:text="Repetitive"
             android:textSize="12sp" />
 
         <Button
@@ -57,7 +57,7 @@
             android:layout_height="31dp"
             android:background="@drawable/not_check_small_round_button"
             android:layout_margin="5dp"
-            android:text="@string/not_display_1"
+            android:text="Knowninformation”"
             android:textSize="12sp" />
 
         <Button
@@ -66,7 +66,7 @@
             android:layout_height="31dp"
             android:background="@drawable/not_check_small_round_button"
             android:layout_margin="5dp"
-            android:text="@string/not_display_2"
+            android:text="Not interested"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="31dp"
             android:background="@drawable/not_check_small_round_button"
-            android:text="@string/not_attend_2"
+            android:text="Other"
             android:layout_margin="5dp"
             android:textSize="12sp" />
 
@@ -89,7 +89,7 @@
             android:id="@+id/not_display_3_other"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/other_reason"
+            android:hint=""
             android:textSize="12sp"
             android:ems="80"
             android:paddingLeft="5dp"

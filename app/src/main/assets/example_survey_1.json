@@ -8,25 +8,25 @@
   "ESMQuestions": [
     {
       "question_type": "Survey",
-      "question_title": "請回答以下問題\n(請依十分鐘前情境作答)",
+      "question_title": "What's your attendance order when seeing\nthese notifications in notification drawer\n10 min before?(swipe left if don't need to attend)",
       "description": "1 of 5",
       "required": false
     },
     {
       "question_type": "Sort",
-      "question_title": "若您十分鐘前在通知列裡看到以下這些通知\n您會點擊的順序為何？\n(若不用點擊請左滑 下列通知按其發出時間排列)",
+      "question_title": "What's your attendance order when seeing\nthese notifications in notification drawer\n10 min before?(swipe left if don't need to attend)",
       "description": "2 of 5",
       "required": false
     },
     {
       "question_type": "Scale",
-      "question_title": "請填寫您認為下列通知的特質為何？",
+      "question_title": "Please answer the questions below.",
       "description": "3 of 5",
       "required": false
     },
     {
       "question_type": "displaySort",
-      "question_title": "若您十分鐘前在通知列裡看到以下這些通知\n您希望的實際呈現順序為何？\n(若不希望呈現請左滑 下列通知按其發出時間排列)",
+      "question_title": "What's your desired display order when seeing\nthese notifications in notification drawer\n10 min before?(swipe left if don't need to attend)",
       "description": "4 of 5",
       "required": false
     },
