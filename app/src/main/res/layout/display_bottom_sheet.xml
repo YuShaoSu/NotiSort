@@ -48,7 +48,7 @@
             android:layout_height="31dp"
             android:background="@drawable/not_check_small_round_button"
             android:layout_margin="5dp"
-            android:text="Repetitive"
+            android:text="  Repetitive  "
             android:textSize="12sp" />
 
         <Button
@@ -57,7 +57,7 @@
             android:layout_height="31dp"
             android:background="@drawable/not_check_small_round_button"
             android:layout_margin="5dp"
-            android:text="Knowninformation”"
+            android:text="  Known information  "
             android:textSize="12sp" />
 
         <Button
@@ -66,7 +66,7 @@
             android:layout_height="31dp"
             android:background="@drawable/not_check_small_round_button"
             android:layout_margin="5dp"
-            android:text="Not interested"
+            android:text="  Not interested  "
             android:textSize="12sp" />
 
     </LinearLayout>

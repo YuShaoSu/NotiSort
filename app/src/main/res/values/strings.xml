@@ -9,8 +9,8 @@
     <string name="survey">點此開始填寫問卷</string>
 
 
-    <string name="comapre_diff">請問造成兩種排列不同的原因為何?</string>
-    <string name="additional">其他補充說明 (若有任何填寫上的困難，也請在此說明) </string>
+    <string name="comapre_diff">Please explain why the two orders were different.</string>
+    <string name="additional">Additional remarks (optional)</string>
 
     <string name="sync_time">上次回傳時間</string>
     <string name="sync_time_value">2020&#8211;00&#8211;00 00:00</string>
@@ -68,10 +68,10 @@
     <string name="start">Start</string>
     <string name="close">Close</string>
 
-    <string name="factor2">重要程度</string>
-    <string name="factor3">緊急程度</string>
-    <string name="factor1">內容吸引程度</string>
-    <string name="factor0">\n傳送者吸引程度</string>
+    <string name="factor2">Importance    </string>
+    <string name="factor3">Urgency       </string>
+    <string name="factor1">Content\nAttractiveness</string>
+    <string name="factor0">\nSender\nAttractiveness</string>
     <string name="factor4">app吸引程度</string>
     <string name="factor_text">您將此通知排在第 %d 位想要點擊通知的原因為？</string>
     <string name="factor_extra_text">補充說明</string>
@@ -89,9 +89,9 @@
     <string name="not_display_1">已得知此資訊</string>
     <string name="not_display_2">對此內容無興趣</string>
 
-    <string name="stronglyDisagree">\n低</string>
-    <string name="stronglyAgree">\n高</string>
-    <string name="notApply">\n不適用</string>
+    <string name="stronglyDisagree">\nlow</string>
+    <string name="stronglyAgree">\nhigh</string>
+    <string name="notApply">not\napplicable</string>
 
 
     <string name="very_happy">非常開心 </string>
