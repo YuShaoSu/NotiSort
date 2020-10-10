@@ -1,10 +1,8 @@
 package com.example.jefflin.notipreference;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -12,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.jefflin.notipreference.fragment.FragmentCompare;
 import com.example.jefflin.notipreference.fragment.FragmentScale;
-import com.example.jefflin.notipreference.fragment.FragmentESM;
+import com.example.jefflin.notipreference.fragment.FragmentContext;
 import com.example.jefflin.notipreference.manager.SurveyManager;
 import com.example.jefflin.notipreference.model.Answer;
 import com.example.jefflin.notipreference.model.NotiItem;
@@ -40,7 +38,7 @@ public class ActivitySurvey extends AppCompatActivity {
     Answer answer;
 
     FragmentScale fragscale = new FragmentScale();
-    FragmentESM fragsurvey;
+    FragmentContext fragsurvey;
     FragmentCompare fragCompare;
     FragmentSort fragsort;
     FragmentSort fragsort_display;
@@ -55,18 +53,22 @@ public class ActivitySurvey extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        Log.d("ActivitySurvey", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_survey);
+
+        // get answer(for sampling and storing contextual data) from suverymanager
         answer = SurveyManager.getInstance().getFromAnswerList(selectAnswer());
+        // set the survey start timestamp
         answer.setSurveyStartTime(Calendar.getInstance().getTimeInMillis());
 
+        // get the sampled notifications from surveymanager
         if (!SurveyManager.getInstance().isNotiNull()) {
             mActiveData = SurveyManager.getInstance().getMap().get("click");
             mActiveDataDisplay = SurveyManager.getInstance().getMap().get("display");
         }
         if (getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
+            // this is pass down from activityMain
             mESMPojo = new Gson().fromJson(bundle.getString("json_survey"), ESMPojo.class);
             if (bundle.containsKey("style")) {
                 style_string = bundle.getString("style");
@@ -121,7 +123,7 @@ public class ActivitySurvey extends AppCompatActivity {
             }
 
             if (mESMQuestion.getQuestionType().equals("Survey")) {
-                fragsurvey = new FragmentESM();
+                fragsurvey = new FragmentContext();
                 Bundle xBundle = new Bundle();
                 xBundle.putSerializable("data", mESMQuestion);
                 xBundle.putSerializable("answer", answer);
@@ -182,6 +184,7 @@ public class ActivitySurvey extends AppCompatActivity {
         fragscale.changeActiveData();
     }
 
+    // the functions start with refresh are to let the fragments communicate with each.
     public void refreshAttendSort(boolean info, boolean use, boolean relate, boolean other) { fragsort.refreshAttendAdapter(info, use, relate, other); }
 
     public void refreshAttendSortReason(String reason) { fragsort.refreshAttendAdapterReason(reason); }
@@ -218,8 +221,8 @@ public class ActivitySurvey extends AppCompatActivity {
     }
 
     private int selectAnswer() {
+        // since we sample the data 'before 10 mins', we have to choose the correct one from the answer list.
         long diff = Calendar.getInstance().getTimeInMillis() - SurveyManager.getInstance().getSurveyPostTime();
-//        Log.d("answer list", "choose" + Math.floor(diff / (60 * 1000)));
         return (int) Math.floor(diff / (60 * 1000));
     }
 }

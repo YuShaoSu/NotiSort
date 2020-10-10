@@ -101,7 +101,6 @@ public class ActivityMain extends AppCompatActivity {
     final private String REMOVE_POST = "notification_remove";
     final private String DATA_FORMAT = "MMMM d, yyyy 'at' h:mm a";
 
-    //    Executor mExecutor = Executors.newSingleThreadExecutor();
     Executor mExecutor = Executors.newCachedThreadPool();
     private SharedPreferences sharedPreferences;
 
@@ -112,30 +111,21 @@ public class ActivityMain extends AppCompatActivity {
 
         createNotificationChannel();
 
-//        IntentFilter intentFilter = new IntentFilter();
-//        intentFilter.addAction("NotiListenerService.Arrival");
-
         sharedPreferences = this.getSharedPreferences("survey", MODE_PRIVATE);
 
-//        Log.d("activity main", "on create");
-
+        // check if the user grant the permission for notification listener service
         if (!isNotiListenerEnabled()) {
             final Intent setting = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
             startActivity(setting);
         }
 
 
-//        if (sharedPreferences.getBoolean("block", false)) {
-//            final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
-//            survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
-//            startActivityForResult(survey, SURVEY_REQUEST);
-//        }
-
+        // this set the path where to store the app icon
         GlobalClass.setDirPath(getApplicationContext().getDir("iconDir", Context.MODE_PRIVATE));
+
+
         notiDao = NotiDatabase.getInstance(getApplicationContext()).notiDao();
         activityRecognitionDao = NotiDatabase.getInstance(getApplicationContext()).activityRecognitionDao();
-//        locationUpdateDao = NotiDatabase.getInstance(getApplicationContext()).locationUpdateDao();
-//        accessibilityDao = NotiDatabase.getInstance(getApplicationContext()).accessibilityDao();
         sampleRecordDao = NotiDatabase.getInstance(getApplicationContext()).sampleRecordDao();
         sampleCombinationDao = NotiDatabase.getInstance(getApplicationContext()).sampleCombinationDao();
         answerJsonDao = NotiDatabase.getInstance(getApplicationContext()).answerJsonDao();
@@ -150,12 +140,14 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void setSyncTime() {
+        // the last sync time to show in the homepage
         TextView sync_time = (TextView) findViewById(R.id.sync_time);
         SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
         sync_time.setText(sharedPreferences.getString("SYNC_TIME", getString(R.string.sync_time_value)));
     }
 
     private void setSurveyCount() {
+        // questionnaire send, open(response), done statistic
         SharedPreferences sharedPreferences = getSharedPreferences("survey", MODE_PRIVATE);
 //        TextView sendCount = (TextView) findViewById(R.id.sendCount);
 //        TextView respondedCount = (TextView) findViewById(R.id.respondedCount);
@@ -169,6 +161,7 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void setDoneBool() {
+        // for debug only, to make sure the state of questionnaire correct
         TextView done_bool = (TextView) findViewById(R.id.done_bool);
         StringBuilder sb = new StringBuilder();
         sb.append("done: ");
@@ -181,11 +174,11 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void setSurveyButton() {
+        // whether to display the button to enter the questionnaire
         Button survey_button = (Button) findViewById(R.id.survey);
         if (!sharedPreferences.getBoolean("dontDisturb", false) &&
                 sharedPreferences.getBoolean("block", false) &&
                 !sharedPreferences.getBoolean("done", false))
-        //TODO done
         {
             survey_button.setVisibility(View.VISIBLE);
         } else {
@@ -195,11 +188,11 @@ public class ActivityMain extends AppCompatActivity {
         survey_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 2020.06.14  add count by jj
+                // add response count if the user open it
                 int count = sharedPreferences.getInt("surveyRespondedCount", 0);
                 sharedPreferences.edit().putInt("surveyRespondedCount", count + 1).apply();
-//                Log.d("Count", String.valueOf(count));
 
+                // start the questionnaire
                 final Intent survey = new Intent(ActivityMain.this, ActivitySurvey.class);
                 survey.putExtra("json_survey", loadSurveyJson("example_survey_1.json"));
                 startActivityForResult(survey, SURVEY_REQUEST);
@@ -213,6 +206,7 @@ public class ActivityMain extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bot_navigation_home);
         bottomNavigationView.setItemIconTintList(null);
+        // control the behavior when click the bottom navigation bar
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -236,7 +230,6 @@ public class ActivityMain extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-//        Log.d("Activity Main", "onDestroy");
         super.onDestroy();
     }
 
@@ -245,18 +238,17 @@ public class ActivityMain extends AppCompatActivity {
         super.onResume();
         setSurveyButton();
         setSurveyCount();
-//        Log.d("Activity Main", "onResume");
     }
 
     @Override
     protected void onPause() {
-//        Log.d("Activity Main", "onPause");
         super.onPause();
     }
 
     private void surveyDoneSuccess(List<NotiItem> notiItems) {
         final ArrayList<SampleCombination> sampleCombinations = getSampleCombination(notiItems);
 
+        // upsert the sample combination to db
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -264,12 +256,11 @@ public class ActivityMain extends AppCompatActivity {
             }
         });
 
-        // 2020.06.14  add count by jj
+
         int count = sharedPreferences.getInt("surveyFinishedCount", 0);
         sharedPreferences.edit().putInt("surveyFinishedCount", count + 1).apply();
 
         long lastFinish = Calendar.getInstance().getTimeInMillis();
-
         sharedPreferences.edit().putBoolean("done", true)
                 .putBoolean("block", false)
                 .putBoolean("doing", false)
@@ -286,22 +277,26 @@ public class ActivityMain extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         List<NotiItem> arrayList;
 
+        // it can be other reason to reach this state other than simply finish the survey,
+        // as a result we have to make sure the requestCode is the one ActivitySurvey pass back.
         if (requestCode == SURVEY_REQUEST) {
 
-//            Log.d("ActivityMainResult", "SURVEY_REQUEST " + resultCode);
             switch (resultCode) {
                 case RESULT_SYNC_NOW:
+                    // meaning the user press 是 when asking 是否要現在回傳資料? in the last page of the questionnaire.
                     setNextSurvey();
                     arrayList = (List<NotiItem>) data.getExtras().getSerializable("arrayList");
                     surveyDoneSuccess(arrayList);
                     sync(true);
-
                     break;
-                case RESULT_NOT_SYNC_NOW: // not sync now
+
+                case RESULT_NOT_SYNC_NOW:
+                    // meaning the user press 否
                     setNextSurvey();
                     arrayList = (List<NotiItem>) data.getExtras().getSerializable("arrayList");
                     surveyDoneSuccess(arrayList);
                     final String ans = SurveyManager.getInstance().getPostJson();
+                    // not sync with server now, store it to database
                     mExecutor.execute(new Runnable() {
                         @Override
                         public void run() {
@@ -314,13 +309,12 @@ public class ActivityMain extends AppCompatActivity {
                     break;
             }
 
-        } else {
-//            Log.d("ActivityMainResult", "not SURVEY_REQUEST " + requestCode);
         }
-
     }
 
     private void sync(final boolean now) {
+        // We sync five type of data with server here,
+        // survey statistic(infoPost), questionnaire(jsonPost), notifications(notiPost), activity recognition(ARPost), notification remove(removePost)
         int surveySendCount = sharedPreferences.getInt("surveySendCount", 0);
         int surveyRespondedCount = sharedPreferences.getInt("surveyRespondedCount", 0);
         int surveyFinishedCount = sharedPreferences.getInt("surveyFinishedCount", 0);
@@ -332,22 +326,18 @@ public class ActivityMain extends AppCompatActivity {
             public void run() {
                 String jsonPost = SurveyManager.getAnswerJson(answerJsonDao.getAll(), now ? SurveyManager.getInstance().getPostJson() : "");
                 postRequest(jsonPost, SURVEY_POST, now);
-//                Log.d("answer json", jsonPost);
 
                 String notiPost = SurveyManager.getItemJson(notiDao.getAll());
                 postRequest(notiPost, ITEM_POST, now);
-//                Log.d("noti json", notiPost);
 
                 String ARPost = SurveyManager.getARJson(activityRecognitionDao.getAll());
                 postRequest(ARPost, AR_POST, now);
-//                Log.d("activity recog json", ARPost);
 
                 String infoPost = SurveyManager.getInfoJson(surveyInfo);
                 postRequest(infoPost, INFO_POST, now);
 
                 String removePost = SurveyManager.getRemoveJson(notiModelRemoveDao.getAll());
                 postRequest(removePost, REMOVE_POST, now);
-
 
             }
         });
@@ -395,6 +385,7 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void setPermission() {
+        // check and ask for permission if the user haven't granted.
 
         List<String> permissions = new ArrayList<String>();
 
@@ -412,7 +403,6 @@ public class ActivityMain extends AppCompatActivity {
         }
 
         if (chkPermissionOps(OPSTR_GET_USAGE_STATS, Manifest.permission.PACKAGE_USAGE_STATS)) {
-//            Log.d("Permission", "usage stats granted");
         } else {
             startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         }
@@ -481,9 +471,13 @@ public class ActivityMain extends AppCompatActivity {
 
     }
 
+    // use VOLLEY package to handle requests.
     private void postRequest(String jsonPost, final String url, final boolean now) {
+        // the 'now' parameter is to denote whether the user sync right after the survey
+        // need this info since we may have to store it to database if the post request not succeed.
         final SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+        // you have to change this url to yours
         String URL = "https://notisort.neighborbob.me/" + url + "?did=" + sharedPreferences.getString("ID", "user id fail") + "&ver=5";
         final String requestBody = jsonPost;
 
@@ -571,8 +565,8 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private ArrayList<SampleCombination> getSampleCombination(List<NotiItem> notiItems) {
+        // get app combination from the sampled list of notifications
         ArrayList<SampleCombination> l = new ArrayList<>();
-//        ArrayList<NotiItem> notiItems = SurveyManager.getInstance().getMap().get("click");
         List<String> appCombs = new Utils().getTwoAppList(notiItems);
         for (String s : appCombs) {
             l.add(new SampleCombination(s));
@@ -582,6 +576,7 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void setNextSurvey() {
+        // set next alarmManager to schedule next survey
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this, SampleReceiver.class);
         intent.putExtra("interval", 2);
@@ -590,7 +585,6 @@ public class ActivityMain extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.HOUR_OF_DAY, 3);
         alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pii);
-//        Log.d("next survey time", String.valueOf(c.getTime()));
     }
 
 }

@@ -62,15 +62,7 @@ public class ActivityProfile extends AppCompatActivity {
         log.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //- START -
-
-//                FragmentStart frag_start = new FragmentStart();
-//                Bundle sBundle = new Bundle();
-//                sBundle.putSerializable("survery_properties", mESMPojo.getESMProperties());
-//                sBundle.putString("style", style_string);
-//                frag_start.setArguments(sBundle);
-//                arraylist_fragments.add(frag_start);
+                // for debug
                 setContentView(R.layout.activity_main_survey);
                 ArrayList<Fragment> fragments = new ArrayList<>();
                 FragmentLog fragmentLog = new FragmentLog();
@@ -113,6 +105,7 @@ public class ActivityProfile extends AppCompatActivity {
     }
 
     private void setExample() {
+        // TODO need to refine
         Map<String, ArrayList<NotiItem>> map = new HashMap<>();
         ArrayList<NotiItem> listA = new ArrayList<>();
         ArrayList<NotiItem> listB = new ArrayList<>();

@@ -231,7 +231,10 @@ public class NotiListenerService extends NotificationListenerService {
         final NotiModel noti;
         noti = setNotiModel(sbn);
 
+        // store it to the database
         if (!noti.appName.equals("NotiSort")) {
+            // we use mExecutor since android doesn't allow heavy work like db operation,
+            // network, etc. on main(UI) thread in order to prevent the UI from hanging
             mExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -240,27 +243,26 @@ public class NotiListenerService extends NotificationListenerService {
             });
         }
 
-//        Log.d("notilistener", "sharedPreference");
-
-        // TODO 先不看 done 以方便 debug
+        // we use sharedPreferences to store the survey state to determine whether the user finish the survey
+        // in this interval
         if (sharedPreferences.getBoolean("block", false) || sharedPreferences.getBoolean("done", false))
             return;
 
-//        Log.d("notilistener", "before get activity");
 
+        // the getActiveNotis is the function to sample six notis, check if it meet the requirement to trigger the quesstionnaire
         if (getActiveNotis()) {
-//            Log.d("Survey", "10分鐘後發");
             // block
             sharedPreferences.edit().putBoolean("block", true).apply();
 
+            // push the survey to users after 10 mins
             Timer timer = new Timer();
             timer.schedule(new PushTask(this), 600000);
 
+            // cancel this survey if 15 mins passed
             Timer timer2 = new Timer();
             timer2.schedule(new UnblockTask(this), 1500000);
-//            setUbblock();
 
-//            // 2020.06.14  add count by jj
+            // add count of survey send
             int count = sharedPreferences.getInt("surveySendCount", 0);
             sharedPreferences.edit().putInt("surveySendCount", count + 1).apply();
 
@@ -270,8 +272,12 @@ public class NotiListenerService extends NotificationListenerService {
             answer.setContext(this);
             SurveyManager.getInstance().pushAnswerList(answer);
             Timer timer1 = new Timer();
+            // collect contextual data every one minute
             timer1.schedule(new SampleTask(this, 1, 2), 1 * 60000);
 
+            // store the sampled notifications
+            // we use map since in JAVA, it's a little annoying to handle the issue of object copying
+            // so we create two same list(one for attend order, the other for display) to simplify.
             SurveyManager.getInstance().setMap(itemMap);
         }
 
